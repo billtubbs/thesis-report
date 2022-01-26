@@ -1,36 +1,48 @@
 \chapter{Simulation results}
 \label{chap-simulation}
 
-\section{Simulating RODD disturbances}
+\section{Estimating RODD disturbances}
 
-<text>
+\begin{itemize}
+	\item RODDs are easy to generate.
+	\item Show example plots of various types of RODD disturbance described in chapter 1.
+	\item Describe SISO or 2x2 MIMO system with RODD step disturbance(s) at input
+	\item Tuning of different single Kalman filters
+	\item Tuning of Robertson and Eriksson and Isaksson sub-optimal methods
+	\item Comparison simulation results and metrics
+	\item Compare and contrast
+	\item Conclude on pros, cons of each
+\end{itemize}
 
+\section{Control performance}
 
-\section{State estimation}
-
-<text>
-
-
-\section{Estimating disturbance model parameters}
-
-% Note: may remove this if we aren’t using any formal methods.
-
-<text>
-
-
-\section{Control system simulations}
-
-<text>
-
-
-\section{Evaluation with real industrial data}
-
-<text>
+\begin{itemize}
+	\item Use best observer from previous section.
+	\item Same system in closed loop with LQI/LQRcontroller.
+	\item Performance metrics — e.g. tracking error.
+	\item Robustness?  E.g. stability margins.
+\end{itemize}
 
 
+\section{Grinding model simulations}
 
-\section{Evaluation using grinding circuit model simulations}
+\begin{itemize}
+	\item Non-linear model
+	\item Describe simulations with grinding simulation model (IFAC paper)
+	\item Include sensitivity analysis - model errors, observer (RODD) parameters.
+	\item Discuss applications and potential benefits (e.g. RTO).
+\end{itemize}
 
-<text>
+\section{Disturbance model identification (t.b.d)}
 
+t.b.d. —depends if we identify a method.
 
+\begin{itemize}
+	\item Test methods of identifying the disturbance model parameters from measurements.
+	\item Using data from linear system from section 2.1.
+	\item Using grinding model simulations from section 2.3 
+\end{itemize}
+
+\section{Evaluation with real industrial data (t.b.d)}
+
+t.b.d. —depends if the data is good enough for the purpose.

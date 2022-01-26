@@ -4,14 +4,62 @@
 
 % Note: This is an un-numbered chapter.
 
-\section*{Infrequent disturbances}
+\begin{itemize}
+	\item Challenges of effective control and optimization of comminution (grinding) operations.
+	\item Disturbances, e.g. Changes in ore properties — difficult to measure accurately in real time, impacts on the downstream process and control systems can be severe (Herbst et al., 1988).
+	\item Cause-effect: Variable ore → variable operation → variable grind → variable recovery → lower recovery (Powell et al., 2009).
+	\item Sources of variability in mining operations: geological characteristics of ore bodies, mining processes such as blasting, material handling, shovelling and trucking. Segregation effects.
 
-<Text>
+\item Motivation: better characterization of disturbances in real operations, better models, more realistic simulation models, better observer designs to detect and estimate disturbances in real time.
+\item Many potential benefits: Improve process control performance. disturbance rejection. adaptive control. Robustness (maintain operating conditions within stable region—SAG mill) and improve process performance.
+\item Use in upstream in the mining operation to help determine the source of variation and identify process improvements.
+\end{itemize}
+
+\section*{Disturbances}
+
+\begin{itemize}
+	\item Definition of a disturbance —uncontrolled inputs, usually unmeasured.
+	\item Measured v. unmeasured— anticipation, feed-forward control
+	\item Importance of considering disturbances in control system design
+	\item Disturbance models and process observers
+	\item Disturbances in mineral processing
+	\item Ore feed properties—particle size distribution, hardness, density
+	\item Effects on grinding and downstream separation processes (e.g. flotation)
+	\item Two categories of disturbances: In-frequent, always-present disturbances.
+	\item Infrequent disturbances could have significant impact on process and control systems.
+	\item Standard approaches to system identification do not consider infrequent disturbances
+	\item (focus on second order properties)
+\end{itemize}
 
 
 \section*{Literature review}
 
-<Text>
+\begin{itemize}
+	\item Herbst et al (1984) - optimal control potential in grinding
+	\item Wei and Craig (2009) - control survey
+	\item Powell, Mainza (2009)
+	\item Hoduoin et al. - DYNAFRAG simulator, did a survey of control also?
+	\item Effects of ore properties on grinding performance
+	\item SAG mill constraints - grate, throughput, residence time, power, etc.
+	\item AG effects (e.g. Hahne, Palsson, Samskog, 2002)
+	\item Attempts to design process observers — e.g. LeRoux - EKF observer (2016)
+	\item MacGregor et al (1985)
+	\item Reference standard approaches to disturbance model design for MPC?  E.g. Badgewell and Muske, Pannochia.
+	\item Andersson (1985)
+	\item Gustaffson (1993)
+	\item Robertson et al (1995, 1998)
+	\item Eriksson and Isaksson (1996)
+	\item Wong and Lee (2006, 2009).
+	\item Branch of research on fault/anomaly detection (Willsky) and limitations vs. state estimation of switching systems.
+	\item Papers on state estimation... Blom and Bar Shalom, Ackerson and Fu, Busbaum and Haddad, Jaffer and Gupta, Akashi and Kumamoto,
+	\item Hybrid systems (e.g. Sworder and Boyd)
+	\item Discrete time Markov Jump Linear systems (MJLS) (Costa 2005 book)
+	\item Bemporad on identification of switching systems (e.g. mixed-integer programming)
+	\item Problems of observability and Identifiability of Jump Linear Systems (Vidal et al. 2002).
+	\item Control of processes subject to intermittent disturbances. Macgregor, Costa book, Wong and Lee (2000).
+	
+	\item What about commercial simulation software (e.g. IDEAS)?  What disturbances do they simulate?
+\end{itemize}
 
 
 \section*{Research objectives}
