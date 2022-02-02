@@ -175,8 +175,9 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 	\item Explain the problem of estimating RODDs using standard (e.g. Kalman) filters.
 	\item Introduce multiple-model observers.
 	\item Sub-optimal algorithms (Tugnait)
-	\item Infrequent branching, pruning (unlikely)
-	\item Filter fusion - recursive Bayesian estimation for non-gaussian processes - Generalized Pseudo-Bayesian (GPBn) methodology (Bar-Shalom and Li, 1993)
+	\item Infrequent branching assumptions.
+	\item Filter fusion - recursive Bayesian estimation for non-Gaussian processes - Generalized Pseudo-Bayesian (GPBn) methodology (Bar-Shalom and Li, 1993)
+	\item Sequence pruning (adaptive) methods (AFMM).
 	\item Explain how the multi-model observer concept can be used for any MJLS (time-varying A, B, C, D, Q, R matrices).
 \end{itemize}
 
@@ -192,22 +193,36 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 
 % Note: may remove this if we aren’t using any formal methods.
 
-<text>
-
-
 \section{Control strategies}
 
-<text>
 \begin{itemize}
-	\item MPC techniques for switching systems ()Camacho et al. 2021)
+	\item Optimal conrol—LQR, LQI for demonstration systems (linear, unconstrained).
+	\item Certainty equivalence principle — E.g. using standard MPC.
+	\item MPC techniques for switching systems.
 \end{itemize}
 
 \section{Grinding simulation model}
 
-<text>
-
+\begin{itemize}
+	\item Describe model with references.
+	\item Simplified flow diagram
+	\item Population balance model approach - breakage and selection rates.
+	\item Grate, transport delays and cyclone model.
+	\item Assumptions
+	\item Dynamic variables.
+	\item Simulation setup - low level controls.
+	\item Ore feed simulation.
+	\item Figure: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
+	\item Steady-state effects of ore properties on process performance - throughput, power, P80.
+\end{itemize}
 
 \section{Performance evaluation}
-	
-<text>
+
+\begin{itemize}
+	\item Tracking error of disturbance state and output estimates.
+	\item Variance in steady-state.
+	\item Root-mean-squared differences.
+	\item Sensitivity to model errors.
+	\item Closed loop stability - stability margins.
+\end{itemize}
 

@@ -9,9 +9,10 @@
 	\item Describe SISO or 2x2 MIMO system with RODD step disturbance(s) at input
 	\item Tuning of different single Kalman filters
 	\item Tuning of Robertson and Eriksson and Isaksson sub-optimal methods
+	\item Waterfall plots of internal variables—p(Gamma|Y), K, trace(P)
 	\item Comparison simulation results and metrics
 	\item Compare and contrast
-	\item Conclude on pros, cons of each
+	\item Conclude on pros, cons of each and decision to use sequence pruning approach (Eriksson and Isaksson).
 \end{itemize}
 
 \section{Control performance}
@@ -38,11 +39,18 @@
 t.b.d. —depends if we identify a method.
 
 \begin{itemize}
-	\item Test methods of identifying the disturbance model parameters from measurements.
+	\item Test methods of identifying the disturbance model parameters from simulated measurements.
+	\item E.g. Variational inference? Sequential inference techniques?  Need help with this.
 	\item Using data from linear system from section 2.1.
-	\item Using grinding model simulations from section 2.3 
+	\item Using data from grinding model simulations from section 2.3.
 \end{itemize}
 
-\section{Evaluation with real industrial data (t.b.d)}
+\subsection{Evaluation with real industrial data (t.b.d)}
 
 t.b.d. —depends if the data is good enough for the purpose.
+
+\begin{itemize}
+	\item Description of plant and data acquisition process.
+	\item Preparation and pre-processing of data—outliers, missing values, standardization parameters.
+	\item Ideally: Demonstrate disturbance characterisation (model structure), identification (parameters) with one or more method and discuss results. 
+\end{itemize}

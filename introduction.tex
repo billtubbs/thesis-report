@@ -9,10 +9,9 @@
 	\item Disturbances, e.g. Changes in ore properties — difficult to measure accurately in real time, impacts on the downstream process and control systems can be severe (Herbst et al., 1988).
 	\item Cause-effect: Variable ore → variable operation → variable grind → variable recovery → lower recovery (Powell et al., 2009).
 	\item Sources of variability in mining operations: geological characteristics of ore bodies, mining processes such as blasting, material handling, shovelling and trucking. Segregation effects.
-
-\item Motivation: better characterization of disturbances in real operations, better models, more realistic simulation models, better observer designs to detect and estimate disturbances in real time.
-\item Many potential benefits: Improve process control performance. disturbance rejection. adaptive control. Robustness (maintain operating conditions within stable region—SAG mill) and improve process performance.
-\item Use in upstream in the mining operation to help determine the source of variation and identify process improvements.
+	\item Motivation: better characterization of disturbances in real operations, better models, more realistic simulation models, better observer designs to detect and estimate disturbances in real time.
+	\item Many potential benefits: Improve process control performance. disturbance rejection. adaptive control. Robustness (maintain operating conditions within stable region—SAG mill) and improve process performance.
+	\item Use in upstream in the mining operation to help determine the source of variation and identify process improvements.
 \end{itemize}
 
 \section*{Disturbances}
@@ -27,8 +26,8 @@
 	\item Effects on grinding and downstream separation processes (e.g. flotation)
 	\item Two categories of disturbances: In-frequent, always-present disturbances.
 	\item Infrequent disturbances could have significant impact on process and control systems.
-	\item Standard approaches to system identification do not consider infrequent disturbances
-	\item (focus on second order properties)
+	\item Standard approaches to system identification do not consider infrequent disturbances (focus on second order properties)
+	\item Possible need for other types of disturbance models.
 \end{itemize}
 
 
@@ -56,22 +55,45 @@
 	\item Discrete time Markov Jump Linear systems (MJLS) (Costa 2005 book)
 	\item Bemporad on identification of switching systems (e.g. mixed-integer programming)
 	\item Problems of observability and Identifiability of Jump Linear Systems (Vidal et al. 2002).
-	\item Control of processes subject to intermittent disturbances. Macgregor, Costa book, Wong and Lee (2000).
-	
-	\item What about commercial simulation software (e.g. IDEAS)?  What disturbances do they simulate?
+	\item Other estimation methods—particle filtering (Arulampalam, 2002 tutorial).
+	\item Control of processes subject to intermittent disturbances. MacGregor, Costa book, Wong and Lee (2000), Camacho et al. 2021?
+	\item What about commercial simulation software (e.g. IDEAS)? What disturbances do they simulate?
 \end{itemize}
 
 
 \section*{Research objectives}
 
-<Text>
+\textbf{(Parts of this might be better at the beginning of the introduction)}
+
+\begin{outline}
+	\1 Context — this project is part of a 3-year research and development project by the LOOP research group, ... at the University of Laval, ... with financial support from the Government of Quebec and Nemaska Lithium Corporation.
+	\1 The overall goal of the project is to determine the extent to which technological innovations could transform the current paradigm of mineral processing which is energy intensive and results in significant greenhouse gas emissions.
+	\1 The project consists of two main initiatives:
+		\2 Development of dynamic operating models of production units,
+		\2 Development of circuit configurations, process controls, and real time optimization strategies.
+	\1 Aligned with the second initiative, the specific goals of this research project are to identify or develop observers tailored specifically to the types of disturbances and measurement challenges that exist in real mineral processing operations.
+	\1 The objectives of this research project are:
+		\2 Review the academic literature on disturbances in industrial process operations to identify suitable models and methods that can be used to simulate realistic disturbances and/or can be used in the design of observers for online state estimation,
+		\2 Identify and/or develop observer designs to estimate important process variables in mineral processing operations which are needed for effective control and real-time optimization,
+		\2 Evaluate the methods using a simulation model of a grinding process,
+		\2 Evaluate the methods using using data acquired from real industrial operations,
+		\2 Estimate the potential benefits of applying the methods in terms of process performance metrics such as energy consumption, throughput/productivity, or cost savings.
+\end{outline}
 
 
 \section*{Contributions of this research}
 
-<Text>
+\begin{itemize}
+	\item Review of literature pertaining to `realistic' disturbance modelling and state estimation in industrial process operations.
+	\item Evaluation of the capabilities of two multi-model observer algorithms using simulation in MATLAB.
+	\item Evaluation of the performance of one of the multi-model observers in state estimation in a simulated grinding process scenario.
+	\item Evaluation of the benefits of the multi-model observer as part of a simulated control system of a simulated grinding process.
+	\item T.b.d.: Case study of the application of model identification techniques to characterise disturbances using data from a real industrial operation.
+\end{itemize}
 
 
 \section*{Organisation of this report}
 
-<Text>
+\begin{itemize}
+	\item Describe main contents of each chapter.
+\end{itemize}
