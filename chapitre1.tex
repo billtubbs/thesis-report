@@ -3,7 +3,7 @@
 
 \section{Disturbance models}
 
-\subsection{Randomly-occurring deterministic disturbances}
+\subsection{Randomly-occurring deterministic disturbances}\label{subsec-RODD}
 
 \textit{Randomly-occurring deterministic disturbances} (RODDs) [CITE] are a family of stochastic process models suitable for simulating various types of infrequently-occurring disturbances in discrete-time.  The structure of the RODD model is
 
@@ -160,24 +160,20 @@ The general HMM disturbance process can be described by the following \textit{Ma
 Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), creates a very versatile stochastic model suitable for simulating a diverse family of disturbances.
 
 
-\subsection{Other types of disturbances}
-
-\begin{itemize}
-	\item Discuss other possible models
-	\item Describe the 
-\end{itemize}
-
-
-
 \section{State estimation}
 
 \begin{itemize}
 	\item Explain the problem of estimating RODDs using standard (e.g. Kalman) filters.
 	\item Introduce multiple-model observers.
+	\item Multi-model observer calculations (same as in IFAC report).
 	\item Sub-optimal algorithms (Tugnait)
-	\item Infrequent branching assumptions.
-	\item Filter fusion - recursive Bayesian estimation for non-Gaussian processes - Generalized Pseudo-Bayesian (GPBn) methodology (Bar-Shalom and Li, 1993)
-	\item Sequence pruning (adaptive) methods (AFMM).
+	\item Approximation 1: Infrequently-occurring disturbances -> infrequent branching assumptions.
+	\item Approximation 2: Infrequently-occurring disturbances -> less combinations of disturbances.
+	\item Approximation 3: Filter fusion - 
+	\item Recursive Bayesian estimation for non-Gaussian processes
+	\item Generalized Pseudo-Bayesian (GPBn) methodology (Bar-Shalom and Li, 1993).
+	\item Alternative sub-optimal approach: Sequence pruning (adaptive) methods 
+	\item Describe branching and pruning procedure of AFMM.
 	\item Explain how the multi-model observer concept can be used for any MJLS (time-varying A, B, C, D, Q, R matrices).
 \end{itemize}
 
@@ -207,6 +203,7 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 	\item Describe model with references.
 	\item Simplified flow diagram
 	\item Population balance model approach - breakage and selection rates.
+    \item Limitations: constant breakage rate model, relationships between speed, media, trajectories,  filling level and breakage not captured.
 	\item Grate, transport delays and cyclone model.
 	\item Assumptions
 	\item Dynamic variables.
