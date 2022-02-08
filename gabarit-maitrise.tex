@@ -16,15 +16,14 @@
   %% source du document. Les gabarits sont encodés en UTF-8. Inutile
   %% avec XeLaTeX, qui gère Unicode nativement.
   \ifxetex\else \usepackage[utf8]{inputenc} \fi
-  \usepackage{amsmath}
+  %% Charger ici les autres paquetages nécessaires pour le document.
+  %% Quelques exemples; décommenter au besoin.
+  \usepackage{amsmath}       % recommandé pour les mathématiques
+  %\usepackage{icomma}        % gestion de la virgule dans les nombres
   \usepackage{mathtools}
   \usepackage{graphicx}
   \usepackage{outlines}  % for nested lists
   \graphicspath{ {./images/} }
-  %% Charger ici les autres paquetages nécessaires pour le document.
-  %% Quelques exemples; décommenter au besoin.
-  %\usepackage{amsmath}       % recommandé pour les mathématiques
-  %\usepackage{icomma}        % gestion de la virgule dans les nombres
 
   %% Utilisation d'une autre police de caractères pour le document.
   %% - Sous LaTeX
@@ -40,19 +39,23 @@
   %% documentation du paquetage babel pour les options disponibles.
   %% Désactiver (effacer ou mettre en commentaire) si l'option
   %% 'nobabel' est spécifiée au chargement de la classe.
-  \frenchbsetup{%
-    StandardItemizeEnv=true,       % format standard des listes
-    ThinSpaceInFrenchNumbers=true, % espace fine dans les nombres
-    og=«, fg=»                     % caractères « et » sont les guillemets
-  }
+%  \frenchbsetup{%
+%    StandardItemizeEnv=true,       % format standard des listes
+%    ThinSpaceInFrenchNumbers=true, % espace fine dans les nombres
+%    og=«, fg=»                     % caractères « et » sont les guillemets
+%  }
+
+  % Citation syle (see p12 of ulthese.pdf)
+  %\setcitestyle{numbers,square}
+  \setcitestyle{authoryear}  % NOT WORKING
 
   %% Style de la bibliographie.
- \bibliographystyle{}
+ \bibliographystyle{plain}
 
   %% Composition de la page frontispice. Remplacer les éléments entre < >.
   %% Supprimer les caractères < >. Couper un long titre ou un long
   %% sous-titre manuellement avec \\.
-  \titre{Disturbance Models and Observers for Mineral Processing Applications}
+  \titre{A Disturbance Model and an Observer for Mineral Processing Applications}
   % \titre{Ceci est un exemple de long titre \\
   %   avec saut de ligne manuel}
   % \soustitre{Sous-titre le cas échéant}
@@ -109,6 +112,6 @@
 
 \include{annexe}                % annexe A
 
-\bibliography{}                 % production de la bibliographie
+\bibliography{references}                 % production de la bibliographie
 
 \end{document}

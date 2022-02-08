@@ -6,8 +6,8 @@
 
 \begin{outline}
 	\1 Challenges of effective control and optimization of comminution (grinding) operations.
-	\1 Among these, disturbances, in particular changes in ore properties — difficult to measure accurately in real time, impacts on the downstream process and control systems can be severe (Herbst et al., 1988).
-	\1 Cause-effect chain: Variable ore → variable operation → variable grind → variable recovery → lower recovery (Powell et al., 2009).
+	\1 Among these, disturbances, in particular changes in ore properties — difficult to measure accurately in real time, impacts on the downstream process and control systems can be severe \cite{herbst_optimal_1988}.
+	\1 Cause-effect chain: Variable ore → variable operation → variable grind → variable recovery → lower recovery \cite{powell_applying_2009}.
 	\1 Sources of variability in mining operations: geological characteristics of ore bodies, mining processes such as blasting, material handling, shovelling and trucking. Segregation effects.
 	\1 Effects of ore properties on grinding performance (need references).
 	\2 Increased hardness/competency → lower breakage rates → increasing hold-up, circulating load → reduced throughput and/or less grinding (TODO: the simulation model apparently contradicts this).
@@ -70,26 +70,27 @@ References for above:
 	\item Need for broader range of disturbance model types and ways to incorporate them in control strategies.
 \end{itemize}
 
-\section*{Background}
+\section*{Background and objectives}
 
-\begin{outline}
-	\1 Context — this project is part of a 3-year research and development project by the LOOP research group, ... at the University of Laval, ... with financial support from the Government of Quebec and Nemaska Lithium Corporation.
-	\1 The overall goal of the project is to determine the extent to which technological innovations could transform the current paradigm of mineral processing which is energy intensive and results in significant greenhouse gas emissions.
-	\1 The project consists of two main initiatives:
-	\2 Development of dynamic operating models of production units,
-	\2 Development of circuit configurations, process controls, and real time optimization strategies.
-	\1 Aligned with the second initiative, the specific goals of this research project are to identify or develop disturbance models and observers tailored specifically to the types of disturbances and measurement challenges that exist in real mineral processing operations.
-\end{outline}
+This project is part of a three-year research and development project by the \textit{Laboratoire d’observation et d’optimisation des procédés} (LOOP) of the University of Laval, with financial support from the Government of Quebec and Nemaska Lithium Corporation. The overall goal of the project is to determine the extent to which technological innovations could transform the current paradigm of mineral processing which is energy intensive and results in significant greenhouse gas emissions. The project consists of two main initiatives:
 
-\section*{Research objectives}
+\begin{enumerate}
+	\item Development of dynamic operating models of production units
+	\item Development of circuit configurations, process controls, and real time optimization strategies.
+\end{enumerate}
 
-\begin{outline}
-	\1 The objectives of this research project are:
-	\2 Propose a model for representing disturbances in mineral processing operations
-	\2 Propose an observer framework using this model.
-\end{outline}
+Aligned with the second initiative, the specific goals of this research project are to identify or develop disturbance models and observers tailored specifically to the types of disturbances and measurement challenges that exist in real mineral processing operations.
+
+The specific objectives of this research project are:
+
+\begin{enumerate}
+	\item Propose a model for representing disturbances in mineral processing operations
+	\item Propose an observer framework using this model.
+\end{enumerate}
 
 \section*{Literature review}
+
+Outline notes :
 
 \begin{itemize}
 	\item MacGregor et al (1985)
@@ -110,21 +111,21 @@ References for above:
 	%\item What about commercial simulation software (e.g. IDEAS)? What disturbances do they simulate?
 \end{itemize}
 
-A comprehensive search of the academic literature was carried out to identify previous work relevant to the project objectives. During this process it became apparent that the number of works related to characterising and identifying realistic disturbances was quite small. With a few exceptions, searches for terms such as `disturbance model' or `disturbance characterisation' tended to result in works dealing with the design of standard stochastic disturbance models, for example Muske and Badgewell (2002), or were focussed mainly on the detection of disturbances rather than their simulation or modelling, for example, Thornhill et al. (2007). There is a rich body of work on the subject of fault detection which falls into the second category. In these works, models of the process are used to identify when an \textit{unmodelled} disturbance occurs and to determine its source. However, a typical fault detection algorithm does not have a model of the actual disturbance, therefore its operation is suspended once the disturbance occurs. In contrast, the goal of this work is to identify a model that can be used for state estimation in the presence of disturbances, without interruption.
+A comprehensive search of the academic literature was carried out to identify previous work relevant to the project. During this process it became apparent that the number of works related to characterising and identifying realistic disturbances was quite small. With a few exceptions, searches for terms such as `disturbance model' or `disturbance characterisation' tended to result in works dealing with the design of standard stochastic disturbance models, for example \cite{muske_badgwell_disturbance_2002}, and \cite{pannocchia_robust_2003}, or were focussed mainly on detection and diagnosis of disturbances rather than their simulation or modelling, \cite{thornhill_advances_2007} for example. There is a rich body of work on the subject of fault detection which falls into the second category. In these works, models of the process are used to identify when an \textit{unmodelled} disturbance occurs and to determine its source. However, a typical fault detection algorithm does not have a model of the actual disturbance, therefore its operation is suspended once the disturbance occurs. In contrast, the goal of this work is to identify a model that can be used for state estimation in the presence of disturbances, without interruption.
 
-Some of the exceptions were works on disturbances in specific application domains such as wind power generation, bump disturbances in vehicle suspension systems, and wave disturbances in ship movement control.  In these, researchers developed disturbance models tailored to these applications. For example, Papaefthymiou and Klockl (2008) used a Markov-Chain Monte Carlo (MCMC) method to identify and model important characteristics of the wind to generate `synthetic' wind data for the purposes of running realistic dynamic simulations of renewable energy generation systems.
+Some of the exceptions were works on disturbances in specific application domains such as wind power generation, bump disturbances in vehicle suspension systems, and wave disturbances in ship movement control.  In these, researchers developed disturbance models tailored to these applications. For example, \cite{papaefthymiou_mcmc_2008} used a Markov-chain Monte Carlo (MCMC) method to identify and model important characteristics of the wind to generate `synthetic' wind data for the purposes of running realistic dynamic simulations of renewable energy generation systems.
 
-Nevertheless, a small number of research papers were discovered dealing with `realistic disturbances' (a loosely defined term) experienced in continuous industrial processes. These are also sometimes broadly referred to as `deterministic disturbances' to distinguish them from standard disturbance models based on zero-mean random noise signals (which are truly random in the sense that they are independent and identically-distributed).
+Nevertheless, a small number of research papers were discovered dealing with `realistic disturbances' (loosely defined) occurring in continuous industrial processes. These are also sometimes broadly referred to as `deterministic disturbances' to distinguish them from standard disturbance models based on zero-mean random noise signals (which are truly random in the sense that they are independent and identically-distributed).
 
-\section{Randomly-occurring deterministic disturbances} \label{RODDs}
+\section*{Randomly-occurring deterministic disturbances} \label{RODDs}
 
-In 1984, MacGregor, Harris and Wright \cite{macgregor_duality_1984} introduced the concept of the \textit{randomly-occurring deterministic disturbance} (RODD). This is a family of stochastic processes useful for modelling deterministic disturbances commonly encountered in real industrial processes. Three types of RODD process are described by MacGregor and co-workers. One produces infrequently-occurring step changes, another produces a series of ramps, and a third produces a signal consisting of a series of exponential changes. One example of a real-world disturbances that might be represented by these models is that of an unanticipated set-point change made by an operator. Another is an sudden unexpected change to the load on a system. While these disturbances may be deterministic, the key issue is that they are not predictable or measurable by the control system. Therefore, simulating them with a stochastic process driven by a random variable is a reasonable way to emulate their unpredictability for the purposes of control system design.
+In 1984, \cite{macgregor_duality_1984} introduced the concept of the \textit{randomly-occurring deterministic disturbance} (RODD). This is a family of stochastic processes useful for modelling deterministic disturbances commonly encountered in real industrial processes. Three types of RODD process are described by MacGregor and co-workers. One produces infrequently-occurring step changes, another produces a series of ramps, and a third produces a signal consisting of a series of exponential changes. One example of a real-world disturbances that might be represented by these models is that of an unanticipated set-point change made by an operator. Another is an sudden unexpected change to the load on a system. While these disturbances may be deterministic, the key issue is that they are not predictable or measurable by the control system. Therefore, simulating them with a stochastic process driven by a random variable is a reasonable way to emulate their unpredictability for the purposes of control system design.
 
 The structural form of a RODD model is an \textit{autoregressive integrated moving average} (ARIMA) process fed by a special \textit{random shock} signal which has the value 0 most of the time but occasionally, according to a defined probability, has a value sampled from a normal distribution. Depending on the chosen ARIMA process model, this can be used to simulate the different types of RODD disturbances which may act on a process. The details of the RODD model are described in section \ref{subsec-RODD}.
 
 MacGregor and coworkers also showed that the optimal control law derived for a process perturbed by a RODD is no different than that which would be derived for a process subject to a standard stochastic noise.  This is due to the common ARIMA structure of both models and the fact that the expected value (i.e. mean) of the random shock signal is zero as it is for a Gaussian noise. As a result, it is well-suited for use in process control design. For this reason, and in the absence of other alternatives, the RODD disturbance model became a focus of this research project.
 
-\section{Detection and estimation of RODD disturbances}\label{detection_RODDs}
+\section*{Detection and estimation of RODD disturbances}\label{detection_RODDs}
 
 Traditional filtering methods such as Kalman filters are unable to efficiently estimate RODD disturbances due to the inevitable trade-off that must be made between the ability to track a disturbance when it occurs and the sensitivity to noise \cite{robertson_detection_1995}.
 
@@ -148,7 +149,7 @@ The third approximation is referred to as \textit{filter fusion} or the \textit{
 
 Robertson and coworkers present results of simulating their sub-optimal multi-model observer on a 2-input, 2-output, non-linear dynamical system representing a continuous stirred-tank reactor (CSTR) process. They show the estimates produced by the multi-model approach compared with two single extended Kalman filters (EKF) with different noise parameters. The first of the single EKFs is sensitive to the measurement noise and the second is slow to respond to the RODD step disturbances, while the multiple-model observer appears to perform better than either single EKF in the example simulations.
 
-A year later, Eriksson and Isaksson \cite{eriksson_classification_1996} present results of using an adaptive multi-model approach to estimate \textit{infrequently-occurring disturbances}. They utilize the \textit{adaptive forgetting through multiple models} (AFMM) algorithm by Andersson \cite{andersson_adaptive_1985} and also previously described by Gustafsson \cite{gustafsson_estimation_1993}. The AFMM algorithm employs a technique called \textit{sequence pruning} (Tugnait 1982), in contrast to the sequence merging or fusion technique used by Robertson and co.\cite{blom_interacting_1988}.
+A year later, Eriksson and Isaksson \cite{eriksson_classification_1996} present results of using an adaptive multi-model approach to estimate \textit{infrequently-occurring disturbances}. They utilize the \textit{adaptive forgetting through multiple models} (AFMM) algorithm by Andersson \cite{andersson_adaptive_1985} and also previously described by Gustafsson \cite{gustafsson_estimation_1993}. The AFMM algorithm employs a technique called \textit{sequence pruning} \cite{tugnait_detection_1982}, in contrast to the sequence merging or fusion technique used by Robertson and co.\cite{blom_interacting_1988}.
 
 Sequence pruning is the online deletion of sequences that have a low probability given the current measurements. The deleted sequences are replaced by new sequences to represent the possible branches of the most likely sequence at the next sample time. For example, for a system with one infrequently occurring input disturbance, the most likely shock sequence at the next sample time is the shock sequence estimated to be most likely at the current time extended by the addition of a zero to indicate no shock at the next sample time. However, a shock could occur in the next time period. To account for this possibility, a new shock sequence is generated by making a copy of the current most likely sequence and its associated filter and extending it assuming a shock at the next sample time. This new sequence and filter replace the least likely sequence and observer. Thus, the total number of sequences and independent filters that need to be maintained remains constant. Note that in the case of systems with more than one input disturbance, the number of possible branches of the most likely sequence is higher, and therefore a larger number of sequences and filters will be replaced each time step.
 
@@ -166,7 +167,7 @@ However, a different non-linear system (a 3-state model of a heptane to toluene 
 
 The results show that their sub-optimal filter does 35 percent better than either the EKF or the GPB algorithm. This is simply because their filter has a horizon of 90 minutes (using 22 filters), whereas the standard GPB algorithm has a horizon of only 2 minutes (using 16 filters) so there is not enough time for it to detect changes before the filters are fused.
 
-\section{Disturbance modeling using hidden Markov models}
+\section*{Disturbance modeling using hidden Markov models}
 \label{hidden_markov_models}
 
 \begin{itemize}
@@ -190,7 +191,7 @@ The results show that their sub-optimal filter does 35 percent better than eithe
 	\item Reference probability methods involve a change of probability measure (they are also known as the \textit{measure change approach}) which allows the original estimation and control problem to be reformulated so that well-known results for \textit{identically and independently distributed} (i.i.d.) random variables can be applied, thus simplifying the analysis and the computational complexity. \emph{TODO}: where does this approach fit in with the other concepts (e.g. in Costa's book) and is it still relevant today?
 \end{itemize}
 
-\section{The hidden Markov model for process control}
+\section*{The hidden Markov model for process control}
 \label{hmm_control}
 
 \begin{itemize}
@@ -225,16 +226,16 @@ The results show that their sub-optimal filter does 35 percent better than eithe
 
 \section*{Contributions of this research}
 
-\begin{itemize}
-	\item Review of academic literature pertaining to `realistic' disturbance modelling and state estimation in industrial process operations.
-	\item Evaluation of the capabilities of two multi-model observer algorithms using simulation in MATLAB.
-	\item Evaluation of the performance of one of the multi-model observers in state estimation in a simulated grinding process scenario.
-	\item Evaluation of the benefits of the multi-model observer as part of a simulated control system of a simulated grinding process.
-	\item T.b.d.: Case study of the application of model identification techniques to characterise disturbances using data from a real industrial operation.
-\end{itemize}
+The main contributions of this research are:
+
+\begin{enumerate}
+	\item A review of academic literature pertaining to `realistic' disturbance modelling and state estimation in industrial process operations.
+	\item Evaluation of the capabilities of two multi-model observer algorithms by simulations in MATLAB.
+	\item Evaluation of the performance of one of the multi-model observers applied to state estimation of a simulated grinding process.
+	\item Evaluation of the benefits of one of the multi-model observers as part of a simulated control system applied to the simulated grinding process.
+	\item T.b.d.: A case study of the application of model identification techniques to characterise disturbances using data from a real industrial operation.
+\end{enumerate}
 
 \section*{Organisation of this report}
 
-\begin{itemize}
-	\item Describe main contents of each chapter.
-\end{itemize}
+Chapter 1 describes the methods used in the research including the disturbance model, the observer designs and the grinding simulation model used for evaluation of one observer.  Chapter 2 describes the simulations carried out to demonstrate the disturbance model and to evaluate the performance of the observers (TODO: And to estimate the potential benefits?). Chapter 3 describes simulations carried out to test some of the possible methods to identify and characterise disturbances from measurement data.
