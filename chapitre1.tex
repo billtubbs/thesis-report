@@ -5,7 +5,7 @@
 
 \subsection{Randomly-occurring deterministic disturbances}\label{subsec-RODD}
 
-\textit{Randomly-occurring deterministic disturbances} (RODDs) \cite{macgregor_duality_1984} are a family of stochastic process models suitable for simulating various types of infrequently-occurring disturbances in discrete-time.  The structure of the RODD model is
+\textit{Randomly-occurring deterministic disturbances} (RODDs) \citep{macgregor_duality_1984} are a family of stochastic process models suitable for simulating various types of infrequently-occurring disturbances in discrete-time.  The structure of the RODD model is
 \begin{equation} \label{eq:RODD}
 	p(k)= \frac{B(q^{-1})}{A(q^{-1})}w_p(k),
 \end{equation}
@@ -63,7 +63,7 @@ Examples of these RODD disturbances are also shown in Figure \ref{fig:rodd-sim-p
 
 \subsection{Hidden Markov Models}
 
-\textit{Hidden Markov models} (HMM) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \cite{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events in which the probability of future events depends only on the current state [NEED A CITATION]. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
+\textit{Hidden Markov models} (HMM) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events in which the probability of future events depends only on the current state [NEED A CITATION]. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
 To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:alpha2}) as a Markov model state $\gamma(k)$ with two possible values.
 
@@ -125,20 +125,20 @@ To make the notation more concise, let us allow the value of a time-varying disc
 \end{equation}
 
 
-With this notation, we can write (\ref{eq:mog-example}) more concisely.
+With this notation, (\ref{eq:mog-example}) can be written more concisely as
 
 \begin{equation} \label{eq:mog-example2}
 	\begin{split}
 		w_p(k) \sim \mathcal{N}\left(\mu_{w_p}(\gamma(k)), \sigma_{w_p}(\gamma(k))\right) \\
-		\Pr(\gamma(k)=j|\gamma(k-1)=i)=\pi_{ij} \forall i,j \in {1,2,...,n_j}
+		\Pr(\gamma(k)=j|\gamma(k-1)=i)=\pi_{ij} \forall i,j \in {1,2,...,n_j}.
 	\end{split}
 \end{equation}
 
 where $\mu_{w_p}\in\left\{\mu_{w_p,1},\mu_{w_p,2},...,\mu_{w_p,n_j}\right\}$ and $\sigma_{w_p}\in\left\{\sigma_{w_p,1},\sigma_{w_p,2},...,\sigma_{w_p,n_j}\right\}$.
 
-This model is known as a \textit{mixture of Gaussians} and can be considered a special-case of a HMM disturbance model \cite{wong_disturbance_2007}.
+This model is known as a \textit{mixture of Gaussians} and can be considered a special-case of a HMM disturbance model \citep{wong_disturbance_2007}.
 
-The general HMM disturbance process can be described by the following \textit{Markov jump linear system} (MJLS) \cite{}[CITE Costa 2005]. This is a state-space representation with time-varying system matrices $A(\gamma(k))$, $B(\gamma(k))$ and $C(\gamma(k))$.
+The general HMM disturbance process can be described by the following \textit{Markov jump linear system} (MJLS) \citep{costa_discrete-time_2005}. This is a state-space representation with time-varying system matrices $A(\gamma(k))$, $B(\gamma(k))$ and $C(\gamma(k))$.
 
 \begin{equation} \label{eq:HMM}
 	\begin{split}
@@ -149,9 +149,21 @@ The general HMM disturbance process can be described by the following \textit{Ma
 
 Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), creates a very versatile stochastic model suitable for simulating a diverse family of disturbances.
 
+\subsection{Bounded random walk}
+
+\begin{outline}
+	\1 Describe bounded random walk process \citep{nicolau_bounded_2002}.
+	\1 Example of application to financial modelling—interest rate is bounded
+	\1 Example of a non-Gaussian random variable.
+	\1 Equations to generate.
+	\1 Example - plot.
+	\1 Plot of probability density function used to bound differences.
+	\1 How to design an observer for this disturbance? 
+\end{outline}
 
 \section{State estimation}
 
+Outline notes:
 \begin{itemize}
 	\item Explain the problem of estimating RODDs using standard (e.g. Kalman) filters.
 	\item Introduce multiple-model observers.
@@ -169,8 +181,10 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 
 \section{System identification}
 
+Outline notes:
 \begin{itemize}
 	\item Explain Isaksson and Eriksson's perspective on standard system identification approach.
+	\item Explain distinction between system detection and system identifcation, reference Isaksson and Eriksson's paper on disturbance classification (whether disturbance at input or output of process).
 	\item Introduce other approaches—MLE, EM algorithm (Dempster et al., Wong \& Lee)
 	\item Methods proposed by Bemporad (Fitting jump models, 2018 and Jump Box-Jenkins, 2020).
 	\item Theory and challenges Costa book. Others?
@@ -181,17 +195,19 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 
 \section{Control strategies}
 
+Outline notes:
 \begin{itemize}
-	\item Optimal conrol—LQR, LQI for demonstration systems (linear, unconstrained).
-	\item Certainty equivalence principle — E.g. using standard MPC.
+	\item Optimal control—LQR, LQI for demonstration systems (linear, unconstrained).
+	\item Certainty equivalence principle — use standard MPC with model-based observer.
 	\item MPC techniques for switching systems.
 \end{itemize}
 
 \section{Grinding simulation model}
 
+Outline notes:
 \begin{itemize}
 	\item Describe model with references.
-	\item Simplified flow diagram
+	\item Simplified flow diagram — Figure \ref{fig:sag-diag}
 	\item Population balance model approach - breakage and selection rates.
     \item Limitations: constant breakage rate model, relationships between speed, media, trajectories,  filling level and breakage not captured.
 	\item Grate, transport delays and cyclone model.
@@ -199,17 +215,33 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 	\item Dynamic variables.
 	\item Simulation setup - low level controls.
 	\item Ore feed simulation.
-	\item Figure: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
+	\item Figure \ref{fig:coarse_fine_psd_plot}: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
 	\item Steady-state effects of ore properties on process performance - throughput, power, P80.
 \end{itemize}
 
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=8.5cm]{images/sag-circuit-diag.pdf}
+	\caption{Simplified process flow diagram}
+	\label{fig:sag-diag}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=8cm]{images/coarse_fine_psd_plot.pdf}
+	\caption{Ore particle size distributions}
+	\label{fig:coarse_fine_psd_plot}
+\end{figure}
+
 \section{Performance evaluation}
 
+Outline notes:
 \begin{itemize}
 	\item Comparing disturbance state estimate to true disturbance (simulation only).
-	\item Tracking error: Root-mean-squared difference of output estimates.
+	\item Tracking error: Mean-squared difference of output estimates. (or use RMSE?)
 	\item Partitioning of simulation outputs into 'transition periods' and steady-state periods.
 	\item Variance of output estimate in steady-state (no disturbances).
+	\item Mean-squared differences in estimates (similar to variance but with no bias).
 	\item Sensitivity to model errors, observer parameters.
 	\item Closed loop stability - stability margins.
 \end{itemize}

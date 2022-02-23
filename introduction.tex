@@ -4,10 +4,12 @@
 
 % Note: This is an un-numbered chapter.
 
+Outline notes:
+
 \begin{outline}
 	\1 Challenges of effective control and optimization of comminution (grinding) operations.
-	\1 Among these, disturbances, in particular changes in ore properties — difficult to measure accurately in real time, impacts on the downstream process and control systems can be severe \cite{herbst_optimal_1988}.
-	\1 Cause-effect chain: Variable ore → variable operation → variable grind → variable recovery → lower recovery \cite{powell_applying_2009}.
+	\1 Among these, disturbances, in particular changes in ore properties — difficult to measure accurately in real time, impacts on the downstream process and control systems can be severe \citep{herbst_optimal_1988}.
+	\1 Cause-effect chain: Variable ore → variable operation → variable grind → variable recovery → lower recovery \citep{powell_applying_2009}.
 	\1 Sources of variability in mining operations: geological characteristics of ore bodies, mining processes such as blasting, material handling, shovelling and trucking. Segregation effects.
 	\1 Effects of ore properties on grinding performance (need references).
 	\2 Increased hardness/competency → lower breakage rates → increasing hold-up, circulating load → reduced throughput and/or less grinding (TODO: the simulation model apparently contradicts this).
@@ -32,7 +34,7 @@
 	\caption{Cause and effect diagram}
 \end{figure}
 
-References for above:
+Possible references for above:
 \begin{outline}
 	\1 Herbst et al (1984) - optimal control potential in grinding
 	\1 Wei and Craig (2009) - control methods survey, DYNAFRAG simulations.
@@ -58,12 +60,14 @@ References for above:
 
 \section*{Disturbances}
 
+Outline notes:
+
 \begin{itemize}
 	\item Definition of a disturbance —unmanipulatable inputs to process.
 	\item Measured v. unmeasured (and unpredictable)— measured disturbances can be incorporated in a feed-forward control.  Unmeasured disturbances must be estimated in order to reject them.
 	\item Importance of considering disturbances in control system design.
 	\item Disturbance models and process observers.
-	\item \textbf{Some of the this section should maybe go in Method chapter}
+	\item \textbf{Some of this section should maybe go in Method chapter}
 	\item Two categories of disturbances: Infrequent, always-present.
 	\item Infrequent disturbances could have significant impact on process and control systems (MacGregor et al).
 	\item Standard approaches to system identification do not consider infrequent disturbances (focus on second order properties)
@@ -170,16 +174,18 @@ The results show that their sub-optimal filter does 35 percent better than eithe
 \section*{Disturbance modeling using hidden Markov models}
 \label{hidden_markov_models}
 
+Outline notes:
+
 \begin{itemize}
-	\item In 2007, Wong and Lee proposed a generalized framework for modeling realistic disturbance processes which have both continuous and discrete (i.e. modal) dynamics \cite{wong_disturbance_2007}.
+	\item Wong and Lee proposed a generalized framework for modeling realistic disturbance processes which have both continuous and discrete (i.e. modal) dynamics \citep{wong_disturbance_2007}.
 	\item The mode transitions are described by a finite-state \textit{Markov chain}.
 	\item The model generating the Markov chain is referred to as a \textit{hidden Markov model} (HMM) because it is unknown and must be inferred from available noisy measurements.
-	\item The combined system including discrete and continuous dynamics is termed a \textit{Markov jump linear system} (MJLS) \cite{costa_discrete-time_2005}.
-	\item Wong and Lee point out that the application of HMM's and MJLS's in science and engineering is not novel and refer readers to the references in Costa \textit{et al.} \cite{costa_discrete-time_2005} for prior work by the control community. Nevertheless, they claim that the use of HMMs for disturbance modeling prior to 2007 was limited.
+	\item The combined system including discrete and continuous dynamics is termed a \textit{Markov jump linear system} (MJLS) \citep{costa_discrete-time_2005}.
+	\item Wong and Lee point out that the application of HMM's and MJLS's in science and engineering is not novel and refer readers to the references in \cite{costa_discrete-time_2005} for prior work by the control community. Nevertheless, they claim that the use of HMMs for disturbance modeling prior to 2007 was limited.
 	\item They also note that the RODD disturbance model of Robertson and Lee, and other methods assuming noise inputs described by \textit{mixture-of-Gaussians} (MOG), can be considered special cases of the MJLS.
 	\item Unlike Robertson and Lee, who focused on state estimation, Wong and Lee are interested in identification of the model in the presence of non-stationary noise.
 	\item Wong and Lee show how the plant and Markov chain parameters may be simultaneously estimated by \textit{maximum likelihood estimation}, specifically, using the expectation maximization (EM) algorithm (see section \ref{mle}).
-	\item In their numerical examples, Wong and Lee use a second-order generalized pseudo-Bayesian (GPB2)  method for state estimation \cite{bar-shalom_estimation_1993} (see section \ref{gpba}).
+	\item In their numerical examples, Wong and Lee use a second-order generalized pseudo-Bayesian (GPB2)  method for state estimation \citep{bar-shalom_estimation_1993} (see section \ref{gpba}).
 	\item The first example in their 2007 paper, is a disturbance that switches infrequently between a white noise and an integrated white noise.
 	\item They compared the prediction errors of a GPB2 observer using the identified MJLS model to those of the best observer with a stationary (i.e. non-switching) model, as well as to those of a GPB2 observer which uses the actual system model.
 	\item The 1-step-ahead prediction errors of the GBP2 with the identified model were 26 percent lower than the optimal stationary-model observer and only 7 percent worse than those of the GBP2 with the true model.
@@ -194,6 +200,8 @@ The results show that their sub-optimal filter does 35 percent better than eithe
 \section*{The hidden Markov model for process control}
 \label{hmm_control}
 
+Outline notes:
+
 \begin{itemize}
 	\item Wong and Lee's 2009 paper \cite{wong_realistic_2009} goes further than their 2007 paper \cite{wong_disturbance_2007} by demonstrating how the proposed HMM-based disturbance framework can be integrated into existing model-based control formulations.
 	\item After introducing the HMM framework again, they present 3 numerical examples demonstrating the use of the framework in process control methods and applications, including one to mitigate the impact of highly-varying feed streams entering an ethanol-producing bioreactor.
@@ -201,7 +209,7 @@ The results show that their sub-optimal filter does 35 percent better than eithe
 	\item Due to the difficulties of MJLS identification, they bypass the issue in this paper, and assume that the system, noise and Markov parameters are available.
 	\item As in the 2007 paper, they use the second order Generalized Pseudo-Bayesian algorithm (GPB2) developed by Bar-Shalom \cite{bar-shalom_estimation_1993}.
 	\item Although they don't use it, Wong and Lee also mention the interacting multiple model (IMM) algorithm which they say has a similar performance as GPB2 but at the computational cost of GBP1 \cite{wong_realistic_2009}. \textbf{TODO}: Need to see where this fits in.
-	\item The GPB2 algorithm is a recursive estimation scheme, characterized by `branching' and `merging' steps. Wong and Lee provide a simple numerical example of the algorithm including plots of the output and state estimates  \textbf{TODO}: we should replicate these results to make sure we understand GPB2, see Fig. 3 in \cite{wong_realistic_2009}.
+	\item The GPB2 algorithm is a recursive estimation scheme, characterized by `branching' and `merging' steps. Wong and Lee provide a simple numerical example of the algorithm including plots of the output and state estimates. Refer to Fig. 3 in \cite{wong_realistic_2009}.
 	\item The first of the three examples in the 2009 paper demonstrates the use of the HMM disturbance framework for offset-free linear model predictive control (LMPC) on a single-input, single-output system.
 	\item Four simulation scenarios are considered for this example: low input noise compared to output noise, high input noise compared to output noise, similar input and output noise levels, and switching levels of input and output noise (all simulations were run with negligible measurement noise).
 	\item In order to investigate model-plant mismtch, four different model-predictive controller/estimator pairs were constructed: one with an output disturbance only, one with only an input disturbance, one with both input and output disturbances, and the fourth with switching behaviour (using the GPB2 estimator).
