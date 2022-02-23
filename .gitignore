@@ -2,7 +2,6 @@
 images/*.png
 images/*.jpg
 images/*.jpeg
-images/*.eps
 images/*.svg
 
 ## Core latex/pdflatex auxiliary files:
