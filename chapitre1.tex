@@ -153,21 +153,158 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 
 \begin{outline}
 	\1 Describe bounded random walk process \citep{nicolau_bounded_2002}.
-	\1 Example of application to financial modelling—interest rate is bounded
-	\1 Example of a non-Gaussian random variable.
+	\1 This is an example of a non-Gaussian random variable.
+	\1 Mention motivation for use in financial modelling, e.g. interest rate is bounded.
+	\1 Note that in process control there are usually limits (upper and lower) to the feasible range of process variables.
 	\1 Equations to generate.
 	\1 Example - plot.
 	\1 Plot of probability density function used to bound differences.
-	\1 How to design an observer for this disturbance? 
+	\1 Pose question, how to design an observer for this type of disturbance? 
 \end{outline}
 
 \section{State estimation}
 
 Outline notes:
 \begin{itemize}
-	\item Explain the problem of estimating RODDs using standard (e.g. Kalman) filters.
+	\item Explain (again) the problem of estimating RODDs using standard (e.g. Kalman) filters.
 	\item Introduce multiple-model observers.
-	\item Multi-model observer calculations (same as in IFAC report).
+	\item Describe general multi-model observer calculations (same as in IFAC report).
+\end{itemize}
+
+
+RODDs pose particular problems for state estimation using standard Kalman filters due to the switching of the noise model parameters ($\sigma_{w_p}$ and $b$$\sigma_{w_p}$). As explained by \cite{robertsonDetectionEstimationRandomly1995a}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
+
+When the switching parameter is not observable, a so-called \textit{multiple-model approach} may be considered \citep{buxbaumRecursiveOptimalEstimation1970, jafferEstimationDiscreteProcesses1971}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current state. Independent Kalman filters are maintained for each hypothesis and a weighted average of the filter estimates is calculated using the conditional probabilities of each hypothesis given current and past observations. 
+
+The shock occurrence hypothesis associated with Kalman filter $f$ at time instant $k$ is
+\begin{equation} \label{eq:gammak}
+	\gamma_{f}(k) \in \left\{0, 1 \right\} \forall{k \ge 0}.
+\end{equation}
+
+The case of estimating one shock signal is considered here. Therefore, $\gamma_{f}(k)$ is a scalar. The transition probabilities of the random shock (\ref{eq:wpk}) are independent of previous shocks:
+\begin{equation} \label{eq:Pr_gammak_given_gammakm1}
+	\begin{aligned}
+		& \Pr\left(\gamma_{f}(k)=0 \mid \gamma_{f}(k-1)\right) = 1-\epsilon, \\
+		& \Pr\left(\gamma_{f}(k)=1 \mid \gamma_{f}(k-1)\right) = \epsilon.
+	\end{aligned}
+\end{equation}
+
+After $k$ time steps, the complete shock occurrence hypothesis associated with filter $f$ is
+\begin{equation} \label{eq:Gammak}
+	\Gamma_f(k) = \left\{\gamma_f(0), \gamma_f(1), ..., \gamma_f(k) \right\}.
+\end{equation}
+
+The measurements up to time $k$ are
+\begin{equation} \label{eq:Uk_Yk}
+	\begin{aligned}
+		\mathbf{U}(k)=\left\{\mathbf{u}(0), \mathbf{u}(1), ..., \mathbf{u}(k) \right\} \\
+		\mathbf{Y}(k)=\left\{\mathbf{y}(0), \mathbf{y}(1), ..., \mathbf{y}(k) \right\}.
+	\end{aligned}
+\end{equation}
+
+Assume that new measurement data is made available at each time instant. The probability of the shock sequence associated with filter $f$ given the data up to time $k-1$ can be calculated recursively:
+\begin{multline} \label{eq:Pr_Gammakp1_given_Yk}
+	\Pr(\Gamma_f(k) \mid \mathbf{Y}(k-1)) = 
+	\Pr(\gamma_f(k) \mid \gamma_f(k-1)) \Pr(\Gamma_f(k-1) \mid \mathbf{Y}(k-1)).
+\end{multline}
+The conditional probability densities of the measurements $\mathbf{y}(k)$ are approximated by Gaussian distributions
+\begin{multline} \label{eq:p_yk_given_Gammak_Ykm1}
+	p(\mathbf{y(k)} \mid \Gamma_f(k), \mathbf{Y}(k-1)) \approx
+	\mathcal{N}\left(\mathbf{y}(k), \mathbf{C} \mathbf{\hat{x}}_{f}(k/k-1), \mathbf{C} \mathbf{P}_f(k/k-1) \mathbf{C}^\intercal+\mathbf{R}\right)
+\end{multline}
+where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k/k-1)$ and $\mathbf{P}_f(k/k-1)$ are the state estimates and estimate covariances of each Kalman filter at the previous timestep, and $\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$ is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
+
+The estimate of the probability of the shock sequence $\Gamma_f(k)$ given the data up to time $k$ is
+\begin{equation} \label{eq:Pr_Gammak_given_Yk}
+	\Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) = \frac{q_f(k)}{\sum_{f=1}^{n_f} q_f(k)},
+\end{equation}
+where
+\begin{equation} \label{eq:qfk}
+	q_f(k) = p(\mathbf{y}(k) \mid \Gamma_f(k), \mathbf{Y}(k-1)) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k-1)).
+\end{equation}
+
+The Kalman filters for tracking each hypothesis use a state-space representation of the system model:
+\begin{equation} \label{eq:obs_model}
+	\begin{aligned}
+		\mathbf{x}(k+1) = \mathbf{A} \mathbf{x}(k) + \mathbf{B} w_p(k) + \mathbf{w}(k), \\
+		\mathbf{y}(k) = \mathbf{C} \mathbf{x}(k) + \mathbf{v}(k)
+	\end{aligned}
+\end{equation}
+
+This is a \textit{hybrid dynamical system} because the noise covariance matrix switches between two values in a set:
+\begin{equation} \label{eq:init_Q_R}
+	\mathcal{Q} = \left\{\mathbf{Q}_0, \mathbf{Q}_1\right\}
+\end{equation}
+
+Allow $\mathcal{Q}$ to be indexed by $\gamma_f(k)$:
+\begin{equation} \label{eq:init_Q}
+	\mathcal{Q}(\gamma_f(k)) = 
+	\begin{cases*}
+		\mathbf{Q}_0 & if $\gamma_f(k)=0$, \\
+		\mathbf{Q}_1 & if $\gamma_f(k)=1$.
+	\end{cases*}
+\end{equation}
+
+At the start of simulation, filter $f$ has an initial estimate of the states, $\mathbf{\hat{x}}_f(0)$, and an initial estimate covariance $\mathbf{P}_f(0)$. At each time instant, starting at $k=0$, the filter correction gain is
+\begin{equation} \label{eq:Kf}
+	K_f(k) = \mathbf{A}\mathbf{P}_f(k/k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}_f(k/k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
+\end{equation}
+
+the corrected state estimate at time $k+1$ is
+\begin{multline} \label{eq:xf_hat}
+	\mathbf{\hat{x}}_f(k+1/k) = \mathbf{A} \mathbf{\hat{x}}_f(k/k-1) + \mathbf{B}\mathbf{u}(k) + 
+	\mathbf{K}_f(k)\left[\mathbf{y}(k)-\mathbf{C} \mathbf{\hat{x}}_f(k/k-1)\right],
+\end{multline}
+
+and the estimation error covariance is
+\begin{multline} \label{eq:Pf}
+	\mathbf{P}_f(k+1/k) = \mathbf{A}\big[\mathbf{P}_f(k/k-1)
+	- \mathbf{P}_f(k/k-1)\mathbf{C}^\intercal\big(\mathbf{C}\mathbf{P}_f(k/k-1)\mathbf{C}^\intercal \\ + 
+	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}_f(k/k-1) \big]\mathbf{A}^\intercal + \mathcal{Q}(\gamma_f(k)). \\
+\end{multline}
+
+Note the dependence of $\mathbf{P}_f(k+1/k)$ on $\gamma_f(k)$, which determines the noise covariance matrix used in the update.
+
+Finally, the multi-model observer estimate of the states in the next time instant is the sum of the $n_f$ Kalman filter estimates weighted by their conditional probabilities:
+\begin{equation} \label{eq:x_hat}
+	\mathbf{\hat{x}}(k+1/k) = \sum_{f=1}^{n_f} \mathbf{\hat{x}}_f(k+1/k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
+\end{equation}
+
+Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these computations.
+
+\begin{algorithm}
+	\caption{Multiple model observer calculations} \label{alg:afmm}
+	%\algorithmfootnote{$y_0$ denotes the initial value.}
+	\begin{algorithmic}
+		\Require $\mathbf{A},\mathbf{B},\mathbf{C},\mathbf{\hat{x}}(0), \mathbf{P}(0), \mathcal{Q}, \mathbf{R}, \epsilon, \mathbf{U}(N), \mathbf{Y}(N)$
+		\State $\mathbf{\hat{x}}_1(0) \gets \mathbf{\hat{x}}(0)$  \Comment{Initialize Kalman filters\footnotemark}
+		\State $\mathbf{P}_1(0) \gets \mathbf{P}(0)$
+		\State $\Pr(\Gamma_1(k-1)|\mathbf{Y}(k-1))) \gets 1$
+		\For{$f \gets 2, n_f$}
+		\State $\mathbf{\hat{x}}_f(0) \gets \mathbf{\hat{x}}(0)$
+		\State $\mathbf{P}_f(0) \gets 10^{10}\mathbf{P}(0)$
+		\State $\Pr(\Gamma_f(k-1)|\mathbf{Y}(k-1))) \gets 1^{-10}$
+		\EndFor
+		\For{$k \gets 0, N$}
+		\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Pruning procedure\footnotemark}
+		\For{$f \gets 1, n_f$}
+		\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
+		\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kf}) \Comment{Filter updates}
+		\State calculate $\mathbf{\hat{x}}_f(k+1/k)$ (\ref{eq:xf_hat})
+		\State update $\mathbf{P}_f(k+1/k)$ (\ref{eq:Pf})
+		\EndFor
+		\State calculate $\mathbf{\hat{x}}(k+1/k)$ (\ref{eq:x_hat}) \Comment{State estimate}
+		\State calculate $\mathbf{P}(k+1/k)$ \Comment{Error covariance\footnotemark}
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\addtocounter{footnote}{-3} %3=n
+\stepcounter{footnote}\footnotetext{To initialize the bank of $n_f$ Kalman filters, initialize one with an available estimate and covariance of the initial state of the system and set the covariances of all others to high values to ensure they are eliminated as soon as better estimates are available.}
+\stepcounter{footnote}\footnotetext{At this point, the algorithm must extend the shock indicator sequences to the current time instant, while limiting the total number of hypotheses and filters according to a particular sub-optimal method such as the sequence pruning procedure described above \ref{section-observer}.}
+\stepcounter{footnote}\footnotetext{The estimation error covariance is not required by the algorithm. It may be calculated if needed.}
+
+\begin{itemize}
 	\item Sub-optimal algorithms (Tugnait)
 	\item Approximation 1: Infrequently-occurring disturbances -> infrequent branching assumptions.
 	\item Approximation 2: Infrequently-occurring disturbances -> less combinations of disturbances.
@@ -188,7 +325,8 @@ Outline notes:
 	\item Introduce other approaches—MLE, EM algorithm (Dempster et al., Wong \& Lee)
 	\item Methods proposed by Bemporad (Fitting jump models, 2018 and Jump Box-Jenkins, 2020).
 	\item Theory and challenges Costa book. Others?
-	\item Variational Inference?
+	\item In recent years, numerical methods to overcome the intractability of the probabilistic integral have received a lot of attention.
+	\item Sequential Monte-Carlo methods, (incl. particle filering), Stochastic Variational Inference, ... (read Special issue in IEEE control magazine for an overview of these methods)
 \end{itemize}
 
 % Note: may remove this if we aren’t using any formal methods.
@@ -198,26 +336,27 @@ Outline notes:
 Outline notes:
 \begin{itemize}
 	\item Optimal control—LQR, LQI for demonstration systems (linear, unconstrained).
-	\item Certainty equivalence principle — use standard MPC with model-based observer.
-	\item MPC techniques for switching systems.
+	\item Here we adopt the certainty equivalence principle — use a standard MPC with a multi-model observer.
 \end{itemize}
 
 \section{Grinding simulation model}
 
 Outline notes:
-\begin{itemize}
-	\item Describe model with references.
-	\item Simplified flow diagram — Figure \ref{fig:sag-diag}
-	\item Population balance model approach - breakage and selection rates.
-    \item Limitations: constant breakage rate model, relationships between speed, media, trajectories,  filling level and breakage not captured.
-	\item Grate, transport delays and cyclone model.
-	\item Assumptions
-	\item Dynamic variables.
-	\item Simulation setup - low level controls.
-	\item Ore feed simulation.
-	\item Figure \ref{fig:coarse_fine_psd_plot}: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
-	\item Steady-state effects of ore properties on process performance - throughput, power, P80.
-\end{itemize}
+\begin{outline}
+	\1 Describe model with references.
+	\1 Simplified flow diagram — Figure \ref{fig:sag-diag}
+	\1 Population balance model approach - breakage and selection rates.
+    \1 Assumptions and limitations: constant breakage rate model, relationships between speed, media, trajectories,  filling level and breakage not captured.
+	\1 Grate, transport delays and cyclone model.
+	\1 List the main dynamic variables.
+	\1 Figure: simulation results showing steady-state characteristics - e.g. power, grind, and throughput vs. fill level and speed.
+	\1 Simulation setup - low level controls implemented.
+	\2 Feed water ratio control
+	\2 Ore feed simulation.
+	\1 Figure \ref{fig:coarse_fine_psd_plot}: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
+	\1 Figure - Step responses of main process variables to changes in ore properties.
+	\1 Selection of particle size distribution as the disturbance variable for this work.
+\end{outline}
 
 \begin{figure}[htp]
 	\centering

@@ -12,48 +12,49 @@ Outline notes:
 	\1 Cause-effect chain: Variable ore → variable operation → variable grind → variable recovery → lower recovery \citep{powell_applying_2009}.
 	\1 Sources of variability in mining operations: geological characteristics of ore bodies, mining processes such as blasting, material handling, shovelling and trucking. Segregation effects.
 	\1 Effects of ore properties on grinding performance (need references).
-	\2 Increased hardness/competency → lower breakage rates → increasing hold-up, circulating load → reduced throughput and/or less grinding (TODO: the simulation model apparently contradicts this).
+	\1 Figure \ref{fig:cause-effect} - Cause-effect diagram.  Describe different ways ore properties affect process:
+	\2 Increased hardness/competency → lower breakage rates → increasing hold-up, circulating load → reduced throughput and/or less grinding.
 	\2 Particle size distribution → breakage rates in SAG mills → hold up, circulating load → throughput/grind
-	\2 Effects on grinding and downstream separation processes (e.g. flotation)
+	\2 Effects of poor liberation on downstream separation processes (e.g. flotation)
 	\2 Grade / grain size → liberation → recovery.
-	\2 Density → changes in mill weight/volume estimates (this may be less significant than the first three)
-	\1 Figure: Cause-effect diagram.
-	\1 Reference and/or include results from Copper Mountain case study (Sijia Liu, 2012).
+	\2 Density → changes in power consumption and mill weight/volume estimates (this may be less significant than the first three)
+	\1 Reference and/or include results from Copper Mountain case study showing range of variation in ore hardness (Sijia Liu, 2012).
 	\1 SAG mill constraints - grate, throughput, residence time, power, etc. Interplay with secondary grinding.
-	\1 Motivations
+	\1 Motivations :
 	\2 realistic disturbance models for simulation
-	\2 improve disturbance models for state estimation
+	\2 improved disturbance models for state estimation
 	%better characterization of these disturbances in real operations → better models → more realistic simulations → better observers → better control and real-time optimization systems/strategies.
 	%\1 Many potential benefits: Improve process control performance (reduced variability, disturbance rejection, adaptive control, robustness (i.e. maintain operating conditions within stable region—esp. w.r.t. SAG mill), → improved process performance (throughput, liberation, power consumption, etc.).
 	%\1 Use in upstream in the mining operation to help determine the source of variation and identify process improvements.
 \end{outline}
 
-\begin{figure}[htp] \label{fig:cause-effect}
+\begin{figure}[htp]
 	\centering
 	\includegraphics[width=9cm]{images/cause-effect.pdf}
-	\caption{Cause and effect diagram}
+	\caption{Cause and effect diagram} \label{fig:cause-effect}
 \end{figure}
 
 Possible references for above:
 \begin{outline}
-	\1 Herbst et al (1984) - optimal control potential in grinding
-	\1 Wei and Craig (2009) - control methods survey, DYNAFRAG simulations.
-	\1 Olivier and Craig (2017) - degree of automation survey
-	\1 Powell, Mainza (2009) - grind curves
-	\1 Hodouin, et al. (2011). Methods for automatic control, observation, and optimization in mineral processing plants.
-	\1 Pomerleau et al. (2000) - survey of control
-	\1 References on effects of ore properties on grinding performance ?
-	\2 Hahne, Palsson, Samskog (2002) - AG effects.
-	\1 McClure and Gopaluni (2015) - Overload Detection in Semi-Autogenous Grinding.
+	\1 Papers introducing grinding control problems, references to ore feed disturbances, and surveys on process control in mineral processing.
+	\2 Herbst et al (1984) - optimal control potential in grinding
+	    \2 Hahne, Palsson, Samskog (2002) - AG effects.
+	\2 Powell and Mainza (2006), Powell et al (2009) - grind curves
+	\2 Wei and Craig (2009) - control methods survey.
+	\2 Hodouin, et al. (2011). Methods for automatic control, observation, and optimization in mineral processing plants.
+	\2 McClure and Gopaluni (2015) - Overload Detection in Semi-Autogenous Grinding.
+	\2 Olivier and Craig (2017) - degree of automation survey
 	\1 Papers on observers for mineral processing applications — E.g. 
+	\2 Chen et al (2009) - Disturbance Observer Based Multi-Variable Control of Ball Mill Grinding Circuits. % chenDisturbanceObserverBased2009
 	\2 Olivier, Huang and Craig (2012) - Dual particle filters for state and parameter estimation.
 	\2 LeRoux et al (2016) - State and parameter identifiability, EKF observer.
 	\2 LeRoux et al (2016) - Nonlinear observability of grinding mill.
 	\2 LeRoux et al (2017) - An EKF observer to estimate semi-autogenous grinding mill hold-ups.
-	\1 Papers on process control and any including simulations with ore feed disturbances.
+	\1 Papers on grinding process control and including simulations with ore feed disturbances.
 	\2 Najim, Hodouin, Desbiens, (1995) simulated an adaptive controller applied to a grinding circuit with a disturbance in the ore hardness (-20\% reduction in breakage rates) and it's effect on the CVs, product P80 and circulating load.
+	\2 Pomerleau et al. (2000) - survey of control, DYNAFRAG simulations.
 	\2 Chen, Yang, and Li, (2009). Disturbance Observer Based Multi-Variable Control of Ball Mill Grinding Circuits. (They simulated the effects of a 10\% increase in ore hardness on P80 and circulating load).
-	\2 Aguila-Camacho, Le Roux, Duarte-Mermoud, Orchard, simulated a fractional order controller with a grinding circuit with a change in the mill feed size distribution.
+	\2 Aguila-Camacho, Le Roux, et al (2017) - fractional order controller and grinding circuit with a change in the mill feed size distribution.
 	\2 Botha, le Roux, Craig, (2018) - Hybrid Non-Linear MPC of a Run-of-Mine Ore Grinding Mill Circuit.
 	\2 LeRoux et al (2016) - Non-linear MPC.
 \end{outline}
@@ -63,11 +64,11 @@ Possible references for above:
 Outline notes:
 
 \begin{itemize}
-	\item Definition of a disturbance —unmanipulatable inputs to process.
+	\item Definition of a disturbance — unmanipulatable inputs to process.
 	\item Measured v. unmeasured (and unpredictable)— measured disturbances can be incorporated in a feed-forward control.  Unmeasured disturbances must be estimated in order to reject them.
 	\item Importance of considering disturbances in control system design.
 	\item Disturbance models and process observers.
-	\item \textbf{Some of this section should maybe go in Method chapter}
+	\item \textbf{Should this section go in Method chapter?}
 	\item Two categories of disturbances: Infrequent, always-present.
 	\item Infrequent disturbances could have significant impact on process and control systems (MacGregor et al).
 	\item Standard approaches to system identification do not consider infrequent disturbances (focus on second order properties)
@@ -97,31 +98,33 @@ The specific objectives of this research project are:
 Outline notes :
 
 \begin{itemize}
-	\item MacGregor et al (1985)
-	\item Reference standard approaches to disturbance model design for MPC?  E.g. Badgewell and Muske, Pannochia.
-	\item Andersson (1985)
-	\item Gustaffson (1993)
-	\item Robertson et al (1995, 1998)
-	\item Eriksson and Isaksson (1996)
-	\item Wong and Lee (2006, 2009).
-	\item Branch of research on fault/anomaly detection (Willsky) and limitations vs. state estimation of switching systems.
-	\item Papers on state estimation... Blom and Bar Shalom, Ackerson and Fu, Busbaum and Haddad, Jaffer and Gupta, Akashi and Kumamoto,
-	\item Hybrid systems (e.g. Sworder and Boyd)
-	\item Discrete time Markov Jump Linear systems (MJLS) (Costa 2005 book)
-	\item Bemporad on identification of switching systems (e.g. mixed-integer programming)
-	\item Problems of observability and Identifiability of Jump Linear Systems (Vidal et al. 2002).
-	\item Other estimation methods—particle filtering (Arulampalam, 2002 tutorial).
-	\item Control of processes subject to intermittent disturbances. MacGregor, Costa book, Wong and Lee (2000), Camacho et al. 2021?
-	%\item What about commercial simulation software (e.g. IDEAS)? What disturbances do they simulate?
+	\item Describe literature search
+	\item Only a gew works found on characterising and modelling disturbances
+	\item Significant branch of research on fault/anomaly detection (e.g. Willsky (1976), (1986), Thornhill et al (2007)).
+	\item Distinction between detection of anomaly and continued estimation with realistic models.
+	\item Papers on disturbance model design for process control tend to consider standard stochastic disturbance models - e.g. Badgewell and Muske (2002), Pannochia (2007).
+	\item Exceptions include works on disturbances in specific applications – e.g. wind power, vehicle suspension, waves in ship movement control.
+	\item Example: Highlight Papaefthymiou and Klockl (2009) on using MCMC to model wind power generation.
 \end{itemize}
 
-A comprehensive search of the academic literature was carried out to identify previous work relevant to the project. During this process it became apparent that the number of works related to characterising and identifying realistic disturbances was quite small. With a few exceptions, searches for terms such as `disturbance model' or `disturbance characterisation' tended to result in works dealing with the design of standard stochastic disturbance models, for example \cite{muske_badgwell_disturbance_2002}, and \cite{pannocchia_robust_2003}, or were focussed mainly on detection and diagnosis of disturbances rather than their simulation or modelling, \cite{thornhill_advances_2007} for example. There is a rich body of work on the subject of fault detection which falls into the second category. In these works, models of the process are used to identify when an \textit{unmodelled} disturbance occurs and to determine its source. However, a typical fault detection algorithm does not have a model of the actual disturbance, therefore its operation is suspended once the disturbance occurs. In contrast, the goal of this work is to identify a model that can be used for state estimation in the presence of disturbances, without interruption.
+
+A comprehensive search of the academic literature was carried out to identify previous work relevant to the project. During this process it became apparent that the number of works related to characterising and modelling disturbances was quite small. With a few exceptions, searches for terms such as `disturbance model' or `disturbance characterisation' tended to result in works dealing with the design of standard stochastic disturbance models, for example \cite{muske_badgwell_disturbance_2002}, and \cite{pannocchia_robust_2003}, or were focussed mainly on detection and diagnosis of disturbances rather than their simulation or modelling, \cite{thornhill_advances_2007} for example. There is a rich body of work on the subject of fault detection which falls into the second category. In these works, models of the process are used to identify when an \textit{unmodelled} disturbance occurs and to determine its source. However, a typical fault detection algorithm does not have a model of the actual disturbance, therefore its operation is suspended once the disturbance occurs. In contrast, the goal of this work is to identify a model that can be used for state estimation in the presence of disturbances, without interruption.
 
 Some of the exceptions were works on disturbances in specific application domains such as wind power generation, bump disturbances in vehicle suspension systems, and wave disturbances in ship movement control.  In these, researchers developed disturbance models tailored to these applications. For example, \cite{papaefthymiou_mcmc_2008} used a Markov-chain Monte Carlo (MCMC) method to identify and model important characteristics of the wind to generate `synthetic' wind data for the purposes of running realistic dynamic simulations of renewable energy generation systems.
 
 Nevertheless, a small number of research papers were discovered dealing with `realistic disturbances' (loosely defined) occurring in continuous industrial processes. These are also sometimes broadly referred to as `deterministic disturbances' to distinguish them from standard disturbance models based on zero-mean random noise signals (which are truly random in the sense that they are independent and identically-distributed).
 
 \section*{Randomly-occurring deterministic disturbances} \label{RODDs}
+
+\begin{itemize}
+	\item MacGregor et al (1985) - is the earliest work on infrequently occurring (non-linear) disturbances.
+	\item Many types of RODD can be generated with this model - e.g. steos, ramps, exponential changes.
+	\item Examples of applications – operator set-point changes, changes to load on a system.
+	\item Here 'deterministic' means not random in the sense of i.i.d.
+	\item They show that the optimal control law for a process perturbed by a RODD is no different than that perturbed by an equivalent stochastic noise process.
+	\item This is due to the common ARIMA structure and the zero-mean of the random shock. 
+\end{itemize}
+
 
 In 1984, \cite{macgregor_duality_1984} introduced the concept of the \textit{randomly-occurring deterministic disturbance} (RODD). This is a family of stochastic processes useful for modelling deterministic disturbances commonly encountered in real industrial processes. Three types of RODD process are described by MacGregor and co-workers. One produces infrequently-occurring step changes, another produces a series of ramps, and a third produces a signal consisting of a series of exponential changes. One example of a real-world disturbances that might be represented by these models is that of an unanticipated set-point change made by an operator. Another is an sudden unexpected change to the load on a system. While these disturbances may be deterministic, the key issue is that they are not predictable or measurable by the control system. Therefore, simulating them with a stochastic process driven by a random variable is a reasonable way to emulate their unpredictability for the purposes of control system design.
 
@@ -130,6 +133,20 @@ The structural form of a RODD model is an \textit{autoregressive integrated movi
 MacGregor and coworkers also showed that the optimal control law derived for a process perturbed by a RODD is no different than that which would be derived for a process subject to a standard stochastic noise.  This is due to the common ARIMA structure of both models and the fact that the expected value (i.e. mean) of the random shock signal is zero as it is for a Gaussian noise. As a result, it is well-suited for use in process control design. For this reason, and in the absence of other alternatives, the RODD disturbance model became a focus of this research project.
 
 \section*{Detection and estimation of RODD disturbances}\label{detection_RODDs}
+
+\begin{itemize}
+	\item Robertson et al (1995, 1998) - explanation of the trade-off that must be made with a single Kalman filter.
+	\item Limitations of traditional models in state estimation of switching systems.
+	\item Use of multi-model approach to estimate RODDs online.
+	\item Approximations are needed.  Describe the three used by Robertson et al. (dropping low-probability combinations, sequence fusion, and maximum number of shocks in an interval).
+	\item Earlier references on multi-model state estimation: Blom and Bar Shalom, Ackerson and Fu, Buxbaum and Haddad, Jaffer and Gupta, Akashi and Kumamoto.
+	\item Note slight difference in Robertson RODD model with two random noise inputs.
+	\item They compare their multi-model observer with a standard Kalman Filter. How is it tuned?
+	\item Summarise simulations and results of the 1995 and 1998 papers (the 2nd is better, it includes MSE comparisons).
+	\item Eriksson and Isaksson (1996) - Disturbance model detection. E.g. to determine if the disturbance is at the input or output of the process.
+	\item Two sets of Kalman filters combined into one multi-model observer.
+	\item They use the AFMM algorithm - uses sequence pruning instead of sequence fusion. Goes back to Andersson (1985) and Gustaffson (1993)
+\end{itemize}
 
 Traditional filtering methods such as Kalman filters are unable to efficiently estimate RODD disturbances due to the inevitable trade-off that must be made between the ability to track a disturbance when it occurs and the sensitivity to noise \cite{robertson_detection_1995}.
 
@@ -177,6 +194,7 @@ The results show that their sub-optimal filter does 35 percent better than eithe
 Outline notes:
 
 \begin{itemize}
+	\item \textbf{TODO: Much of this we could drop since we did not look at HMM models.}
 	\item Wong and Lee proposed a generalized framework for modeling realistic disturbance processes which have both continuous and discrete (i.e. modal) dynamics \citep{wong_disturbance_2007}.
 	\item The mode transitions are described by a finite-state \textit{Markov chain}.
 	\item The model generating the Markov chain is referred to as a \textit{hidden Markov model} (HMM) because it is unknown and must be inferred from available noisy measurements.
@@ -195,6 +213,13 @@ Outline notes:
 	\item The other limitation that they acknowledge, is that the MLE optimization is non-convex and hence may not converge to the global optimum. To mitigate this problem, they chose initial values `suitably close' to the true system parameters.
 	\item Although Wong and Lee do not refer to it, it's worth noting that Elliott, Aggoun, and Moore wrote a book on hidden Markov models for estimation and control in 1995 \cite{elliott_hidden_1995}. A central theme of this book is use of so-called \textit{reference probability methods} for optimal estimation and control which they claim are accessible to non-specialists.
 	\item Reference probability methods involve a change of probability measure (they are also known as the \textit{measure change approach}) which allows the original estimation and control problem to be reformulated so that well-known results for \textit{identically and independently distributed} (i.i.d.) random variables can be applied, thus simplifying the analysis and the computational complexity. \emph{TODO}: where does this approach fit in with the other concepts (e.g. in Costa's book) and is it still relevant today?
+	\item Hybrid systems (e.g. 1999 book by Sworder and Boyd on estimation of hybrid systems)
+	\item Discrete time Markov Jump Linear systems (MJLS) (Costa 2005 book)
+	\item Problems of observability and Identifiability of Jump Linear Systems (Vidal et al. 2002).
+	\item Bemporad on identification of switching systems - e.g. mixed-integer programming (2001), jump models (2018), jump Box-Jenkins model (2020)
+	\item Other estimation methods—particle filtering (Arulampalam, 2002 tutorial).
+	\item Control of processes subject to intermittent disturbances. MacGregor - duality, Costa book (2005), Wong and Lee efforts (2007), (2009), (2020), (2011), Camacho et al. ()2010).
+	\item TODO: Explain field of sequential Monte Carlo techniques (includes particle filtering, EM, etc.).  Holistic view.
 \end{itemize}
 
 \section*{The hidden Markov model for process control}
@@ -203,6 +228,7 @@ Outline notes:
 Outline notes:
 
 \begin{itemize}
+	\item \textbf{TODO: Should I include this summary of application of HMM to process control?}
 	\item Wong and Lee's 2009 paper \cite{wong_realistic_2009} goes further than their 2007 paper \cite{wong_disturbance_2007} by demonstrating how the proposed HMM-based disturbance framework can be integrated into existing model-based control formulations.
 	\item After introducing the HMM framework again, they present 3 numerical examples demonstrating the use of the framework in process control methods and applications, including one to mitigate the impact of highly-varying feed streams entering an ethanol-producing bioreactor.
 	\item They provide only a brief review of system identification methods for Markov jump systems and note that it was still an open area of research at the time.
