@@ -4,13 +4,72 @@
 
 % Note: This is an un-numbered chapter.
 
+Comminution (grinding) is a particle size reduction process used in mineral processing industries to liberate valuable minerals from ore as part of the concentration process. Figure \ref{fig:process-block-diagram} shows the block diagram of the steps in a typical copper concentration process.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15cm]{images/process_block_diagram.pdf}
+	\caption{Processing steps in a copper concentrator} \label{fig:process-block-diagram}
+\end{figure}
+
+Effective control and optimization of grinding operations is challenging for a number of reasons---large variations in the properties of the ore feed material, multiple strongly-coupled interacting variables, long time delays, non-linear and time-varying input-output characteristics, process variables that are difficult to measure, and difficulties in identifying process models of actual operations \citep{olivier_dual_2012, gough_sag_2015, le_roux_throughput_2016, aguila-camacho_control_2017}. 
+
+Changes in the properties of the ore feed are a significant problem because they are difficult to measure accurately in real time and their impacts on the downstream process and control systems can be severe \citep{herbst_optimal_1988, cesar_multivariable_2009, remes_grinding_2010}. \cite{powell_applying_2009} summarized the effects of ore variability as follows:
+
+Variable ore $\to$ variable operation $\to$ variable grind $\to$ variable recovery $\to$ lower recovery. 
+
+One of the primary goals of industrial process control is to maintain desired performance in the presence of unmeasured disturbances \citep{astrom_computer_1997}. By detecting and correcting errors in the estimates of the process states, feedback control systems are able to attenuate the effects of disturbances and thus reduce variation in process variables. This is known as the regulation problem and is common in industrial process control applications where the goal is to maintain steady-state operating conditions as closely as possible.
+
+The main benefit of effective regulation is that the process conditions remain close to their optimal settings. This is particularly important when there are operating constraints on a critical process variables that limit the overall performance of the process. For example, the power output capacity of an electric motor must not be exceeded for safety reasons. In these cases, reduced variability allows the process to be operated closer to the constraint on average, yielding a performance gain. Variability also has knock-on effects on the performance of downstream process operations.
+
+\subsection*{Grinding process}
+
+Tumbling mills are the most common type of grinding equipment used in hard rock grinding applications. The two main types of tumbling mills are the \textit{semi-autogenous} grinding mill (SAG) and the ball mill \citep{king_chapter_2012}. The SAG mill, which is the focus of this research, is used for primary grinding of the \textit{run-of-mine} ore which comes from the mine after crushing. In a SAG mill, large ore particles play a role in the grinding process as well as grinding media (steel balls) added by the operator. Ball mills are typically used in the second stage of grinding to grind oversize particles from the discharge of the SAG mill circuit.
+
+Figure \ref{fig:cause-effect} is a schematic diagram illustrating the main cause-effect relationships in a tumbling mill. Each oval represents an important process variable and the arrows represent the interacting relationships and show the direction of causality. The five variables on the left are the main input variables and the four on the right are the main outputs. Mill contents and breakage rates are internal variables of the process. Here, mill contents has a broad definition encompassing all attributes of the contents, including water, slurry, ore particles, and grinding media.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=11cm]{images/cause-effect.pdf}
+	\caption{Cause and effect diagram} \label{fig:cause-effect}
+\end{figure}
+
+\cite{powell_applying_2009} highlighted the interactive (i.e. bi-directional) relationship between mill load and breakage rates and describe how these variables evolve dynamically. A change in ore feed properties, such as a change in hardness or particle sizes, leads to changes in the mill contents, which then affect breakage rates, which have a feedback effect on the evolution of the mill contents. This results in a non-linear response of the output variables which depend on the mill contents.
+
+SAG mills are usually installed in closed-circuit with a classifier. Oversize material that passed out the grate of the mill but does not meet the specification of the classifier is returned to the mill, sometimes via a crusher. This feedback mechanism includes a transport delay which further complicates the dynamic response of the process variables to changes in the inputs.
+
+\subsection*{Grinding process control}
+
+The objectives of process control are firstly, to maintain a steady operation and secondly, to optimize the process conditions to achieve maximum operational benefits, for example, maximizing throughput while meeting the product particle size specification \citep{wei_grinding_2009}. Inevitably, trade-offs must be made between competing output variables, such as throughput and product particle size, and between product particle size and power consumption.
+
+Furthermore, the optimum operating conditions may vary according to the ore feed properties and the condition of the equipment, thus necessitating a dynamic optimization strategy. However, this research is focussed on methods and techniques which facilitate the first objective (i.e. steady operation).
+
+According to a 2007 worldwide survey of grinding circuit operators \citep{wei_grinding_2009}, 63\% reported that the \textit{proportional integral derivative} (PID) control technique was used. \textit{Multivariable control} or \textit{expert systems} were used by 21\%. Less than 10\% reported using \textit{model predictive control} (MPC) or adaptive (self-tuning) control.
+
+The three most commonly controlled variables are the product particle size, the slurry level in the sump, and the sump discharge slurry density. The mill load or filling level also requires some form of control since excursions above or below the normal range can lead to undesirable conditions such as \textit{mill overload} and \textit{freewheeling} \citep{mcclure_overload_2015}. If the load becomes too high, the mill may have to be stopped, resulting in lost production \citep{wei_grinding_2009}.
+
+The main manipulatable variables used for control are the flow rate of water to the sump, the flow rate of water to the mill, the feed rate of solids to the mill, and the discharge flow rate of slurry from the sump. Many modern mills have variable speed drives which allow controlled variation of the rotational speed. However, according to the survey results in 2009, speed is not commonly considered a manipulatable variable.
+
+\cite{najim_adaptive_1995} simulated various adaptive controllers applied to a grinding circuit model with a step disturbance in the ore hardness (represented by a -20\% reduction in breakage rates). The controllers regulate the circulating load and product fineness by manipulating the water addition rate and the fresh ore feed rate.
+
+\cite{pomerleau_survey_2000} simulated various control algorithms applied to a grinding process consisting of a rod mill and a ball mill. The controllers also manipulate the fresh ore and the water feed rates to regulate the product fineness and the circulating load. To compare the performance of the controllers, they simulate a sequence of disturbances to the ore properties---\textit{grindability} and feed size, as well as a change in the number of active cyclones, various and set point changes.
+
+\cite{chen_disturbance_2009} propose a \textit{disturbance observer based} (DOB) control strategy applied to a ball mill grinding circuit model and evaluate its effectiveness in suppressing the effects of a 10\% increase in ore hardness on the product fineness and circulating load.
+
+\cite{aguila-camacho_control_2017} simulated various types of \textit{fractional order controllers} applied to a grinding circuit model with five manipulatable input variables (fresh ore feed rate, mill inlet feed water rate, sump feed water rate, cyclone feed flow rate, and ball addition rate) and three output variables (mill filling level, sump slurry volume, and product fineness). They also simulated an unmeasured change in the ore feed size distribution.
+
+%\2 Botha, le Roux, Craig, (2018) - Hybrid Non-Linear MPC of a Run-of-Mine Ore Grinding Mill Circuit.
+%\2 LeRoux et al (2016) - Non-linear MPC.
+
+\subsection*{Grinding process observers}
+
+As mentioned above, one of the major obstacles to SAG process control and optimization is the lack of good measurements of critical process variables. For example, breakage rates and the characteristics of the mill contents are not measurable online (i.e. in real time). Of the output variables shown on the right hand side of Figure \ref{fig:cause-effect}, only power draw is directly measurable. Mill weight may be inferred from load sensors or bearing pressure measurements. However, a reliable estimate of the weight of the mill contents is complicated by the fact that the total mill weight includes the weights of the shell and liners, which change over time. Direct measurement of the properties of the discharge of a SAG mill is also impractical due to the properties of the material flow.
+
+For these reasons, process observers which produce online estimates of the unmeasurable variables are an important tool in grinding process control. For example, \cite{le_roux_state_2016} studied the possibility of using a non-linear filtering technique to estimate the mill hold-up volume proportions (water, solids, fines) and breakage rates based on measurements from a SAG mill circuit. However, they found that measurements of the cyclone discharge flow rate were needed, which are not commonly available.
+
 Outline notes:
 
 \begin{outline}
-	\1 Challenges of effective control and optimization of comminution (grinding) operations.
-	\1 Among these, disturbances, in particular changes in ore properties — difficult to measure accurately in real time, impacts on the downstream process and control systems can be severe \citep{herbst_optimal_1988}.
-	\1 Cause-effect chain: Variable ore → variable operation → variable grind → variable recovery → lower recovery \citep{powell_applying_2009}.
-	\1 Sources of variability in mining operations: geological characteristics of ore bodies, mining processes such as blasting, material handling, shovelling and trucking. Segregation effects.
 	\1 Effects of ore properties on grinding performance (need references).
 	\1 Figure \ref{fig:cause-effect} - Cause-effect diagram.  Describe different ways ore properties affect process:
 	\2 Increased hardness/competency → lower breakage rates → increasing hold-up, circulating load → reduced throughput and/or less grinding.
@@ -28,20 +87,14 @@ Outline notes:
 	%\1 Use in upstream in the mining operation to help determine the source of variation and identify process improvements.
 \end{outline}
 
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=9cm]{images/cause-effect.pdf}
-	\caption{Cause and effect diagram} \label{fig:cause-effect}
-\end{figure}
-
 Possible references for above:
 \begin{outline}
 	\1 Papers introducing grinding control problems, references to ore feed disturbances, and surveys on process control in mineral processing.
 	\2 Herbst et al (1984) - optimal control potential in grinding
-	    \2 Hahne, Palsson, Samskog (2002) - AG effects.
+	\2 Hahne, Palsson, Samskog (2002) - AG effects.
 	\2 Powell and Mainza (2006), Powell et al (2009) - grind curves
 	\2 Wei and Craig (2009) - control methods survey.
-	\2 Hodouin, et al. (2011). Methods for automatic control, observation, and optimization in mineral processing plants.
+	\2 Hodouin, et al. (2011) - Methods for automatic control, observation, and optimization in mineral processing plants.
 	\2 McClure and Gopaluni (2015) - Overload Detection in Semi-Autogenous Grinding.
 	\2 Olivier and Craig (2017) - degree of automation survey
 	\1 Papers on observers for mineral processing applications — E.g. 
@@ -57,9 +110,13 @@ Possible references for above:
 	\2 Aguila-Camacho, Le Roux, et al (2017) - fractional order controller and grinding circuit with a change in the mill feed size distribution.
 	\2 Botha, le Roux, Craig, (2018) - Hybrid Non-Linear MPC of a Run-of-Mine Ore Grinding Mill Circuit.
 	\2 LeRoux et al (2016) - Non-linear MPC.
+
 \end{outline}
 
-\section*{Disturbances}
+
+\section*{Grinding process disturbances}
+
+Continual variability in ore properties such as hardness, particle size distribution, and density is normal in mining operations due to the geological characteristics of ore bodies. Additional variability may be introduced by mining processes such as blasting, or during material handling, for example shovelling and trucking. This work aims to address the problem of detecting and estimating infrequent, abrupt changes in the ore feed.
 
 Outline notes:
 
@@ -77,7 +134,7 @@ Outline notes:
 
 \section*{Background and objectives}
 
-This project is part of a three-year research and development project by the \textit{Laboratoire d’observation et d’optimisation des procédés} (LOOP) of the University of Laval, with financial support from the Government of Quebec and Nemaska Lithium Corporation. The overall goal of the project is to determine the extent to which technological innovations could transform the current paradigm of mineral processing which is energy intensive and results in significant greenhouse gas emissions. The project consists of two main initiatives:
+This work is part of a three-year research and development project by the \textit{Laboratoire d’observation et d’optimisation des procédés} (LOOP) of the University of Laval, with financial support from the Government of Quebec and Nemaska Lithium Corporation. The overall goal of the project is to determine the extent to which technological innovations could transform the current paradigm of mineral processing which is energy intensive and results in significant greenhouse gas emissions. The project consists of two main initiatives:
 
 \begin{enumerate}
 	\item Development of dynamic operating models of production units
@@ -86,7 +143,7 @@ This project is part of a three-year research and development project by the \te
 
 Aligned with the second initiative, the specific goals of this research project are to identify or develop disturbance models and observers tailored specifically to the types of disturbances and measurement challenges that exist in real mineral processing operations.
 
-The specific objectives of this research project are:
+The specific objectives of this research are:
 
 \begin{enumerate}
 	\item Propose a model for representing disturbances in mineral processing operations
@@ -95,36 +152,13 @@ The specific objectives of this research project are:
 
 \section*{Literature review}
 
-Outline notes :
-
-\begin{itemize}
-	\item Describe literature search
-	\item Only a gew works found on characterising and modelling disturbances
-	\item Significant branch of research on fault/anomaly detection (e.g. Willsky (1976), (1986), Thornhill et al (2007)).
-	\item Distinction between detection of anomaly and continued estimation with realistic models.
-	\item Papers on disturbance model design for process control tend to consider standard stochastic disturbance models - e.g. Badgewell and Muske (2002), Pannochia (2007).
-	\item Exceptions include works on disturbances in specific applications – e.g. wind power, vehicle suspension, waves in ship movement control.
-	\item Example: Highlight Papaefthymiou and Klockl (2009) on using MCMC to model wind power generation.
-\end{itemize}
-
-
-A comprehensive search of the academic literature was carried out to identify previous work relevant to the project. During this process it became apparent that the number of works related to characterising and modelling disturbances was quite small. With a few exceptions, searches for terms such as `disturbance model' or `disturbance characterisation' tended to result in works dealing with the design of standard stochastic disturbance models, for example \cite{muske_badgwell_disturbance_2002}, and \cite{pannocchia_robust_2003}, or were focussed mainly on detection and diagnosis of disturbances rather than their simulation or modelling, \cite{thornhill_advances_2007} for example. There is a rich body of work on the subject of fault detection which falls into the second category. In these works, models of the process are used to identify when an \textit{unmodelled} disturbance occurs and to determine its source. However, a typical fault detection algorithm does not have a model of the actual disturbance, therefore its operation is suspended once the disturbance occurs. In contrast, the goal of this work is to identify a model that can be used for state estimation in the presence of disturbances, without interruption.
+A search of the academic literature was carried out to identify previous work relevant to the project. During this process it became apparent that the number of works related to characterising and modelling disturbances was quite small. With a few exceptions, searches for terms such as `disturbance model' or `disturbance characterisation' tended to result in works dealing with the design of standard stochastic disturbance models, for example \cite{muske_disturbance_2002}, and \cite{pannocchia_robust_2003}, or were focussed mainly on detection and diagnosis of disturbances rather than their simulation or modelling, \cite{thornhill_advances_2007} for example. There is a rich body of work on the subject of fault detection which falls into the second category. In these works, models of the process are used to identify when an \textit{unmodelled} disturbance occurs and to determine its source. However, a typical fault detection algorithm does not have a model of the actual disturbance, therefore its operation is suspended once the disturbance occurs. In contrast, the goal of this work is to identify a model that can be used for state estimation in the presence of disturbances, without interruption.
 
 Some of the exceptions were works on disturbances in specific application domains such as wind power generation, bump disturbances in vehicle suspension systems, and wave disturbances in ship movement control.  In these, researchers developed disturbance models tailored to these applications. For example, \cite{papaefthymiou_mcmc_2008} used a Markov-chain Monte Carlo (MCMC) method to identify and model important characteristics of the wind to generate `synthetic' wind data for the purposes of running realistic dynamic simulations of renewable energy generation systems.
 
 Nevertheless, a small number of research papers were discovered dealing with `realistic disturbances' (loosely defined) occurring in continuous industrial processes. These are also sometimes broadly referred to as `deterministic disturbances' to distinguish them from standard disturbance models based on zero-mean random noise signals (which are truly random in the sense that they are independent and identically-distributed).
 
 \section*{Randomly-occurring deterministic disturbances} \label{RODDs}
-
-\begin{itemize}
-	\item MacGregor et al (1985) - is the earliest work on infrequently occurring (non-linear) disturbances.
-	\item Many types of RODD can be generated with this model - e.g. steos, ramps, exponential changes.
-	\item Examples of applications – operator set-point changes, changes to load on a system.
-	\item Here 'deterministic' means not random in the sense of i.i.d.
-	\item They show that the optimal control law for a process perturbed by a RODD is no different than that perturbed by an equivalent stochastic noise process.
-	\item This is due to the common ARIMA structure and the zero-mean of the random shock. 
-\end{itemize}
-
 
 In 1984, \cite{macgregor_duality_1984} introduced the concept of the \textit{randomly-occurring deterministic disturbance} (RODD). This is a family of stochastic processes useful for modelling deterministic disturbances commonly encountered in real industrial processes. Three types of RODD process are described by MacGregor and co-workers. One produces infrequently-occurring step changes, another produces a series of ramps, and a third produces a signal consisting of a series of exponential changes. One example of a real-world disturbances that might be represented by these models is that of an unanticipated set-point change made by an operator. Another is an sudden unexpected change to the load on a system. While these disturbances may be deterministic, the key issue is that they are not predictable or measurable by the control system. Therefore, simulating them with a stochastic process driven by a random variable is a reasonable way to emulate their unpredictability for the purposes of control system design.
 
@@ -133,20 +167,6 @@ The structural form of a RODD model is an \textit{autoregressive integrated movi
 MacGregor and coworkers also showed that the optimal control law derived for a process perturbed by a RODD is no different than that which would be derived for a process subject to a standard stochastic noise.  This is due to the common ARIMA structure of both models and the fact that the expected value (i.e. mean) of the random shock signal is zero as it is for a Gaussian noise. As a result, it is well-suited for use in process control design. For this reason, and in the absence of other alternatives, the RODD disturbance model became a focus of this research project.
 
 \section*{Detection and estimation of RODD disturbances}\label{detection_RODDs}
-
-\begin{itemize}
-	\item Robertson et al (1995, 1998) - explanation of the trade-off that must be made with a single Kalman filter.
-	\item Limitations of traditional models in state estimation of switching systems.
-	\item Use of multi-model approach to estimate RODDs online.
-	\item Approximations are needed.  Describe the three used by Robertson et al. (dropping low-probability combinations, sequence fusion, and maximum number of shocks in an interval).
-	\item Earlier references on multi-model state estimation: Blom and Bar Shalom, Ackerson and Fu, Buxbaum and Haddad, Jaffer and Gupta, Akashi and Kumamoto.
-	\item Note slight difference in Robertson RODD model with two random noise inputs.
-	\item They compare their multi-model observer with a standard Kalman Filter. How is it tuned?
-	\item Summarise simulations and results of the 1995 and 1998 papers (the 2nd is better, it includes MSE comparisons).
-	\item Eriksson and Isaksson (1996) - Disturbance model detection. E.g. to determine if the disturbance is at the input or output of the process.
-	\item Two sets of Kalman filters combined into one multi-model observer.
-	\item They use the AFMM algorithm - uses sequence pruning instead of sequence fusion. Goes back to Andersson (1985) and Gustaffson (1993)
-\end{itemize}
 
 Traditional filtering methods such as Kalman filters are unable to efficiently estimate RODD disturbances due to the inevitable trade-off that must be made between the ability to track a disturbance when it occurs and the sensitivity to noise \cite{robertson_detection_1995}.
 
@@ -170,7 +190,7 @@ The third approximation is referred to as \textit{filter fusion} or the \textit{
 
 Robertson and coworkers present results of simulating their sub-optimal multi-model observer on a 2-input, 2-output, non-linear dynamical system representing a continuous stirred-tank reactor (CSTR) process. They show the estimates produced by the multi-model approach compared with two single extended Kalman filters (EKF) with different noise parameters. The first of the single EKFs is sensitive to the measurement noise and the second is slow to respond to the RODD step disturbances, while the multiple-model observer appears to perform better than either single EKF in the example simulations.
 
-A year later, Eriksson and Isaksson \cite{eriksson_classification_1996} present results of using an adaptive multi-model approach to estimate \textit{infrequently-occurring disturbances}. They utilize the \textit{adaptive forgetting through multiple models} (AFMM) algorithm by Andersson \cite{andersson_adaptive_1985} and also previously described by Gustafsson \cite{gustafsson_estimation_1993}. The AFMM algorithm employs a technique called \textit{sequence pruning} \cite{tugnait_detection_1982}, in contrast to the sequence merging or fusion technique used by Robertson and co.\cite{blom_interacting_1988}.
+\cite{eriksson_classification_1996} present results of using an adaptive multi-model approach to estimate \textit{infrequently-occurring disturbances}. They utilize the \textit{adaptive forgetting through multiple models} (AFMM) algorithm by \cite{andersson_adaptive_1985}, also previously described by \cite{gustafsson_estimation_1993}. The AFMM algorithm employs a technique called \textit{sequence pruning} \cite{tugnait_detection_1982}, in contrast to the fixed-depth \textit{sequence merging} or \textit{sequence fusion} technique \citep{blom_interacting_1988} used by Robertson and co.
 
 Sequence pruning is the online deletion of sequences that have a low probability given the current measurements. The deleted sequences are replaced by new sequences to represent the possible branches of the most likely sequence at the next sample time. For example, for a system with one infrequently occurring input disturbance, the most likely shock sequence at the next sample time is the shock sequence estimated to be most likely at the current time extended by the addition of a zero to indicate no shock at the next sample time. However, a shock could occur in the next time period. To account for this possibility, a new shock sequence is generated by making a copy of the current most likely sequence and its associated filter and extending it assuming a shock at the next sample time. This new sequence and filter replace the least likely sequence and observer. Thus, the total number of sequences and independent filters that need to be maintained remains constant. Note that in the case of systems with more than one input disturbance, the number of possible branches of the most likely sequence is higher, and therefore a larger number of sequences and filters will be replaced each time step.
 
@@ -188,7 +208,7 @@ However, a different non-linear system (a 3-state model of a heptane to toluene 
 
 The results show that their sub-optimal filter does 35 percent better than either the EKF or the GPB algorithm. This is simply because their filter has a horizon of 90 minutes (using 22 filters), whereas the standard GPB algorithm has a horizon of only 2 minutes (using 16 filters) so there is not enough time for it to detect changes before the filters are fused.
 
-\section*{Disturbance modeling using hidden Markov models}
+\section*{Disturbance modelling using hidden Markov models}
 \label{hidden_markov_models}
 
 Outline notes:

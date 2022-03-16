@@ -152,7 +152,7 @@ Allowing both $w_p(k)$ and $e_p(k)$ to switch as in (\ref{eq:mog-example2}), cre
 \subsection{Bounded random walk}
 
 \begin{outline}
-	\1 Describe bounded random walk process \citep{nicolau_bounded_2002}.
+	\1 Describe bounded random walk process \citep{nicolau_stationary_2002}.
 	\1 This is an example of a non-Gaussian random variable.
 	\1 Mention motivation for use in financial modelling, e.g. interest rate is bounded.
 	\1 Note that in process control there are usually limits (upper and lower) to the feasible range of process variables.
@@ -172,9 +172,9 @@ Outline notes:
 \end{itemize}
 
 
-RODDs pose particular problems for state estimation using standard Kalman filters due to the switching of the noise model parameters ($\sigma_{w_p}$ and $b$$\sigma_{w_p}$). As explained by \cite{robertsonDetectionEstimationRandomly1995a}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
+RODDs pose particular problems for state estimation using standard Kalman filters due to the switching of the noise model parameters ($\sigma_{w_p}$ and $b$$\sigma_{w_p}$). As explained by \cite{robertson_detection_1995}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
 
-When the switching parameter is not observable, a so-called \textit{multiple-model approach} may be considered \citep{buxbaumRecursiveOptimalEstimation1970, jafferEstimationDiscreteProcesses1971}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current state. Independent Kalman filters are maintained for each hypothesis and a weighted average of the filter estimates is calculated using the conditional probabilities of each hypothesis given current and past observations. 
+When the switching parameter is not observable, a so-called \textit{multiple-model approach} may be considered \citep{buxbaum_recursive_1970, jaffer_estimation_1971}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current state. Independent Kalman filters are maintained for each hypothesis and a weighted average of the filter estimates is calculated using the conditional probabilities of each hypothesis given current and past observations. 
 
 The shock occurrence hypothesis associated with Kalman filter $f$ at time instant $k$ is
 \begin{equation} \label{eq:gammak}
@@ -357,6 +357,8 @@ Outline notes:
 	\1 Figure - Step responses of main process variables to changes in ore properties.
 	\1 Selection of particle size distribution as the disturbance variable for this work.
 \end{outline}
+
+
 
 \begin{figure}[htp]
 	\centering

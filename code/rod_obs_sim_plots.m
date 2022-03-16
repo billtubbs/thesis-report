@@ -16,6 +16,9 @@ addpath('~/ml-plot-utils')
 data_dir = 'data';
 results_dir = 'results';
 plot_dir = '../images/';
+if ~isfolder(plot_dir)
+    mkdir(plot_dir);
+end
 
 
 %% Observer simulations with SISO linear system
