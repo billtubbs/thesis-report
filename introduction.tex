@@ -14,13 +14,13 @@ Comminution (grinding) is a particle size reduction process used in mineral proc
 
 Effective control and optimization of grinding operations is challenging for a number of reasons---large variations in the properties of the ore feed material, multiple strongly-coupled interacting variables, long time delays, non-linear and time-varying input-output characteristics, process variables that are difficult to measure, and difficulties in identifying process models of actual operations \citep{olivier_dual_2012, gough_sag_2015, le_roux_throughput_2016, aguila-camacho_control_2017}. 
 
-Changes in the properties of the ore feed are a significant problem because they are difficult to measure accurately in real time and their impacts on the downstream process and control systems can be severe \citep{herbst_optimal_1988, cesar_multivariable_2009, remes_grinding_2010}. \cite{powell_applying_2009} summarized the effects of ore variability as follows:
+Changes in the properties of the ore feed are a significant problem because they are difficult to measure accurately in real time and their impact on the grinding process and control system can be severe \citep{herbst_optimal_1988, cesar_multivariable_2009, remes_grinding_2010, liu_development_2018}. \cite{powell_applying_2009} summarized the effects of ore variability as follows:
 
 Variable ore $\to$ variable operation $\to$ variable grind $\to$ variable recovery $\to$ lower recovery. 
 
 One of the primary goals of industrial process control is to maintain desired performance in the presence of unmeasured disturbances \citep{astrom_computer_1997}. By detecting and correcting errors in the estimates of the process states, feedback control systems are able to attenuate the effects of disturbances and thus reduce variation in process variables. This is known as the regulation problem and is common in industrial process control applications where the goal is to maintain steady-state operating conditions as closely as possible.
 
-The main benefit of effective regulation is that the process conditions remain close to their optimal settings. This is particularly important when there are operating constraints on a critical process variables that limit the overall performance of the process. For example, the power output capacity of an electric motor must not be exceeded for safety reasons. In these cases, reduced variability allows the process to be operated closer to the constraint on average, yielding a performance gain. Variability also has knock-on effects on the performance of downstream process operations.
+The main benefit of effective regulation is that the process conditions remain close to their optimal settings. This is particularly important when there are operating constraints on critical process variables that limit the overall process performance. For example, the power output capacity of an electric motor must not be exceeded for safety reasons. In such cases, it may not be possible to reject a disturbance completely. Variations in the output variables are unavoidable and thus the ore feed disturbances can have knock-on effects on the downstream separation process operations. Reducing the magnitude of variability caused by disturbances allows the process to be operated closer to the operating constraints on average, yielding a higher performance than would be achievable with high variability, and reduces the magnitude of variations transmitted to downstream processes.
 
 \subsection*{Grinding process}
 
@@ -56,32 +56,37 @@ The main manipulatable variables used for control are the flow rate of water to 
 
 \cite{chen_disturbance_2009} propose a \textit{disturbance observer based} (DOB) control strategy applied to a ball mill grinding circuit model and evaluate its effectiveness in suppressing the effects of a 10\% increase in ore hardness on the product fineness and circulating load.
 
+%Non-linear MPC ?
+
+\cite{le_roux_throughput_2016} - Throughput and product quality control.
+
+\cite{le_roux_steady-state_2020} - Steady-state and dynamic simulation of a grinding mill using grind curves.
+
+\cite{botha_hybrid_2018} - Hybrid Non-Linear MPC of a Run-of-Mine Ore Grinding Mill Circuit.
+
 \cite{aguila-camacho_control_2017} simulated various types of \textit{fractional order controllers} applied to a grinding circuit model with five manipulatable input variables (fresh ore feed rate, mill inlet feed water rate, sump feed water rate, cyclone feed flow rate, and ball addition rate) and three output variables (mill filling level, sump slurry volume, and product fineness). They also simulated an unmeasured change in the ore feed size distribution.
 
-%\2 Botha, le Roux, Craig, (2018) - Hybrid Non-Linear MPC of a Run-of-Mine Ore Grinding Mill Circuit.
-%\2 LeRoux et al (2016) - Non-linear MPC.
+There is less literature available on the implementation, performance, and benefits of control systems in actual operations. \cite{gough_sag_2015} reports using MPC to control the mill weight, feed rate, and rotation speed of various SAG mills in mines in South America. The controller includes measured disturbances such as pebble recycle rate and ore size distribution as feed forward inputs to improve control. He presents results showing that the MPC is able to reduce the variability in mill weight (84\% reduction in standard deviation) and throughput (55\% reduction in standard deviation) compared to the expert systems that were used in these facilities, resulting in higher production rates.
+
+C.W. Steyn, C. Sandrock (2013) – Benefits of Optimisation and Model Predictive Control on a Fully Autogenous Mill with Variable Speed Application of DMC to an Autogenous (AG) mill. The industrial dynamic matrix controller (DMC) commissioned on the AG mill with a variable speed drive resulted in a 66\% reduction in power and a 40\% reduction in load standard deviation. Anglo American Platinum.
+%This reduction in operated variable variability enabled a test campaign where the mill was controlled at various operating regions in order to establish the conditions conducive to the finest product size at a given mill feed rate. Moving the mill operating region from the benchmarked plant to the optimal grind environment and stabilising the mill at this point with the model predictive controller provided an estimated potential recovery increase of 0.32 % (absolute) due to better liberation.
+
+
+\cite{liu_development_2018} analysed the mineralogical aspects of an operating grinding operation in Western Canada and studied the potential benefits of adjusting mill speed and load to offset changes in mill feed characteristics. However, he used a steady-state simulation model and did not look at process control design aspects.
+
+
 
 \subsection*{Grinding process observers}
 
-As mentioned above, one of the major obstacles to SAG process control and optimization is the lack of good measurements of critical process variables. For example, breakage rates and the characteristics of the mill contents are not measurable online (i.e. in real time). Of the output variables shown on the right hand side of Figure \ref{fig:cause-effect}, only power draw is directly measurable. Mill weight may be inferred from load sensors or bearing pressure measurements. However, a reliable estimate of the weight of the mill contents is complicated by the fact that the total mill weight includes the weights of the shell and liners, which change over time. Direct measurement of the properties of the discharge of a SAG mill is also impractical due to the properties of the material flow.
+As mentioned above, one of the major obstacles to SAG process control and optimization is the lack of good measurements of critical process variables. For example, breakage rates and the characteristics of the mill contents are not measurable online (i.e. in real time). Of the output variables shown on the right hand side of Figure \ref{fig:cause-effect}, only power draw is directly measurable. Mill weight may be inferred from load sensors or bearing pressure measurements. However, a reliable estimate of the weight of the mill contents is complicated by the fact that the total mill weight includes the weights of the shell and liners, which change over time. Direct measurement of the properties of the discharge of a SAG mill is also impractical due to the properties of the material flow.  Other measurements can be affected by high frequency measurement errors (noise) and others, such as particle size measurements, rely on physical analysis systems which can take minutes to produce new estimates.
 
-For these reasons, process observers which produce online estimates of the unmeasurable variables are an important tool in grinding process control. For example, \cite{le_roux_state_2016} studied the possibility of using a non-linear filtering technique to estimate the mill hold-up volume proportions (water, solids, fines) and breakage rates based on measurements from a SAG mill circuit. However, they found that measurements of the cyclone discharge flow rate were needed, which are not commonly available.
+For these reasons, process observers, which produce online estimates of the unmeasurable variables, are an important tool in grinding process control.  
+
+\cite{le_roux_state_2016} studied the possibility of using a non-linear filtering technique to estimate the mill hold-up volume proportions (water, solids, fines) and breakage rates based on measurements from a SAG mill circuit. However, they found that measurements of the cyclone discharge flow rate were essential yet these are not commonly installed in practice.
 
 Outline notes:
 
 \begin{outline}
-	\1 Effects of ore properties on grinding performance (need references).
-	\1 Figure \ref{fig:cause-effect} - Cause-effect diagram.  Describe different ways ore properties affect process:
-	\2 Increased hardness/competency → lower breakage rates → increasing hold-up, circulating load → reduced throughput and/or less grinding.
-	\2 Particle size distribution → breakage rates in SAG mills → hold up, circulating load → throughput/grind
-	\2 Effects of poor liberation on downstream separation processes (e.g. flotation)
-	\2 Grade / grain size → liberation → recovery.
-	\2 Density → changes in power consumption and mill weight/volume estimates (this may be less significant than the first three)
-	\1 Reference and/or include results from Copper Mountain case study showing range of variation in ore hardness (Sijia Liu, 2012).
-	\1 SAG mill constraints - grate, throughput, residence time, power, etc. Interplay with secondary grinding.
-	\1 Motivations :
-	\2 realistic disturbance models for simulation
-	\2 improved disturbance models for state estimation
 	%better characterization of these disturbances in real operations → better models → more realistic simulations → better observers → better control and real-time optimization systems/strategies.
 	%\1 Many potential benefits: Improve process control performance (reduced variability, disturbance rejection, adaptive control, robustness (i.e. maintain operating conditions within stable region—esp. w.r.t. SAG mill), → improved process performance (throughput, liberation, power consumption, etc.).
 	%\1 Use in upstream in the mining operation to help determine the source of variation and identify process improvements.
@@ -99,6 +104,7 @@ Possible references for above:
 	\2 Olivier and Craig (2017) - degree of automation survey
 	\1 Papers on observers for mineral processing applications — E.g. 
 	\2 Chen et al (2009) - Disturbance Observer Based Multi-Variable Control of Ball Mill Grinding Circuits. % chenDisturbanceObserverBased2009
+	\2 \cite{le_roux_state_2016} - State and parameter identifiability. 
 	\2 Olivier, Huang and Craig (2012) - Dual particle filters for state and parameter estimation.
 	\2 LeRoux et al (2016) - State and parameter identifiability, EKF observer.
 	\2 LeRoux et al (2016) - Nonlinear observability of grinding mill.
@@ -113,10 +119,26 @@ Possible references for above:
 
 \end{outline}
 
-
 \section*{Grinding process disturbances}
 
-Continual variability in ore properties such as hardness, particle size distribution, and density is normal in mining operations due to the geological characteristics of ore bodies. Additional variability may be introduced by mining processes such as blasting, or during material handling, for example shovelling and trucking. This work aims to address the problem of detecting and estimating infrequent, abrupt changes in the ore feed.
+Continual variability in ore properties such as hardness, \textit{competency}, particle size distribution, and grade is normal in mining operations due to the geological characteristics of ore bodies. Additional variability is introduced by mining processes such as blasting and crushing, and during material handling, for example shovelling, trucking, conveying, and in storage (stockpiles). As a consequence, the nature of these variations is likely to be highly dependent on the particular processes and equipment employed at each site. Because of the complexities of these processes, the variations in the properties of ore arriving at the processing plant, while not random, could be extremely difficult to predict.
+
+There is a lack of available data on actual ore variability in real operations, especially on the dynamic nature of these variations. This may be attributed to the lack of cost-effective measurement technology, the cost of sampling and analysing ore, as well as the commercial sensitivity of such data.
+
+\cite{liu_development_2018} tested samples of different ores from a copper mine in Western Canada as part of a study of the potential benefits of variable speed drives for ball mills. He found that hardness, determined by standard \textit{Bond ball mill work index} (BBWI) tests  (ADD REFERENCE), ranged from 20.2 kWh/t to 27.5 kWh/t. Both these values are in the category `very hard' according to Bueno, et al. (2015). The ore competency, which indicates its resistance to impact breakage, was determined using the JK drop weight test procedure and is expressed in terms of the $A\times{b}$ parameter (Napier-Munn et al., 1996). These were found to range from 29.2 to 39.7, which are categorized as `very hard' and `moderately hard'.
+
+A mineralogical simulation model of the grinding circuits was used to estimate the theoretical maximum possible throughput for each ore type while achieving the desired product specification. They found that the achievable throughput with the least competent ore was 4 times higher than that of the most competent. This illustrates the severe impact that ore properties can have on a grinding operation. However, in the actual operation, different ores are blended to reduce the variation in operating conditions. Liu also estimated the optimal mill speeds to process each ore and found that these ranged from 57.2\% to 64.9\% of critical speed. At these speeds, mill power consumption ranged from 7306 to 9511 kilowatts (a variation of -11\% to +15\% of the average). These results provide a rare insight into the relationship between two important ore properties and grinding process conditions. However, it is unclear how generalisable these results are to other operations.
+
+For the purposes of this work, efforts were made to acquire data on ore properties and operating conditions from other operations. A set of hourly data on ore properties was provided by one mining operation. For commercial reasons, details of the source of this data cannot be disclosed and the data has been normalized and de-trended to remove important features. \textbf{TODO: GET PERMISSION TO SHARE—MAY NOT BE POSSIBLE}. A sample of this adjusted data is shown in Figure X. The two variables are indicators of the ore properties at the feed to the concentrator plant---particle size and hardness. The particle size indicator is based on a real-time measurement---a specialised camera image-based system that provides a dimensionless particle size indication (higher values indicates larger particles). The hardness variable is also a dimensionless indicator produced by a customized operational forecasting model which incorporates data from a variety of sources, including geological data and data from recent drilling activities. The source data is time-delayed according to a model of the flows of material through the mining and ore feed system, therefore this variable is a prediction based on past data inputs and may not reflect current conditions or the actual variability in the feed stream.
+
+There is a limit to what can be deduced from this data but it gives an indication of the possible nature of ore variability in this operation. We can see periods of variation that...  other periods exhibit ... Since the data provided are hourly, they provide no indication of the variations that occur over shorter time-frames, which are of interest in grinding process control design.
+
+%The motivations for this are to 
+%\2 realistic disturbance models for simulation
+%\2 improved disturbance models for state estimation
+%better characterization of these disturbances in real operations → better models → more realistic simulations → better observers → better control and real-time optimization systems/strategies.
+
+This work aims to address the problem of detecting and estimating infrequent, abrupt changes in the ore feed.
 
 Outline notes:
 
