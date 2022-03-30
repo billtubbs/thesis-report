@@ -47,14 +47,17 @@
 
 @inproceedings{estrada_hybrid_2014,
 	series = {19th {IFAC} {World} {Congress}},
-	title = {Hybrid {Model} {Predictive} {Control} for {Grinding} {Plants} ⋆},
+	title = {Hybrid {Model} {Predictive} {Control} for {Grinding} {Plants}},
 	volume = {47},
 	isbn = {978-3-902823-62-5},
 	url = {http://dx.doi.org/10.3182/20140824-6-ZA-1003.02739},
+	booktitle = {19th {IFAC} {World} {Congress}},
 	publisher = {IFAC},
 	author = {Estrada, Fernando},
 	year = {2014},
 	keywords = {Grinding, Dynamic model, Energy efficiency, Model predictive control, Product quality, Hybrid model, Model estimation},
+	annote = {Annotations(2022-03-26, 1:47:08 p.m.)
+“a centralized Hybrid model predictive control (HMPC) scheme is presented; this control minimizes the specific energy consumption and stabilizes the plant by ensuring an output particle size” (Estrada, 2014, p. 11512)“In this paper, we first develop a dynamic hybrid model for grinding stage, then we get a prediction model for the output particle size and the specific energy consumption through identification techniques, and last we develop an HMPC centralized controller to minimize the energy consumption and maintain the particle size output in certain ranges” (Estrada, 2014, p. 11512)“This variables represent the state of plant components such as secondary grinding” (Estrada, 2014, p. 11512)“circuits. They are also used to represent the behaviour of the stockpile feeding process.” (Estrada, 2014, p. 11513)“The hybrid modelling was achieved by representing the variables with piecewise equations, or with the use of activation variables to certain equation terms” (Estrada, 2014, p. 11513)“The hybrid modelling in this paper was developed to achieve the modelling of two events of a grinding plant” (Estrada, 2014, p. 11513)“The first event is the stockpile feeding process of the plant, and the second is the activation/deactivation of secondary grinding circuits.” (Estrada, 2014, p. 11513)“the particle size, fsize, can take three values depending on the granulometric distribution (big, medium or small)” (Estrada, 2014, p. 11513)“As it is known, a usual stockpile has the finest material in the centre and the coarsest material on the sides, making the material discharge process feed the finest granulometric distribution ore first” (Estrada, 2014, p. 11513)“First, hybrid identification of the system is performed, using data generated with the grinding simulator, which is tuned with industrial data” (Estrada, 2014, p. 11514)“Then, the identified variables are transformed into a Mixed Logical Dynamical (MLD) environment, for HMPC strategies through the Toolbox HYSDEL” (Estrada, 2014, p. 11514)“the MLD framework is a powerful tool for modeling discrete-time linear hybrid systems” (Estrada, 2014, p. 11514)“The hybrid identification was developed in a manual manner, generating one data set for each of the plant modes” (Estrada, 2014, p. 11514)“Hybrid model predictive control (HMPC) uses models characterized by the interaction of dynamic behaviours, logical rules and operating constraints” (Estrada, 2014, p. 11514)“Hybrid systems can be represented in a mixed logical dynamical (MLD) environment by a set of mixed integer inequalities, that is, inequalities that include states, inputs and auxiliary variables that may be continuous and/or discrete” (Estrada, 2014, p. 11514)“two controlled variables, specific energy consumption and product particle size” (Estrada, 2014, p. 11515)“Data was obtained with the industrial data tuned grinding simulator, with a sample time of 3.6 seconds” (Estrada, 2014, p. 11515)“The variables taken into account in the identification process were the feed rate of the controlled conveyors, the water feeding the sump, the SAG mill speed, and the product hardness” (Estrada, 2014, p. 11515)“On this work, two different control scenarios were tested. The first one consist on simulating the stockpile discharge behaviour by turning the conveyors ON/OFF” (Estrada, 2014, p. 11515)“The stockpile granulometric distribution feeding was switched every 5 hours. This feeding was switched accordingly to the next: on the first 5 hours full granulometric distribution (fine, medium, and coarse), from 5 to 10 hours medium-coarse granulometric distribution, from hour 10 to 15 only coarse granulometric distribution, from hour 15 to 20 the state was returned to medium-coarse granulometric distribution, and on the last 5 hours the stockpile state was returned to its original value” (Estrada, 2014, p. 11515)“The second scenario consists in simulating the secondary line activation/deactivation” (Estrada, 2014, p. 11515)“the scenarios were tested by switching the discrete events of the model” (Estrada, 2014, p. 11517)},
 	file = {Estrada - 2014 - Hybrid Model Predictive Control for Grinding Plant.pdf:/Users/billtubbs/Documents/Zotero/Estrada - 2014 - Hybrid Model Predictive Control for Grinding Plant.pdf:application/pdf},
 }
 
@@ -656,6 +659,54 @@
 	file = {Wei_Craig_2009_Grinding mill circuits - A survey of control and economic concerns.pdf:/Users/billtubbs/Documents/Zotero/Wei_Craig_2009_Grinding mill circuits - A survey of control and economic concerns.pdf:application/pdf},
 }
 
+@inproceedings{nunez_tecks_2019,
+	address = {Vancouver, BC, Canada},
+	title = {Teck's {HVC} {Adaptive} {Cruise} {Control} for {Secondary} {Grinding}},
+	abstract = {In the last few years, Teck's HVC operation has embraced a culture of automated process control. As part of this vision, it was decided to perform an exhaustive grinding process control audit where all instruments and controls were inspected, calibrated, and upgraded. These improvements highlighted inefficiencies in the secondary grinding circuit already faced with ore variability, primary grinding limitations, steel charge instability, and liner wear issues. In order to improve the efficiency of the circuit, an extensive program was implemented including the development of soft sensors, a real-time steel charge schedule, overload detection, and an adaptive “cruise control” program with “steering assist.” These enhancements have improved the particle size produced from the grinding circuit by 7.5\%, in addition to capturing tangible energy savings.},
+	language = {en},
+	booktitle = {{SAG} {Conference} 2019},
+	author = {Nunez, Eduardo and Hahn, Michael},
+	year = {2019},
+	keywords = {Grinding, Model predictive control, Ball mill, Priority 1, Status - Partly read, Water balance},
+	pages = {16},
+	file = {Nunez_and_Hahn_Tecks HVC Adaptive Cruise Control for Secondary Grinding_2019.pdf:/Users/billtubbs/Documents/Zotero/Nunez_and_Hahn_Tecks HVC Adaptive Cruise Control for Secondary Grinding_2019.pdf:application/pdf},
+}
+
+@inproceedings{yutronic_sag_2011,
+	address = {Vancouver, BC, Canada},
+	title = {Sag \& {Ball} {Mill} {Control} by {Model} {Predictive} {Controllers} on 3 {Lines} at {Collahuasi}},
+	abstract = {Compañía Minera Doña Inés de Collahuasi's (CMDIC) Concentrator Plant is located at 4300 meters above sea level, approximately 2000 kms north from Santiago, Chile. The concentrator has three grinding lines. Each one, Lines 1 and 2, have one SAG mill at the primary grinding stage followed by a secondary grinding and classification stage consisting of one ball mill, two hydrocyclone batteries and a sump with two pumps. Line 3 has one SAG mill (Gearless Mill Drive), followed by a secondary grinding and classification consisting two ball mills, four hydrocyclone batteries and a sump with four pumps. Average throughput for these three lines is 150 Ktons per day. Peak values of 180 ktons per day have been achieved.},
+	language = {en},
+	booktitle = {{SAG} {Conference} 2011},
+	author = {Yutronic, I and Espinoza, P and Olivares, J},
+	year = {2011},
+	keywords = {Grinding, SAG/AG mill, Advanced process control, Model predictive control, Status - to read, Priority 1},
+	pages = {23},
+	annote = {Extracted Annotations (2019-11-02, 5:32:14 PM)
+"The implementation of a MPC solution was based on stability considerations" (Yutronic et al :24)
+"requirements for an automated and consistent operation, the need to maximize throughput under timevarying scenarios and, in the long term, optimization of grinding process considering Specific Energy Consumption, among other parameters" (Yutronic et al :24)
+"MPC solutions had proven control robustness and strong optimizing capabilities in terms of helping in discovering new operational points and so achieving all of the aforementioned goals." (Yutronic et al :24)
+"immediate process stability, higher throughput, specific energy consumption reduction, and successful product size control, among many others" (Yutronic et al :24)
+"Constraints are inherent to the process and must be considered in any control strategy" (Yutronic et al :25)
+"using the Honeywell's MPC solution called Robust Multivariable Predictive Control Technology (RMPCT) or simply Profit Controller®" (Yutronic et al :25)
+"mill's internal load level" (Yutronic et al :26)
+"its indirect relationship with mill weight (SAG1011, measured using load cells) or the mill's bearing pressure (SAG1 and SAG2) is used for process control purposes" (Yutronic et al :26)
+"Other process variables used for control purposes were: produced pebble tonnage (measured using a weightometer) and mill noise, measured using electronic ears" (Yutronic et al :26)
+"Mill's overall power draw, mill's instantaneous torque (SAG1011) or mill's instantaneous current (SAG1 and SAG2) were used to protect equipment's integrity" (Yutronic et al :26)
+"Expert system rules were focused on bearing pressure and power draw control, both considering specific set points input by the operator" (Yutronic et al :26)
+"This expert system used fresh feed tonnage, content of solids (water flow added to the mill) and mill speed to achieve its control objectives" (Yutronic et al :26)
+"Note that important grinding disturbances, such as feed ore size were not considered at all by the expert system, nor by the manual control done by the operator over the SAG1011 process" (Yutronic et al :27)
+"MPC has some interesting advantages, like: x It is particularly attractive because the underlying concepts are very intuitive and it is simple to tune. x It can be used in a wide variety of processes, from the simple ones to processes with complex dynamics and large dead times, no-minimum phase zeros, unstable or multivariable systems. x Its predictive characteristics compensate intrinsically dead times and disturbances (feed forward). x It allows handling the process constraints explicitly." (Yutronic et al :28)
+"It is clear that the SAG's processes are not a linear system, so the process is maintained around an operation point, however, if the system changes its operation point, the model represented varies, however, the changes are handled by the controller robustness to compensate the model mismatch (in these cases tuning has been required)." (Yutronic et al :28)
+"The models used to predict are represented as a matrix of transfer functions, where each row represent a different CV" (Yutronic et al :28)
+"The "ProfitSAG1011" controller, implemented on Collahuasi's SAG 1011, aims to maximize the amount of fresh feed, while stabilizing the operation, mainly in terms of the weight of mill." (Yutronic et al :32)
+"The dynamic models used by the MPC controller have been identified mostly using historical data of manual operation. In some cases the historical data was not frequency rich enough; therefore some step testing was necessary." (Yutronic et al :33)
+"further step-testing and process model identification was carried out, in order to retune MPC in the new (and most demanding) operational point" (Yutronic et al :34)
+"At the very last stage of these continuous improvements, a new controlled variable was added to the MPC, since mill's winding temperatures could not rise over a certain limit in order to prevent serious damage on the mill's gearless drive" (Yutronic et al :34)
+"MPC implementation for the secondary grinding and classification stage began with a control strategy redefinition: the level loop was eliminated. Sump level should be controlled by adjusting water flows or pump speeds. Furthermore, sump level will no longer be controlled with a setpoint; instead, a desired range was considered, therefore minimizing movements that reinforce coupling. From a process control view there is no real benefit in maintaining sump level at a certain value, considering it is a buffer supposed to absorb primary grinding variance." (Yutronic et al :35)},
+	file = {Yutronic_etal_SAG & BALL MILL CONTROL BY MODEL PREDICTIVE CONTROLLERS ON 3 LINES AT COLLAHUASI_2011.pdf:/Users/billtubbs/Documents/Zotero/Yutronic_etal_SAG & BALL MILL CONTROL BY MODEL PREDICTIVE CONTROLLERS ON 3 LINES AT COLLAHUASI_2011.pdf:application/pdf},
+}
+
 @article{pomerleau_survey_2000,
 	title = {A survey of grinding circuit control methods: from decentralized {PID} controllers to multivariable predictive controllers},
 	volume = {108},
@@ -671,7 +722,7 @@
 	author = {Pomerleau, Andr\{'e\} and Hodouin, Daniel and Desbiens, Andr\{'e\} and Gagnon, \{'E\}ric},
 	month = mar,
 	year = {2000},
-	keywords = {Control and optimisation, Grinding, Multivariable control, PID control, Priority 1, Status - Partly read, Survey},
+	keywords = {Grinding, Survey, PID control, Priority 1, Control and optimisation, Status - Partly read, Multivariable control},
 	pages = {103--115},
 	annote = {Extracted Annotations (2019-11-04, 2:57:13 PM)
 "The objective of this paper is to study the performances of various control algorithms acting on a grinding circuit in face of different disturbances and setpoint changes" (Pomerleau et al 2000:103)
@@ -1355,6 +1406,19 @@
 	file = {Robertson_et_al_1995.pdf:/Users/billtubbs/Documents/Zotero/Robertson_et_al_1995.pdf:application/pdf},
 }
 
+@inproceedings{nunez_self-optimizing_2009,
+	address = {Ottawa, ON, Canada},
+	title = {Self-optimizing {Grinding} {Control} for {Maximising} {Throughput} while {Maintaining} {Cyclone} {Overflow} {Specifications}},
+	abstract = {In preparation for the milling of a new nickel and copper mine ore, Nickel Rim South, Xstrata’s Strathcona Mill is undertaking numerous process improvement projects. Within the grinding circuit, several projects are under development and an automated grinding control strategy, consistent with the operating objectives, was identified as a key requirement. The grinding strategy is to maximize the throughput (quantitative objective) while maintaining the cyclone overflow within specifications (qualitative objective).},
+	language = {en},
+	booktitle = {41st {Annual} {Meeting} of the {Canadian} {Mineral} {Processors}},
+	author = {Nunez, Eduardo and MacPherson, Glenn and Graffi, Dan and Tuzun, Asim},
+	year = {2009},
+	keywords = {Energy consumption, Grinding, Process control, Priority 2, Status - Partly read, Cyclones},
+	pages = {15},
+	file = {Nunez_etal_Self-optimizing Grinding Control for Maximising Throughput while Maintaining Cyclone Overflow Specifications_2009.pdf:/Users/billtubbs/Documents/Zotero/Nunez_etal_Self-optimizing Grinding Control for Maximising Throughput while Maintaining Cyclone Overflow Specifications_2009.pdf:application/pdf},
+}
+
 @article{robertson_method_1998,
 	title = {A method for the estimation of infrequent abrupt changes in nonlinear systems},
 	volume = {34},
@@ -1773,7 +1837,7 @@
 }
 
 @article{nicolau_stationary_2002,
-	title = {{STATIONARY} {PROCESSES} {THAT} {LOOK} {LIKE} {RANDOM} {WALKS}— {THE} {BOUNDED} {RANDOM} {WALK} {PROCESS} {IN} {DISCRETE} {AND} {CONTINUOUS} {TIME}},
+	title = {Stationary {Processes} {That} {Look} {Like} {Random} {Walks}— {The} {Bounded} {Random} {Walk} {Process} in {Discrete} and {Continuous} {Time}},
 	volume = {18},
 	issn = {0266-4666, 1469-4360},
 	url = {https://www.cambridge.org/core/product/identifier/S0266466602181060/type/journal_article},
@@ -1863,7 +1927,7 @@ be stationarity processes.},
 The key variables that are controlled are slurry level in the sump, mass of material in the mill, and product size. The control scheme has resulted in reliable control of the dynamics of the plant, and has provided a good basis for the optimization of plant operation by the selection of suitable setpoints.},
 	language = {en},
 	number = {7},
-	journal = {JOURNAL OF THE SOUTH AFRICAN INSTITUTE OF MINING AND METALLURGY},
+	journal = {Journal Of The South African Institute of Mining and Metallurgy},
 	author = {Hulbert, D. G. and Craig, I. K. and Coetzee, M. L. and Tudor, D.},
 	month = jul,
 	year = {1990},
@@ -1873,20 +1937,21 @@ The key variables that are controlled are slurry level in the sump, mass of mate
 }
 
 @book{van_der_schaft_introduction_2000,
+	address = {London},
 	title = {An introduction to hybrid dynamical systems},
 	volume = {251},
-	publisher = {Springer London},
+	publisher = {Springer},
 	author = {Van Der Schaft, Arjan J and Schumacher, Johannes Maria},
 	year = {2000},
 }
 
 @article{schon_sequential_2015,
-	title = {Sequential {Monte} {Carlo} {Methods} for {System} {Identification}**{This} work was supported by the projects {Learning} of complex dynamical systems ({Contract} number: 637-2014-466) and {Probabilistic} modeling of dynamical systems ({Contract} number: 621-2013-5524), both funded by the {Swedish} {Research} {Council}.},
+	title = {Sequential {Monte} {Carlo} {Methods} for {System} {Identification}},
 	volume = {48},
 	issn = {24058963},
-	shorttitle = {Sequential {Monte} {Carlo} {Methods} for {System} {Identification}**{This} work was supported by the projects {Learning} of complex dynamical systems ({Contract} number},
 	url = {https://linkinghub.elsevier.com/retrieve/pii/S2405896315028487},
 	doi = {10.1016/j.ifacol.2015.12.224},
+	abstract = {One of the key challenges in identifying nonlinear and possibly non-Gaussian state space models (SSMs) is the intractability of estimating the system state. Sequential Monte Carlo (SMC) methods, such as the particle filter (introduced more than two decades ago), provide numerical solutions to the nonlinear state estimation problems arising in SSMs. When combined with additional identification techniques, these algorithms provide solid solutions to the nonlinear system identification problem. We describe two general strategies for creating such combinations and discuss why SMC is a natural tool for implementing these strategies.},
 	language = {en},
 	number = {28},
 	urldate = {2022-03-23},
@@ -1911,7 +1976,7 @@ The key variables that are controlled are slurry level in the sump, mass of mate
 	author = {Guo, Yafeng and Huang, Biao},
 	month = nov,
 	year = {2013},
-	keywords = {Hybrid systems, Jump / switching systems, Moving horizon estimation, Non-linear, State estimation},
+	keywords = {State estimation, Non-linear, Moving horizon estimation, Hybrid systems, Jump / switching systems},
 	pages = {3270--3281},
 	file = {Guo_and_Huang_Moving horizon estimation for switching nonlinear systems_2013.pdf:/Users/billtubbs/Documents/Zotero/ Guo_and_Huang_Moving horizon estimation for switching nonlinear systems_2013.pdf:application/pdf},
 }
@@ -1930,7 +1995,68 @@ The key variables that are controlled are slurry level in the sump, mass of mate
 	author = {Ma, Yanjun and Zhao, Shunyi and Huang, Biao},
 	month = apr,
 	year = {2019},
-	keywords = {Hybrid systems, Jump / switching systems, Multi-modal systems, Non-linear, Priority 1, State estimation, Status - to read, Variational Bayesian inference},
+	keywords = {Status - to read, Priority 1, State estimation, Non-linear, Multi-modal systems, Hybrid systems, Jump / switching systems, Variational Bayesian inference},
 	pages = {1679--1685},
 	file = {Ma_etal_Multiple-Model_State_Estimation_Based_on_Variational_Bayesian_Inference_2019.pdf:/Users/billtubbs/Documents/Zotero/Ma_etal_Multiple-Model_State_Estimation_Based_on_Variational_Bayesian_Inference_2019.pdf:application/pdf},
+}
+
+@article{desbiens_using_2008,
+	title = {Using {Process} {Control} to {Increase} the {Energy} {Efficiency} of {Mineral} and {Metal} {Processing} {Plants}},
+	volume = {28},
+	issn = {1710-2243},
+	url = {http://www.actapress.com/PaperInfo.aspx?paperId=33285},
+	doi = {10.2316/Journal.203.2008.2.203-3838},
+	abstract = {Because of globalization and international competition, mineral processing plant managers seek at reducing production costs. These plants are major energy consumers and therefore energy eﬃciency is becoming an important objective. Other incentives are the energy cost that will probably continue to rise and the environmental and social pressures for reducing energy consumption. Using more energy eﬃcient equipment is a ﬁrst approach. Better plant operation using on-line data processing, as described in this paper, is another way to improve energy eﬃciency. On-line data processing consists in using the measurements provided by sensors and the knowledge of the plant behaviour to automatically, continuously and adequately manipulate plant actuators. An ideal on-line data processing is made up of three hierarchic layers: process observation, process control and process optimization. The layers, their interaction and their energetic beneﬁts are described. Some case studies illustrate the energy eﬃciency improvements provided to mineral processing plants by using on-line data processing techniques.},
+	language = {en},
+	number = {2},
+	urldate = {2022-03-26},
+	journal = {International Journal of Power and Energy Systems},
+	author = {Desbiens, \{'A\}. and Nunez, E. and Villar, R. del and Hodouin, D. and Poulin, \{'E\}.},
+	year = {2008},
+	keywords = {Energy consumption, Grinding, Process control, Energy efficiency, Regulatory control, Mineral processing, PID control, Priority 2, Status - Partly read},
+	file = {Desbiens_etal_Using Process Control To Increase The Energy Efficiency Of Mineral And Metal Processing Plants_2008.pdf:/Users/billtubbs/Documents/Zotero/Desbiens_etal_Using Process Control To Increase The Energy Efficiency Of Mineral And Metal Processing Plants_2008.pdf:application/pdf},
+}
+
+@article{desbiens_distributed_1997,
+	title = {Distributed control at the {Kidd} {Creek} grinding plant. {Part} {II}: {Implementation}},
+	volume = {90},
+	issn = {0317-0926},
+	abstract = {During the summer of 1994, a new PID based control strategy was installed on line B of the grinding circuit at the Kidd Creek Division of Falconbridge Ltd. Part I of this paper described the methodology used to select the appropriate control strategy using a phenomenological dynamic simulator. Part II presents the implementation of the control strategy. Prior to the controller installation, it was necessary to solve various problems related to the process, such as a cyclic behaviour of the rod millfeedtonnage, a problem related to the mill water source and the calibration of the flowmeters. Once these problems were solved, the control strategy was accomplished in two steps. Step 1 corresponds to the installation of control loops to regulate the pump box level and the cyclone overflow density. Step 2 describes the implementation of a loop to control the cyclone feed density. According to Part I, a loop to control the circulating load is also part of the original design. However, reasons are given to explain the rejection of this loop. For both steps, technical procedures such as filtering, process identification and controller tuning are detailed. Finally, the operator’s interface is briefly described.},
+	language = {en},
+	number = {1008},
+	journal = {CIM bulletin},
+	author = {Desbiens, A and Flament, F and Pomerleau, A},
+	year = {1997},
+	keywords = {Grinding, Process control, Status - to read, Mineral processing, Priority 1},
+	pages = {145--150},
+	file = {Desbiens_etal_Distributed control at the Kidd Creek grinding plant Part II Implementation_1997.pdf:/Users/billtubbs/Documents/Zotero/Desbiens_etal_Distributed control at the Kidd Creek grinding plant Part II Implementation_1997.pdf:application/pdf},
+}
+
+@article{wigren_nonlinear_2022,
+	title = {Nonlinear {System} {Identification}: {Learning} {While} {Respecting} {Physical} {Models} {Using} a {Sequential} {Monte} {Carlo} {Method}},
+	volume = {42},
+	issn = {1066-033X, 1941-000X},
+	shorttitle = {Nonlinear {System} {Identification}},
+	url = {https://ieeexplore.ieee.org/document/9682628/},
+	abstract = {The identification of nonlinear systems is a challenging problem. Physical knowledge of a system can be used in the identification process to significantly improve the predictive performance by restricting the space of possible mappings from the input to the output. Typically, the physical models contain unknown parameters that must be learned from data. Classical methods often restrict the possible models or have to resort to approximations of the models that introduce biases. Sequential Monte Carlo methods enable learning without introducing any bias for a more general class of models. In addition, they can also be used to approximate a posterior distribution of the model parameters in a Bayesian setting. This article provides a general introduction to sequential Monte Carlo and shows how it naturally fits in system identification by giving examples of specific algorithms. The methods are illustrated on two systems: one consisting of two cascaded water tanks with possible overflow in both tanks, and one describing the spread of a mosquito-borne disease.},
+	language = {en},
+	number = {1},
+	urldate = {2022-03-26},
+	journal = {IEEE Control Systems},
+	author = {Wigren, Anna and Wagberg, Johan and Lindsten, Fredrik and Wills, Adrian G. and Schon, Thomas B.},
+	month = feb,
+	year = {2022},
+	keywords = {Priority 1, System identification, Status - Partly read, Particle filter, Non-linear, Monte Carlo methods, Sequential Monte Carlo},
+	pages = {75--102},
+	file = {Wigren_etal_Nonlinear_System_Identification_Learning_While_Respecting_Physical_Models_Using_a_Sequential_Monte_Carlo_Method_2022.pdf:/Users/billtubbs/Documents/Zotero/Wigren_etal_Nonlinear_System_Identification_Learning_While_Respecting_Physical_Models_Using_a_Sequential_Monte_Carlo_Method_2022.pdf:application/pdf},
+}
+
+@article{kalman_new_1961,
+	title = {A {New} {Approach} to {Liner} {Filtering} and {Prediction} {Problems}, {Transaction} of {ASME}},
+	volume = {83},
+	number = {1},
+	journal = {Journal of Basic Engineering},
+	author = {Kalman, RE},
+	year = {1961},
+	pages = {95--108},
 }
