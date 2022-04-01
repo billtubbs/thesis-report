@@ -1,11 +1,13 @@
 %% Produce figures for thesis report
+%
 
 clear all
 
-addpath("../process-observers/")
+addpath("~/process-observers/")
+addpath("~/ml-plot-utils/")
 
 % Sub-directories used
-plot_dir = 'plots';
+plot_dir = '../images';
 if ~isfolder(plot_dir)
     mkdir(plot_dir);
 end
@@ -17,22 +19,23 @@ set(groot, 'defaultLegendInterpreter','latex');
 
 %% PDF of shocks - MacGregor report
 
-% Probability density functions
-alpha = linspace(-3, 3, 601);
-p = normpdf(alpha);
-p0 = p(alpha == 0);
+% % Probability density functions
+% alpha = linspace(-3, 3, 301);
+% p = normpdf(alpha);
+% p0 = p(alpha == 0);
+% 
+% % Figure
+% figure(1); clf
+% plot(alpha, p, 'k-', 'Linewidth', 2); hold on
+% plot([0 0], [p0 p0+5], 'k-', 'Linewidth', 2);
+% ylim([0 p0+5])
+% xticks([0])
+% yticks([0])
+% xlabel('$\alpha(k)$', 'Interpreter', 'Latex')
+% ylabel('$P(\alpha(k))$', 'Interpreter', 'Latex')
+% set(gcf,'Position',[100 100 300 150])
+% save_fig_to_pdf(fullfile(plot_dir,'wpk-pdf-1'))
 
-% Figure
-figure(1); clf
-plot(alpha, p, 'k-', 'Linewidth', 2); hold on
-plot([0 0], [p0 p0+5], 'k-', 'Linewidth', 2);
-ylim([0 p0+5])
-xticks([0])
-yticks([0])
-xlabel('$\alpha(k)$', 'Interpreter', 'Latex')
-ylabel('$P(\alpha(k))$', 'Interpreter', 'Latex')
-set(gcf,'Position',[100 100 300 150])
-saveas(gcf,fullfile(plot_dir,'alpha-pdf-1.png'))
 
 %% PDF of shocks - Robertson report
 
@@ -43,8 +46,8 @@ sigma_w = [sigma1; sigma1*b];
 epsilon = 0.01;
 p_gamma = [1-epsilon; epsilon];
 
-% Conditional probability of w_i(k)
-wp = linspace(-2, 2, 401);
+% Conditional probability of w_p(k)
+wp = linspace(-2, 2, 201);
 p1 = prob_w_given_gamma(wp, 0, sigma_w);
 p2 = prob_w_given_gamma(wp, 1, sigma_w);
 
@@ -61,9 +64,11 @@ text(-1.3, 5.6, s, 'Interpreter', 'Latex')
 s = sprintf('$%s=%g$','b\sigma_w',sigma1*b);
 text(-1.3, 5, s, 'Interpreter', 'Latex')
 set(gcf,'Position',[100 300 300 200])
-saveas(gcf,fullfile(plot_dir,'alpha-pdfs-2.png'))
+save_fig_to_pdf(fullfile(plot_dir,'wpk-pdfs-2'))
 
-% Figure - multi-variable
+
+%% Figure - multi-variable
+
 figure(3); clf
 plot(wp, p1, 'Linewidth', 2); hold on
 plot(wp, p2, 'Linewidth', 2);
@@ -76,9 +81,10 @@ text(-1.3, 5.6, s, 'Interpreter', 'Latex')
 s = sprintf('$%s=%g$','b_i\sigma_i',sigma1*b);
 text(-1.3, 5, s, 'Interpreter', 'Latex')
 set(gcf,'Position',[100 500 300 200])
+save_fig_to_pdf(fullfile(plot_dir,'wpk-pdf-3'))
 
 
-% Total probability of w_i(k)
+%% Total probability of w_p(k)
 p = prob_w(wp, p_gamma, sigma_w);
 
 figure(4); clf
@@ -93,24 +99,39 @@ text_array = { ...
     sprintf('$%s=%g$','\epsilon', epsilon(1)) ...
 };
 text(-1.5, 25, text_array);
-set(gcf,'Position',[400 100 300 200])
-saveas(gcf,fullfile(plot_dir,'alpha-pdf-4.png'))
-saveas(gcf,fullfile(plot_dir,'alpha-pdf-4.svg'))
-saveas(gcf,fullfile(plot_dir,'alpha-pdf-4.eps'))
+ax1 = gca; % Store handle to axes 1.
 
-% Calculate how much density
+% Create smaller axes in top right, and plot on it
+% Store handle to axes 2 in ax2.
+% Re-calcuate conditional probability of w_p(k)
+wp2 = linspace(-0.1, 0.1, 101);
+p2 = prob_w(wp2, p_gamma, sigma_w);
+ax2 = axes('Position', [.62 .42 .22 .22]);
+box on;
+plot(wp2, p2, 'Linewidth', 2)
+xlim([-0.1 0.1]);
+ylim([-0 0.05]);
+grid on;
+annotation('arrow', [.6 .55], [.34 .2]);
+
+set(gcf,'Position',[400 100 300 200])
+save_fig_to_pdf(fullfile(plot_dir,'wpk-pdf-4'))
+
+
+%% Calculate how much density
 wp = linspace(-10, 10, 1001);  % use a finer scale
 p = prob_w(wp, p_gamma, sigma_w);
 i_center = find(wp == 0);
 
-% Conditional probability of gamma given w_i(k)
+
+%% Conditional probability of gamma given w_i(k)
 dist1 = makedist('Normal','mu',0,'sigma',0.01);
 dist2 = makedist('Normal','mu',0,'sigma',1);
 dx = 0.04;
 cum_density_total(dx, dist1, dist2, p_gamma);
 fun = @(dx) (cum_density_total(dx, dist1, dist2, p_gamma) - 0.99)^2;
 fun(dx)
-dx = fminsearch(fun, dx)
+dx = fminsearch(fun, dx);
 
 w = linspace(-3, 3, 601);
 p1 = prob_gamma_given_w(0, w, p_gamma, sigma_w);

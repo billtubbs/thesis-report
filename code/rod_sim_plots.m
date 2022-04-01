@@ -55,13 +55,22 @@ A = [1 0; 0 phi]; B = [1/(1-phi); -phi/(1-phi)]; C = [1 1]; D = 0;
 H = ss(A,B,C,D,Ts);
 Dt_exp = lsim(H,alpha,t);
 
+% 5. Combined steps and ramps
+rng(seed)
+p_shock2 = [p_shock; p_shock];
+sigma_alpha2 = [sigma_alpha; 0.01*sigma_alpha];
+alpha2 = sample_random_shocks([length(t) 2], p_shock2, sigma_alpha2);
+A = [1 1; 0 1]; B = [1 0; 0 1]; C = [1 0]; D = 0;
+H = ss(A,B,C,D,Ts);
+Dt_step_ramp = lsim(H,alpha2,t);
 
-%% Make plot figure
+
+%% Make plot figures
 
 figure(1); clf
 
 ax1 = subplot(4,1,1);
-make_tsplot(alpha, t, {'$\alpha(k)$'}, [], nan(2), '(a) Random shocks')
+make_tsplot(alpha, t, {'$w_p(k)$'}, [], nan(2), '(a) Random shocks')
 
 ax2 = subplot(4,1,2);
 make_tsplot(Dt_step, t, {'$p(k)$'}, [], nan(2), '(b) RODD step disturbance')
@@ -74,10 +83,16 @@ make_tsplot(Dt_exp, t, {'$p(k)$'}, '$t$', nan(2), ...
     '(d) RODD exponential change disturbance')
 
 linkaxes([ax1 ax2 ax3 ax4], 'x');
-
-% Save figure to image file
 set(gcf,'Position',[100 100 400 450])
-saveas(gcf,fullfile(plot_dir,'rod_gen_dist.png'))
+saveas(gcf,fullfile(plot_dir,'rodd_sim_plots.png'))
+%save_fig_to_pdf(fullfile(plot_dir,'rodd-sim-plots.pdf'))
+
+% Plot combined steps and ramps
+figure(2); clf
+make_tsplot(Dt_step_ramp, t, {'$p(k)$'})
+set(gcf,'Position',[100 625 400 150])
+saveas(gcf,fullfile(plot_dir,'rodd_sim_plot2.png'))
+%save_fig_to_pdf(fullfile(plot_dir,'rodd-sim-plot2.pdf'))
 
 
 %% Add measurement noise to data
@@ -92,10 +107,10 @@ Dt_step_M = Dt_step + V(:, 2);
 Dt_ramp_M = Dt_ramp + V(:, 3);
 Dt_exp_M = Dt_exp + V(:, 4);
 
-figure(2); clf
+figure(3); clf
 
 ax1 = subplot(4,1,1);
-make_tsplot(alpha_M, t, {'$\alpha(k)$'}, [], nan(2), '(a) Random shocks')
+make_tsplot(alpha_M, t, {'$\w_p(k)$'}, [], nan(2), '(a) Random shocks')
 
 ax2 = subplot(4,1,2);
 make_tsplot(Dt_step_M, t, {'$p(k)$'}, [], nan(2), '(b) RODD step disturbance')
@@ -111,11 +126,12 @@ linkaxes([ax1 ax2 ax3 ax4], 'x');
 
 % Save figure to image file
 set(gcf,'Position',[500 100 400 450])
-saveas(gcf,fullfile(plot_dir,'rod_gen_dist_m.png'))
+saveas(gcf,fullfile(plot_dir,'rodd_sim_plots_m.png'))
 
 % Save data to file
 data = table(t, alpha, Dt_step, Dt_ramp, Dt_exp, alpha_M, Dt_step_M, ...
     Dt_ramp_M, Dt_exp_M);
 filename = 'rod_sim_data.csv';
 writetable(data, fullfile(results_dir, filename))
-fprintf("Simulation data saved to '%s'", filename)
+fprintf("Simulation data saved to '%s'\n", filename)
+

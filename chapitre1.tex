@@ -3,7 +3,7 @@
 
 \section{Literature review – grinding process}
 
-This literature review is in two parts. The first part summarises previous work related to the dynamics of the grinding process, grinding process control, grinding process observers and common grinding process disturbances. The second part summarises more general research on industrial process disturbance models that could be applicable.
+This literature review is in two parts. The first part summarises past works related to the dynamics of grinding processes, grinding process control, grinding process observers, and grinding process disturbances. The second part summarises general research on industrial process disturbance models for process control.
 
 \subsection{Grinding process}
 
@@ -99,7 +99,7 @@ There is limited available data on actual ore variability in real operations, es
 
 A mineralogical simulation model of the grinding circuits was used to estimate the theoretical maximum possible throughput for each ore type while achieving the desired product specification. They found that the achievable throughput with the least competent ore was 4 times higher than that of the most competent. This illustrates the severe impact that ore properties can have on a grinding operation. However, in the actual operation, different ores are blended to reduce the variation in operating conditions. Liu also estimated the optimal mill speeds to process each ore and found that these ranged from 57.2\% to 64.9\% of critical speed. At these speeds, mill power consumption ranged from 7306 to 9511 kilowatts (a variation of -11\% to +15\% of the average). These results provide a rare insight into the relationship between two important ore properties and grinding process conditions. However, it is unclear how generalisable these results are to other operations.
 
-\textbf{TODO: Add a reference to hardness testing studies done by Kojovic et al. (e.g. at Anginco Eagle) and include ranges in hardness detected.  Maybe get hourly data too?}
+\textbf{TODO: Mention recent innovations in ore hardness testing and add a reference to HIT test studies done by Kojovic et al. (e.g. at Anginco Eagle) and maybe include range of variation in hardness measurements.}
 
 
 \section{Literature review – disturbance modelling}
@@ -108,7 +108,7 @@ A mineralogical simulation model of the grinding circuits was used to estimate t
 %\begin{itemize}
 %	\item Definition of a disturbance — unmanipulatable inputs to process.
 %	\item Measured v. unmeasured (and unpredictable)— measured disturbances can be incorporated in a feed-forward control.  Unmeasured disturbances must be estimated in order to reject them.
-%	\item Importance of considering disturbances in control system design.
+%	\item TODO: Importance of considering disturbances in control system design.
 %	\item Disturbance models and process observers.
 %	\item \textbf{Should this section go in Method chapter?}
 %	\item Two categories of disturbances: Infrequent, always-present.
@@ -119,7 +119,7 @@ A mineralogical simulation model of the grinding circuits was used to estimate t
 
 Few examples of academic work on characterising and modelling realistic industrial disturbances were found in the literature. Most of the literature on `disturbance models' or `disturbance characterisation' deals with the design of standard stochastic disturbance models, for example \cite{muske_disturbance_2002}, and \cite{pannocchia_robust_2003}, or is focussed mainly on detection and diagnosis of unexpected disturbances, see \cite{thornhill_advances_2007} for example. In fault or anomaly detection, models of the normal behaviour of the process are used to identify when an \textit{unmodelled} disturbance occurs. Therefore, a typical fault detection algorithm does not have a model of the actual disturbance and its operation is suspended once the disturbance occurs. In contrast, the goal of this work is to use disturbance models for state estimation in the presence of disturbances.
 
-Notable exceptions are some works on disturbances in specific applications such as wind power generation, vehicle suspension systems, and ship movement control. For example, \cite{papaefthymiou_mcmc_2008} used a Markov-chain Monte Carlo (MCMC) method to simulate wind speed for realistic dynamic simulations of renewable energy generation systems. Another interesting stochastic process model, known as the \textit{bounded random walk process}, was found in the literature on economic modelling \citep{nicolau_stationary_2002}.
+Notable exceptions are some works on disturbances in specific applications such as wind power generation, vehicle suspension systems, and ship movement control. For example, \cite{papaefthymiou_mcmc_2008} used a Markov-chain Monte Carlo (MCMC) method to simulate wind speed for realistic dynamic simulations of renewable energy generation systems. An interesting stochastic process model, known as the \textit{bounded random walk process} (BRW), was found in the literature on economic modelling \citep{nicolau_stationary_2002}. This is used to represent economic or financial variables that have upper and lower limits, such as interest rates.
 
 Nevertheless, a small number of research works deal with `realistic disturbances' (loosely defined) in continuous industrial processes. These are sometimes referred to as \textit{deterministic disturbances} to distinguish them from standard disturbance models based on stochastic noise models. One type of model in this category, which has received considerable attention, is described in the next section.
 
@@ -187,6 +187,19 @@ Due to the difficulties of MJLS model identification mentioned above, they bypas
 The \textit{hybrid dynamical system} is the most general definition, encompassing all dynamical systems which include both real-time (i.e. continuous) dynamics and discrete events \citep{van_der_schaft_introduction_2000}. As well as HMM-based models, it includes models with any other type of switching behaviour, such as those governed by logic.
 
 Many physical systems and processes exhibit discontinuous behaviour (i.e. non-smooth changes in states such as steps or ‘jumps’). Since they are ubiquitious in nature as well as in human-engineered systems, the topic has received considerable attention in recent decades \citep{sworder_boyd_1999, bemporad_identification_2001, costa_discrete-time_2005, camacho_model_2010, djemai_hybrid_2014, estrada_hybrid_2014, guo_moving_2013, botha_hybrid_2018, bemporad_fitting_2018, oliveira_iterative_2020, piga_estimation_2020}. Methods of modelling and estimating hybrid systems could be applied to industrial disturbances, which are as multifarious and complex as other systems of interest in this research field.
+
+\subsection{Non-linear system identification}
+
+Since the types of disturbance models of interest in industrial process control are non-linear, or utilise non-Gaussian probability density functions, standard linear system identification techniques are not applicable. The literature on non-linear system identification is extensive and covers a wide variety of classes of non-linear systems \cite{shoukens_nonlinear}. Indeed, the field extends well beyond its application to control systems.
+
+The central problem when a random variable input to a system is non-Gaussian, or when the system is non-linear, is that the posterior probability density distribution of the state and output variables may be non-Gaussian. In a discrete dynamical system, where the states are computed recursively over many time-steps, the analytical derivation of this posterior distribution becomes intractable, except in a few trivial cases (need reference).
+
+Therefore, most approaches to non-linear system identification tend to be numerical in nature and involve approximations of the probability density functions. For example, the Gaussian mixture model (GMM) is one technique used to represent complex probability distributions (need ref).
+
+% Note relevant:
+% The task is more difficult because there are innumerable possible non-linear model structures, whereas in linear system identification, there is a finite and usually moderate number of model structures from which to choose.
+
+
 
 TODO:
 \begin{itemize}
