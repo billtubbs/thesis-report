@@ -28,7 +28,7 @@ alpha1 = 3;
 alpha2 = 3;
 tau = 100;   % initial value x(0)
 
-% Simulation parameters
+% Simulation timesteps
 N = 1000;
 
 % Set initial state
@@ -135,7 +135,7 @@ grid on
 xlabel("$p(k)$", 'Interpreter', 'latex')
 ylabel("$\mathrm{Pr}(p(k))$", 'Interpreter', 'latex')
 ylim(axes_limits_with_margin(brw_pdf));
-set(gcf,'Position',[100 700 300 150])
+set(gcf,'Position',[100 525 300 150])
 %save2pdf(fullfile(plot_dir, 'brw_pdf.pdf'))
 
 
@@ -154,7 +154,7 @@ ylabel("$\mathrm{Pr}(p(k))$", 'Interpreter', 'latex')
 ylim(axes_limits_with_margin([rw_pdf' brw_pdf']));
 labels = {sprintf('RW ($k = %d$)', N), 'BRW ($k = \infty$)'};
 legend(labels, 'Interpreter', 'latex', 'location', 'south')
-set(gcf,'Position',[100 700 300 150])
+set(gcf,'Position',[100 750 300 150])
 save2pdf(fullfile(plot_dir, 'brw_pdf.pdf'))
 
 
@@ -168,13 +168,13 @@ function a = brw_reversion_bias(x, alpha1, alpha2, beta, tau)
 end
 
 
-function p = brwpdf(x, alpha1, alpha2, beta, tau, sigma)
+function p = brwpdf(x, alpha1, alpha2, beta, tau, sd_e)
 % This is the function 'a(x)' from Nicolau (2002) used in the
 % difference equation of the bounded random walk (BRW) 
 % (see Eq. 1 in the paper).
 % Note: beta is the 'k' parameter in Nicolau's paper.
 %
-    p = sigma^(-2) * exp( ...
-        -2 * exp(beta) / sigma^2 * (exp(-alpha1*(x - tau)) / alpha1 + exp(alpha2*(x - tau)) / alpha2) ...
+    p = sd_e^(-2) * exp( ...
+        -2 * exp(beta) / sd_e^2 * (exp(-alpha1*(x - tau)) / alpha1 + exp(alpha2*(x - tau)) / alpha2) ...
     );
 end
