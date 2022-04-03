@@ -154,20 +154,60 @@ The general HMM disturbance process is described by the following \textit{Markov
 	\end{split}
 \end{equation}
 
-Note that $\mathbf{e}_p(k)$ may also be a switching random variable. This is a very versatile stochastic model suitable for representing and simulating a diverse family of disturbances.
+As well as $\mathbf{w}_p(k)$, $\mathbf{e}_p(k)$ may also be a switching random variable. This is a versatile dynamic model suitable for representing and simulating a diverse family of disturbances.
 
 \subsection{Bounded random walk}
 
-\begin{outline}
-	\1 Describe bounded random walk process \citep{nicolau_stationary_2002}.
-	\1 This is an example of a non-Gaussian random variable.
-	\1 Mention motivation for use in financial modelling, e.g. interest rate is bounded.
-	\1 Note that in process control there are usually limits (upper and lower) to the feasible range of process variables.
-	\1 Equations to generate.
-	\1 Example - plot.
-	\1 Plot of probability density function used to bound differences.
-	\1 Pose question, how to design an observer for this type of disturbance? 
-\end{outline}
+The \textit{bounded random walk} (BRW) is a stochastic process proposed by \citep{nicolau_stationary_2002}. The discrete-time version has the difference equation
+
+\begin{equation} \label{eq:brw}
+		p(k+1) = p(k) + a(p(k)) + e(k)
+\end{equation}
+
+where $e(k)$ is a random noise with variance $\sigma_e^2$, and $a(p(k))$ is a function defined as
+
+\begin{equation}
+	a(x) = e^{\beta}\left(e^{-\alpha_{1}\left(x - \tau\right)} - e^{\alpha_{2}\left(x - \tau\right)}\right)
+\end{equation}
+
+where $\beta$, $\alpha_{1}$, and $\alpha_{2}$ are constants.  From (\ref{eq:brw}) it can be deduced that
+
+\begin{equation}
+	E(p(k+1)|p(k)) = p(k) + a(p(k)).
+\end{equation}
+
+Therefore $a(p(k))$ has the effect of an additive bias or adjustment to $p(k+1)$ which depends on $p(k)$. The shape of $a(x)$ depends on the constants. Figure \ref{fig:brw-a} shows $a(x)$ in the case where $\tau=100$, $\beta=-15$, $\alpha_{1}=3$, and $\alpha_{2}=3$.  From this, it is clear that in the vicinity of $x=\tau$, $a(x)\approx0$. When $a(p(k))=0$, (\ref{eq:brw}) is the equation for a random walk. However, outside a certain neighbourhood around $x=\tau$, $a(x)$ increases for low $x$ or decreases for high $x$. This has the effect of causing $p(k+1)$ to revert towards the mean ($\tau$) whenever $p(k)$ strays outside the neighbourhood. 
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[height=5cm]{images/brw_a.pdf}
+	\caption{A bounded random walk bias function}
+	\label{fig:brw-a}
+\end{figure}
+
+Figure \ref{fig:brw-sim} shows a simulation of a bounded random walk with the parameter values as above, and for comparison, an unbounded random walk (labelled `RW') generated with the same noise input. The dashed lines at $p(k)=95$ and $p(k)=105$ roughly indicate the location of the lower and upper bounds which the BRW only marginally exceeds.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[height=5cm]{images/brw_sim.pdf}
+	\caption{Examples of a bounded and unbounded random walk}
+	\label{fig:brw-sim}
+\end{figure}
+
+Unlike a simple random walk, the BRW is stationary. \cite{nicolau_stationary_2002} derived a formula for the form of the unconditional probability distribution of the continuous-time BRW. Figure \ref{fig:brw-pdf} shows the normalized stationary probability density with the same parameter values as above. For comparison, the probability density of a random walk process after 20 sample periods is also shown. It can be seen that there is a significant probability that the random walk would exceed the bounds of this BRW after 20 sample periods. It can also be seen that the central part of the probability distribution of the BRW is flat, indicating that all values within the bounds are equally likely after a large number of samples, similar to a uniform probability distribution.
+
+%\begin{equation}
+%	p_{BRW}(x) \propto \sigma^{-2} \exp \left\{-\frac{2 e^{k}}{\sigma^{2}}\left(\frac{e^{-\alpha_{1}(x-\tau)}}{\alpha_{1}}+\frac{e^{\alpha_{2}(x-\tau)}}{\alpha_{2}}\right)\right\}
+%\end{equation}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[height=5cm]{images/brw_pdf.pdf}
+	\caption{Probability distributions of bounded and unbounded random walks}
+	\label{fig:brw-pdf}
+\end{figure}
+
+One drawback of the BRW is that it has a non-Gaussian distribution, making analysis of the behaviour of any dynamical system with a BRW input difficult.
 
 \section{State estimation}
 
