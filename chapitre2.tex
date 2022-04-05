@@ -31,6 +31,16 @@ w_p(k) \sim
 	\end{cases*}
 \end{equation}
 
+When dealing with a system having more than one RODD, the notation is
+\begin{equation} \label{eq:wpik2}
+	w_{p,i}(k) \sim 
+	\begin{cases*}
+		\mathcal{N}\left(0, \sigma_{w_p,i}^2\right) & with probability $1-\epsilon_i$, \\
+		\mathcal{N}\left(0, b_i^2\sigma_{w_p,i}^2\right) & with probability $\epsilon_i$.
+	\end{cases*},
+\end{equation}
+where $i \in \left\{1, 2, ..., n_p\right\}$
+
 This approach was taken by \cite{robertson_detection_1995}. In this case, $\sigma_{w_p}$ represents the standard deviation of the noise in periods between random shocks and $b$ is typically large so that the magnitude of the shocks is much greater than the random noise that occurs in the periods between shocks.
 
 Figure \ref{fig:wpk-pdf} illustrates the probability density of $w_p$ in the case of (\ref{eq:wpk2}) with $\sigma_{w_p}=0.01$, $b=100$, and $\epsilon=0.01$. Although it is difficult to discern from the plot, this is a mixture distribution with two components. The component that generates the infrequent shocks is barely visible because of its low probability. In this example, 99 percent of the probability density lies within a narrow range (-0.036 < $w_p(k)$ < 0.036). However, the shocks, which occur with probability 0.01, have much higher amplitude ($b\sigma_{w_p}=1$).
@@ -156,7 +166,7 @@ The general HMM disturbance process is described by the following \textit{Markov
 
 As well as $\mathbf{w}_p(k)$, $\mathbf{e}_p(k)$ may also be a switching random variable. This is a versatile dynamic model suitable for representing and simulating a diverse family of disturbances.
 
-\subsection{Bounded random walk}
+\subsection{Bounded disturbances}
 
 The \textit{bounded random walk} (BRW) is a stochastic process proposed by \citep{nicolau_stationary_2002}. The discrete-time version has the difference equation
 
@@ -207,11 +217,19 @@ Unlike a simple random walk, the BRW is stationary. \cite{nicolau_stationary_200
 	\label{fig:brw-pdf}
 \end{figure}
 
-One drawback of the BRW is that it has a non-Gaussian distribution, making analysis of the behaviour of any dynamical system with a BRW input difficult.
+However, the BRW as described by (\ref{eq:brw}) is not guaranteed to be stable.  For extreme values of $p(k)$, $|a(p(k))|$ may be greater than $2|p(k)|$.  This means that $|p(k)|$ will increase rapidly, leading to numerical errors in any practical implementation.  To avoid this, \cite{nicolau_stationary_2002} recommends implementing a regularity condition,
+\begin{equation} \label{eq:brw-reg}
+	p(k+1) = \tau + \phi(p(k) - \tau) + e(k), \quad \text { if }\left|a(p(k))\right| \geq 2\left|p(k)-\tau\right|,
+\end{equation}
+where $\phi$ is a constant such that $0<\phi<1$. The size of $\phi$ determines how fast $p(k)$ reverts to $\tau$, the stationary mean of the BRW, when it is outside the stable region.
+
+One drawback of the BRW is that it has a non-Gaussian distribution, making analysis of the properties of any dynamical system with a BRW input difficult.
 
 \section{State estimation}
 
-State estimation is the task of estimating the values of the state variables of a dynamic model of a system given a set of measurements from the true system. In process control applications, state estimates are required online (i.e. in real time), in order to provide the best estimate of the states at the current time, or a prediction of them at the next time instant, based on the available measurements. Consider the input-output system represented in Figure \ref{fig:model_diag_uwvy}. Here, $\mathbf{u}(k) \in \mathbb{R}^{n_u}$ is a vector of measured input variables, $\mathbf{w}(k) \in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^n$ is a vector of output disturbances, and $\mathbf{y}(k) \in \mathbb{R}^{n_y}$ is the vector of output variables. The box represents a mathematical model that relates the inputs to the outputs.
+State estimation is the task of estimating the values of the state variables of a dynamic model of a real system given a set of measurements from the system. In process control applications, state estimates are required online (i.e. in real time), in order to provide the best estimate of the states at the current time, or a prediction of them at the next time instant, based on the available measurements.
+
+Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, $\mathbf{u}(k) \in \mathbb{R}^{n_u}$ is a vector of measured input variables at time instant $k$, $\mathbf{w}(k) \in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of output disturbances or measurement errors, and $\mathbf{y}(k) \in \mathbb{R}^{n_y}$ is the vector of output variables. The box represents the mathematical model which relates the inputs to the outputs.
 
 \begin{figure}[htp]
 	\centering
@@ -220,7 +238,7 @@ State estimation is the task of estimating the values of the state variables of 
 	\label{fig:model_diag_uwvy}
 \end{figure}
 
-The most convenient form in which to represent discrete, linear, time-invariant, dynamical system models for state estimation and control purposes, is the state-space representation
+The most convenient form in which to represent discrete-time, linear, time-invariant, dynamical system models for state estimation and control purposes, is the state-space representation
 
 \begin{equation} \label{eq:ss_rep_uwy}
 	\begin{aligned}
@@ -229,27 +247,27 @@ The most convenient form in which to represent discrete, linear, time-invariant,
 	\end{aligned}
 \end{equation}
 
-where $\mathbf{x}(k) \in \mathbb{R}^n$ is a vector of state variables at time instant $k$, $\mathbf{A} \in \mathbb{R}^{n \times n}$ is the state transition matrix, $\mathbf{B} \in \mathbb{R}^{n \times n_u}$ is the input matrix, $\mathbf{C} \in \mathbb{R}^{n \times n}$ is the output matrix.
+where $\mathbf{x}(k) \in \mathbb{R}^n$ is a vector of state variables, $\mathbf{A} \in \mathbb{R}^{n \times n}$ is the state transition matrix, $\mathbf{B} \in \mathbb{R}^{n \times n_u}$ is the input matrix, $\mathbf{C} \in \mathbb{R}^{n_y \times n}$ is the output matrix.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=8cm]{images/model_diag_upwvy.pdf}
-	\caption{System model with disturbances and manipulatable inputs}
+	\caption{System model with disturbance inputs and manipulatable inputs}
 	\label{fig:model_diag_upwvy}
 \end{figure}
 
-The \textit{Kalman filter} is the optimal estimator for a linear system in which the unmeasured disturbances are Gaussian random variables \citep{kalman_new_1961}. The predictions of the states at the next time instant, $k+1$, calculated at the current time $k$, are given by
+The \textit{Kalman filter} \citep{kalman_new_1961} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables. The predictions of the states at the next time instant, $k+1$, calculated at the current time $k$, are given by
 \begin{equation} \label{eq:xkp1_hat}
 	\mathbf{\hat{x}}(k+1/k) = \mathbf{A} \mathbf{\hat{x}}(k/k-1) + \mathbf{B}\mathbf{u}(k) + 
 	\mathbf{K}(k)\left[\mathbf{y}(k) - \mathbf{C} \mathbf{\hat{x}}(k/k-1)\right],
 \end{equation}
-where $\mathbf{\hat{x}}(k/k-1)$ is the previous prediction of the states at the current time, calculated in the previous time instant, $\mathbf{y}(k)$ is the current measurement of the output of the system, and $\mathbf{K}(k)$ is a correction gain matrix.
+where $\mathbf{\hat{x}}(k/k-1)$ is the previous prediction of the states at the current time, calculated in the previous time instant, $\mathbf{y}(k)$ is the current measurement of the output, and $\mathbf{K}(k) \in \mathbb{R}^{n \times n_y}$ is a correction gain matrix. An intuitive interpretation of the Kalman filter is that it iteratively updates the state estimates based on the difference between the output predicted by the system model, $\mathbf{C} \mathbf{\hat{x}}(k/k-1)$, and the output measurement ${y}(k)$.
 
-In the case of a steady-state Kalman filter, $\mathbf{K}(k)$ is constant (time-invariant), however, in general, it is updated each time step using
+In the case of a steady-state Kalman filter, $\mathbf{K}(k)$ is constant (time-invariant). However, in general, it is calculated at each time step using
 \begin{equation} \label{eq:Kk}
 	K(k) = \mathbf{A}\mathbf{P}(k/k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}(k/k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
 \end{equation}
-where $\mathbf{P}(k/k-1)$ is the estimation error covariance matrix calculated in the previous time instant, and $\mathbf{R}$ is the covariance matrix of the measurement noises
+where $\mathbf{P}(k/k-1)$ is the estimation error covariance matrix calculated in the previous time instant, and $\mathbf{R}$ is the covariance matrix of the measurement noises,
 \begin{equation} \label{eq:R}
 	\mathbf{R} = E\{ \mathbf{v}(k) \mathbf{v}^\intercal(k) \}.
 \end{equation}
@@ -258,17 +276,16 @@ $\mathbf{P}(k/k-1)$ is updated every time step using
 \begin{multline} \label{eq:Pk}
 	\mathbf{P}(k+1/k) = \\ \mathbf{A}\big[\mathbf{P}(k/k-1)
 	- \mathbf{P}(k/k-1)\mathbf{C}^\intercal\big(\mathbf{C}\mathbf{P}(k/k-1)\mathbf{C}^\intercal + 
-	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}(k/k-1) \big]\mathbf{A}^\intercal + \mathbf{Q} \\
+	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}(k/k-1) \big]\mathbf{A}^\intercal + \mathbf{Q},
 \end{multline}
-where $\mathbf{Q}$ is the covariance matrix of the state disturbances
+where $\mathbf{Q}$ is the covariance matrix of estimation errors,
 \begin{equation} \label{eq:Q}
 	\mathbf{Q} = E\{ \mathbf{w}(k) \mathbf{w}^\intercal(k) \}.
 \end{equation}
 
-The Kalman filter estimates, $\mathbf{\hat{x}}(k+1/k)$, can be calculated recursively online, starting at time $k=0$, using (\ref{eq:xkp1_hat}), (\ref{eq:Kk}) and (\ref{eq:Pk}), provided that initial values of the state estimates $\mathbf{\hat{x}}(0)$, and process disturbance covariance matrix $\mathbf{P}(0)$, are available.
+The state estimates, $\mathbf{\hat{x}}(k+1/k)$, are calculated recursively online, starting at time $k=0$, using (\ref{eq:xkp1_hat}), (\ref{eq:Kk}) and (\ref{eq:Pk}), provided that initial values of the state estimates, $\mathbf{\hat{x}}(0)$, and estimation error covariance matrix $\mathbf{P}(0)$, are available.
 
-In the case where the system has disturbance inputs, $\mathbf{p}(k) \in \mathbb{R}^{n_p}$, as shown in Figure \ref{fig:model_diag_upwvy}, the state space equations are modified to include these and the input matrix is split into two matrices, $\mathbf{B}_u \in \mathbb{R}^{n \times n_u}$ and $\mathbf{B}_p \in \mathbb{R}^{n \times n_p}$
-
+In the case where the system has additional disturbance inputs, $\mathbf{p}(k) \in \mathbb{R}^{n_p}$, as shown in Figure \ref{fig:model_diag_upwvy}, the state-space equations are modified to include these and the input matrix is split into two, $\mathbf{B}_u \in \mathbb{R}^{n \times n_u}$ and $\mathbf{B}_p \in \mathbb{R}^{n \times n_p}$,
 \begin{equation} \label{eq:ss_rep_upwy}
 	\begin{aligned}
 		\mathbf{x}(k+1) = \mathbf{A} \mathbf{x}(k) + \mathbf{B}_u \mathbf{u}(k) + \mathbf{B}_p \mathbf{p}(k) + \mathbf{w}(k), \\
@@ -276,7 +293,7 @@ In the case where the system has disturbance inputs, $\mathbf{p}(k) \in \mathbb{
 	\end{aligned}
 \end{equation}
 
-For state estimation in the presence of disturbances, a model of the disturbances is also needed. This additional model is shown in Figure \ref{fig:model_diag_wpupwvy} with an additional set of random variables $\mathbf{w}_p(k)$ as its input.
+For state estimation in the presence of disturbances, which is always the case in practice, a suitable model of the disturbances is needed. This additional model is shown in Figure \ref{fig:model_diag_wpupwvy} with an additional set of random variables $\mathbf{w}_p(k)$ at its input.
 
 \begin{figure}[htp]
 	\centering
@@ -285,24 +302,23 @@ For state estimation in the presence of disturbances, a model of the disturbance
 	\label{fig:model_diag_wpupwvy}
 \end{figure}
 
-A state-space representation of the combined system including all the disturbances can be constructed. This will be referred to as the \textit{augmented model},
+A state-space representation of the combined system including the disturbance model can be constructed. This will be referred to as the \textit{augmented model},
 \begin{equation} \label{eq:ss_rep_xa}
 	\begin{aligned}
 		\mathbf{x}_a(k+1) = \mathbf{A}_a \mathbf{x}_a(k) + \mathbf{B}_{a,u} \mathbf{u}(k) + \mathbf{B}_{a,w} \mathbf{w}_{a}(k), \\
-		\mathbf{y}(k) = \mathbf{C}_a \mathbf{x}_a(k) + \mathbf{v}(k).
+		\mathbf{y}(k) = \mathbf{C}_a \mathbf{x}_a(k) + \mathbf{v}(k),
 	\end{aligned}
 \end{equation}
-
-where $\mathbf{x}_a(k) \in \mathbb{R}^{n+n_d}$ is an augmented state vector which includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_d}$ is an augmented vector of all the random variables for the combined disturbance model (i.e. $\mathbf{w}_p(k)$ and $\mathbf{w}(k)$ combined).
+where $\mathbf{x}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented state vector which includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables (i.e. $\mathbf{w}(k)$ and $\mathbf{w}_p(k)$ combined).
 
 
 \subsection{Multiple model approaches}
 
-As mentioned in Section \ref{chap-lit-review}, RODDs pose problems for state estimation using standard Kalman filters due to the switching of the noise model parameters ($\sigma_{w_p}$ and $b$$\sigma_{w_p}$). As explained by \cite{robertson_detection_1995}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
+Although the switching of the RODD is unmeasured, it may be observable from the measurements of the outputs of the system. However, as mentioned in Section \ref{chap-lit-review}, systems with RODDs pose problems for state estimation using standard Kalman filters due to the switching of the noise model parameters, namely, the variance of $w_p(k)$ (\ref{eq:wpk2}). As explained by \cite{robertson_detection_1995}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
 
-When the switching parameter is not observable, a so-called \textit{multiple-model approach} may be considered \citep{buxbaum_recursive_1970, jaffer_estimation_1971}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current state. An independent Kalman filter is maintained for each hypothesis and a weighted average of the filter estimates is calculated using the conditional probabilities of each hypothesis given current and past observations.
+Alternatively, a so-called \textit{multiple-model approach} may be considered \citep{buxbaum_recursive_1970, jaffer_estimation_1971}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current states. To achieve this, an independent Kalman filter is maintained for each hypothesis and a weighted average of the estimates by each filter is calculated using the conditional probabilities of each hypothesis given current and past measurements.
 
-Let the number of Kalman filters be $n_f$ and the shock occurrence hypothesis associated with Kalman filter $f$ at time instant $k$ be
+Let the number of Kalman filters be $n_f$ and the \textit{shock occurrence hypothesis} associated with Kalman filter $f$ at time instant $k$ be
 \begin{equation} \label{eq:gammak}
 	\gamma_{f}(k) \in \left\{0, 1 \right\} \forall{k \ge 0}.
 \end{equation}
@@ -542,14 +558,14 @@ Outline notes:
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=8.5cm]{images/sag-circuit-diag.pdf}
+	\includegraphics[width=11cm]{images/sag-circuit-diag.pdf}
 	\caption{Simplified process flow diagram}
 	\label{fig:sag-diag}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=8cm]{images/coarse_fine_psd_plot.pdf}
+	\includegraphics[width=9cm]{images/coarse_fine_psd_plot.pdf}
 	\caption{Ore particle size distributions}
 	\label{fig:coarse_fine_psd_plot}
 \end{figure}
