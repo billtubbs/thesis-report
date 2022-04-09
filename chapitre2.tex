@@ -22,7 +22,7 @@ w_p(k) \sim
 \end{equation}
 may be used, where $w_p(k)$ is either 0 or is sampled from a normal distribution.  When the probability $\epsilon$ is low ($\epsilon<<1$), this system produces \textit{infrequent shocks}.
 
-Alternatively, a mixture of two distributions may be used:
+Alternatively, a mixture of two distributions may be used \citep{robertson_detection_1995}:
 \begin{equation} \label{eq:wpk2}
 w_p(k) \sim 
 	\begin{cases*}
@@ -31,19 +31,9 @@ w_p(k) \sim
 	\end{cases*}
 \end{equation}
 
-When dealing with a system having more than one RODD, the notation is
-\begin{equation} \label{eq:wpik2}
-	w_{p,i}(k) \sim 
-	\begin{cases*}
-		\mathcal{N}\left(0, \sigma_{w_p,i}^2\right) & with probability $1-\epsilon_i$, \\
-		\mathcal{N}\left(0, b_i^2\sigma_{w_p,i}^2\right) & with probability $\epsilon_i$.
-	\end{cases*},
-\end{equation}
-where $i \in \left\{1, 2, ..., n_p\right\}$
+In this formulation, $\sigma_{w_p}$ represents the standard deviation of the noise in periods between random shocks and $b$ is typically large so that the magnitude of the shocks is many times greater than $\sigma_{w_p}$. One benefit of (\ref{eq:wpk2}) is that the distribution of $w_p(k)$ is conditionally Gaussian, whereas in (\ref{eq:wpk1}) it has a non-smooth (i.e. degenerate) probability density function.
 
-This approach was taken by \cite{robertson_detection_1995}. In this case, $\sigma_{w_p}$ represents the standard deviation of the noise in periods between random shocks and $b$ is typically large so that the magnitude of the shocks is much greater than the random noise that occurs in the periods between shocks.
-
-Figure \ref{fig:wpk-pdf} illustrates the probability density of $w_p$ in the case of (\ref{eq:wpk2}) with $\sigma_{w_p}=0.01$, $b=100$, and $\epsilon=0.01$. Although it is difficult to discern from the plot, this is a mixture distribution with two components. The component that generates the infrequent shocks is barely visible because of its low probability. In this example, 99 percent of the probability density lies within a narrow range (-0.036 < $w_p(k)$ < 0.036). However, the shocks, which occur with probability 0.01, have much higher amplitude ($b\sigma_{w_p}=1$).
+Figure \ref{fig:wpk-pdf} illustrates the probability density of $w_p(k)$ in the case of (\ref{eq:wpk2}) with $\sigma_{w_p}=0.01$, $b=100$, and $\epsilon=0.01$. Although it is difficult to discern from the plot, this is a mixture distribution with two components. The component that generates the infrequent shocks is barely visible because of its low probability. In this example, 99 percent of the probability lies within a narrow range (-0.036 < $w_p(k)$ < 0.036). However, the shocks, which occur with probability 0.01, have much higher amplitude ($b\sigma_{w_p}=1$).
 
 \begin{figure}[htp]
 	\centering
@@ -52,6 +42,16 @@ Figure \ref{fig:wpk-pdf} illustrates the probability density of $w_p$ in the cas
 	\label{fig:wpk-pdf}
 \end{figure}
 
+When dealing with a system having more than one RODD, where each random shock is independent, the notation is
+\begin{equation} \label{eq:wpik2}
+	w_{p,i}(k) \sim 
+	\begin{cases*}
+		\mathcal{N}\left(0, \sigma_{w_p,i}^2\right) & with probability $1-\epsilon_i$, \\
+		\mathcal{N}\left(0, b_i^2\sigma_{w_p,i}^2\right) & with probability $\epsilon_i$.
+	\end{cases*},
+\end{equation}
+where $i \in \left\{1, 2, ..., n_p\right\}$.
+
 The choice of $A(q^{-1})$ and $B(q^{-1})$ in (\ref{eq:RODD}) determines the nature of the RODD. For example, if $B(q^{-1})=1$ and $A(q^{-1})=1-q^{-1}$, $p(k)$ will be a random-walk process with infrequent, large step changes.
 
 Denoting $\nabla=1-q^{-1}$, the RODD \textit{step-disturbance} process can be defined as
@@ -59,7 +59,7 @@ Denoting $\nabla=1-q^{-1}$, the RODD \textit{step-disturbance} process can be de
 	p(k)= \frac{1}{\nabla}w_p(k)
 \end{equation}
 
-A RODD \textit{ramp-disturbance} consisting of a series of ramps with randomly-occurring changes in slope may be generated using
+A RODD \textit{ramp-disturbance}, consisting of a series of ramps with randomly-occurring changes in slope, may be generated using
 \begin{equation} \label{eq:RODD-ramp}
 	p(k)= \frac{1}{\nabla^2}w_p(k).
 \end{equation}
@@ -217,17 +217,23 @@ Unlike a simple random walk, the BRW is stationary. \cite{nicolau_stationary_200
 	\label{fig:brw-pdf}
 \end{figure}
 
-However, the BRW as described by (\ref{eq:brw}) is not guaranteed to be stable.  For extreme values of $p(k)$, $|a(p(k))|$ may be greater than $2|p(k)|$.  This means that $|p(k)|$ will increase rapidly, leading to numerical errors in any practical implementation.  To avoid this, \cite{nicolau_stationary_2002} recommends implementing a regularity condition,
+However, the BRW as described by (\ref{eq:brw}) is not guaranteed to be stable.  For extreme values of $p(k)$, $|a(p(k))|$ may be greater than $2|p(k)|$.  This means that $|p(k)|$ will increase rapidly, leading to numerical errors in any practical implementation.  To avoid this, \cite{nicolau_stationary_2002} recommends adding a conditional regularizing step which causes reversion towards the mean, $\tau$, when the correction bias is too large. Instead of (\ref{eq:brw}), the conditional difference equation
 \begin{equation} \label{eq:brw-reg}
-	p(k+1) = \tau + \phi(p(k) - \tau) + e(k), \quad \text { if }\left|a(p(k))\right| \geq 2\left|p(k)-\tau\right|,
+	p(k+1) = \begin{cases*}
+		p(k) + a(p(k)) + e(k) & if $\left|a(p(k)) \right| < 2\left| p(k) - \tau \right|$, \\
+		\tau + \phi(p(k) - \tau) + e(k) & if $\left|a(p(k)) \right| \geq 2\left| p(k) - \tau \right|$
+	\end{cases*}
 \end{equation}
-where $\phi$ is a constant such that $0<\phi<1$. The size of $\phi$ determines how fast $p(k)$ reverts to $\tau$, the stationary mean of the BRW, when it is outside the stable region.
+is used, where $\phi$ is a constant such that $0<\phi<1$. The size of $\phi$ determines how fast $p(k)$ reverts to $\tau$, the stationary mean of the BRW, when it is outside the stable region.
 
-One drawback of the BRW is that it has a non-Gaussian distribution, making analysis of the properties of any dynamical system with a BRW input difficult.
+Since the BRW has a non-Gaussian probability distribution, analysis of the properties of any dynamical system with a BRW input is difficult. However, for simulation purposes, the BRW is a simple and practical solution to the problem of bounding a random variable.
+
+The BRW concept can easily be extended to RODDs. For example, a RODD step disturbance (\ref{eq:RODD-step}) is a random walk with a switching noise variance (\ref{eq:wpk2}). The concern when trying to bound this disturbance is the large step change that occurs infrequently. Since the probability of the shock, as well as the sign and amplitude of the step, are independent random variables, a RODD step disturbance that happens to be at one of the bounds is as likely to step outside the bound as it is to step back inside the bounded region. Therefore, the conditional regularity used in the BRW (\ref{eq:brw-reg}) is even more important.
+
 
 \section{State estimation}
 
-State estimation is the task of estimating the values of the state variables of a dynamic model of a real system given a set of measurements from the system. In process control applications, state estimates are required online (i.e. in real time), in order to provide the best estimate of the states at the current time, or a prediction of them at the next time instant, based on the available measurements.
+State estimation is the task of estimating the values of the state variables of a dynamic model of a system given a set of measurements from the system. In process control applications, state estimates are required online (i.e. in real time), in order to provide the best possible estimate of the states at the current time (or a prediction of their values at the next time instant) in order to calculate an appropriate control action.
 
 Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, $\mathbf{u}(k) \in \mathbb{R}^{n_u}$ is a vector of measured input variables at time instant $k$, $\mathbf{w}(k) \in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of output disturbances or measurement errors, and $\mathbf{y}(k) \in \mathbb{R}^{n_y}$ is the vector of output variables. The box represents the mathematical model which relates the inputs to the outputs.
 
@@ -383,8 +389,8 @@ and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicato
 \begin{equation} \label{eq:init_Q}
 	\mathcal{Q}(\gamma_f(k)) = 
 	\begin{cases*}
-		\mathbf{Q}_0 & if $\gamma_f(k)=0$, \\
-		\mathbf{Q}_1 & if $\gamma_f(k)=1$.
+		\mathbf{Q}_0 & \text{if} $\gamma_f(k)=0$, \\
+		\mathbf{Q}_1 & \text{if} $\gamma_f(k)=1$.
 	\end{cases*}
 \end{equation}
 
@@ -490,8 +496,6 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 \end{itemize}
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
-
-Unlike the random shock signal defined by \cite{macgregor_duality_1984}, Robertson and co. use a signal that is sampled from one of two normal distributions, one with a low variance and the other with a much higher variance. This means that the probability density of the shock signal is conditionally Gaussian, whereas the shock signal used by MacGregor and co. has a non-smooth (i.e. degenerate) probability density function.
 
 Robertson and co. propose a combination of three approximation techniques in their RODD state estimator design. Firstly, they assume that the exact timing of the random shock is not important and consider \textit{detection intervals} of more than one sample period during a shock could have occurred. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. Secondly, they rely on the fact that the random shocks occur infrequently and thus more than two (or some low number) of shocks are unlikely to occur in the same detection interval. This further reduces the number of filters required, especially in systems subject to multiple independent disturbances. 
 
