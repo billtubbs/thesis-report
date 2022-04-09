@@ -354,7 +354,7 @@ The conditional probability densities of the measurements $\mathbf{y}(k)$ are ap
 	p(\mathbf{y(k)} \mid \Gamma_f(k), \mathbf{Y}(k-1)) \approx
 	\mathcal{N}\left(\mathbf{y}(k), \mathbf{C} \mathbf{\hat{x}}_{f}(k/k-1), \mathbf{C} \mathbf{P}_f(k/k-1) \mathbf{C}^\intercal+\mathbf{R}\right)
 \end{equation}
-where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k/k-1)$ and $\mathbf{P}_f(k/k-1)$ are the state estimates and estimate covariances of each Kalman filter at the previous timestep, and $\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$ is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
+where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k/k-1)$ and $\mathbf{P}_f(k/k-1)$ are the state estimates and estimate covariances of each Kalman filter at the previous time step, and $\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$ is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
 
 The estimate of the probability of the shock sequence $\Gamma_f(k)$ given the data up to time $k$ is
 \begin{equation} \label{eq:Pr_Gammak_given_Yk}
@@ -493,15 +493,36 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 
 Unlike the random shock signal defined by \cite{macgregor_duality_1984}, Robertson and co. use a signal that is sampled from one of two normal distributions, one with a low variance and the other with a much higher variance. This means that the probability density of the shock signal is conditionally Gaussian, whereas the shock signal used by MacGregor and co. has a non-smooth (i.e. degenerate) probability density function.
 
-Robertson and co. propose a combination of three approximation techniques in their RODD state estimator design. Firstly, they assume that the exact timing of the random shock is not important and consider \textit{detection intervals} of more than one sample period during a shock could have occurred. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. Secondly, they rely on the fact that the random shocks occur infrequently and thus more than two (or some low number) of shocks are unlikely to occur in the same detection interval. This further reduces the number of filters required, especially in systems subject to multiple independent disturbances. 
+\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation involving three different approximations. The first is referred to as \textit{sequence fusion} or the \textit{generalized pseudo-Bayes algorithm} \citep{jaffer_estimation_1971, buxbaum_recursive_1970, tugnait_detection_1982}. This is based on the assumption that only recent differences in the shock hypothesis sequences affect the state estimates. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the length of the unique sequences which must be maintained is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable}
 
-The third approximation is referred to as \textit{sequence fusion} or the \textit{generalized pseudo-Bayes algorithm} \citep{jaffer_estimation_1971, buxbaum_recursive_1970, tugnait_detection_1982}. This is based on the assumption that only differences in the recent values of the shock indicator sequence affect the state estimates. Therefore, sequences whose last $f$ terms are the same can be combined. In other words, the length of the unique sequences which must be maintained is limited to the previous $f$ sample periods.
+Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which a shock may have occurred. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods.
 
-The first is based on the assumption that correctly estimating the exact timing of the random shocks is not important and therefore a filter that assumes a shock occurred within a short period close to the actual occurrence will be adequate. This is based on the observation that when the correction gain of a Kalman filter is increased at time $k$ due to the assumption of a shock occurrence, it tends to remain large for several sample periods thereafter.
+Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $m$ shocks may have occurred during the fusion horizon is low, where $m$ may be 1 or a low number depending on $\epsilon$ and $f$. This further reduces the number of filters required.
 
-The second approximation is based on the assumption that the random shocks occur infrequently and it is quite unlikely that two or more shocks occur within a short time period. This further reduces the number of filters required, especially in systems subject to multiple independent disturbances.
+To illustrate this sequence fusion procedure, consider a simple example. Suppose there is only one RODD to estimate and that the unknown shock sequence includes one shock at time $k=4$, as illustrated in the diagram in Figure \ref{fig:mm-obs-seq-rob1}. To estimate this RODD, suppose a sequence fusion algorithm is used with a detection interval of $d=3$, and the maximum number of shocks over the fusion horizon is $m=1$. The lower part of the diagram shows the four hypotheses that would be required in this case.  Note that hypothesis 1 assumes no shocks at any time.  After $f=9$ sample periods the sequences repeat indefinitely.  Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$ etc. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$ etc.
 
-The third approximation is referred to as \textit{filter fusion} or the \textit{generalized pseudo-Bayes algorithm} \cite{jaffer_estimation_1971, buxbaum_recursive_1970, tugnait_detection_1982}. This is based on the assumption that only differences in the recent values of the shock indicator sequence affect the state estimates. Therefore, sequences whose last $f$ terms are the same can be combined. In other words, the length of the unique sequences which must be maintained is limited to the previous $f$ sample periods.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15cm]{images/mm_obs_seq_rob1.pdf}
+	\caption{Sequence pruning hypotheses example 1}
+	\label{fig:mm-obs-seq-rob1}
+\end{figure}
+
+If the algorithm performs well, the estimated most likely hypothesis at times $k=0,1,2,3$ should be hypothesis 1. At time $k=4$, or soon thereafter, the estimated most likely hypothesis should switch to hypothesis 3 because this assumes a shock occurred at $k=3$, which is close to when it did.
+
+Figure \ref{fig:mm-obs-seq-rob2} illustrates an example of the hypotheses of the sequence pruning algorithm with $m=2$ and a longer detection interval, $d=5$.  As in the previous example, the estimated most likely hypothesis at time $k=4$, or soon thereafter, should be hypothesis 3 because it assumes only one shock, close to when the shock actually occurred.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15cm]{images/mm_obs_seq_rob2.pdf}
+	\caption{Sequence pruning hypotheses example 2}
+	\label{fig:mm-obs-seq-rob2}
+\end{figure}
+
+\cite{robertson_detection_1995} describe a systematic procedure to choose $f$, $d$, and $m$, and provide a formula to calculate the total probability of the modelled hypotheses. They recommend that this should be at least 0.99 to ensure that only low-probability hypothesis are excluded.
+
+
+
 
 \subsubsection{Sequence pruning} \label{subsec-pruning}
 
