@@ -497,9 +497,25 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation involving three different approximations. The first is referred to as \textit{sequence fusion} or the \textit{generalized pseudo-Bayes algorithm} \citep{jaffer_estimation_1971, buxbaum_recursive_1970, tugnait_detection_1982}. This is based on the assumption that only recent differences in the shock hypothesis sequences affect the state estimates. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the length of the unique sequences which must be maintained is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable}
+\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation involving three different approximations. The first is referred to as \textit{sequence fusion} or the \textit{generalized pseudo-Bayes algorithm} \citep{jaffer_estimation_1971, buxbaum_recursive_1970, tugnait_detection_1982}. This is based on the assumption that only recent differences in the shock hypothesis sequences affect the state estimates. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be maintained is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable}
 
-Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which a shock may have occurred. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods.
+Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. The probability of no random shock during a detection interval of length $d$ sample times is therefore
+\begin{equation} \label{eq:p_gamma}
+	\epsilon_d = (1 - \epsilon)^d,
+\end{equation}
+and the probabilities of the random shock at all sample times are redefined as
+\begin{equation} \label{eq:Pr_gamma_nd}
+	\begin{aligned}
+		\Pr\left(\gamma_{f}(k)=0\right) = \begin{cases*}
+			\epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
+			1 & \text { for } $k \ne d, 2d, \ldots$
+		\end{cases*} \\
+		\Pr\left(\gamma_{f}(k)=1\right) = \begin{cases*}
+			1 - \epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
+			0 & \text { for } $k \ne d, 2d, \ldots$
+		\end{cases*} \\
+	\end{aligned}
+\end{equation}
 
 Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $m$ shocks may have occurred during the fusion horizon is low, where $m$ may be 1 or a low number depending on $\epsilon$ and $f$. This further reduces the number of filters required.
 
@@ -523,7 +539,12 @@ Figure \ref{fig:mm-obs-seq-rob2} illustrates an example of the hypotheses of the
 	\label{fig:mm-obs-seq-rob2}
 \end{figure}
 
-\cite{robertson_detection_1995} describe a systematic procedure to choose $f$, $d$, and $m$, and provide a formula to calculate the total probability of the modelled hypotheses. They recommend that this should be at least 0.99 to ensure that only low-probability hypothesis are excluded.
+\cite{robertson_detection_1995} describe a systematic procedure to choose $f$, $d$, and $m$, and give the formula for the total probability of the modelled hypotheses:
+\begin{equation} \label{eq:p_gamma}
+	\operatorname{Pr}\left(\sum_{j=1}^{n} \gamma(j d) \leq m\right) = \sum_{k=0}^{m} \binom{n}{k} \epsilon_p^{n-k}(1-\epsilon_p)^{k}.
+\end{equation}
+
+They recommend that the total probability modelled should be at least 0.99 to ensure only low-probability hypotheses are ignored.
 
 
 
