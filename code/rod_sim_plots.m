@@ -85,14 +85,14 @@ make_tsplot(Dt_exp, t, {'$p(k)$'}, '$t$', nan(2), ...
 linkaxes([ax1 ax2 ax3 ax4], 'x');
 set(gcf,'Position',[100 100 400 450])
 saveas(gcf,fullfile(plot_dir,'rodd_sim_plots.png'))
-%save_fig_to_pdf(fullfile(plot_dir,'rodd-sim-plots.pdf'))
+save_fig_to_pdf(fullfile(plot_dir,'rodd_sim_plots.pdf'))
 
 % Plot combined steps and ramps
 figure(2); clf
 make_tsplot(Dt_step_ramp, t, {'$p(k)$'})
 set(gcf,'Position',[100 625 400 150])
 saveas(gcf,fullfile(plot_dir,'rodd_sim_plot2.png'))
-%save_fig_to_pdf(fullfile(plot_dir,'rodd-sim-plot2.pdf'))
+save_fig_to_pdf(fullfile(plot_dir,'rodd_sim_plot2.pdf'))
 
 
 %% Add measurement noise to data
@@ -110,7 +110,7 @@ Dt_exp_M = Dt_exp + V(:, 4);
 figure(3); clf
 
 ax1 = subplot(4,1,1);
-make_tsplot(alpha_M, t, {'$\w_p(k)$'}, [], nan(2), '(a) Random shocks')
+make_tsplot(alpha_M, t, {'$w_p(k)$'}, [], nan(2), '(a) Random shocks')
 
 ax2 = subplot(4,1,2);
 make_tsplot(Dt_step_M, t, {'$p(k)$'}, [], nan(2), '(b) RODD step disturbance')
@@ -127,6 +127,7 @@ linkaxes([ax1 ax2 ax3 ax4], 'x');
 % Save figure to image file
 set(gcf,'Position',[500 100 400 450])
 saveas(gcf,fullfile(plot_dir,'rodd_sim_plots_m.png'))
+save_fig_to_pdf(fullfile(plot_dir,'rodd_sim_plots_m.pdf'))
 
 % Save data to file
 data = table(t, alpha, Dt_step, Dt_ramp, Dt_exp, alpha_M, Dt_step_M, ...
