@@ -419,6 +419,8 @@ Finally, the multi-model observer estimate of the states in the next time instan
 	\mathbf{\hat{x}}(k+1/k) = \sum_{f=1}^{n_f} \mathbf{\hat{x}}_f(k+1/k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
 \end{equation}
 
+% TODO: in Robertson et al, they estimate x(k/k) not x(k+1/k).
+
 Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these computations.
 
 \begin{algorithm}
@@ -495,67 +497,103 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 	\item Explain how the multi-model observer concept can be used for any MJLS (time-varying A, B, C, D, Q, R matrices).
 \end{itemize}
 
+The problem that sub-optimal algorithms address is the inevitable increase in the number of hypotheses that must be modelled in an optimal multi-model observer. For a system with one RODD disturbance, the number of possible hypotheses doubles at each time step because each current hypothesis branches into two—one corresponding to the assumption of no shock in the next time period and the other to that of a shock. Figure \ref{fig:mm-obs-br} illustrates that after 3 time instants starting at $k=0$, eight hypotheses are needed to represent the possible shock sequences. For a system with two independent RODD disturbances, the number would be 64.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[height=7.5cm]{images/mm_obs_seq_br.pdf}
+	\caption{Sequence branching}
+	\label{fig:mm-obs-br}
+\end{figure}
+
+
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation involving three different approximations. The first is referred to as \textit{sequence fusion} or the \textit{generalized pseudo-Bayes algorithm} \citep{jaffer_estimation_1971, buxbaum_recursive_1970, tugnait_detection_1982}. This is based on the assumption that only recent differences in the shock hypothesis sequences affect the state estimates. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be maintained is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable}
+\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximations. The first is referred to as \textit{sequence fusion} or the \textit{generalized pseudo-Bayes algorithm} \citep{jaffer_estimation_1971, buxbaum_recursive_1970, tugnait_detection_1982}. This is based on the assumption that only recent differences in the shock hypothesis sequences are important for state estimation. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be modelled is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable}
 
-Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. The probability of no random shock during a detection interval of length $d$ sample times is therefore
+Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length $d$ sample times is therefore
 \begin{equation} \label{eq:p_gamma}
-	\epsilon_d = (1 - \epsilon)^d,
+	\epsilon_d = 1 - (1 - \epsilon)^d.
 \end{equation}
-and the probabilities of the random shock at all sample times are redefined as
+
+The probabilities of the modelled random shocks are then redefined as
 \begin{equation} \label{eq:Pr_gamma_nd}
 	\begin{aligned}
 		\Pr\left(\gamma_{f}(k)=0\right) = \begin{cases*}
-			\epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
+			1 - \epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
 			1 & \text { for } $k \ne d, 2d, \ldots$
 		\end{cases*} \\
 		\Pr\left(\gamma_{f}(k)=1\right) = \begin{cases*}
-			1 - \epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
+			\epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
 			0 & \text { for } $k \ne d, 2d, \ldots$
 		\end{cases*} \\
 	\end{aligned}
 \end{equation}
 
-Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $m$ shocks may have occurred during the fusion horizon is low, where $m$ may be 1 or a low number depending on $\epsilon$ and $f$. This further reduces the number of filters required.
+Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $m$ shocks occur during the fusion horizon is low, where $m$ may be 1 or a low number. This further reduces the number of filters required.
 
-To illustrate this sequence fusion procedure, consider a simple example. Suppose there is only one RODD to estimate and that the unknown shock sequence includes one shock at time $k=4$, as illustrated in the diagram in Figure \ref{fig:mm-obs-seq-rob1}. To estimate this RODD, suppose a sequence fusion algorithm is used with a detection interval of $d=3$, and the maximum number of shocks over the fusion horizon is $m=1$. The lower part of the diagram shows the four hypotheses that would be required in this case.  Note that hypothesis 1 assumes no shocks at any time.  After $f=9$ sample periods the sequences repeat indefinitely.  Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$ etc. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$ etc.
-
+To illustrate this sequence fusion procedure, consider a simple example. Suppose there is one RODD to estimate and a sequence fusion algorithm is used with a detection interval of $d=3$ and a maximum number of shocks over the fusion horizon of $m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods the sequences repeat indefinitely. 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=15cm]{images/mm_obs_seq_rob1.pdf}
-	\caption{Sequence pruning hypotheses example 1}
+	\includegraphics[height=5.3cm]{images/mm_obs_seq_rob1.pdf}
+	\caption{Sequence fusion example 1 ($d=3$, $m=1$, $f=9$)}
 	\label{fig:mm-obs-seq-rob1}
 \end{figure}
+If a shock actually occurred in the system at time $k=4$, for example, then the algorithm should estimate that hypothesis 3 is the most likely because this assumes a shock occurred at $k=3$, which is the close to reality.
 
-If the algorithm performs well, the estimated most likely hypothesis at times $k=0,1,2,3$ should be hypothesis 1. At time $k=4$, or soon thereafter, the estimated most likely hypothesis should switch to hypothesis 3 because this assumes a shock occurred at $k=3$, which is close to when it did.
-
-Figure \ref{fig:mm-obs-seq-rob2} illustrates an example of the hypotheses of the sequence pruning algorithm with $m=2$ and a longer detection interval, $d=5$.  As in the previous example, the estimated most likely hypothesis at time $k=4$, or soon thereafter, should be hypothesis 3 because it assumes only one shock, close to when the shock actually occurred.
+Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fusion algorithm with $m=2$ and a longer detection interval, $d=5$.  Note that this also has four hypotheses and that hypothesis 4 includes the case of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the estimated most likely hypothesis should be hypothesis 3 because it assumes one shock occured at $k=5$, which is close to reality.
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=15cm]{images/mm_obs_seq_rob2.pdf}
-	\caption{Sequence pruning hypotheses example 2}
+	\includegraphics[height=5.3cm]{images/mm_obs_seq_rob2.pdf}
+	\caption{Sequence fusion example 2 ($d=5$, $m=2$, $f=10$)}
 	\label{fig:mm-obs-seq-rob2}
 \end{figure}
 
-\cite{robertson_detection_1995} describe a systematic procedure to choose $f$, $d$, and $m$, and give the formula for the total probability of the modelled hypotheses:
+\cite{robertson_detection_1995} describe a systematic procedure to choose the $f$, $d$, and $m$ parameters, and give the formula for the total probability of the modelled hypotheses up to time $k=nd$:
 \begin{equation} \label{eq:p_gamma}
-	\operatorname{Pr}\left(\sum_{j=1}^{n} \gamma(j d) \leq m\right) = \sum_{k=0}^{m} \binom{n}{k} \epsilon_p^{n-k}(1-\epsilon_p)^{k}.
+	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i d) \leq m\right) = \sum_{j=0}^{m} \binom{n}{j} \epsilon_p^{n-j}(1-\epsilon_p)^{j},
+\end{equation}
+where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ intervals. They recommend that the total probability modelled should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
+
+In a later paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the shock as a sequence of $d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claim that this improved the performance of the algorithm in simulations.
+
+To implement this, first define a new variable to represent whether or not at least one shock occurs during the $n$\textsuperscript{th} detection interval:
+
+\begin{equation} \label{eq:deltak}
+	\delta(n) = \begin{cases*}
+		0 & \text{if} $\sum_{k=(n-1) d}^{n d-1} \gamma_{k}=0$, \\
+		1 & \text{if} $\sum_{k=(n-1) d}^{n d-1} \gamma_{k}\ge0$.
+	\end{cases*}
 \end{equation}
 
-They recommend that the total probability modelled should be at least 0.99 to ensure only low-probability hypotheses are ignored.
+Then, replace the random shock variable used at each sample time, $w_p(k)$ (\ref{eq:wpk2}), with:
+\begin{equation} \label{eq:wpdk}
+	w_{p,d}(k) \sim 
+	\begin{cases*}
+		\mathcal{N}\left(0, \sigma_{w_p}^2\right) & \text{when} $\delta(n) = 0$, \\
+		\mathcal{N}\left(0, \frac{b^2\sigma_{w_p}^2}{d}\right) & \text{when} $\delta(n) = 1$.
+	\end{cases*}
+\end{equation}
 
-
-
+Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the interval length $d$.
 
 \subsubsection{Sequence pruning} \label{subsec-pruning}
 
-Sequence pruning involves the online deletion of hypotheses (shock sequences in this case) that have a low probability given the current measurements. The deleted sequences are replaced by new sequences to represent the possible branches at the next sample time of only the most likely sequence. For example, for a system with one infrequently-occurring input disturbance, the most likely shock sequence at the next sample time is the shock sequence estimated to be most likely at the current time extended by the addition of a zero to indicate no shock at the next sample time. However, a shock could occur in the next time period. To account for this possibility, a new shock sequence is generated by making a copy of the current most likely sequence and its associated filter and extending it assuming a shock at the next sample time. This new sequence and filter replace the least likely sequence and observer. Thus, the total number of sequences and independent filters that need to be maintained remains constant. Note that in the case of systems with more than one input disturbance, the number of possible branches of the most likely sequence is higher, and therefore a larger number of sequences and filters will be replaced each time step.
+\textit{Sequence pruning} is the selective branching and deletion of shock hypotheses that have a low likelihood given the current measurements. The \textit{adaptive forgetting through multiple models} (AFMM) algorithm by \cite{andersson_adaptive_1985}, which was used by \cite{eriksson_classification_1996} for RODD estimation, uses sequence pruning to limit the number of filters required. In this algorithm, the current set of hypotheses are ranked at each time step, according to their conditional probabilities calculated using (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of RODD disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_f$.
 
-There is one restriction to this pruning rule. A sequence created at sample time $k$ cannot be deleted until sample time $k+n_{min}$ where $n_{min}$ is a \textit{minimum life length} parameter. This is necessary because it can take several sample periods before the filter estimates respond to the change and thus the conditional probability of the new sequence is established.
+The caveat mentioned above, is that no hypothesis may be eliminated less than $n_{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_f$ must be at least sufficient to accommodate the \textit{minimum life}, $n_{min}$, of new hypotheses. Note that in the case of systems with more than one RODD disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
 
-The AFMM algorithm also includes a procedure for online estimation of the measurement noise covariance, using a forgetting factor to control the speed of adaptation of the estimate.\cite{andersson_adaptive_1985}
+To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-erik}. This shows the possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely sequences at each time instant, identified by the circles with thicker outlines, branch into two hypotheses at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next sample time. Note that at time $k=6$, hypothesis 2 becomes the most likely. Also note that no new branches are terminated in less than two sample times.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[height=7cm]{images/mm_obs_seq_erik.pdf}
+	\caption{Sequence pruning example ($n_f=5$, $n_{min}=2$)}
+	\label{fig:mm-obs-seq-erik}
+\end{figure}
+
+The AFMM algorithm by \cite{gustafsson_estimation_1993} includes a procedure for online estimation of the measurement noise covariance using a forgetting factor to control the speed of adaptation of the estimates. This component was not implemented in this work since it is assumed the measurement noise is time invariant.
 
 \section{System identification}
 
