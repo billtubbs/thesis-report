@@ -642,30 +642,27 @@ Once a solution to the optimization problem is found, only the control actions a
 
 Outline notes:
 \begin{outline}
-	\1 Describe model with references.
-	\1 Simplified flow diagram — Figure \ref{fig:sag-diag}
-	\1 Population balance model approach - breakage and selection rates.
-    \1 Assumptions and limitations: constant breakage rate model, relationships between speed, media, trajectories,  filling level and breakage not captured.
-	\1 Grate, transport delays and cyclone model.
-	\1 List the main dynamic variables.
+    \1 Assumptions and limitations: constant breakage rate model, relationships between speed, media, trajectories, filling level and breakage not captured.
+	\1 Describe grate, transport delays and cyclone model.
 	\1 Outline any significant changes made from Edgar's model
 	\1 Figure: simulation results showing steady-state characteristics - e.g. power, grind, and throughput vs. fill level and speed.
-	\1 Simulation setup - low level controls implemented.
-	\2 Feed water ratio control
-	\2 Ore feed simulation.
 	\1 Figure \ref{fig:coarse_fine_psd_plot}: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
 	\1 Figure - Step responses of main process variables to changes in ore properties.
 	\1 Selection of particle size distribution as the disturbance variable for this work.
+	\1 Steady-state characteristics with operating points (grind curves)\\
 \end{outline}
 
 
+A dynamic simulation model of the primary grinding circuit of a gold mine in Quebec is used to simulate the effects of changes in ore feed properties over time. The model was developed by \cite{perez_garcia_dynamic_2020} following the methodology described by \cite{grimble_dynamic_2010} and was calibrated to match the operating data from the real plant \citep{perez-garcia_systematic_2020}. The SAG mill component is a \textit{population balance model} with 24 discrete size intervals for ore particles with constant specific-energy selection rates (i.e. breakage rates are proportional to total energy consumption) and a constant breakage matrix.
 
+Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, consisting of a feed conveyor, SAG mill, pump box, pump, and a bank of hydro-cyclones.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=11cm]{images/sag-circuit-diag.pdf}
 	\caption{Simplified process flow diagram}
 	\label{fig:sag-diag}
 \end{figure}
+For the purposes of this work, two ore streams with different PSDs were configured to feed the circuit. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two ore sources and the two mixtures.
 
 \begin{figure}[htp]
 	\centering
@@ -673,6 +670,17 @@ Outline notes:
 	\caption{Ore particle size distributions}
 	\label{fig:coarse_fine_psd_plot}
 \end{figure}
+
+The SAG mill water addition set-point is set by ratio control to a ratio of the fresh ore feed rate. This ratio may be manipulated by the control system. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate. Total ore feed rate and the SAG rotational speed set-point may also be manipulated by a control system.
+
+The main measurable process variables are mill weight, power consumption, circulating load flow rate, and the solids-content (\%) of the cyclone feed. The P80 (80\% passing size) of the ground product leaving the cyclone overflow is also measured. Mill filling level and many other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.
+
+Zero-mean Gaussian measurement noises are added to the output variables to simulate measurement errors. The parameters for these noises and other information on all the process variables are shown in Table X. Except for the measurement noises and the input disturbances described in subsequent sections, the model itself is deterministic.
+
+%TODO: Table of process variables and normal operating points, limits etc.
+
+Although some of these process variables would likely be sampled at higher rates in practice, it is assumed, for simplicity, that they are all sampled at the same rate of 1 sample every 3 minutes (i.e. a sampling period of 0.05 hours). This was deemed to be a typical sampling rate of a standard online particle size analyser that would be used for the P80 measurement.
+
 
 \section{Performance evaluation}
 
