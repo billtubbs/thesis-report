@@ -1,0 +1,96 @@
+# Meta data on process variables used with grinding 
+# simulation model Westwood_GCFinal2_2020a_04.slx
+#
+# Script used to generate identification data:
+# - sim_i_var_experiments_rc.m
+#
+
+# Normal operating points
+op_pts:
+    TONNAGE: 122.7
+    SAG_Nc: 0.77
+    SAG_POW: 2391
+    BASE_ORE_HARDNESS: 1
+    BASE_ORE_DENSITY: 2.9
+    BASE_ORE_MIX: 0.2283
+    FEED_WATER_RATIO: 0.3410
+    SAG_WT: 279.4
+    SAG_CC: 221.5
+    SAG_J: 32
+    SAG_J_SP: 32
+    SAG_PUMP_P80: 502
+    SAG_PUMP_SOL: 61.4
+    C_FLOW: 122.7
+    SAG_F_P80: 102000
+    SAG_F_ORE: 120
+    SAG_F_SOL: 74.6
+    SAG_OF_P80: 105.4
+    SAG_OF_ORE: 122.7
+    SAG_OF_SOL: 40.2
+    SAG_UF_P80: 811
+    SAG_UF_SOL: 86.8
+
+# Description
+desc:
+    TONNAGE: "SAG fresh ore feed rate"
+    SAG_Nc: "SAG speed"
+    SAG_POW: "SAG power consumption"
+    BASE_ORE_HARDNESS: "Ore hardness factor"
+    BASE_ORE_DENSITY: "Ore density"
+    BASE_ORE_MIX: "Ore feed mix factor"
+    FEED_WATER_RATIO: "Feed water ratio"
+    SAG_WT: "SAG weight"
+    SAG_CC: "SAG circulating load"
+    SAG_J: "SAG fill level"
+    SAG_J_SP: "SAG fill level setpoint"
+    SAG_P_P80: "SAG product P80"
+    SAG_P_SOL: "SAG product solids density"
+    SAG_PUMP_P80: "SAG pump discharge P80"
+    SAG_PUMP_ORE: "SAG pump ore flow rate"
+    SAG_PUMP_SOL: "Cyclone feed solids fraction"
+    C_FLOW: "Fresh ore feed to conveyor"
+    SAG_F_P80: "SAG feed P80"
+    SAG_F_ORE: "SAG fresh ore feed rate after water addition"
+    SAG_F_SOL: "SAG fresh ore solids fraction after water addition"
+    SAG_IN_SOL: "SAG inlet solids density"
+    SAG_OF_P80: "Cyclone overflow P80"
+    SAG_OF_ORE: "Cyclone overflow ore flow rate"
+    SAG_OF_SOL: "Cyclone overflow solids fraction"
+    SAG_UF_P80: "Cyclone underflow P80"
+    SAG_UF_SOL: "Cyclone underflow solids fraction"
+
+# Units of measure
+units:
+    TONNAGE: "TPH"
+    SAG_Nc: "fr. crit."
+    SAG_POW: "kW"
+    BASE_ORE_HARDNESS: ""
+    BASE_ORE_DENSITY: "tons/m^3"
+    BASE_ORE_MIX: ""
+    FEED_WATER_RATIO: "m^3/m^3"
+    SAG_WT: "tons"
+    SAG_CC: "TPH"
+    SAG_J: "%"
+    SAG_P_P80: "mm"
+    SAG_P_SOL: "%"
+    SAG_PUMP_P80: "mm"
+    SAG_PUMP_ORE: "TPH"
+    SAG_PUMP_SOL: "%"
+    C_FLOW: "TPH"
+    SAG_OF_P80: "microns"
+
+# Min/max operating limits
+op_limits:
+    TONNAGE: [0, 200]
+    SAG_Nc: [0, 0.85]
+    SAG_POW: [0, 2400]
+    BASE_ORE_HARDNESS: [0, 1]
+    BASE_ORE_DENSITY: [2.75, 3.25]
+    BASE_ORE_MIX: [0, 1]
+    FEED_WATER_RATIO: [0, 1]
+    SAG_WT: [100, 320]
+    SAG_CC: [0, 500]
+    SAG_J: [15, 35]
+    SAG_PUMP_P80: [400, 600]
+    SAG_PUMP_SOL: [50, 70]
+    SAG_OF_P80: [0, 200]

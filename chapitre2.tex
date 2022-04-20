@@ -650,7 +650,7 @@ Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, cons
 	\label{fig:sag-diag}
 \end{figure}
 
-For the purposes of this work, two ore feed streams with different PSDs were simulated. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). The two streams are mixed in variable proportions before being added to the conveyor. Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two ore sources and the two mixtures.
+For the purposes of this work, two ore feed streams with different PSDs were simulated. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). The two streams are mixed before discharging onto the conveyor. Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two ore sources and the two mixtures.
 
 \begin{figure}[htp]
 	\centering
@@ -661,7 +661,7 @@ For the purposes of this work, two ore feed streams with different PSDs were sim
 
 The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The SAG mill water addition set-point is set by ratio control to the fraction of the fresh ore feed rate, which is measured on the conveyor. This water addition ratio is also manipulatable. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate set-point. The SAG rotational speed set-point may also be manipulated.
 
-The measurable process variables used in this work are the mill weight, which includes the weight of the shell and liners as well as the mill contents, mill power consumption, the solids-content of the cyclone feed stream, and the particle size (P80) of the ground product in the cyclone overflow. Mill filling level and other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.  Figure \ref{fig:grind_sim_io_diag} summarizes the inputs and outputs of the simulation model. Table \ref{tb:grind-vars} lists the normal operating points, units, and min./max operating limits of each variable.
+The measurable process variables used in this work are the mill weight, which includes the weight of the shell and liners as well as the mill contents, mill power consumption, the solids-content of the cyclone feed stream, and the particle size (P80) of the ground product in the cyclone overflow. Mill filling level and other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.  Figure \ref{fig:grind_sim_io_diag} summarizes the inputs and outputs of the simulation model. Table \ref{tb:grind-vars} lists the normal operating points, units, and min./max operating limits of each variable. 
 
 \begin{figure}[htp]
 	\centering
@@ -669,7 +669,6 @@ The measurable process variables used in this work are the mill weight, which in
 	\caption{Grinding simulation model inputs and outputs}
 	\label{fig:grind_sim_io_diag}
 \end{figure}
-
 
 %TODO: Table of process variables and normal operating points, limits etc.
 \begin{table}[h!]
@@ -700,6 +699,26 @@ The measurable process variables used in this work are the mill weight, which in
 		\bottomrule
 	\end{tabular}
 \end{table}
+
+To better understand the relationships between the input and output variables, a set of simulations were carried out to determine steady-state operating conditions in the vicinity of the normal operating point. Figure \ref{fig:grind_sim_ss_plot1} shows how the steady-state values of the four output variables are affected by changes in the mill fill level (fraction of internal volume occupied by the charge) and rotation speed. The normal operating points are also shown, represented by solid markers. For these simulations, a simple PI controller was installed to control the mill filling level by manipulating the ore feed rate and the simulation was run until all variables converged on steady-state values. However, no constraints were imposed during these simulations, therefore power consumption exceeds the maximum possible in some cases.
+
+These results are equivalent to the grind curves proposed by \cite{powell_applying_2009} for evaluating steady-state characteristics and optimal operating points for SAG mills. However, compared to the curves presented by \cite{powell_applying_2009}, which were based on measurements from real operations, these are noticeably much closer to straight lines (i.e. linear relationships).
+
+A similar set of simulations were carried out to understand the effect of changing the ore mix factor on the steady-state values of the output variables. The results are shown in Figure \ref{fig:grind_sim_ss_plot2}. From these it can be seen that the change in ore mix has no effect on the steady-state power consumption of the mill. However, there are changes in the steady-state throughput (ore feed rate), cyclone feed solids fraction, and product particle size. The throughput is approximately 4 tons-per-hour higher and the product particle size is 1.5 microns smaller when the ore mix contains the higher fraction (0.5) of coarse ore.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15cm]{images/grind_sim_ss_plot1.pdf}
+	\caption{Steady-state operating points}
+	\label{fig:grind_sim_ss_plot1}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15cm]{images/grind_sim_ss_plot2.pdf}
+	\caption{Effect of ore mix factor on steady-state operating points}
+	\label{fig:grind_sim_ss_plot2}
+\end{figure}
 
 Zero-mean Gaussian measurement noises are added to the outputs of the simulation model to simulate measurement errors. The standard deviations of these noises are shown in Table \ref{tb:meas-noise}. Except for the measurement noises and the input disturbances described here, the model itself is deterministic.
 
@@ -733,14 +752,55 @@ Although some of these process variables would likely be sampled at higher rates
 
 \section{Performance evaluation}
 
-Outline notes:
+Various metrics are used in this work to evaluate the performance of the observers. Since a simulation model of the plant is used and the input disturbances are simulated, the true values of the system inputs and outputs (i.e. without measurement errors) are available.
+
+The first metric is the \textit{root-mean-squared-error} (RMSE) of the system output estimates, which is an indication of the magnitude of the differences between the estimates of an output $\hat{y}_i(k)$, and its true values, $y_i(k)$, (i.e. output estimation errors),
+\begin{equation} \label{eq:rmse-calc-yest}
+	\newcommand{\RMSE}{\textrm{RMSE}}
+	\RMSE(\hat{y}_i(k),y_i(k)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(\hat{y}_i(k)-y_i(k))^2}}.
+\end{equation}
+
+The RMSE of the estimates of an unmeasured input disturbance, $\hat{p}_i(k)$, is
+\begin{equation} \label{eq:rmse-calc-pest}
+	\newcommand{\RMSE}{\textrm{RMSE}}
+	\RMSE(\hat{p}_i(k),p_i(k)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(\hat{p}_i(k)-p_i(k))^2}}.
+\end{equation}
+ 
+As well as the overall RMSE, two additional RMSE metrics are used in this work to evaluate observer performance on systems with RODDs. The RMSE \textit{in transition}, which is the RMSE during a period after a random shock, is used to evaluate the response of an observer to infrequent, abrupt disturbances. The transition period is defined as the samples occurring within $t_{st}$ hours of the disturbance arriving at the input to the process, where $t_{st}$ is the \textit{settling time}, defined as the time taken for the process outputs to converge to within $\pm5\%$ of their final steady-state values. The RMSE \textit{in steady-state} is defined as the samples occurring more than $t_{st}$ hours after a disturbance and before the next one occurs.
+
+The fourth metric is the \textit{root-mean-squared-differences} (RMSD) in the estimates,
+\begin{equation} \label{eq:rmsd-calc-yest}
+	\newcommand{\RMSD}{\textrm{RMSD}}
+	\RMSD(\hat{y}_i(k)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(\hat{y}_i(k)-\hat{y}_i(k-1))^2}}.
+\end{equation}
+
+This is a measure of the magnitude of high frequency changes in the estimates, which is an indication of the sensitivity of an observer estimates to measurement noise.
+
+To evaluate the potential benefits of the observers in process control applications, simulations are carried out with an observer, a simulated controller, and the simulated process in closed-loop. In these cases, the RMSEs of the control variables compared to the reference values is used to evaluate the performance of the control system,
+\begin{equation} \label{eq:rmse-calc-y}
+	\newcommand{\RMSE}{\textrm{RMSE}}
+	\RMSE(y_i(k),r_i(k)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(y_i(k)-r_i(k))^2}}.
+\end{equation}
+
+In addition, the RMSD of the control actions, $u_i(k)$, is calculated to provide an indication of the sensitivity of the control system effects to the measurement noise,
+\begin{equation} \label{eq:rmsd-calc-u}
+	\newcommand{\RMSD}{\textrm{RMSD}}
+	\RMSD(u_i(k)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(u_i(k)-u_i(k-1))^2}}.
+\end{equation}
+
+Because the processes in this work are stochastic, it is important to evaluate the performance of the observers over sufficiently long simulation time periods to ensure that the results are close to the true average performance and are independent of the specific pseudo-random samples generated for simulations. This is particularly important when evaluating systems with RODDs because the shocks occur infrequently. As an added precaution, identical random inputs are used when comparing the performance of two or more observers on the same system.
+
+\textbf{TODO: Add details later if needed}:
 \begin{itemize}
-	\item Comparing disturbance state estimate to true disturbance (simulation only).
-	\item Tracking error: Mean-squared difference of output estimates. (or use RMSE?)
-	\item Partitioning of simulation outputs into 'transition periods' and steady-state periods.
-	\item Variance of output estimate in steady-state (no disturbances).
-	\item Mean-squared differences in estimates (similar to variance but with no bias).
-	\item Sensitivity to model errors, observer parameters.
-	\item Closed loop stability - stability margins.
+	\item Sensitivity to model error, RODD model parameters.
+	\item Closed loop stability - stability margins? Or simply calculate performance metrics as selected model parameter errors (gain, time constant) are increased. \\
 \end{itemize}
 
+% Variance calc - not used
+%\begin{equation} \label{eq:var-calc}
+%\begin{aligned}
+%	\newcommand{\Var}{\textrm{Var}} 
+%	\Var(\hat{y}(k)) = \frac{1}{N}\sum_{k=1}^{N}{(\hat{y}(k)-\mu_y)^2} \\
+%	\mu_y = \frac{1}{N}\sum_{k=1}^{N}{\hat{y}(k)}
+%\end{aligned}
+%\end{equation}
