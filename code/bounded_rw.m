@@ -112,8 +112,8 @@ a = brw_reversion_bias(x, alpha1, alpha2, beta, tau);
 plot(x, a, 'Linewidth', 2);
 set(gca, 'TickLabelInterpreter', 'latex')
 grid on
-xlabel("$x$", 'Interpreter', 'latex')
-ylabel("$a(x)$", 'Interpreter', 'latex')
+xlabel("$p(k)$", 'Interpreter', 'latex')
+ylabel("$a(p(k))$", 'Interpreter', 'latex')
 %title("BRW Reversion Function")
 set(gcf,'Position',[100 300 300 150])
 save2pdf(fullfile(plot_dir, 'brw_a.pdf'))

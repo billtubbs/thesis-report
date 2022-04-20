@@ -91,7 +91,7 @@ where $\mathbf{x}_p(k) \in \mathbb{R}^2$ is a state vector and $\mathbf{w}_p(k)$
 
 \subsection{Hidden Markov Models}
 
-\textit{Hidden Markov models} (HMM) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events in which the probability of future events depends only on the current state. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
+\textit{Hidden Markov models} (HMM) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
 To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state $\gamma(k)$ with two possible values:
 \begin{equation} \label{eq:gamma-k}
@@ -102,9 +102,7 @@ To illustrate the basic concept, we can define the state of the random shock gen
 	\end{cases*}
 \end{equation}
 
-$\gamma(k)=0$ represents the state of the process when no shock occurs and $\gamma(k)=1$ represents the state when a shock occurs.
-
-The switching of $\gamma(k)$ can then be defined by a \textit{transition matrix}, $\Pi$, which describes the probabilities of transitioning from the state at time $k$ to the state at time $k+1$:
+$\gamma(k)=0$ represents the state of the process when no shock occurs and $\gamma(k)=1$ represents the state when a shock occurs. The switching of $\gamma(k)$ can then be defined by a \textit{transition matrix}, $\Pi$, which describes the probabilities of transitioning from the state at time $k$ to the state at time $k+1$:
 \begin{equation} \label{eq:Pi}
 	\begin{split}
 	\Pi = \left(\pi_{ij} \forall i,j\in \{1,2,...,n_j\}\right) \\
@@ -135,7 +133,7 @@ The use of the Markov model thus allows transition probabilities that depend on 
 	\end{split}
 \end{equation}
 
-To make the notation more concise, allow the value of a time-varying discrete variable such as $\sigma_{w_p} \in \left\{\sigma_{w_p,1}, \sigma_{w_p,2},..., \sigma_{w_p,n_j}\right\}$, be determined by the value of the Markov state $\gamma(k)$. Thus,
+To make the notation more concise, allow the value of any time-varying discrete variable such as $\sigma_{w_p} \in \left\{\sigma_{w_p,1}, \sigma_{w_p,2},..., \sigma_{w_p,n_j}\right\}$, to be determined by the value of the Markov state $\gamma(k)$. Thus,
 \begin{equation} \label{eq:A-selection}
 	\sigma_{w_p}(\gamma(k)) = 
 	\begin{cases*}
@@ -157,36 +155,31 @@ With this notation, (\ref{eq:mog-example}) can be written more concisely as
 where $\mu_{w_p}\in\left\{\mu_{w_p,1},\mu_{w_p,2},...,\mu_{w_p,n_j}\right\}$. This model is known as a \textit{mixture of Gaussians} and can be considered a special-case of a HMM-based disturbance model \citep{wong_disturbance_2007}.
 
 The general HMM disturbance process is described by the following \textit{Markov jump linear system} (MJLS) \citep{costa_discrete-time_2005}. This is a state-space representation with time-varying system matrices $\mathbf{A}(\gamma(k))$, $\mathbf{B}(\gamma(k))$, and $\mathbf{C}(\gamma(k))$:
-\begin{equation} \label{eq:HMM}
+\begin{equation} \label{eq:MJLS}
 	\begin{split}
-	\mathbf{x}_p(k+1) = \mathbf{A}(\gamma(k))x_p(k) + \mathbf{B}(\gamma(k))\mathbf{w}_p(k) \\
+	\mathbf{x}_p(k+1) = \mathbf{A}(\gamma(k)) \mathbf{x}_p(k) + \mathbf{B}(\gamma(k))\mathbf{w}_p(k) \\
 	\mathbf{p}(k) = \mathbf{C}(\gamma(k)) \mathbf{x}_p(k) + \mathbf{e}_p(k)
 	\end{split}
 \end{equation}
 
-As well as $\mathbf{w}_p(k)$, $\mathbf{e}_p(k)$ may also be a switching random variable. This is a versatile dynamic model suitable for representing and simulating a diverse family of disturbances.
+As well as $\mathbf{w}_p(k)$, $\mathbf{e}_p(k)$ may also be a switching random variable. \ref{eq:MJLS} is a versatile model suitable for representing and simulating a diverse family of disturbances.
 
 \subsection{Bounded disturbances}
 
-The \textit{bounded random walk} (BRW) is a stochastic process proposed by \citep{nicolau_stationary_2002}. The discrete-time version has the difference equation
-
+The \textit{bounded random walk} (BRW) is a stochastic process proposed by \cite{nicolau_stationary_2002}. The discrete-time version has the difference equation
 \begin{equation} \label{eq:brw}
 		p(k+1) = p(k) + a(p(k)) + e(k)
 \end{equation}
-
 where $e(k)$ is a random noise with variance $\sigma_e^2$, and $a(p(k))$ is a function defined as
-
 \begin{equation}
 	a(x) = e^{\beta}\left(e^{-\alpha_{1}\left(x - \tau\right)} - e^{\alpha_{2}\left(x - \tau\right)}\right)
 \end{equation}
-
 where $\beta$, $\alpha_{1}$, and $\alpha_{2}$ are constants.  From (\ref{eq:brw}) it can be deduced that
-
 \begin{equation}
 	E(p(k+1)|p(k)) = p(k) + a(p(k)).
 \end{equation}
 
-Therefore $a(p(k))$ has the effect of an additive bias or adjustment to $p(k+1)$ which depends on $p(k)$. The shape of $a(x)$ depends on the constants. Figure \ref{fig:brw-a} shows $a(x)$ in the case where $\tau=100$, $\beta=-15$, $\alpha_{1}=3$, and $\alpha_{2}=3$.  From this, it is clear that in the vicinity of $x=\tau$, $a(x)\approx0$. When $a(p(k))=0$, (\ref{eq:brw}) is the equation for a random walk. However, outside a certain neighbourhood around $x=\tau$, $a(x)$ increases for low $x$ or decreases for high $x$. This has the effect of causing $p(k+1)$ to revert towards the mean ($\tau$) whenever $p(k)$ strays outside the neighbourhood. 
+Therefore, $a(p(k))$ has the effect of an additive bias or time-varying adjustment to $p(k+1)$ that depends on $p(k)$. The shape of $a(\cdot)$ is determined by the constants $\alpha_{1}$,  $\alpha_{2}$, $\beta$, and $\tau$. Figure \ref{fig:brw-a} shows $a(p(k))$ in the case where $\tau=100$, $\beta=-15$, $\alpha_{1}=3$, and $\alpha_{2}=3$.  From this, it is clear that in the vicinity of $p(k)=\tau$, $a(p(k))\approx0$. When $a(p(k))=0$, (\ref{eq:brw}) is the equation for a random walk. However, outside a neighbourhood of $p(k)=\tau$, $a(p(k))$ increases for low $p(k)$ or decreases for high $p(k)$. This has the effect of causing $p(k+1)$ to revert towards the mean ($\tau$) whenever $p(k)$ strays outside the neighbourhood. 
 
 \begin{figure}[htp]
 	\centering
@@ -204,7 +197,7 @@ Figure \ref{fig:brw-sim} shows a simulation of a bounded random walk with the pa
 	\label{fig:brw-sim}
 \end{figure}
 
-Unlike a simple random walk, the BRW is stationary. \cite{nicolau_stationary_2002} derived a formula for the form of the unconditional probability distribution of the continuous-time BRW. Figure \ref{fig:brw-pdf} shows the normalized stationary probability density with the same parameter values as above. For comparison, the probability density of a random walk process after 20 sample periods is also shown. It can be seen that there is a significant probability that the random walk would exceed the bounds of this BRW after 20 sample periods. It can also be seen that the central part of the probability distribution of the BRW is flat, indicating that all values within the bounds are equally likely after a large number of samples, similar to a uniform probability distribution.
+Unlike a simple random walk, the BRW is stationary. \cite{nicolau_stationary_2002} derived a formula for the form of the unconditional (i.e. stationary) probability distribution of the continuous-time BRW. Figure \ref{fig:brw-pdf} shows the normalized stationary probability density of the same BRW as above. For comparison, the probability density of a random walk process after 20 sample periods is also shown. It can be seen that there is a significant probability that the random walk would exceed the bounds of this BRW after 20 sample periods. It can also be seen that the central part of the probability distribution of the BRW is flat, indicating that all values within the bounds are equally likely after a large number of samples, similar to a uniform probability distribution.
 
 %\begin{equation}
 %	p_{BRW}(x) \propto \sigma^{-2} \exp \left\{-\frac{2 e^{k}}{\sigma^{2}}\left(\frac{e^{-\alpha_{1}(x-\tau)}}{\alpha_{1}}+\frac{e^{\alpha_{2}(x-\tau)}}{\alpha_{2}}\right)\right\}
@@ -217,18 +210,20 @@ Unlike a simple random walk, the BRW is stationary. \cite{nicolau_stationary_200
 	\label{fig:brw-pdf}
 \end{figure}
 
-However, the BRW as described by (\ref{eq:brw}) is not guaranteed to be stable.  For extreme values of $p(k)$, $|a(p(k))|$ may be greater than $2|p(k)|$.  This means that $|p(k)|$ will increase rapidly, leading to numerical errors in any practical implementation.  To avoid this, \cite{nicolau_stationary_2002} recommends adding a conditional regularizing step which causes reversion towards the mean, $\tau$, when the correction bias is too large. Instead of (\ref{eq:brw}), the conditional difference equation
+However, the BRW as described by (\ref{eq:brw}) is not guaranteed to be stable. Extreme values of $p(k)$ may cause $|a(p(k))|$ to be greater than $2|p(k)|$, which results in rapid divergence. This would cause computational errors in a numerical simulation. To avoid this, \cite{nicolau_stationary_2002} recommends adding a conditional regularizing step which forces reversion towards the mean, $\tau$, when the correction bias is too large. Instead of (\ref{eq:brw}), a conditional difference equation,
 \begin{equation} \label{eq:brw-reg}
 	p(k+1) = \begin{cases*}
 		p(k) + a(p(k)) + e(k) & if $\left|a(p(k)) \right| < 2\left| p(k) - \tau \right|$, \\
-		\tau + \phi(p(k) - \tau) + e(k) & if $\left|a(p(k)) \right| \geq 2\left| p(k) - \tau \right|$
+		\tau + \phi(p(k) - \tau) + e(k) & if $\left|a(p(k)) \right| \geq 2\left| p(k) - \tau \right|$,
 	\end{cases*}
 \end{equation}
 is used, where $\phi$ is a constant such that $0<\phi<1$. The size of $\phi$ determines how fast $p(k)$ reverts to $\tau$, the stationary mean of the BRW, when it is outside the stable region.
 
-Since the BRW has a non-Gaussian probability distribution, analysis of the properties of any dynamical system with a BRW input is difficult. However, for simulation purposes, the BRW is a simple and practical solution to the problem of bounding a random variable.
+Since the BRW has a non-Gaussian probability distribution, analysis of the properties of any dynamical system with a BRW is difficult. However, for simulation purposes, the BRW is a simple and practical solution to the problem of bounding a random variable.
 
-The BRW concept can easily be extended to RODDs. For example, a RODD step disturbance (\ref{eq:RODD-step}) is a random walk with a switching noise variance (\ref{eq:wpk2}). The concern when trying to bound this disturbance is the large step change that occurs infrequently. Since the probability of the shock, as well as the sign and amplitude of the step, are independent random variables, a RODD step disturbance that happens to be at one of the bounds is as likely to step outside the bound as it is to step back inside the bounded region. Therefore, the conditional regularity used in the BRW (\ref{eq:brw-reg}) is even more important.
+The BRW concept can be extended to RODDs. A RODD step disturbance (\ref{eq:RODD-step}) is a random walk with a switching noise variance (\ref{eq:wpk2}). The concern when trying to bound such a disturbance is the large step changes that occur infrequently. Since the probability of the shock, as well as the sign and amplitude of the step, are independent random variables, a RODD step disturbance that happens to be at one of the bounds is as likely to step outside the bound as it is to step back inside the bounded region. The conditional regularity used in the BRW (\ref{eq:brw-reg}) would prevent any computational problems. 
+
+However, this may not be an ideal way to generate a bounded RODD... \textbf{TODO: Add alternative bounded RODD model if I ended up needing it.}
 
 
 \section{State estimation}
@@ -483,19 +478,10 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 %\stepcounter{footnote}\footnotetext{At this point, the algorithm must extend the shock indicator sequences to the current time instant, while limiting the total number of hypotheses and filters according to a particular sub-optimal method such as the procedures described in section \ref{subsec-pruning} and \ref{subsec-fusion}.
 %\stepcounter{footnote}\footnotetext{The estimation error covariance is not required by the algorithm. It may be calculated if needed.}
 
-\subsection{Sub-optimal algorithms}
+The multi-model observer concept can be used for state estimation of any MJLS (\ref{eq:MJLS}) with switching $\mathbf{A}$, $\mathbf{B}$, $\mathbf{C}$, $\mathbf{D}$, $\mathbf{w}_p(k)$, or $\mathbf{e}_p(k)$. However, the number of independently-switching components is severely limited in practice due to the number of hypotheses that would need to be simulated by the observer.
 
-\begin{itemize}
-	\item Sub-optimal algorithms (Tugnait)
-	\item Approximation 1: Infrequently-occurring disturbances -> infrequent branching assumptions.
-	\item Approximation 2: Infrequently-occurring disturbances -> less combinations of disturbances.
-	\item Approximation 3: Filter fusion - 
-	\item Recursive Bayesian estimation for non-Gaussian processes
-	\item Generalized Pseudo-Bayesian (GPBn) methodology (Bar-Shalom and Li, 1993).
-	\item Alternative sub-optimal approach: Sequence pruning (adaptive) methods 
-	\item Describe branching and pruning procedure of AFMM.
-	\item Explain how the multi-model observer concept can be used for any MJLS (time-varying A, B, C, D, Q, R matrices).
-\end{itemize}
+
+\subsection{Sub-optimal algorithms}
 
 The problem that sub-optimal algorithms address is the inevitable increase in the number of hypotheses that must be modelled in an optimal multi-model observer. For a system with one RODD disturbance, the number of possible hypotheses doubles at each time step because each current hypothesis branches into two—one corresponding to the assumption of no shock in the next time period and the other to that of a shock. Figure \ref{fig:mm-obs-br} illustrates that after 3 time instants starting at $k=0$, eight hypotheses are needed to represent the possible shock sequences. For a system with two independent RODD disturbances, the number would be 64.
 
@@ -509,7 +495,7 @@ The problem that sub-optimal algorithms address is the inevitable increase in th
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximations. The first is referred to as \textit{sequence fusion} or the \textit{generalized pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. This is based on the assumption that only recent differences in the shock hypothesis sequences are important for state estimation. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be modelled is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable}
+\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximation techniques. The first is referred to as \textit{sequence fusion}, also known as the \textit{generalized pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be modelled is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable in previous section}
 
 Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length $d$ sample times is therefore
 \begin{equation} \label{eq:p_gamma_d}
@@ -532,16 +518,18 @@ The probabilities of the modelled random shocks are then redefined as
 
 Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $m$ shocks occur during the fusion horizon is low, where $m$ may be 1 or a low number. This further reduces the number of filters required.
 
-To illustrate this sequence fusion procedure, consider a simple example. Suppose there is one RODD to estimate and a sequence fusion algorithm is used with a detection interval of $d=3$ and a maximum number of shocks over the fusion horizon of $m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods the sequences repeat indefinitely. 
+To illustrate the sequence fusion procedure, consider a simple example. Suppose there is one RODD to estimate. A sequence fusion algorithm is used with a detection interval of $d=3$ and a maximum number of shocks over the fusion horizon of $m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods, the sequences repeat indefinitely. 
+
 \begin{figure}[htp]
 	\centering
 	\includegraphics[height=5.3cm]{images/mm_obs_seq_rob1.pdf}
 	\caption{Sequence fusion example 1 ($d=3$, $m=1$, $f=9$)}
 	\label{fig:mm-obs-seq-rob1}
 \end{figure}
-If a shock actually occurred in the system at time $k=4$, for example, then the algorithm should estimate that hypothesis 3 is the most likely because this assumes a shock occurred at $k=3$, which is the close to reality.
 
-Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fusion algorithm with $m=2$ and a longer detection interval, $d=5$.  Note that this also has four hypotheses and that hypothesis 4 includes the case of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the estimated most likely hypothesis should be hypothesis 3 because it assumes one shock occured at $k=5$, which is close to reality.
+If a shock actually occurred in the system at time $k=4$, for example, then the algorithm should predict that hypothesis 3 is the most likely because this assumes a shock occurred at $k=3$, which is the close to reality.
+
+Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fusion algorithm with $m=2$ and a longer detection interval, $d=5$.  Note that this also has four hypotheses. Hypothesis 4 accounts for the possibility of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the estimated most likely hypothesis should be hypothesis 3 because it assumes one shock occurred at $k=5$, which is close to reality.
 
 \begin{figure}[htp]
 	\centering
@@ -550,15 +538,15 @@ Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fu
 	\label{fig:mm-obs-seq-rob2}
 \end{figure}
 
-\cite{robertson_detection_1995} describe a systematic procedure to choose the $f$, $d$, and $m$ parameters, and give the formula for the total probability of the modelled hypotheses up to time $k=nd$:
+\cite{robertson_detection_1995} describe a systematic procedure to choose the $f$, $d$, and $m$ parameters and give the formula for the total probability of the modelled hypotheses up to time $k=nd$:
 \begin{equation} \label{eq:p_gamma}
 	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i d) \leq m\right) = \sum_{j=0}^{m} \binom{n}{j} \epsilon_p^{n-j}(1-\epsilon_p)^{j},
 \end{equation}
 where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ intervals. They recommend that the total probability modelled should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
 
-In a later paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the shock as a sequence of $d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claim that this improved the performance of the algorithm in simulations.
+In a later paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the possibility of a shock as a sequence of $d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed that this improved the performance of the algorithm in simulations.
 
-To implement this, first define a new variable to represent whether or not at least one shock occurs during the $n$\textsuperscript{th} detection interval:
+To implement this modification, define a new variable, $\delta(n)$, to represent whether or not at least one shock occurred during the $n$\textsuperscript{th} detection interval:
 
 \begin{equation} \label{eq:deltak}
 	\delta(n) = \begin{cases*}
@@ -580,11 +568,11 @@ Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the
 
 \subsubsection{Sequence pruning} \label{subsec-pruning}
 
-\textit{Sequence pruning} is the selective branching and deletion of shock hypotheses that have a low likelihood given the current measurements. The \textit{adaptive forgetting through multiple models} (AFMM) algorithm by \cite{andersson_adaptive_1985}, which was used by \cite{eriksson_classification_1996} for RODD estimation, uses sequence pruning to limit the number of filters required. In this algorithm, the current set of hypotheses are ranked at each time step, according to their conditional probabilities calculated using (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of RODD disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_f$.
+\textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} (AFMM) algorithm by \cite{andersson_adaptive_1985} for RODD estimation. The AFMM uses sequence pruning to limit the number of filters. In this algorithm, the current set of hypotheses at each time step are ranked according to their conditional probabilities, calculated using (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of RODD disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_f$.
 
-The caveat mentioned above, is that no hypothesis may be eliminated less than $n_{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_f$ must be at least sufficient to accommodate the \textit{minimum life}, $n_{min}$, of new hypotheses. Note that in the case of systems with more than one RODD disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
+The caveat mentioned above, is that no hypothesis may be eliminated less than $n_{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_f$ must be at least sufficient to accommodate the \textit{minimum life}, $n_{min}$, of all new hypotheses. Note that in the case of systems with more than one RODD disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
 
-To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-erik}. This shows the possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely hypotheses at each time instant, identified by the circles with thicker outlines, branch into two at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next sample time. At time $k=6$, hypothesis 2 becomes the most likely based on the available measurements at that time. Also note that no new branches are terminated in less than two sample times.
+To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-erik}. This shows one possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely hypotheses at each time instant, identified by the circles with thicker outlines, branch into two at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next sample time. Note that at time $k=6$, hypothesis 2 becomes the most likely based on the available measurements at that time. Also note that no new branches are terminated in less than two sample times.
 
 \begin{figure}[htp]
 	\centering
@@ -640,29 +628,29 @@ Once a solution to the optimization problem is found, only the control actions a
 
 \section{Grinding simulation model}
 
-Outline notes:
-\begin{outline}
-    \1 Assumptions and limitations: constant breakage rate model, relationships between speed, media, trajectories, filling level and breakage not captured.
-	\1 Describe grate, transport delays and cyclone model.
-	\1 Outline any significant changes made from Edgar's model
-	\1 Figure: simulation results showing steady-state characteristics - e.g. power, grind, and throughput vs. fill level and speed.
-	\1 Figure \ref{fig:coarse_fine_psd_plot}: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
-	\1 Figure - Step responses of main process variables to changes in ore properties.
-	\1 Selection of particle size distribution as the disturbance variable for this work.
-	\1 Steady-state characteristics with operating points (grind curves)\\
-\end{outline}
+%Outline notes:
+%\begin{outline}
+%    \1 Assumptions and limitations: constant breakage rate model, relationships between speed, media, trajectories, filling level and breakage not captured.
+%	\1 Describe grate, transport delays and cyclone model.
+%	\1 Outline any significant changes made from Edgar's model
+%	\1 Figure: simulation results showing steady-state characteristics - e.g. power, grind, and throughput vs. fill level and speed.
+%	\1 Figure \ref{fig:coarse_fine_psd_plot}: Particle size distributions of feed, recirculating load and product - this should help explain steady-state characteristics.
+%	\1 Figure - Step responses of main process variables to changes in ore properties.
+%	\1 Selection of particle size distribution as the disturbance variable for this work.
+%	\1 Steady-state characteristics with operating points (grind curves)\\
+%\end{outline}
 
+A dynamic simulation model of the primary grinding circuit of a gold mine in Quebec is used to simulate the effects of changes in ore feed properties on the grinding circuit over time. The model was developed by \cite{perez_garcia_dynamic_2020} following the methodology described by \cite{grimble_dynamic_2010} and was calibrated to match operating data collected from the plant \citep{perez-garcia_systematic_2020}. Grinding in the SAG mill is simulated by a \textit{population balance model} with 24 discrete size intervals for ore particles with constant specific-energy selection rates (i.e. breakage rates are proportional to total energy consumption) and a constant breakage matrix.
 
-A dynamic simulation model of the primary grinding circuit of a gold mine in Quebec is used to simulate the effects of changes in ore feed properties over time. The model was developed by \cite{perez_garcia_dynamic_2020} following the methodology described by \cite{grimble_dynamic_2010} and was calibrated to match the operating data from the real plant \citep{perez-garcia_systematic_2020}. The SAG mill component is a \textit{population balance model} with 24 discrete size intervals for ore particles with constant specific-energy selection rates (i.e. breakage rates are proportional to total energy consumption) and a constant breakage matrix.
-
-Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, consisting of a feed conveyor, SAG mill, pump box, pump, and a bank of hydro-cyclones.
+Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, consisting of a variable speed feed conveyor, SAG mill with variable speed motor, pump box, pump, and a bank of hydro-cyclones.
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=11cm]{images/sag-circuit-diag.pdf}
+	\includegraphics[width=12.5cm]{images/sag-circuit-diag.pdf}
 	\caption{Simplified process flow diagram}
 	\label{fig:sag-diag}
 \end{figure}
-For the purposes of this work, two ore streams with different PSDs were configured to feed the circuit. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two ore sources and the two mixtures.
+
+For the purposes of this work, two ore feed streams with different PSDs were simulated. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). The two streams are mixed in variable proportions before being added to the conveyor. Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two ore sources and the two mixtures.
 
 \begin{figure}[htp]
 	\centering
@@ -671,15 +659,76 @@ For the purposes of this work, two ore streams with different PSDs were configur
 	\label{fig:coarse_fine_psd_plot}
 \end{figure}
 
-The SAG mill water addition set-point is set by ratio control to a ratio of the fresh ore feed rate. This ratio may be manipulated by the control system. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate. Total ore feed rate and the SAG rotational speed set-point may also be manipulated by a control system.
+The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The SAG mill water addition set-point is set by ratio control to the fraction of the fresh ore feed rate, which is measured on the conveyor. This water addition ratio is also manipulatable. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate set-point. The SAG rotational speed set-point may also be manipulated.
 
-The main measurable process variables are mill weight, power consumption, circulating load flow rate, and the solids-content (\%) of the cyclone feed. The P80 (80\% passing size) of the ground product leaving the cyclone overflow is also measured. Mill filling level and many other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.
+The measurable process variables used in this work are the mill weight, which includes the weight of the shell and liners as well as the mill contents, mill power consumption, the solids-content of the cyclone feed stream, and the particle size (P80) of the ground product in the cyclone overflow. Mill filling level and other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.  Figure \ref{fig:grind_sim_io_diag} summarizes the inputs and outputs of the simulation model. Table \ref{tb:grind-vars} lists the normal operating points, units, and min./max operating limits of each variable.
 
-Zero-mean Gaussian measurement noises are added to the output variables to simulate measurement errors. The parameters for these noises and other information on all the process variables are shown in Table X. Except for the measurement noises and the input disturbances described in subsequent sections, the model itself is deterministic.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15cm]{images/grind_sim_io_diag.pdf}
+	\caption{Grinding simulation model inputs and outputs}
+	\label{fig:grind_sim_io_diag}
+\end{figure}
+
 
 %TODO: Table of process variables and normal operating points, limits etc.
+\begin{table}[h!]
+	\centering
+	\caption{Grinding simulation model inputs and outputs} \label{tb:grind-vars}
+	% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
+	% Also: https://www.overleaf.com/learn/latex/Tables
+	\begin{tabular}{c c >{\raggedright}p{5.5cm} c c c c}
+		%\toprule
+		& Label & Description & Op. pt. & Units & Min. & Max \\
+		\midrule
+		\multicolumn{7}{l}{\textit{Manipulatable variables}} \\
+		%\midrule
+		  & MV1       & Ore feed rate & 122.7 & tons/h & 0 & 200 \\   
+		  & MV2       & Mill speed (fraction of critical speed) & 0.77 & - & 0 & 0.85 \\ 
+		  & MV3       & Water addition ratio (fraction of ore feed rate) & 0.341 & - & 0 & 1 \\ 
+		%\midrule
+		\multicolumn{7}{l}{\textit{Unmeasured disturbance input}} \\
+		%\midrule
+		  & UD1        & Ore mix factor & 0.2283 & - & 0 & 1  \\ 
+		%\midrule
+		\multicolumn{7}{l}{\textit{Output variables}} \\
+		%\midrule
+		  & OV1        & Mill weight & 279.4 & tons & 100 & 320  \\ 
+		  & OV2       & Mill power consumption & 2391 & kW & 0 & 2400  \\ 
+		  & OV3       & Cyclone feed solids fraction & 61.4 & \% & 50 & 70  \\ 
+		  & OV4       & Cyclone overflow P80 & 105.4 & \% & 0 & 200  \\ 
+		\bottomrule
+	\end{tabular}
+\end{table}
 
-Although some of these process variables would likely be sampled at higher rates in practice, it is assumed, for simplicity, that they are all sampled at the same rate of 1 sample every 3 minutes (i.e. a sampling period of 0.05 hours). This was deemed to be a typical sampling rate of a standard online particle size analyser that would be used for the P80 measurement.
+Zero-mean Gaussian measurement noises are added to the outputs of the simulation model to simulate measurement errors. The standard deviations of these noises are shown in Table \ref{tb:meas-noise}. Except for the measurement noises and the input disturbances described here, the model itself is deterministic.
+
+% Scaling factors
+% 2
+%& 0.0085
+%& 0.01
+%& 0.01
+%& 2.2
+%& 24
+%& 0.2
+%& 2
+
+\begin{table}[h!]
+	\centering
+	\caption{Simulated output measurements} \label{tb:meas-noise}
+	\begin{tabular}{c >{\raggedright}p{5.5cm} c c}
+		Label & Description & Sampling period (hours) & Noise std. dev. \\
+		\midrule
+		CV1        & Mill weight & 0.05 & XX \\ 
+		CV2       & Mill power consumption & 0.05 & XX \\ 
+		CV3       & Cyclone feed solids fraction & 0.05 & XX \\ 
+		CV4       & Cyclone overflow P80 & 0.05 & XX \\ 
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+Although some of these process variables would likely be sampled at higher rates in practice, it is assumed, for simplicity, that they are all sampled at the same rate of 1 sample every 3 minutes (i.e. a sampling period of 0.05 hours). This was deemed to be a typical sampling rate of a standard online particle size analyser that might be used for the P80 measurement.
 
 
 \section{Performance evaluation}
