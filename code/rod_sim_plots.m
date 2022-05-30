@@ -41,28 +41,50 @@ rng(seed)
 alpha = sample_random_shocks(size(t), p_shock, sigma_alpha);
 
 % 2. Step Disturbance Process
-H = tf([1 0],[1 -1],Ts);
-Dt_step = lsim(H,alpha,t);
+
+% Z-transform
+Hz = tf([1 0],[1 -1],Ts);
+Dt_step = lsim(Hz,alpha,t);
+
+% Difference equation
+Hq = tf([1 0],[1 -1],Ts,'Variable','q^-1');
+Dt_step_q = lsim(Hq,alpha,t);
+assert(max(abs(Dt_step - Dt_step_q)) < 1e-10)
 
 % 3. Ramp Disturbance Process
+
+% Z-transform
+Hz = tf([0 0 1],conv([1 -1],[1 -1]),Ts);
+Dt_ramp = lsim(Hz,alpha,t);
+
+% Difference equation
+Hd = tf([0 0 1],conv([1 -1],[1 -1]),Ts,'Variable','q^-1');
+Dt_ramp_d = lsim(Hd,alpha,t);
+assert(max(abs(Dt_ramp - Dt_ramp_d)) < 1e-10)
+
+% State-space model
 A = [1 1; 0 1]; B = [0; 1]; C = [1 0]; D = 0;
-H = ss(A,B,C,D,Ts);
-Dt_ramp = lsim(H,alpha,t);
+Hss = ss(A,B,C,D,Ts);
+Dt_ramp_ss = lsim(Hss,alpha,t);
+assert(max(abs(Dt_ramp - Dt_ramp_ss)) < 1e-10)
 
 % 4. Exponential Change Disturbance Process
 phi = 0.95;
-A = [1 0; 0 phi]; B = [1/(1-phi); -phi/(1-phi)]; C = [1 1]; D = 0;
-H = ss(A,B,C,D,Ts);
-Dt_exp = lsim(H,alpha,t);
 
-% 5. Combined steps and ramps
-rng(seed)
-p_shock2 = [p_shock; p_shock];
-sigma_alpha2 = [sigma_alpha; 0.01*sigma_alpha];
-alpha2 = sample_random_shocks([length(t) 2], p_shock2, sigma_alpha2);
-A = [1 1; 0 1]; B = [1 0; 0 1]; C = [1 0]; D = 0;
-H = ss(A,B,C,D,Ts);
-Dt_step_ramp = lsim(H,alpha2,t);
+% Z-transform
+Hz = tf([0 0 1],conv([1 -phi],[1 -1]),Ts);
+Dt_exp = lsim(Hz,alpha,t);
+
+% Difference equation
+Hd = tf([0 0 1],conv([1 -phi],[1 -1]),Ts,'Variable','q^-1');
+Dt_exp_d = lsim(Hd,alpha,t);
+assert(max(abs(Dt_exp - Dt_exp_d)) < 1e-10)
+
+% State-space model
+A = [1 1; 0 phi]; B = [0; 1]; C = [1 0]; D = 0;
+Hss = ss(A,B,C,D,Ts);
+Dt_exp_ss = lsim(Hss,alpha,t);
+assert(max(abs(Dt_exp - Dt_exp_ss)) < 1e-10)
 
 
 %% Make plot figures
@@ -87,7 +109,23 @@ set(gcf,'Position',[100 100 400 450])
 saveas(gcf,fullfile(plot_dir,'rodd_sim_plots.png'))
 save_fig_to_pdf(fullfile(plot_dir,'rodd_sim_plots.pdf'))
 
-% Plot combined steps and ramps
+
+%% Combined steps and ramps
+
+rng(seed)
+p_shock2 = [p_shock; p_shock];
+sigma_alpha2 = [sigma_alpha; 0.01*sigma_alpha];
+alpha2 = sample_random_shocks([length(t) 2], p_shock2, sigma_alpha2);
+
+% Z-transform model
+
+
+% State-space model
+A = [1 1; 0 1]; B = [1 0; 0 1]; C = [1 0]; D = 0;
+H = ss(A,B,C,D,Ts);
+Dt_step_ramp = lsim(H,alpha2,t);
+
+% Plot
 figure(2); clf
 make_tsplot(Dt_step_ramp, t, {'$p(k)$'})
 set(gcf,'Position',[100 625 400 150])
