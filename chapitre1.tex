@@ -79,6 +79,8 @@ C.W. Steyn, C. Sandrock (2013) present results of implementing MPC on an autogen
 %
 %The controlled variables were cyclone feed density and ball mill power consumption, and the manipulatable variables were pump box water addition rate and ball mill feed water addition rate. The improvements also included a real-time steel charge schedule, and the results show that the system reduced the product particle size from the grinding circuit by 7.5\%.
 
+\alert{\textbf{TODO:} Add reference to Steyn et al., Investigating the potential benefit of an online particle size analyser on the feed to a primary milling circuit, 2001.}
+
 \subsection{Grinding process observers}
 
 As mentioned above, one of the major obstacles to SAG process control and optimization is the lack of good online measurements (i.e. in real time) of critical process variables, in particular, breakage rates and the characteristics of the mill contents. Of the output variables shown on the right hand side of Figure \ref{fig:cause-effect}, only power draw is directly measurable. Mill weight may be inferred from load sensors or bearing pressure measurements. However, a reliable estimate of the weight of the mill contents is complicated by the fact that the total mill weight includes the weights of the shell and liners, which change over time due to wear. Direct measurement of the properties of the discharge of a SAG mill is also impractical due to the properties of the material flow.  Other measurements can be affected by high frequency measurement errors (noise) and others, such as particle size measurements, rely on physical analysis systems which can take minutes to produce new estimates. For these reasons, process observers which produce reliable online estimates of the unmeasurable variables are an important tool in grinding process control.
@@ -98,6 +100,8 @@ In \cite{le_roux_ekf_2017}, an extended Kalman filter (EKF) utilizing a simpler 
 \subsection{Grinding process disturbances}
 
 Continual variability in ore properties such as \textit{hardness}, \textit{competency}, \textit{particle size distribution} (PSD), and \textit{grade} (valuable mineral content) is normal in mining operations due to the geological characteristics of ore bodies. Additional variability is introduced by mining processes such as blasting and crushing, and during material handling operations such as shovelling, trucking, conveying, and storage. Storage systems such as stockpiles, for example, tend to cause segregation of material by particle size, which can result in dramatic changes in the particle size distribution of ore feeding primary grinding if the feed to the stockpile is interrupted \citep{estrada_hybrid_2014}. The nature of such variations will therefore reflect the particular processes and equipment employed at each site. Although they are not random, the complexities of these numerous effects is such that predicting the variations in the properties of ore arriving at the processing plant is extremely difficult.
+
+\alert{\textbf{TODO:} Add reference to Morrell and Valery, Influence of Feed Size on AG/SAG Mill Performance, 2001.}
 
 There is limited available data on actual ore variability in real operations, especially on the dynamic nature of these variations. This may be attributed to the lack of cost-effective measurement technology, the cost of sampling and analysing ore, as well as the commercial sensitivity of such data.
 

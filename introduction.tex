@@ -4,7 +4,7 @@
 
 % Note: This is an un-numbered chapter.
 
-Comminution (grinding) is a particle size reduction process used in mineral processing industries to liberate valuable minerals from ore as part of the concentration process. Figure \ref{fig:process-block-diagram} shows the block diagram of the steps in a typical copper concentration process.
+Grinding is a particle size reduction process used in mineral processing industries to liberate valuable minerals from ore as part of the concentration process. Figure \ref{fig:process-block-diagram} shows the block diagram of the steps in a typical copper concentration process.
 
 \begin{figure}[htp]
 	\centering
@@ -14,7 +14,7 @@ Comminution (grinding) is a particle size reduction process used in mineral proc
 
 Effective control and optimization of grinding operations is challenging for a number of reasons---large variations in the properties of the ore feed material, multiple strongly-coupled interacting variables, long time delays, non-linear and time-varying input-output characteristics, process variables that are difficult to measure, and difficulties in identifying process models of actual operations \citep{olivier_dual_2012, gough_sag_2015, le_roux_throughput_2016, aguila-camacho_control_2017}. 
 
-Any input that has a material effect on the state or behaviour of a process and is not manipulatable by the control system is defined as a disturbance. Changes in the properties of the ore feed are a significant problem because they are difficult to measure accurately in real time and their impact on the grinding process and control system can be severe \citep{herbst_optimal_1988, cesar_multivariable_2009, remes_grinding_2010, liu_development_2018}. \cite{powell_applying_2009} summarized the effects of ore variability as follows:
+Any input that has a material effect on the state or behaviour of a process and is not manipulatable by the control system is defined as a disturbance. Changes in the properties of the ore feed are a significant problem because they are difficult to measure accurately in real time and their impact on the grinding process and control system can be severe \citep{herbst_optimal_1988, garrido_multivariable_2009, remes_grinding_2010, liu_development_2018}. \cite{powell_applying_2009} summarized the effects of ore variability as follows:
 
 Variable ore $\to$ variable operation $\to$ variable grind $\to$ variable recovery $\to$ lower recovery. 
 
@@ -24,7 +24,7 @@ The main benefit of effective regulation is that the process variables remain cl
 
 \subsection*{Motivation}
 
-The motivation for this work is to improve grinding process control design through the use of better models of grinding process disturbances. To develop and test control designs, good simulation models are required, including methods to simulate the characteristics of disturbances that exist in real operations, as closely as possible. As well as enabling more realistic grinding process simulations, disturbance models based on a more sophisticated understanding and characterization of disturbances can be used, directly or indirectly, in the design of model-based observers and controllers. Therefore, there is a need for a broader range of versatile disturbance models and methods with which to incorporate them into control strategies.
+The motivation for this work is to improve grinding process control design through the use of better models of process disturbances. Good simulation models are required to develop and test control systems, including methods to simulate the characteristics of the disturbances that exist in real operations as closely as possible. As well as enabling more realistic grinding process simulations, disturbance models based on a more sophisticated understanding and characterization of disturbances could be used, directly or indirectly, in the design of model-based observers and controllers. Therefore, there is a need for a range of versatile disturbance models, and methods with which to incorporate them into control strategies.
 
 %A better understanding of ore variability could also be useful in identifying process improvements in the mining operation, although that is not the primary motivation of this work.
 

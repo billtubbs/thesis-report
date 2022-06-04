@@ -513,63 +513,63 @@ The problem that sub-optimal algorithms address is the inevitable increase in th
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximation techniques. The first is referred to as \textit{sequence fusion}, also known as the \textit{generalized pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences which have the same values over the previous $f$ sample times, $\{\gamma(k-f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be modelled is $f$, which is known as the \textit{fusion horizon}. \textbf{TODO: $f$ clashes with use of $f$ as a filter index variable in previous section}
+\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximation techniques. The first is referred to as \textit{sequence fusion}, also known as the \textit{generalized pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences which are identical over the previous $n_f$ sample times, $\{\gamma(k-n_f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be modelled is $n_f$, which is known as the \textit{fusion horizon}.
 
-Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length $d$ samples is therefore
+Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length $n_d$ samples is therefore
 \begin{equation} \label{eq:p_gamma_d}
-	\epsilon_d = 1 - (1 - \epsilon)^d.
+	\epsilon_d = 1 - (1 - \epsilon)^{n_d}.
 \end{equation}
 
 The probabilities of the modelled random shocks are then redefined as
 \begin{equation} \label{eq:Pr_gamma_nd}
 	\begin{aligned}
 		\Pr\left(\gamma_{f}(k)=0\right) = \begin{cases*}
-			1 - \epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
-			1 & \text { for } $k \ne d, 2d, \ldots$
+			1 - \epsilon_d & \text { for } $k = n_d, 2n_d, 3n_d, \ldots$ \\
+			1 & \text { for } $k \ne n_d, 2n_d, 3n_d, \ldots$
 		\end{cases*} \\
 		\Pr\left(\gamma_{f}(k)=1\right) = \begin{cases*}
-			\epsilon_d & \text { for } $k = d, 2d, \ldots$ \\
-			0 & \text { for } $k \ne d, 2d, \ldots$
+			\epsilon_d & \text { for } $k = n_d, 2n_d, 3n_d, \ldots$ \\
+			0 & \text { for } $k \ne n_d, 2n_d, 3n_d, \ldots$
 		\end{cases*} \\
 	\end{aligned}
 \end{equation}
 
-Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $m$ shocks occur during the fusion horizon is low, where $m$ may be 1 or a low number. This further reduces the number of filters required.
+Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $n_m$ shocks occur during the fusion horizon is low, where $n_m$ may be 1 or a low number. This further reduces the number of filters required.
 
-To illustrate the sequence fusion procedure, consider a simple example. Suppose there is one RODD to estimate. A sequence fusion algorithm is used with a detection interval of $d=3$ and a maximum number of shocks over the fusion horizon of $m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods, the sequences repeat indefinitely. 
+To illustrate the sequence fusion procedure, consider a simple example. Suppose there is one RODD to estimate. A sequence fusion algorithm is used with a detection interval of $n_d=3$ and a maximum number of shocks over the fusion horizon of $n_m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods, the sequences repeat indefinitely.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[height=5.3cm]{images/mm_obs_seq_rob1.pdf}
-	\caption{Sequence fusion example 1 ($d=3$, $m=1$, $f=9$)}
+	\caption{Sequence fusion example 1 ($n_d=3$, $n_m=1$, $n_f=9$)}
 	\label{fig:mm-obs-seq-rob1}
 \end{figure}
 
 If a shock actually occurred in the system at time $k=4$, for example, then the algorithm should predict that hypothesis 3 is the most likely because this assumes a shock occurred at $k=3$, which is the close to the actual time.
 
-Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fusion algorithm with $m=2$ and a longer detection interval, $d=5$.  Note that this also has four hypotheses. Hypothesis 4 accounts for the possibility of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the estimated most likely hypothesis should be hypothesis 3 because it assumes one shock occurred at $k=5$, which is close to the actual time.
+Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fusion algorithm with $n_m=2$ and a detection interval of length $n_d=5$.  Note that this also has four hypotheses. Hypothesis 4 accounts for the possibility of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the estimated most likely hypothesis should be hypothesis 3 because it assumes one shock occurred at $k=5$, which is close to the actual time.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[height=5.3cm]{images/mm_obs_seq_rob2.pdf}
-	\caption{Sequence fusion example 2 ($d=5$, $m=2$, $f=10$)}
+	\caption{Sequence fusion example 2 ($n_d=5$, $n_m=2$, $n_f=10$)}
 	\label{fig:mm-obs-seq-rob2}
 \end{figure}
 
-\cite{robertson_detection_1995} describe a systematic procedure to choose the $f$, $d$, and $m$ parameters and give the formula for the total probability of the modelled hypotheses up to time $k=nd$:
+\cite{robertson_detection_1995} describe a systematic procedure to choose the $n_f$, $n_d$, and $n_m$ parameters and give the formula for the total probability of the modelled hypotheses up to time $k=n n_d$:
 \begin{equation} \label{eq:p_gamma}
-	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i d) \leq m\right) = \sum_{j=0}^{m} \binom{n}{j} \epsilon_p^{n-j}(1-\epsilon_p)^{j},
+	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i n_d) \leq n_m\right) = \sum_{j=0}^{n_m} \binom{n}{j} \epsilon_d^{n-j}(1-\epsilon_d)^{j},
 \end{equation}
-where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ intervals. They recommend that the total probability modelled should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
+where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ intervals. They recommend that the total probability should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
 
-In a later paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the possibility of a shock as a sequence of $d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed that this improved the performance of the algorithm in simulations.
+In a later paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the possibility of a shock as a sequence of $n_d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed that this improved the performance of the algorithm in simulations.
 
 To implement this modification, define a new variable, $\delta(n)$, to represent whether or not at least one shock occurred during the $n$\textsuperscript{th} detection interval:
 
 \begin{equation} \label{eq:deltak}
 	\delta(n) = \begin{cases*}
-		0 & \text{if} $\sum_{k=(n-1) d}^{n d-1} \gamma(k)=0$, \\
-		1 & \text{if} $\sum_{k=(n-1) d}^{n d-1} \gamma(k)\ge0$.
+		0 & \text{if} $\sum_{k=(n-1) n_d}^{n n_d - 1} \gamma(k)=0$, \\
+		1 & \text{if} $\sum_{k=(n-1) n_d}^{n n_d - 1} \gamma(k)\ge0$.
 	\end{cases*}
 \end{equation}
 
@@ -578,11 +578,11 @@ Then, replace the random shock variable used at each sample time, $w_p(k)$ (\ref
 	w_{p,d}(k) \sim 
 	\begin{cases*}
 		\mathcal{N}\left(0, \sigma_{w_p}^2\right) & \text{when} $\delta(n) = 0$, \\
-		\mathcal{N}\left(0, \frac{b^2\sigma_{w_p}^2}{d}\right) & \text{when} $\delta(n) = 1$.
+		\mathcal{N}\left(0, \frac{b^2\sigma_{w_p}^2}{n_d}\right) & \text{when} $\delta(n) = 1$.
 	\end{cases*}
 \end{equation}
 
-Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the interval length $d$.
+Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the interval length $n_d$.
 
 \subsubsection{Sequence pruning} \label{subsec-pruning}
 
@@ -810,7 +810,7 @@ Because the processes simulated in this work are stochastic, it is important to 
 \textbf{TODO: Add details later if needed}:
 \begin{itemize}
 	\item Sensitivity to model error, RODD model parameters.
-	\item Closed loop stability - stability margins? Or simply calculate performance metrics as selected model parameter errors (gain, time constant) are increased. \\
+	\item Closed loop stability - stability margins? Or simply calculate performance metrics as selected model parameter errors (gain, time constant) are increased.
 \end{itemize}
 
 % Variance calc - not used

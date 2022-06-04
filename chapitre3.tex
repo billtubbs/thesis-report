@@ -142,8 +142,7 @@ Figure \ref{fig:sim-sys-siso-KF123-est} shows the state and output estimates of 
 	\label{fig:sim-sys-siso-KF123-est}
 \end{figure}
 
-The upper plot in Figure \ref{fig:sim-sys-siso-KF123-cumerr} shows the errors in the output estimates of each Kalman filter when compared to the true process outputs (ignoring measurement noise). The lower plot shows the cumulative sum of the squared errors. This clearly shows the differences in performance between the three filters. The estimation errors of KF1 are small when the system is in steady-state but increase dramatically after each step disturbance. The magnitude of the errors of KF2 is higher during steady-state periods but remains roughly constant throughout the simulation. KF3 achieves the lowest overall cumulative sum of the squared errors by the end of the simulation.
-
+The upper plot in Figure \ref{fig:sim-sys-siso-KF123-cumerr} shows the errors in the output estimates of each Kalman filter when compared to the true process outputs (ignoring measurement noise). The lower plot shows the cumulative sum of the squared errors. This clearly shows the differences in performance between the three filters. The estimation errors of KF1 are small when the system is in steady-state but increase dramatically after each step disturbance. The magnitude of the errors of KF2 is higher during steady-state periods but remains roughly constant throughout the simulation. KF3 achieves the lowest overall cumulative sum-of-squared-errors by the end of the simulation.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/sim_sys_1_3_y1_err.pdf}
@@ -151,8 +150,34 @@ The upper plot in Figure \ref{fig:sim-sys-siso-KF123-cumerr} shows the errors in
 	\label{fig:sim-sys-siso-KF123-cumerr}
 \end{figure}
 
+The two sub-optimal multi-model observer algorithms were also tested on data from this system. Firstly, the sequence fusion algorithm proposed by \cite{robertson_method_1998} was considered. This algorithm requires three parameters to be specified, $n_f$, $n_d$, and $n_m$ as described in Section \ref{subsec-fusion}. The best choice of values for these parameters was determined by running multiple evaluations with different parameter values and evaluating the observer performance.
 
-% TODO: Make text on figures larger
+\begin{table}[hb]
+	\begin{center}
+		\caption{Observers and parameters.} \label{tb:obs-params}
+		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
+		\begin{tabular}{p{0.15\textwidth}>{\centering\arraybackslash}p{0.09\textwidth}>{\centering\arraybackslash}p{0.09\textwidth}>{\centering\arraybackslash}p{0.09\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
+			& KF1 & KF2 & KF3 & MMKF-F1 & MMKF-P1 \\
+			\hline
+			Type & Kalman filter & Kalman filter & Kalman filter & Multi-model Kalman filter & Multi-model Kalman filter \\
+			Sub-optimal algorithm & - & - & - & Sequence fusion & Sequence pruning \\
+			\hline
+			Parameters &  &  &  & &  \\
+			$\mathbf{Q}$ & $\mathbf{Q}_0$ & $\mathbf{Q}_1$ & $\mathbf{Q}_{opt}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ \\
+			$R$ & $5^2$ & $5^2$ & $5^2$ & $5^2$ & $5^2$ \\
+			$\mathbf{P}(0)$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ \\
+			No. of filters & 1 & 1 & 1 & 7 & 20 \\
+			$n_f$ & - & - & - & 15 & - \\
+			$n_m$ & - & - & - & 2 & - \\
+			$n_d$ & - & - & - & 5 & - \\
+			$n_{min}$ & - & - & - & - & 18 \\
+			$\epsilon$ & - & - & - & 0.01 & 0.01 \\
+			$\sigma_{w_p}$ & - & - & - & 1 & 1 \\
+			$b$ & - & - & - & 100 & 100 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
 
 \begin{itemize}
 	\item Tuning of sequence fusion (Robertson et al.) sub-optimal observer.
