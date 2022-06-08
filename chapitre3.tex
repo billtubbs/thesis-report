@@ -114,7 +114,7 @@ However, this leads to a filter with a slow response to the shocks. A second opt
 	\end{aligned}
 \end{equation}
 
-The problem with this filter is that it is very sensitive to the measurement noise, $v(k)$. As explained in \cite{robertson_detection_1995}, a trade off is needed. One approach to making this trade-off is to minimize the average estimation errors over a suitably long set of input-output data. An approximate solution to this problem was found by running multiple evaluations of the Kalman filter with different tunings until a minimum RMSE was found. Figure \ref{fig:sim-sys-siso-KF3-tuning} shows the results of these evaluations. From these it can be seen that the lowest RMSEs for both model states occur when the variance parameter $\sigma_{w_p}^2$ is close to $0.01$. Using this result, a third Kalman filter labelled `KF3' was designed with the state disturbance covariance matrix 
+The problem with this filter is that it is very sensitive to the measurement noise, $v(k)$. As explained in \cite{robertson_detection_1995}, a trade off is needed. One approach to making this trade-off is to minimize the average estimation errors over a suitably long set of input-output data. An approximate solution to this problem was found by running multiple evaluations of the Kalman filter with different tunings until a minimum RMSE was found. Figure \ref{fig:sim-sys-siso-KF3-tuning} shows the results of these evaluations, from which it can be seen that the lowest RMSEs for both estimates occur when the variance parameter $\sigma_{w_p}^2$ is close to $0.01$. Using this result, a third Kalman filter labelled `KF3' was designed with the state disturbance covariance matrix 
 \begin{equation} \label{eq:sim-sys-siso-KF3-Q}
 	\begin{aligned}
 		\mathbf{Q}_{\text{KF3}}=\mathbf{Q}_{\text{opt}}=\begin{bmatrix}
@@ -129,8 +129,8 @@ The problem with this filter is that it is very sensitive to the measurement noi
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=14cm]{images/sim_sys_1_KF3_tuning.pdf}
-	\caption{Tuning of Kalman filter to minimise estimation errors}
+	\includegraphics[width=14cm]{images/rod_obs_sim1_plot_KF3_tuning.pdf}
+	\caption{Tuning of a Kalman filter to minimise estimation errors}
 	\label{fig:sim-sys-siso-KF3-tuning}
 \end{figure}
 
@@ -150,7 +150,7 @@ The upper plot in Figure \ref{fig:sim-sys-siso-KF123-cumerr} shows the errors in
 	\label{fig:sim-sys-siso-KF123-cumerr}
 \end{figure}
 
-The two sub-optimal multi-model observer algorithms were also tested on data from this system. Firstly, the sequence fusion algorithm proposed by \cite{robertson_method_1998} was considered. This algorithm requires three parameters to be specified, $n_f$, $n_d$, and $n_m$ as described in Section \ref{subsec-fusion}. The best choice of values for these parameters was determined by running multiple evaluations with different parameter values and evaluating the observer performance.
+The two sub-optimal multi-model observer algorithms were also tested on data from this system. Firstly, the sequence fusion algorithm proposed by \cite{robertson_method_1998} was tested. This algorithm requires three parameters to be specified, $n_f$, $n_d$, and $n_m$, as described in Section \ref{subsec-fusion}. The best choice of values for these parameters was determined by running multiple simulations with different parameter values and evaluating the observer performance.
 
 \begin{table}[hb]
 	\begin{center}

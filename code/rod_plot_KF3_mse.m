@@ -29,7 +29,8 @@ Q1 = 0.01^2;
 
 switch p_case
     case 1
-        filename = "rod_obs_sim2_1_4_summary_KF3tuning.csv";
+        %filename = "rod_obs_sim2_1_4_summary_KF3tuning.csv";
+        filename = "rod_obs_sim_1x1_3KF_4000_summary.csv";
 
         % Specify column names for which values should be identical
         id_cols = {'t_stop', 'Ts', 'nT', 'nu', 'ny', 'n', ...
