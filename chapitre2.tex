@@ -337,7 +337,7 @@ Although the random shock in a RODD is unmeasured, it may be observable from the
 
 Alternatively, a so-called \textit{multiple-model approach} may be considered \citep{buxbaum_recursive_1969, jaffer_estimation_1971}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current states. To achieve this, an independent Kalman filter is maintained for each hypothesis and a weighted average of the estimates by each filter is calculated using the conditional probabilities of each hypothesis given current and past measurements.
 
-Let the number of Kalman filters be $n_f$ and the \textit{shock occurrence hypothesis} associated with Kalman filter $f$ at time instant $k$ be
+Let the number of Kalman filters be $n_h$ and the \textit{shock occurrence hypothesis} associated with Kalman filter $f$ at time instant $k$ be
 \begin{equation} \label{eq:gammak}
 	\gamma_{f}(k) \in \left\{0, 1 \right\} \forall{k \ge 0}.
 \end{equation}
@@ -377,7 +377,7 @@ where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x
 
 The estimate of the probability of the shock sequence $\Gamma_f(k)$ given the data up to time $k$ is
 \begin{equation} \label{eq:Pr_Gammak_given_Yk}
-	\Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) = \frac{q_f(k)}{\sum_{f=1}^{n_f} q_f(k)},
+	\Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) = \frac{q_f(k)}{\sum_{f=1}^{n_h} q_f(k)},
 \end{equation}
 where
 \begin{equation} \label{eq:qfk}
@@ -427,9 +427,9 @@ and the estimation error covariance is updated using
 
 Note the difference between (\ref{eq:Pfk}) and (\ref{eq:Pk}).  Here, $\mathbf{P}_f(k+1|k)$ is dependent on $\gamma_f(k)$, which determines the noise covariance matrix used in the update, whereas in (\ref{eq:Pk}), $\mathbf{Q}$ is time invariant.
 
-Finally, the multi-model observer estimate of the states in the next time instant is the sum of the $n_f$ Kalman filter estimates weighted by their conditional probabilities:
+Finally, the multi-model observer estimate of the states in the next time instant is the sum of the $n_h$ Kalman filter estimates weighted by their conditional probabilities:
 \begin{equation} \label{eq:x_hat}
-	\mathbf{\hat{x}}(k+1|k) = \sum_{f=1}^{n_f} \mathbf{\hat{x}}_f(k+1|k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
+	\mathbf{\hat{x}}(k+1|k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k+1|k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
 \end{equation}
 
 % TODO: in Robertson et al, they estimate x(k|k) not x(k+1|k).
@@ -444,14 +444,14 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 			\State $\mathbf{\hat{x}}_1(0) \gets \mathbf{\hat{x}}(0)$  \Comment{Initialize Kalman filters}  % \footnotemark
 			\State $\mathbf{P}_1(0) \gets \mathbf{P}(0)$
 			\State $\Pr(\Gamma_1(k-1)|\mathbf{Y}(k-1))) \gets 1$
-			\For{$f \gets 2, n_f$}
+			\For{$f \gets 2, n_h$}
 			\State $\mathbf{\hat{x}}_f(0) \gets \mathbf{\hat{x}}(0)$
 			\State $\mathbf{P}_f(0) \gets 10^{10}\mathbf{P}(0)$
 			\State $\Pr(\Gamma_f(k-1)|\mathbf{Y}(k-1))) \gets 1^{-10}$
 			\EndFor
 			\For{$k \gets 0, N$}
 			\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal procedure occurs here}  % \footnotemark
-			\For{$f \gets 1, n_f$}
+			\For{$f \gets 1, n_h$}
 			\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
 			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kf}) \Comment{Filter updates}
 			\State calculate $\mathbf{\hat{x}}_f(k+1|k)$ (\ref{eq:xfkp1_hat})
@@ -472,14 +472,14 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 %		\State $\mathbf{\hat{x}}_1(0) \gets \mathbf{\hat{x}}(0)$  \Comment{Initialize Kalman filters\footnotemark}
 %		\State $\mathbf{P}_1(0) \gets \mathbf{P}(0)$
 %		\State $\Pr(\Gamma_1(k-1)|\mathbf{Y}(k-1))) \gets 1$
-%		\For{$f \gets 2, n_f$}
+%		\For{$f \gets 2, n_h$}
 %		\State $\mathbf{\hat{x}}_f(0) \gets \mathbf{\hat{x}}(0)$
 %		\State $\mathbf{P}_f(0) \gets 10^{10}\mathbf{P}(0)$
 %		\State $\Pr(\Gamma_f(k-1)|\mathbf{Y}(k-1))) \gets 1^{-10}$
 %		\EndFor
 %		\For{$k \gets 0, N$}
 %		\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal procedure occurs here\footnotemark}
-%		\For{$f \gets 1, n_f$}
+%		\For{$f \gets 1, n_h$}
 %		\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
 %		\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kf}) \Comment{Filter updates}
 %		\State calculate $\mathbf{\hat{x}}_f(k+1|k)$ (\ref{eq:xfkp1_hat})
@@ -492,7 +492,7 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 %\end{algorithm}
 %
 %\addtocounter{footnote}{-3} %3=n
-%\stepcounter{footnote}\footnotetext{To initialize the bank of $n_f$ Kalman filters, initialize one with an available estimate and covariance of the initial state of the system and set the covariances of all others to high values to ensure they are eliminated as soon as better estimates are available.}
+%\stepcounter{footnote}\footnotetext{To initialize the bank of $n_h$ Kalman filters, initialize one with an available estimate and covariance of the initial state of the system and set the covariances of all others to high values to ensure they are eliminated as soon as better estimates are available.}
 %\stepcounter{footnote}\footnotetext{At this point, the algorithm must extend the shock indicator sequences to the current time instant, while limiting the total number of hypotheses and filters according to a particular sub-optimal method such as the procedures described in section \ref{subsec-pruning} and \ref{subsec-fusion}.
 %\stepcounter{footnote}\footnotetext{The estimation error covariance is not required by the algorithm. It may be calculated if needed.}
 
