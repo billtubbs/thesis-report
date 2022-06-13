@@ -25,7 +25,7 @@ RODDs are easy to generate by numerical simulation.  Plot (a) in Figure \ref{fig
 
 \section{Estimating RODD disturbances} \label{sim-obs-lin}
 
-\subsection{SISO linear system}
+\subsection{SISO linear system} \label{sim-obs-lin-1}
 
 To demonstrate state estimation in the presence of RODDs, a single RODD was simulated at the input to a process represented by a discrete-time linear model, as shown in the functional diagram in \ref{fig:sim-sys-diag-siso}. In addition to the input disturbance, the process model has an input variable, $u(k)$, and a measured output variable, $y(k)$. A random noise $v(k)$ with zero mean and standard deviation $\sigma_M$ is added to the output of the process to represent measurement errors. At each sample time, the input and measured output are passed to an observer which calculates estimates of the process states at the next sample time, $\hat{x}(k+1)$.
 
@@ -204,8 +204,8 @@ The sequence pruning algorithm proposed by \cite{andersson_adaptive_1985} has on
 
 \begin{equation} \label{eq:sim-sys-siso-MKF-SP-param-values}
 	\begin{aligned}
-		n_h \in \left\{3, 4, 5, 7, 10, 14, 20, 25, 50\right\},  \\
-			n_{min} \in \left\{3, 4, 5, 6, 8, 12, 17, 22, 32, 44\right\}.  \\
+		n_h \in \left\{3, 4, 5, 7, 10, 14, 19, 25\right\},  \\
+			n_{min} \in \left\{1, 2, 3, 4, 5, 6, 7, 9, 12, 16, 21\right\}.  \\
 		\end{aligned}
 	\end{equation}
 
@@ -219,22 +219,32 @@ Combinations where rejected when $n_h - n_{min} < 1$, or in other words, when th
 			$n_h$ & $n_\text{min}$ & $\text{RMSE}(\hat{Y}_i(N),Y_i(N))$  \\
 			\hline
 			% seed = 0
-			  7 &   3 & 0.0569  \\
-			10 &   8 & 0.0570  \\
-			14 &  12 & 0.0570  \\
-			25 &  22 & 0.0570  \\
-			10 &   3 & 0.0570  \\
-			20 &  17 & 0.0570  \\
-			14 &   3 & 0.0570  \\
-			14 &   4 & 0.0570  \\
-			14 &   8 & 0.0571  \\
-			50 &  44 & 0.0571  \\
+%			  7 &   3 & 0.0569  \\
+%			10 &   8 & 0.0570  \\
+%			14 &  12 & 0.0570  \\
+%			25 &  22 & 0.0570  \\
+%			10 &   3 & 0.0570  \\
+%			20 &  17 & 0.0570  \\
+%			14 &   3 & 0.0570  \\
+%			14 &   4 & 0.0570  \\
+%			14 &   8 & 0.0571  \\
+%			50 &  44 & 0.0571  \\
+				  7 &   4 & 0.0608  \\
+				10 &   6 & 0.0609  \\
+				10 &   7 & 0.0609  \\
+				10 &   5 & 0.0609  \\
+				19 &  16 & 0.0609  \\
+				25 &  21 & 0.0609  \\
+				7 &   3 & 0.0609  \\
+				10 &   4 & 0.0609  \\
+				14 &   5 & 0.0609  \\
+				14 &   6 & 0.0609  \\
 			\hline
 		\end{tabular}
 	\end{center}
 \end{table}
 
-Again, the differences between the RMSEs of the best 10 combinations are very small, indicating that the precise choice of parameters is not important in this case. The combination with the lowest number of filters ($n_h=7$) produces the lowest RMSE of those evaluated. Therefore these values were chosen for the observer which is labelled `MMKF-SP1'. It may also be noted that the best RMSEs of this observer are significantly lower than those of the best sequence fusion observer in Table \ref{tb:obs-sim1-popt-SF}. The parameters for all the observers used in the simulations in this section are summarised in Table \ref{tb:obs-params}.
+Again, the differences between the RMSEs of the best 10 combinations are very small, indicating that the precise choice of parameters is not important in this case. The combination $n_h=7$ and $n_{min}=4$ produces the lowest RMSE of those evaluated, therefore these values were chosen for the observer, which is labelled `MMKF-SP1'. It may also be noted that the best RMSEs of this observer are significantly lower than those of the best sequence fusion observer in Table \ref{tb:obs-sim1-popt-SF}. The parameters for all the observers used in the simulations in this section are summarised in Table \ref{tb:obs-params}.
 
 \begin{table}[hb]
 	\begin{center}
@@ -254,7 +264,7 @@ Again, the differences between the RMSEs of the best 10 combinations are very sm
 			$n_f$ & - & - & - & 10 & - \\
 			$n_m$ & - & - & - & 1 & - \\
 			$n_d$ & - & - & - & 1 & - \\
-			$n_{min}$ & - & - & - & - & 3 \\
+			$n_{min}$ & - & - & - & - & 4 \\
 			$\epsilon$ & - & - & - & 0.01 & 0.01 \\
 			$\sigma_{w_p}$ & - & - & - & 1 & 1 \\
 			$b$ & - & - & - & 100 & 100 \\
