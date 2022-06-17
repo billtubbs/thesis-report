@@ -129,7 +129,7 @@ The problem with this filter is that it is very sensitive to the measurement noi
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=14cm]{images/rod_obs_sim1_plot_KF3_tuning.pdf}
+	\includegraphics[width=14cm]{images/rod_obs_sim1_plot_KF3_Q_statplot.pdf}
 	\caption{Tuning of a Kalman filter to minimise estimation errors}
 	\label{fig:sim-sys-siso-KF3-tuning}
 \end{figure}
@@ -229,16 +229,17 @@ Combinations where rejected when $n_h - n_{min} < 1$, or in other words, when th
 %			14 &   4 & 0.0570  \\
 %			14 &   8 & 0.0571  \\
 %			50 &  44 & 0.0571  \\
-				  7 &   4 & 0.0608  \\
-				10 &   6 & 0.0609  \\
-				10 &   7 & 0.0609  \\
-				10 &   5 & 0.0609  \\
-				19 &  16 & 0.0609  \\
-				25 &  21 & 0.0609  \\
-				7 &   3 & 0.0609  \\
-				10 &   4 & 0.0609  \\
-				14 &   5 & 0.0609  \\
-				14 &   6 & 0.0609  \\
+			% seed = 2
+			  7 &   3 & 0.0608  \\
+			19 &  16 & 0.0608  \\
+			14 &  12 & 0.0608  \\
+			25 &  21 & 0.0609  \\
+			10 &   5 & 0.0609  \\
+			10 &   6 & 0.0609  \\
+			10 &   4 & 0.0609  \\
+			  7 &   2 & 0.0609  \\
+			10 &   3 & 0.0609  \\
+			14 &   4 & 0.0609  \\
 			\hline
 		\end{tabular}
 	\end{center}
