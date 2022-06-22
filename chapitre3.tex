@@ -169,19 +169,35 @@ Note that $\frac{n_f}{n_d}$ represents the number of detection intervals within 
 		\caption{Multi-model observer parameter search results – MMKF-SF.} \label{tb:obs-sim1-popt-SF}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
-			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\text{RMSE}(\hat{Y}(N),Y(N))$   \\
+			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\text{RMSE}(\hat{Y}_i(N),Y_i(N))$  \\
 			\hline
+			% Results with seed = 6
+			15 &   1 &   5 &   4 & 0.9930 & 0.1089 \\
+			15 &   2 &   5 &   7 & 0.9999 & 0.1089 \\
+			15 &   3 &   5 &   8 & 1.0000 & 0.1089 \\
+			15 &   1 &   3 &   6 & 0.9917 & 0.1118 \\
+			15 &   2 &   3 &  16 & 0.9997 & 0.1118 \\
+			15 &   3 &   3 &  26 & 1.0000 & 0.1118 \\
+			15 &   1 &   1 &  16 & 0.9904 & 0.1168 \\
+			15 &   2 &   1 & 121 & 0.9996 & 0.1168 \\
+			10 &   1 &   1 &  11 & 0.9957 & 0.1219 \\
+			10 &   2 &   1 &  56 & 0.9999 & 0.1219 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
 % Results with seed = 2.
-			10 &   3 &   1 & 176 & 1.0000 & 0.1115 \\
-			10 &   2 &   1 &  56 & 0.9999 & 0.1115 \\
-			10 &   1 &   1 &  11 & 0.9957 & 0.1115 \\
-			10 &   3 &   2 &  26 & 1.0000 & 0.1137 \\
-			10 &   2 &   2 &  16 & 0.9999 & 0.1137 \\
-			10 &   1 &   2 &   6 & 0.9962 & 0.1137 \\
-			15 &   3 &   5 &   8 & 1.0000 & 0.1157 \\
-			15 &   2 &   5 &   7 & 0.9999 & 0.1157 \\
-			15 &   1 &   5 &   4 & 0.9930 & 0.1157 \\
-			15 &   3 &   3 &  26 & 1.0000 & 0.1165 \\
+%10 &   3 &   1 & 176 & 1.0000 & 0.1115 \\
+%10 &   2 &   1 &  56 & 0.9999 & 0.1115 \\
+%10 &   1 &   1 &  11 & 0.9957 & 0.1115 \\
+%10 &   3 &   2 &  26 & 1.0000 & 0.1137 \\
+%10 &   2 &   2 &  16 & 0.9999 & 0.1137 \\
+%10 &   1 &   2 &   6 & 0.9962 & 0.1137 \\
+%15 &   3 &   5 &   8 & 1.0000 & 0.1157 \\
+%15 &   2 &   5 &   7 & 0.9999 & 0.1157 \\
+%15 &   1 &   5 &   4 & 0.9930 & 0.1157 \\
+%15 &   3 &   3 &  26 & 1.0000 & 0.1165 \\
 % seed = 0
 %			15 &   1 &   5 &   4 & 0.9930 & 0.1113 \\
 %			15 &   3 &   5 &   8 & 1.0000 & 0.1113 \\
@@ -193,10 +209,9 @@ Note that $\frac{n_f}{n_d}$ represents the number of detection intervals within 
 %			15 &   2 &   3 &  16 & 0.9997 & 0.1139 \\
 %			15 &   3 &   3 &  26 & 1.0000 & 0.1139 \\
 %			15 &   1 &   1 &  16 & 0.9904 & 0.1145 \\
-			\hline
-		\end{tabular}
-	\end{center}
-\end{table}
+
+
+
 
 A fusion horizon of $n_f=10$ sample periods produced the best results. For this horizon length, the lowest errors were produced when the length of the detection interval was one sample period ($n_d=1$). Increasing the maximum possible number of shocks during the fusion horizon ($n_m$) has very little additional benefit but significantly impacts the number of hypotheses to be modelled ($n_h$), and thus, the number of filters needed. Note that the differences in the RMSEs of the best 10 combinations are not large. The values chosen for the multi-model observer with sequence fusion used in the simulations in this section, which is labelled `MMKF-SF1', were $n_f=10$, $n_{min}=1$, and $n_d=1$.
 
@@ -218,7 +233,23 @@ Combinations where rejected when $n_h - n_{min} < 1$, or in other words, when th
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			$n_h$ & $n_\text{min}$ & $\text{RMSE}(\hat{Y}_i(N),Y_i(N))$  \\
 			\hline
-			% seed = 0
+			% Results with seed = 6, nT = 5000
+			10 &   7 & 0.0576  \\
+			10 &   6 & 0.0577  \\
+			14 &  12 & 0.0577  \\
+			19 &  16 & 0.0577  \\
+			25 &  21 & 0.0577  \\
+			14 &   7 & 0.0577  \\
+			19 &   7 & 0.0578  \\
+			25 &  16 & 0.0578  \\
+			19 &   6 & 0.0578  \\
+			25 &  12 & 0.0578  \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+%		   % seed = 0, nT = 2500
 %			  7 &   3 & 0.0569  \\
 %			10 &   8 & 0.0570  \\
 %			14 &  12 & 0.0570  \\
@@ -229,21 +260,20 @@ Combinations where rejected when $n_h - n_{min} < 1$, or in other words, when th
 %			14 &   4 & 0.0570  \\
 %			14 &   8 & 0.0571  \\
 %			50 &  44 & 0.0571  \\
-			% seed = 2
-			  7 &   3 & 0.0608  \\
-			19 &  16 & 0.0608  \\
-			14 &  12 & 0.0608  \\
-			25 &  21 & 0.0609  \\
-			10 &   5 & 0.0609  \\
-			10 &   6 & 0.0609  \\
-			10 &   4 & 0.0609  \\
-			  7 &   2 & 0.0609  \\
-			10 &   3 & 0.0609  \\
-			14 &   4 & 0.0609  \\
-			\hline
-		\end{tabular}
-	\end{center}
-\end{table}
+%			% seed = 2, nT = 2500
+%			  7 &   3 & 0.0608  \\
+%			19 &  16 & 0.0608  \\
+%			14 &  12 & 0.0608  \\
+%			25 &  21 & 0.0609  \\
+%			10 &   5 & 0.0609  \\
+%			10 &   6 & 0.0609  \\
+%			10 &   4 & 0.0609  \\
+%			  7 &   2 & 0.0609  \\
+%			10 &   3 & 0.0609  \\
+%			14 &   4 & 0.0609  \\
+
+
+
 
 Again, the differences between the RMSEs of the best 10 combinations are very small, indicating that the precise choice of parameters is not important in this case. The combination $n_h=7$ and $n_{min}=4$ produces the lowest RMSE of those evaluated, therefore these values were chosen for the observer, which is labelled `MMKF-SP1'. It may also be noted that the best RMSEs of this observer are significantly lower than those of the best sequence fusion observer in Table \ref{tb:obs-sim1-popt-SF}. The parameters for all the observers used in the simulations in this section are summarised in Table \ref{tb:obs-params-sim1}.
 
@@ -291,33 +321,114 @@ Again, the differences between the RMSEs of the best 10 combinations are very sm
 	\item Conclude on pros, cons of each algorithm and decision to use sequence pruning for grinding simulation experiments.
 \end{itemize}
 
+% Plots for analysis of SF performance
+%
+%\begin{figure}[htp]
+%	\centering
+%	\includegraphics[width=15cm]{images/rod-obs-sim-1-4-wfplot-DRAFT.png}
+%	\caption{Evolution of conditional probabilities with sequence fusion}
+%	\label{fig:rod-obs-sim-1-4-wfplot}
+%\end{figure}
+%
+%\begin{figure}[htp]
+%	\centering
+%	\includegraphics[width=14cm]{images/rod-obs-sim-1-4-est-MKF-SF-plot-DRAFT.pdf}
+%	\caption{Filter estimates of sequence fusion observer during step disturbances}
+%	\label{fig:rod-obs-sim-1-4-est-MKF-SF-plot-DRAFT}
+%\end{figure}
+%
+%\begin{figure}[htp]
+%	\centering
+%	\includegraphics[width=14cm]{images/rod_obs_sim2_7_mse_ashocks.pdf}
+%	\caption{Average errors of observer estimates after shock disturbances}
+%	\label{fig:rod_obs_sim2_7_mse_ashocks}
+%\end{figure}
+
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=15cm]{images/rod-obs-sim-1-4-wfplot-DRAFT.png}
-	\caption{Evolution of conditional probabilities with sequence fusion}
-	\label{fig:rod-obs-sim-1-4-wfplot}
+	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_est1_SF1.pdf}
+	\caption{Estimates by sequence fusion observer – SISO system}
+	\label{fig:rod-obs-sim1-yest-1-SF}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=14cm]{images/rod-obs-sim-1-4-est-MKF-SF-plot-DRAFT.pdf}
-	\caption{Filter estimates of sequence fusion observer during step disturbances}
-	\label{fig:rod-obs-sim-1-4-est-MKF-SF-plot-DRAFT}
+	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_est2_SP1.pdf}
+	\caption{Estimates by sequence pruning observer – SISO system}
+	\label{fig:rod-obs-sim1-yest-2-SF}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=14cm]{images/rod_obs_sim2_7_mse_ashocks.pdf}
-	\caption{Average errors of observer estimates after shock disturbances}
-	\label{fig:rod_obs_sim2_7_mse_ashocks}
+	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_est1_SP1.pdf}
+	\caption{Estimates by sequence pruning observer – SISO system}
+	\label{fig:rod-obs-sim1-yest-1-SP}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=11cm]{images/rod-obs-sim-1-7-MSE-DRAFT.pdf}
-	\caption{Comparison of mean-squared errors of observer estimates}
-	\label{fig:rod-obs-sim-1-7-MSE}
+	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_est2_SF1.pdf}
+	\caption{Estimates by sequence fusion observer – SISO system}
+	\label{fig:rod-obs-sim1-yest-2-SP}
 \end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_x_err_bar.pdf}
+	\caption{Root-mean-squared errors of state estimates – SISO system}
+	\label{fig:rod-obs-sim1-xest-RMSE-bar}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_err_box.pdf}
+	\caption{Root-mean-squared errors of output estimates – SISO system}
+	\label{fig:rod-obs-sim1-yest-all-seed-RMSE-box}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim2_all_seed_y_est1_SF1.pdf}
+	\caption{Estimates by sequence fusion observer –  $2\times2$ system}
+	\label{fig:rod-obs-sim2-yest-1-SF}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim2_all_seed_y_est2_SP1.pdf}
+	\caption{Estimates by sequence pruning observer –  $2\times2$ system}
+	\label{fig:rod-obs-sim2-yest-2-SF}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim2_all_seed_y_est1_SP1.pdf}
+	\caption{Estimates by sequence pruning observer –  $2\times2$ system}
+	\label{fig:rod-obs-sim2-yest-1-SP}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim2_all_seed_y_est2_SF1.pdf}
+	\caption{Estimates by sequence fusion observer –  $2\times2$ system}
+	\label{fig:rod-obs-sim2-yest-2-SP}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim2_all_seed_x_err_bar.pdf}
+	\caption{Root-mean-squared errors of state estimates – $2\times2$ system}
+	\label{fig:rod-obs-sim2-xest-RMSE-bar}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim2_all_seed_y_err_box.pdf}
+	\caption{Root-mean-squared errors of output estimates – $2\times2$ system}
+	\label{fig:rod-obs-sim2-yest-all-seed-RMSE-box}
+\end{figure}
+
+
 
 \subsection{MIMO linear system} \label{sim-obs-lin-2}
 
@@ -390,17 +501,28 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
 			\hline
-			% Results with seed = 2
-			30 &   2 &   3 & 211 & 0.9969 & 0.1456 \\
-			30 &   2 &   2 & 466 & 0.9967 & 0.1482 \\
-			20 &   2 &   2 & 211 & 0.9990 & 0.1486 \\
-			25 &   2 &   5 &  56 & 0.9984 & 0.1489 \\
-			25 &   3 &   5 & 176 & 0.9999 & 0.1489 \\
-			45 &   2 &   3 & 466 & 0.9900 & 0.1494 \\
-			30 &   2 &  10 &  22 & 0.9979 & 0.1565 \\
-			30 &   3 &  10 &  42 & 0.9999 & 0.1565 \\
-			50 &   2 &  10 &  56 & 0.9892 & 0.1605 \\
-			50 &   3 &  10 & 176 & 0.9991 & 0.1605 \\
+			% Results with seed = 2, nT = 2500
+			%30 &   2 &   3 & 211 & 0.9969 & 0.1456 \\
+			%30 &   2 &   2 & 466 & 0.9967 & 0.1482 \\
+			%20 &   2 &   2 & 211 & 0.9990 & 0.1486 \\
+			%25 &   2 &   5 &  56 & 0.9984 & 0.1489 \\
+			%25 &   3 &   5 & 176 & 0.9999 & 0.1489 \\
+			%45 &   2 &   3 & 466 & 0.9900 & 0.1494 \\
+			%30 &   2 &  10 &  22 & 0.9979 & 0.1565 \\
+			%30 &   3 &  10 &  42 & 0.9999 & 0.1565 \\
+			%50 &   2 &  10 &  56 & 0.9892 & 0.1605 \\
+			%50 &   3 &  10 & 176 & 0.9991 & 0.1605 \\
+			% Results with seed = 0, nT = 5000
+			45 &   2 &   3 & 466 & 0.9900 & 0.1555 \\
+			30 &   2 &   2 & 466 & 0.9967 & 0.1559 \\
+			30 &   2 &   3 & 211 & 0.9969 & 0.1559 \\
+			15 &   2 &   1 & 466 & 0.9995 & 0.1701 \\
+			50 &   3 &  10 & 176 & 0.9991 & 0.1716 \\
+			50 &   2 &  10 &  56 & 0.9892 & 0.1716 \\
+			50 &   2 &   5 & 211 & 0.9874 & 0.1737 \\
+			20 &   2 &   2 & 211 & 0.9990 & 0.1775 \\
+			5 &   1 &   1 &  11 & 0.9990 & 0.1861 \\
+			5 &   3 &   1 & 176 & 1.0000 & 0.1861 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -413,22 +535,32 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			$n_h$ & $n_\text{min}$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
 			\hline
-			% Results with seed = 2
-			19 &   5 & 0.0775  \\
-			19 &   7 & 0.0775  \\
-			25 &   6 & 0.0775  \\
-			25 &   9 & 0.0775  \\
-			32 &  12 & 0.0775  \\
-			25 &   5 & 0.0775  \\
-			25 &   7 & 0.0776  \\
-			19 &   4 & 0.0776  \\
-			32 &   9 & 0.0776  \\
-			25 &   4 & 0.0776  \\
+			% Results with seed = 2, nT = 2500
+			%19 &   5 & 0.0775  \\
+			%19 &   7 & 0.0775  \\
+			%25 &   6 & 0.0775  \\
+			%25 &   9 & 0.0775  \\
+			%32 &  12 & 0.0775  \\
+			%25 &   5 & 0.0775  \\
+			%25 &   7 & 0.0776  \\
+			%19 &   4 & 0.0776  \\
+			%32 &   9 & 0.0776  \\
+			%25 &   4 & 0.0776  \\
+			% Results with seed = 0, nT = 5000
+			19 &   6 & 0.0815  \\
+			25 &   9 & 0.0816  \\
+			32 &  12 & 0.0816  \\
+			19 &   4 & 0.0817  \\
+			19 &   5 & 0.0817  \\
+			25 &   7 & 0.0817  \\
+			25 &   6 & 0.0817  \\
+			32 &   9 & 0.0817  \\
+			25 &   5 & 0.0817  \\
+			32 &   7 & 0.0818  \\
 			\hline
 		\end{tabular}
 	\end{center}
 \end{table}
-
 
 
 \begin{table}[hb]
