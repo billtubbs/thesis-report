@@ -7,6 +7,41 @@
 	\item Multi-model algorithm.
 \end{itemize}
 
+\subsection{Tuning of sequence fusion algorithm – 1995}
+
+The sequence fusion algorithm evaluated in section \ref{}
+
+\begin{table}[hb]
+	\begin{center}
+		\caption{Multi-model observer parameter search results – MMKF-SF95.} \label{tb:obs-sim1-popt-SF95}
+		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
+		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
+			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\text{RMSE}(\hat{Y}_i(N),Y_i(N))$  \\
+			\hline
+			% Results with seed = 6, nT = 5000
+			15 &   1 &   3 &   6 & 0.9035 & 0.1156 \\
+			15 &   2 &   3 &  16 & 0.9044 & 0.1156 \\
+			15 &   3 &   3 &  26 & 0.9044 & 0.1156 \\
+			15 &   1 &   1 &  16 & 0.9904 & 0.1168 \\
+			15 &   2 &   1 & 121 & 0.9996 & 0.1168 \\
+			15 &   1 &   5 &   4 & 0.8861 & 0.1186 \\
+			15 &   2 &   5 &   7 & 0.8864 & 0.1186 \\
+			15 &   3 &   5 &   8 & 0.8864 & 0.1186 \\
+			9 &   3 &   3 &   8 & 0.9415 & 0.1188 \\
+			9 &   2 &   3 &   7 & 0.9415 & 0.1188 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_err_box_SF95.pdf}
+	\caption{Comparison of sequence fusion algorithm variants}
+	\label{fig:rod-obs-sim1-yest-all-seed-RMSE-box}
+\end{figure}
+
+
 
 \section{Tuning of KF3 for MIMO linear system}
 
@@ -56,3 +91,4 @@ Figure \ref{fig:sim-sys-2x2-KF3-sensitivity} shows the results of a similar sens
 	\caption{Sensitivity of Kalman filter tuning – $2\times2$ system}
 	\label{fig:sim-sys-2x2-KF3-sensitivity}
 \end{figure}
+

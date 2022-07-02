@@ -277,32 +277,32 @@ where $\mathbf{x}(k) \in \mathbb{R}^n$ is a vector of state variables, $\mathbf{
 
 The \textit{Kalman filter} \citep{kalman_new_1961} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables. The predictions of the states at the next time instant, $k+1$, calculated at the current time $k$, are given by
 \begin{equation} \label{eq:xkp1_hat}
-	\mathbf{\hat{x}}(k+1|k) = \mathbf{A} \mathbf{\hat{x}}(k|k-1) + \mathbf{B}\mathbf{u}(k) + 
-	\mathbf{K}(k)\left[\mathbf{y}(k) - \mathbf{C} \mathbf{\hat{x}}(k|k-1)\right],
+	\mathbf{\hat{x}}(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}(k \mid k-1) + \mathbf{B}\mathbf{u}(k) + 
+	\mathbf{K}(k)\left[\mathbf{y}(k) - \mathbf{C} \mathbf{\hat{x}}(k \mid k-1)\right],
 \end{equation}
-where $\mathbf{\hat{x}}(k|k-1)$ is the previous prediction of the states at the current time, calculated in the previous time instant, $\mathbf{y}(k)$ is the current measurement of the output, and $\mathbf{K}(k) \in \mathbb{R}^{n \times n_y}$ is a correction gain matrix. An intuitive interpretation of the Kalman filter is that it iteratively updates the state estimates based on the difference between the output predicted by the system model, $\mathbf{C} \mathbf{\hat{x}}(k|k-1)$, and the output measurement $\mathbf{y}(k)$.
+where $\mathbf{\hat{x}}(k \mid k-1)$ is the previous prediction of the states at the current time, calculated in the previous time instant, $\mathbf{y}(k)$ is the current measurement of the output, and $\mathbf{K}(k) \in \mathbb{R}^{n \times n_y}$ is a correction gain matrix. An intuitive interpretation of the Kalman filter is that it iteratively updates the state estimates based on the difference between the output predicted by the system model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$, and the output measurement $\mathbf{y}(k)$.
 
-In the case of a steady-state Kalman filter, $\mathbf{K}(k)$ is constant (time-invariant). However, in general, it is calculated at each time step using
+To track a system with time-varying parameters, a dynamic Kalman filter is needed.  $\mathbf{K}(k)$ is calculated at each time step using
 \begin{equation} \label{eq:Kk}
-	K(k) = \mathbf{A}\mathbf{P}(k|k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}(k|k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
+	K(k) = \mathbf{A}\mathbf{P}(k \mid k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
 \end{equation}
-where $\mathbf{P}(k|k-1)$ is the estimation error covariance matrix calculated in the previous time instant, and $\mathbf{R}$ is the covariance matrix of the measurement noises,
+where $\mathbf{P}(k \mid k-1)$ is the estimation error covariance matrix calculated in the previous time instant, and $\mathbf{R}$ is the covariance matrix of the measurement noises,
 \begin{equation} \label{eq:R}
 	\mathbf{R} = E\{ \mathbf{v}(k) \mathbf{v}^\intercal(k) \}.
 \end{equation}
 
-$\mathbf{P}(k|k-1)$ is updated every time step using
+$\mathbf{P}(k \mid k-1)$ is updated every time step using
 \begin{multline} \label{eq:Pk}
-	\mathbf{P}(k+1|k) = \\ \mathbf{A}\big[\mathbf{P}(k|k-1)
-	- \mathbf{P}(k|k-1)\mathbf{C}^\intercal\big(\mathbf{C}\mathbf{P}(k|k-1)\mathbf{C}^\intercal + 
-	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}(k|k-1) \big]\mathbf{A}^\intercal + \mathbf{Q},
+	\mathbf{P}(k+1 \mid k) = \\ \mathbf{A}\big[\mathbf{P}(k \mid k-1)
+	- \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal\big(\mathbf{C}\mathbf{P}(k \mid k-1)\mathbf{C}^\intercal + 
+	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}(k \mid k-1) \big]\mathbf{A}^\intercal + \mathbf{Q},
 \end{multline}
 where $\mathbf{Q}$ is the covariance of the state disturbances,
 \begin{equation} \label{eq:Q}
 	\mathbf{Q} = E\{ \mathbf{w}(k) \mathbf{w}^\intercal(k) \}.
 \end{equation}
 
-The state estimates, $\mathbf{\hat{x}}(k+1|k)$, are calculated recursively online, starting at time $k=0$, using (\ref{eq:xkp1_hat}), (\ref{eq:Kk}) and (\ref{eq:Pk}), given initial values of the state estimates, $\mathbf{\hat{x}}(0)$, and estimation error covariance matrix $\mathbf{P}(0)$.
+The state estimates, $\mathbf{\hat{x}}(k+1 \mid k)$, are calculated recursively online, starting at time $k=0$, using (\ref{eq:xkp1_hat}), (\ref{eq:Kk}) and (\ref{eq:Pk}), given initial values of the state estimates, $\mathbf{\hat{x}}(0)$, and estimation error covariance matrix $\mathbf{P}(0)$.
 
 In the case where the system has additional disturbance inputs, $\mathbf{p}(k) \in \mathbb{R}^{n_p}$, as shown in Figure \ref{fig:model_diag_upwvy}, the state-space equations are modified to include these and the input matrix is split into two, $\mathbf{B}_u \in \mathbb{R}^{n \times n_u}$ and $\mathbf{B}_p \in \mathbb{R}^{n \times n_p}$,
 \begin{equation} \label{eq:ss_rep_upwy}
@@ -371,9 +371,9 @@ Assume that new measurement data is made available at each time instant. The pro
 The conditional probability densities of the measurements $\mathbf{y}(k)$ are approximated by Gaussian distributions
 \begin{equation} \label{eq:p_yk_given_Gammak_Ykm1}
 	p(\mathbf{y(k)} \mid \Gamma_f(k), \mathbf{Y}(k-1)) \approx
-	\mathcal{N}\left(\mathbf{y}(k), \mathbf{C} \mathbf{\hat{x}}_{f}(k|k-1), \mathbf{C} \mathbf{P}_f(k|k-1) \mathbf{C}^\intercal+\mathbf{R}\right)
+	\mathcal{N}\left(\mathbf{y}(k), \mathbf{C} \mathbf{\hat{x}}_{f}(k \mid k-1), \mathbf{C} \mathbf{P}_f(k \mid k-1) \mathbf{C}^\intercal+\mathbf{R}\right)
 \end{equation}
-where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k|k-1)$ and $\mathbf{P}_f(k|k-1)$ are the state estimates and estimate covariances of each Kalman filter at the previous time step, and $\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$ is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
+where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k \mid k-1)$ and $\mathbf{P}_f(k \mid k-1)$ are the state estimates and estimate covariances of each Kalman filter at the previous time step, and $\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$ is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
 
 The estimate of the probability of the shock sequence $\Gamma_f(k)$ given the data up to time $k$ is
 \begin{equation} \label{eq:Pr_Gammak_given_Yk}
@@ -409,32 +409,37 @@ and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicato
 
 At the start of simulation, filter $f$ has an initial estimate of the states, $\mathbf{\hat{x}}_f(0)$, and an initial estimate covariance $\mathbf{P}_f(0)$. At each time instant, starting at $k=0$, the filter correction gain is updated as in (\ref{eq:Kk})
 \begin{equation} \label{eq:Kf}
-	K_f(k) = \mathbf{A}\mathbf{P}_f(k|k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}_f(k|k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
+	K_f(k) = \mathbf{A}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
 \end{equation}
 
-the corrected state estimate at time $k+1$ is calculated as in \ref{eq:xkp1_hat}
+the corrected state estimate at time $k+1$ is calculated as in (\ref{eq:xkp1_hat})
 \begin{equation} \label{eq:xfkp1_hat}
-	\mathbf{\hat{x}}_f(k+1|k) = \mathbf{A} \mathbf{\hat{x}}_f(k|k-1) + \mathbf{B}\mathbf{u}(k) + 
-	\mathbf{K}_f(k)\left[\mathbf{y}(k)-\mathbf{C} \mathbf{\hat{x}}_f(k|k-1)\right],
+	\mathbf{\hat{x}}_f(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}_f(k \mid k-1) + \mathbf{B}\mathbf{u}(k) + 
+	\mathbf{K}_f(k)\left[\mathbf{y}(k)-\mathbf{C} \mathbf{\hat{x}}_f(k \mid k-1)\right],
 \end{equation}
 
 and the estimation error covariance is updated using
 \begin{multline} \label{eq:Pfk}
-	\mathbf{P}_f(k+1|k) = \mathbf{A}\big[\mathbf{P}_f(k|k-1)
-	- \mathbf{P}_f(k|k-1)\mathbf{C}^\intercal\big(\mathbf{C}\mathbf{P}_f(k|k-1)\mathbf{C}^\intercal \\ + 
-	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}_f(k|k-1) \big]\mathbf{A}^\intercal + \mathcal{Q}(\gamma_f(k)). \\
+	\mathbf{P}_f(k+1 \mid k) = \mathbf{A}\big[\mathbf{P}_f(k \mid k-1)
+	- \mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal\big(\mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \\ + 
+	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}_f(k \mid k-1) \big]\mathbf{A}^\intercal + \mathcal{Q}(\gamma_f(k)). \\
 \end{multline}
 
-Note the difference between (\ref{eq:Pfk}) and (\ref{eq:Pk}).  Here, $\mathbf{P}_f(k+1|k)$ is dependent on $\gamma_f(k)$, which determines the noise covariance matrix used in the update, whereas in (\ref{eq:Pk}), $\mathbf{Q}$ is time invariant.
+Note the difference between (\ref{eq:Pfk}) and (\ref{eq:Pk}).  Here, $\mathbf{P}_f(k+1 \mid k)$ is dependent on $\gamma_f(k)$, which determines the noise covariance matrix used in the update, whereas in (\ref{eq:Pk}), $\mathbf{Q}$ is time invariant.
 
-Finally, the multi-model observer estimate of the states in the next time instant is the sum of the $n_h$ Kalman filter estimates weighted by their conditional probabilities:
+Finally, the multi-model observer estimate of the states in the next time instant is the sum of the Kalman filter estimates weighted by the conditional probabilities from (\ref{eq:Pr_Gammak_given_Yk}):
 \begin{equation} \label{eq:x_hat}
-	\mathbf{\hat{x}}(k+1|k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k+1|k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
+	\mathbf{\hat{x}}(k+1 \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k+1 \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
 \end{equation}
 
-% TODO: in Robertson et al, they estimate x(k|k) not x(k+1|k).
+Likewise, an estimate of the covariance of the estimation errors may be obtained by calculating the weighted-sum of the covariance matrices:
+\begin{equation} \label{eq:P_hat}
+	\mathbf{P}(k+1 \mid k) = \sum_{f=1}^{n_h} \mathbf{P}_f(k+1 \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
+\end{equation}
 
-Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these computations.
+% TODO: in Robertson et al, they estimate x(k|k) not x(k+1 \mid k).
+
+Algorithm \ref{alg:afmm} shows the sequential procedure used to execute these computations during a simulation of length $N$ time steps.
 
 \begin{algorithm}
 	\caption{Multiple model observer calculations}  \label{alg:afmm}
@@ -450,15 +455,15 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 			\State $\Pr(\Gamma_f(k-1)|\mathbf{Y}(k-1))) \gets 1^{-10}$
 			\EndFor
 			\For{$k \gets 0, N$}
-			\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal procedure occurs here}  % \footnotemark
+			\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal algorithm update procedure}  % \footnotemark
 			\For{$f \gets 1, n_h$}
 			\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
 			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kf}) \Comment{Filter updates}
-			\State calculate $\mathbf{\hat{x}}_f(k+1|k)$ (\ref{eq:xfkp1_hat})
-			\State update $\mathbf{P}_f(k+1|k)$ (\ref{eq:Pfk})
+			\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
+			\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
 			\EndFor
-			\State calculate $\mathbf{\hat{x}}(k+1|k)$ (\ref{eq:x_hat}) \Comment{State estimate}
-			\State calculate $\mathbf{P}(k+1|k)$ \Comment{Error covariance}  % \footnotemark
+			\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:x_hat}) \Comment{State estimate}
+			\State calculate $\mathbf{P}(k+1 \mid k)$ (\ref{eq:P_hat}) \Comment{Error covariance}  % \footnotemark
 			\EndFor
 		\end{algorithmic}
 \end{algorithm}
@@ -482,11 +487,11 @@ Algorithm \ref{alg:afmm} is the iterative algorithm used to execute these comput
 %		\For{$f \gets 1, n_h$}
 %		\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
 %		\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kf}) \Comment{Filter updates}
-%		\State calculate $\mathbf{\hat{x}}_f(k+1|k)$ (\ref{eq:xfkp1_hat})
-%		\State update $\mathbf{P}_f(k+1|k)$ (\ref{eq:Pfk})
+%		\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
+%		\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
 %		\EndFor
-%		\State calculate $\mathbf{\hat{x}}(k+1|k)$ (\ref{eq:x_hat}) \Comment{State estimate}
-%		\State calculate $\mathbf{P}(k+1|k)$ \Comment{Error covariance\footnotemark}
+%		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:x_hat}) \Comment{State estimate}
+%		\State calculate $\mathbf{P}(k+1 \mid k)$ \Comment{Error covariance\footnotemark}
 %		\EndFor
 %	\end{algorithmic}
 %\end{algorithm}
