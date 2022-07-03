@@ -1,5 +1,5 @@
-\chapter{<Titre de l'annexe>}     % numérotée
-\label{chap-}                   % étiquette pour renvois (à compléter!)
+\chapter{Additional results and sensitivity analysis}     % numérotée
+\label{chap-Annex}                   % étiquette pour renvois (à compléter!)
 
 \section{Multiple model observer algorithms}
 
@@ -7,9 +7,9 @@
 	\item Multi-model algorithm.
 \end{itemize}
 
-\subsection{Tuning of sequence fusion algorithm – 1995}
+\section{Tuning of sequence fusion algorithm 1995 variant}
 
-The sequence fusion algorithm evaluated in section \ref{}
+The sequence fusion algorithm evaluated in section \ref{section:sim-obs-lin} is based on \cite{robertson_method_1998}. However, Robertson and coworkers published results in 1995 \citep{robertson_detection_1995} using a slightly different version of this algorithm. Table \ref{tb:obs-sim1-popt-SF95} shows the results of a parameter search for the earlier version of the algorithm using the same simulation data used to tune the 1998 algorithm.
 
 \begin{table}[hb]
 	\begin{center}
@@ -34,27 +34,31 @@ The sequence fusion algorithm evaluated in section \ref{}
 	\end{center}
 \end{table}
 
+From these results it can be seen that the parameter tunings are quite similar to those in Table \ref{tb:obs-sim1-popt-SF} for the 1998 variant of the algorithm. However, the best RMSE value achieved by the 1995 algorithm (0.1156) is slightly higher than the best achieved by the 1998 variant (0.1089) in this case.
+
+Figure \ref{fig:rod-obs-sim1-yest-all-seed-RMSE-box-SF95} shows the results of both observers on different pseudo-random simulation results. This supports the finding by Robertson et al. that the 1998 variant of the algorithm performs better.
+
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_err_box_SF95.pdf}
 	\caption{Comparison of sequence fusion algorithm variants}
-	\label{fig:rod-obs-sim1-yest-all-seed-RMSE-box}
+	\label{fig:rod-obs-sim1-yest-all-seed-RMSE-box-SF95}
 \end{figure}
 
 
 
-\section{Tuning of KF3 for MIMO linear system}
+\section{Tuning of KF3 for MIMO linear system} \label{section:annex-sim-2-KF-tuning}
 
 As described in Chapter \ref{chap-simulation}, a standard Kalman filter was tuned to minimize the RMSE of the output estimates using 5000 data samples from the $2\times2$ linear system. Since the system is symmetrical and the two RODDs have the same parameters, it was assumed that the two observer parameters, $\sigma_{w_p,1,\text{opt}}$ and $\sigma_{w_p,2,\text{opt}}$ must also be identical. This assumption simplified the search process since only one optimum value needed to be found.
 
-Figure \label{fig:sim-sys-2x2-KF3-tuning} shows the variation in the RMSEs of the four model state estimates with the parameters. In this case, the choice of optimal parameter value was not as straight-forward as in the case of the SISO system with one RODD. The minimum RMSE for each state occurs at different values of  1 and 2 is achieved when $\sigma_{w_p,1,\text{opt}}=\sigma_{w_p,2,\text{opt}}=0.0075$
+Figure \ref{fig:sim-sys-2x2-KF3-tuning-sens} shows the variation in the RMSEs of the four model state estimates with the parameters. In this case, the choice of optimal parameter value was not as straight-forward as in the case of the SISO system with one RODD. The minimum RMSE for each state occurs at different values of  1 and 2 is achieved when $\sigma_{w_p,1,\text{opt}}=\sigma_{w_p,2,\text{opt}}=0.0075$
 
-	\begin{figure}[htp]
-		\centering
-		\includegraphics[width=14cm]{images/rod_obs_sim2_3KF_Q_seed_0.pdf}
-		\caption{Tuning of Kalman filter KF3 – $2\times2$ system}
-		\label{fig:sim-sys-2x2-KF3-tuning}
-	\end{figure}
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=14cm]{images/rod_obs_sim2_3KF_Q_seed_0.pdf}
+	\caption{Tuning of Kalman filter KF3 – $2\times2$ system}
+	\label{fig:sim-sys-2x2-KF3-tuning}
+\end{figure}
 	
 
 \section{Sensitivity analyses}
@@ -83,12 +87,12 @@ A similar sensitivity analysis was carried out on the results of the Kalman Filt
 	\label{fig:sim-sys-siso-KF3-sensitivity}
 \end{figure}
 
-Figure \ref{fig:sim-sys-2x2-KF3-sensitivity} shows the results of a similar sensitivity analysis on the results presented in Figure \ref{fig:sim-sys-2x2-KF3-tuning}.
+Figure \ref{fig:sim-sys-2x2-KF3-tuning-sens} shows the results of a similar sensitivity analysis on the results presented in Figure \ref{fig:sim-sys-2x2-KF3-tuning}.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_obs_sim2_3KF_Q_statplot.pdf}
 	\caption{Sensitivity of Kalman filter tuning – $2\times2$ system}
-	\label{fig:sim-sys-2x2-KF3-sensitivity}
+	\label{fig:sim-sys-2x2-KF3-tuning-sens}
 \end{figure}
 
