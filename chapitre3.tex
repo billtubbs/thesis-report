@@ -78,7 +78,7 @@ where
 
 Note that with this representation, the second model state $x_{a,2}(k)$ corresponds exactly to the input disturbance $p(k)$.
 
-Before evaluating the performance of the multi-model observers, a simple simulation of the system (\ref{eq:sim-sys-2x2-ss-aug}) was carried out with one pre-determined shock, no persistent disturbance ($\sigma_{w_p}=0$), and no measurement noise. This allowed the behaviour and internal workings of the observers to be examined in detail. Figure \ref{fig:rod-obs-sim-test-ioplot-SF95} shows the inputs and outputs of the simulation of 100 sample periods in duration. The two lower subplots show the system inputs, including the random shock signal. The upper two plots show the system states and outputs as well as the estimates of the states and outputs by the multi-model observer using sequence fusion \citep{robertson_detection_1995}.
+Before evaluating the performance of the multi-model observers, a simple simulation of the system (\ref{eq:sim-sys-siso-ss-aug}) was carried out with one pre-determined shock, no persistent disturbance ($\sigma_{w_p}=0$), and no measurement noise. This allowed the behaviour and internal workings of the observers to be examined in detail. Figure \ref{fig:rod-obs-sim-test-ioplot-SF95} shows the inputs and outputs of the simulation of 100 sample periods in duration. The two lower subplots show the system inputs, including the random shock signal. The upper two plots show the system states and outputs as well as the estimates of the states and outputs by the multi-model observer using sequence fusion \citep{robertson_detection_1995}.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_MKF_SF_test_sim_MKF_SF95_ioplot.pdf}
@@ -90,33 +90,33 @@ The two subplots in Figure \ref{fig:rod-obs-sim-test-probs-SF95} provide insight
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_MKF_test_sim_MKF_SF95_prob.png}
-	\caption{Multi-model observer probability estimates – MKF\_SF95}
+	\caption{Multi-model observer probability estimates – MKF-SF95}
 	\label{fig:rod-obs-sim-test-probs-SF95}
 \end{figure}
 
-In this simulation, $\mathbf{P}_f(0)$ was initialized to the identify matrix and the likelihoods were initialized to equal values (0.25). From the upper plot it can be seen that initially, the $\operatorname{Tr}(\mathbf{P}_f(k))$ of each filter drop rapidly and tend towards zero, however, at certain intervals, they increase sharply to a peak before dropping again. The rapid increases are caused by the assumption of shocks ($\gamma(k)=1$) at pre-determined times in the hypothesis sequences of each filter. Note that the error covariance of filter 1 drops to zero and never increases because this filter represents the hypothesis that no shocks occur at any time.
+In this simulation, the error covariances at time $t=0$ were initialized to the identify matrix and the conditional likelihoods were initialized to equal values ($\mathbf{P}_f(0)=\mathbf{I}_2,\operatorname{Pr}\left(\Gamma_f(0) \mid \mathbf{Y}(0)\right)=0.25$, for $f=1,2,...,n_h$). In the upper plot it can be seen that initially, the $\operatorname{Tr}(\mathbf{P}_f(k))$ drop rapidly and tend towards zero, however, at certain times, they increase sharply to a peak before dropping again. The rapid increases are caused by the assumption of shocks ($\gamma_f(k)=1$) at pre-determined times in the hypothesis sequences of each filter. Note that the error covariance of filter 1 drops to zero and never increases because this filter represents the hypothesis that no shocks occur at any time.
 
-In the lower plot, the likelihoods of each filter fluctuate initially but settle on a steady-state by $t=5$. Between $t=5$ and $t=10$, filter 1 has a likelihood close to 1 and the others are close to zero, which means that the estimates of the observer are determined completely by filter 1. This makes sense since no shocks have occurred at this point in time. The simulated shock actually occurs at $t=9.5$. Hypothesis sequence 3 assumes a shock at $t=10$ and thus the error covariances increases at $t=10.5$ and peaks at $t=11$. From the lower plot, it can be seen that the likelihood switches from filter 1 to filter 3 at $t=12$. The likelihood of filter 3 is 1 for the remainder of the simulation.
+From the lower plot, it can be seen that the likelihoods of each filter fluctuate initially but settle on a steady-state by $t=5$. Between $t=5$ and $t=10$, filter 1 has a likelihood close to 1 and the others are close to zero, which means that the estimates of the observer are determined completely by filter 1. This makes sense since no shocks have occurred at this point in time. The simulated shock actually occurs at $t=9.5$. Hypothesis sequence 3 assumes a shock at $t=10$ and thus the error covariance increases at $t=10.5$ and peaks at $t=11$. From the lower plot, it can be seen that the likelihood switches from filter 1 to filter 3 at $t=12$ and the likelihood of filter 3 is 1 for the remainder of the simulation.
 
-As described in Section \ref{subsec-fusion}, Robertson et al. proposed an alternative implementation of the sequence fusion algorithm in their 1998 paper. There are two differences between this and the algorithm presented in the 1995 paper. Firstly, shocks are assumed to act over the duration of the detection interval rather than at one sample time within the interval. Secondly, the probability and variance of the shock signal, $w_{p}(k)$, is modified (\ref{eq:deltak}, \ref{eq:wpdk}).
+As described in Section \ref{subsec-fusion}, Robertson et al. proposed an alternative implementation of the sequence fusion algorithm in their 1998 paper. There are two differences between this and the previous algorithm. Firstly, shocks are assumed to act over the duration of the detection interval rather than at one sample time within the interval. Secondly, the probability and variance of the shock signal, $w_{p}(k)$, are modified (\ref{eq:deltak}, \ref{eq:wpdk}).
 
-Figure \ref{fig:rod-obs-sim-test-probs-SF1} shows the results of simulating the modified observer (MKF\_SF98) with the same simulation data. The effect of the modification on the the covariance matrices is very clear. The traces of the covariance matrices peak at a lower value and the peak is sustained over a number of samples before declining. The effect of the modification on the observer estimates is less clear. In this simulation, the maximum hypothesis likelihood switches from filter 1 to filter 2 around $t=13$, then alternates between filters 2 and 3 for the remainder of the simulation. As a result of the slower response to the shock, the RMSE of the output estimates of the modified observer is higher in this case.
+Figure \ref{fig:rod-obs-sim-test-probs-SF1} shows the results of simulating the modified observer (MKF-SF98) with the same simulation data. The effect of the modification on the covariance matrices is very clear. The trace values peak at a lower value and the peak is sustained over a number of samples before declining. The effect of the modification on the observer estimates is less clear. In this simulation, the most likely hypothesis switches from filter 1 to filter 2 around $t=13$, then alternates between filters 2 and 3 for the remainder of the simulation. As a result of the slower response to the shock, the RMSE of the output estimates of the modified observer is higher.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_MKF_test_sim_MKF_SF98_prob.png}
-	\caption{Multi-model observer probability estimates – MKF\_SF98}
+	\caption{Multi-model observer probability estimates – MKF-SF98}
 	\label{fig:rod-obs-sim-test-probs-SF1}
 \end{figure}
 
-For comparison, Figure \ref{fig:rod-obs-sim-test-probs-SP} shows the corresponding traces and probabilities of a multi-model observer with sequence pruning as described by \cite{eriksson_classification_1996}, with $n_h=5$ and $n_{\text{min}}=2$. The plots for this simulation are a little more difficult to interpret than those of the sequence fusion observers because filters are continually pruned and cloned during the simulation. Therefore the data presented as `filter $f$' in Figure \ref{fig:rod-obs-sim-test-probs-SP} does not come from the same Kalman filter at all times. Nevertheless, at each time instant there are 5 filters and the trace of their covariance matrices and conditional probabilities are shown.
+For comparison, Figure \ref{fig:rod-obs-sim-test-probs-SP} shows the corresponding traces and probabilities of a multi-model observer with sequence pruning as described by \cite{eriksson_classification_1996}, with $n_h=5$ and $n_{\text{min}}=2$. The plots for this simulation are a little more difficult to interpret than those of the sequence fusion observers because filters are continually pruned and cloned during the simulation. Therefore the data presented as `filter $f$' in Figure \ref{fig:rod-obs-sim-test-probs-SP} do not come from the same Kalman filter at all times. Nevertheless, at each time instant there are 5 filters and the trace of their covariance matrices and conditional probabilities are shown.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_MKF_test_sim_MKF_SP_prob.png}
-	\caption{Multi-model observer probability estimates – MKF\_SP}
+	\caption{Multi-model observer probability estimates – MKF-SP}
 	\label{fig:rod-obs-sim-test-probs-SP}
 \end{figure}
-From these results it can be seen that the hypotheses include many more possible shocks than those of the sequence fusion observers. The transition of the likelihood from filter 1 to filter 2 occurs at $t=11.5$ and the RMSE of the output estimates was significantly lower.
+From these results it can be seen that the hypotheses include many more possible shocks than those modelled by the sequence fusion observers. The transition of the likelihood from filter 1 to filter 2 occurs at $t=11.5$ and the RMSE of the output estimates was significantly lower than that of MKF-SF95 and MKF-SF98.
 
 To evaluate and compare the performance of the observers, longer simulations with pseudo-random shock sequences and measurement noise were used. Figure \ref{fig:rod-obs-sim1-ioplot} shows a set of 600 input-output data samples generated by simulating the system for a duration of 300 time units. The lower of the two plots shows the input signals, $u(k)$ and $p(k)$, from which it can be seen that two significant random shocks occurred (at times $t=98$ and $220.5$). At other times, the value of $p(k)$ is a random walk due to the persistent component of the RODD disturbance (\ref{eq:wpk2}). In addition, a step change in $u(k)$ of magnitude 1 occurred at time $t=5$. The upper plot shows the simulated output measurements. The standard deviation of the measurement noise, $\sigma_M$, was $0.1$. No disturbances other than $w_p(k)$ were simulated (i.e. $w_1(k)=0$). 
 \begin{figure}[htp]
@@ -205,7 +205,7 @@ Note that $\frac{n_f}{n_d}$ represents the number of detection intervals within 
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MMKF-SF.} \label{tb:obs-sim1-popt-SF}
+		\caption{Multi-model observer parameter search results – MKF-SF.} \label{tb:obs-sim1-popt-SF}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\text{RMSE}(\hat{Y}_i(N),Y_i(N))$  \\
@@ -262,7 +262,7 @@ The sequence pruning algorithm proposed by \cite{eriksson_classification_1996} h
 		\end{aligned}
 	\end{equation}
 
-Combinations where rejected when $n_h - n_{min} < 1$, or in other words, when the minimum life $n_{min}$ was greater than or equal to the number of hypotheses, $n_h$. This is a necessary condition because there must be enough filters to simulate the hypotheses until they are pruned. Each remaining combination was then evaluated by calculating the RMSE of the output estimates of the observer on the same 5000 samples used in the tuning of the MMKF-SF1 observer, as described above. Table \ref{tb:obs-sim1-popt-SP} shows the 10 combinations of parameter values which produced the lowest RMSE on the same 5000 sample dataset used for the sequence fusion parameter search.
+Combinations where rejected when $n_h - n_{min} < 1$, or in other words, when the minimum life $n_{min}$ was greater than or equal to the number of hypotheses, $n_h$. This is a necessary condition because there must be enough filters to simulate the hypotheses until they are pruned. Each remaining combination was then evaluated by calculating the RMSE of the output estimates of the observer on the same 5000 samples used in the tuning of the MKF-SF1 observer, as described above. Table \ref{tb:obs-sim1-popt-SP} shows the 10 combinations of parameter values which produced the lowest RMSE on the same 5000 sample dataset used for the sequence fusion parameter search.
 
 \begin{table}[hb]
 	\begin{center}
@@ -311,11 +311,11 @@ Combinations where rejected when $n_h - n_{min} < 1$, or in other words, when th
 %			14 &   4 & 0.0609  \\
 
 
-In this case, the differences between the RMSEs of the best 10 combinations are very small, indicating that the choice of parameters from these combinations was not critical. The combination $n_h=10$ and $n_{min}=7$ was chosen for the observer which is labelled `MMKF-SP1'. It should also be noted that the best RMSEs of this observer are significantly lower than those of the best sequence fusion observer in Table \ref{tb:obs-sim1-popt-SF}. The parameters for all the observers used in the simulations in this section are summarised in Table \ref{tb:obs-params-sim1}.
+In this case, the differences between the RMSEs of the best 10 combinations are very small, indicating that the choice of parameters from these combinations was not critical. The combination $n_h=10$ and $n_{min}=7$ was chosen for the observer which is labelled `MKF-SP1'. It should also be noted that the best RMSEs of this observer are significantly lower than those of the best sequence fusion observer in Table \ref{tb:obs-sim1-popt-SF}. The parameters for all the observers used in the simulations in this section are summarised in Table \ref{tb:obs-params-sim1}.
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Observers and parameters – $2\times2$ system.} \label{tb:obs-params-sim1}
+		\caption{Observers and parameters – SISO linear system.} \label{tb:obs-params-sim1}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.1\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
 			& KF3 & MKF-SF1 & MKF-SF2 & MKF-SP1 \\
@@ -562,7 +562,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MMKF-SP.} \label{tb:obs-sim2-popt-SP}
+		\caption{Multi-model observer parameter search results – MKF-SP.} \label{tb:obs-sim2-popt-SP}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			$n_h$ & $n_\text{min}$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
@@ -597,10 +597,10 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Observers and parameters – simulation {\#2}.} \label{tb:obs-params-sim2}
+		\caption{Observers and parameters – $2\times2$ linear system.} \label{tb:obs-params-sim2}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
-			& KF1 & KF2 & KF3 & MMKF-SF1 & MMKF-SP1 \\
+			& KF1 & KF2 & KF3 & MKF-SF1 & MKF-SP1 \\
 			\hline
 			Type & Kalman filter & Kalman filter & Kalman filter & Multi-model Kalman filter & Multi-model Kalman filter \\
 			Sub-optimal algorithm & - & - & - & Sequence fusion & Sequence pruning \\
@@ -629,7 +629,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_obs_sim2_3KF_Q_seed_0.pdf}
-	\caption{Tuning of Kalman filter KF3 – $2\times2$ system}
+	\caption{Tuning of Kalman filter KF3 – $2\times2$ linear system}
 	\label{fig:sim-sys-siso--KF3-tuning}
 \end{figure}
 
@@ -654,12 +654,12 @@ Outline notes:
 	\1 Figure: comparison of observer estimates – Figure \ref{fig:rod_obs_sim_1_est_P2DcTd4}.
 	\1 Figure: Observer responses to disturbances – Figure \ref{fig:sim_resp_plot}.
 	\1 Describe overall performance comparison using metrics in Table \ref{tb:results}.
-	\1 Discuss pro's and con's of MMKF observer (steady-state errors vs error in transitions, etc.)
+	\1 Discuss pro's and con's of MKF observer (steady-state errors vs error in transitions, etc.)
 	\1 Discuss applications and potential benefits (e.g. process control, RTO).
 	\1 Describe sensitivity analysis simulations.
 	\1 Describe sensitivity results:
-	\2 (1) to model error, compare Kalman filter and MMKF. Figures \ref{fig:rod_obs_sim_sens_model_KF2_MSE_y_est} and \ref{fig:rod_obs_sim_sens_model_MMKF_MSE_y_est}.
-	\2 (2) MMKF sensitivity to RODD model parameters. Figure  \ref{fig:rod_obs_sim_sens_rod_MMKF_MSE_y_est}
+	\2 (1) to model error, compare Kalman filter and MKF. Figures \ref{fig:rod_obs_sim_sens_model_KF2_MSE_y_est} and \ref{fig:rod_obs_sim_sens_model_MKF_MSE_y_est}.
+	\2 (2) MKF sensitivity to RODD model parameters. Figure  \ref{fig:rod_obs_sim_sens_rod_MKF_MSE_y_est}
 \end{outline}
 
 \begin{figure}[htp]
@@ -672,7 +672,7 @@ Outline notes:
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim_1_ioplot_P2DcTd4.pdf}
-	\caption{Observer model structure}
+	\caption{Grinding process simulation data and model estimates}
 	\label{fig:rod_obs_sim_1_ioplot_P2DcTd4}
 \end{figure}
 
@@ -692,10 +692,10 @@ Outline notes:
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Observer performance metrics averaged over 50-days of simulation time.} \label{tb:results}
+		\caption{Observer performance evaluation metrics.} \label{tb:results}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
-		\begin{tabular}{p{0.34\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}}
-			Metric & KF1 & KF2 & KF3 & MMKF & SKF \\
+		\begin{tabular}{p{0.34\textwidth}>{\centering\arraybackslash}p{0.09\textwidth}>{\centering\arraybackslash}p{0.09\textwidth}>{\centering\arraybackslash}p{0.09\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.09\textwidth}}
+			Metric & KF1 & KF2 & KF3 & MKF-SP & SKF \\
 			\hline
 			MSE($\hat{y}(k),y(k)$) overall          & 11.0 & 15.9 & 3.7 & 3.5 & 2.1 \\ 
 			MSE($\hat{y}(k),y(k)$) transient       & 21.1 & 16.1 & 7.7 & 11.2 & 5.1 \\ 
@@ -739,16 +739,16 @@ Outline notes:
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=12.5cm]{images/rod_obs_sim_sens_model_MMKF_MSE_y_est.pdf}
-	\caption{Sensitivity of MMKF observer estimates to changes in model parameters}
-	\label{fig:rod_obs_sim_sens_model_MMKF_MSE_y_est}
+	\includegraphics[width=12.5cm]{images/rod_obs_sim_sens_model_MKF_MSE_y_est.pdf}
+	\caption{Sensitivity of MKF observer estimates to changes in model parameters}
+	\label{fig:rod_obs_sim_sens_model_MKF_MSE_y_est}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=12.5cm]{images/rod_obs_sim_sens_rod_MMKF_MSE_y_est.pdf}
-	\caption{Sensitivity of MMKF observer estimates to changes in RODD parameters}
-	\label{fig:rod_obs_sim_sens_rod_MMKF_MSE_y_est}
+	\includegraphics[width=12.5cm]{images/rod_obs_sim_sens_rod_MKF_MSE_y_est.pdf}
+	\caption{Sensitivity of MKF observer estimates to changes in RODD parameters}
+	\label{fig:rod_obs_sim_sens_rod_MKF_MSE_y_est}
 \end{figure}
 
 
