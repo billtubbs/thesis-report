@@ -7,46 +7,6 @@
 	\item Multi-model algorithm.
 \end{itemize}
 
-\section{Tuning of sequence fusion algorithm 1995 variant}
-
-The sequence fusion algorithm evaluated in section \ref{section:sim-obs-lin} is based on \cite{robertson_method_1998}. However, Robertson and coworkers published results in 1995 \citep{robertson_detection_1995} using a slightly different version of this algorithm. Table \ref{tb:obs-sim1-popt-SF95} shows the results of a parameter search for the earlier version of the algorithm using the same simulation data used to tune the 1998 algorithm.
-
-\begin{table}[hb]
-	\begin{center}
-		\caption{Multi-model observer parameter search results – MMKF-SF95.} \label{tb:obs-sim1-popt-SF95}
-		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
-		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
-			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\text{RMSE}(\hat{Y}_i(N),Y_i(N))$  \\
-			\hline
-			% Results with seed = 6, nT = 5000
-			15 &   1 &   3 &   6 & 0.9035 & 0.1156 \\
-			15 &   2 &   3 &  16 & 0.9044 & 0.1156 \\
-			15 &   3 &   3 &  26 & 0.9044 & 0.1156 \\
-			15 &   1 &   1 &  16 & 0.9904 & 0.1168 \\
-			15 &   2 &   1 & 121 & 0.9996 & 0.1168 \\
-			15 &   1 &   5 &   4 & 0.8861 & 0.1186 \\
-			15 &   2 &   5 &   7 & 0.8864 & 0.1186 \\
-			15 &   3 &   5 &   8 & 0.8864 & 0.1186 \\
-			9 &   3 &   3 &   8 & 0.9415 & 0.1188 \\
-			9 &   2 &   3 &   7 & 0.9415 & 0.1188 \\
-			\hline
-		\end{tabular}
-	\end{center}
-\end{table}
-
-From these results it can be seen that the parameter tunings are quite similar to those in Table \ref{tb:obs-sim1-popt-SF} for the 1998 variant of the algorithm. However, the best RMSE value achieved by the 1995 algorithm (0.1156) is slightly higher than the best achieved by the 1998 variant (0.1089) in this case.
-
-Figure \ref{fig:rod-obs-sim1-yest-all-seed-RMSE-box-SF95} shows the results of both observers on different pseudo-random simulation results. This supports the finding by Robertson et al. that the 1998 variant of the algorithm performs better.
-
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_err_box_SF95.pdf}
-	\caption{Comparison of sequence fusion algorithm variants}
-	\label{fig:rod-obs-sim1-yest-all-seed-RMSE-box-SF95}
-\end{figure}
-
-
-
 \section{Tuning of KF3 for MIMO linear system} \label{section:annex-sim-2-KF-tuning}
 
 As described in Chapter \ref{chap-simulation}, a standard Kalman filter was tuned to minimize the RMSE of the output estimates using 5000 data samples from the $2\times2$ linear system. Since the system is symmetrical and the two RODDs have the same parameters, it was assumed that the two observer parameters, $\sigma_{w_p,1,\text{opt}}$ and $\sigma_{w_p,2,\text{opt}}$ must also be identical. This assumption simplified the search process since only one optimum value needed to be found.

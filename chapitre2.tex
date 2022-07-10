@@ -432,9 +432,12 @@ Finally, the multi-model observer estimate of the states in the next time instan
 	\mathbf{\hat{x}}(k+1 \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k+1 \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
 \end{equation}
 
-Likewise, an estimate of the covariance of the estimation errors may be obtained by calculating the weighted-sum of the covariance matrices:
+An estimate of the covariance of the estimation errors is obtained using
 \begin{equation} \label{eq:P_hat}
-	\mathbf{P}(k+1 \mid k) = \sum_{f=1}^{n_h} \mathbf{P}_f(k+1 \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
+	\begin{aligned}
+	\mathbf{P}(k+1 \mid k) = \sum_{f=1}^{n_h} \Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) \left( \mathbf{P}_f(k+1 \mid k) + \delta_\mathbf{\hat{x}}(k) \delta_\mathbf{\hat{x}}^\intercal(k) \right) \\
+	\delta_\mathbf{\hat{x}}(k) = \mathbf{\hat{x}}(k+1 \mid k) - \mathbf{\hat{x}}_f(k+1 \mid k)
+	\end{aligned}
 \end{equation}
 
 % TODO: in Robertson et al, they estimate x(k|k) not x(k+1 \mid k).
@@ -518,7 +521,17 @@ The problem that sub-optimal algorithms address is the inevitable increase in th
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximation techniques. The first is referred to as \textit{sequence fusion}, also known as the \textit{generalized pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences which are identical over the previous $n_f$ sample times, $\{\gamma(k-n_f+1), ...,  \gamma(k-1), \gamma(k)\}$, are combined. In other words, the maximum length of the unique sequences that must be modelled is $n_f$, which is known as the \textit{fusion horizon}.
+\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximation techniques. The first is referred to as \textit{sequence fusion}, also known as the \textit{generalized pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences which are identical over the previous $n_f$ sample times may be  combined. In other words, the maximum length of the unique sequences that must be modelled is $n_f$, which is known as the \textit{fusion horizon}.
+
+In this case, the shock indicator sequences are only defined over the fusion horizon, which is of length $n_f$ sample periods and includes the current sample time,
+\begin{equation} \label{eq:Gamma_kmf_k}
+	\Gamma_f(k-n_f+1,k)=\{\gamma_f(k-n_f+1), ...,  \gamma_f(k-1), \gamma_f(k)\}, f=1,2,...,n_h.
+\end{equation}
+
+In place of (\ref{eq:x_hat}), the overall estimate of the states at the next sample time, is calculated at time $k$ using
+\begin{equation} \label{eq:x_f_hat_SF}
+	\mathbf{\hat{x}}_f(k+1 \mid k) = \sum_{f=1}^{n_h} \frac{\mathbf{\hat{x}}_f(k+1 \mid k) \Pr(\Gamma_f(k-n_f+1,k) \mid \mathbf{Y}(k))}{\sum_{f=1}^{n_h} \Pr(\Gamma_f(k-n_f+1,k) \mid \mathbf{Y}(k))}
+\end{equation}
 
 Secondly, they assume that the exact timing of the random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter is increased, it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length $n_d$ samples is therefore
 \begin{equation} \label{eq:p_gamma_d}
