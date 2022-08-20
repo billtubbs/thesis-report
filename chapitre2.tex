@@ -269,7 +269,7 @@ where $\mathbf{x}(k) \in \mathbb{R}^n$ is a vector of state variables, $\mathbf{
 The \textit{Kalman filter} \citep{kalman_new_1961} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables. The estimated states and outputs at time $k$, given the information available at time $k$, are given by
 \begin{equation}
 	\begin{aligned} \label{eq:xk_hat}
-		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}_f(k) \left[\mathbf{y}(k) - 		\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)\right] \\
+		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}(k) \left[\mathbf{y}(k) - 		\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)\right] \\
 		\mathbf{\hat{y}}(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}(k \mid k-1)
 	\end{aligned}
 \end{equation}
@@ -280,9 +280,9 @@ where $\mathbf{\hat{x}}(k \mid k-1)$ is a prediction of the states at time $k$ t
 
 An intuitive interpretation of the Kalman filter is that it takes the predictions of the states at time $k$ made using the system model and corrects them based on the difference between the current output measurement, $\mathbf{y}(k)$, and the output predicted by the model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$. The updates (\ref{eq:xk_hat}) and predictions (\ref{eq:xkp1_hat}) are executed iteratively each time step, given a prior prediction of the states at time zero, $\mathbf{\hat{x}}(0 \mid -1)=\mathbf{\hat{x}}_0$.
 
-To track a system with time-varying parameters, a dynamic Kalman filter is needed with a time-varying correction gain. $\mathbf{K}_f(k)$ is calculated at each time instant using
-\begin{equation} \label{eq:Kfk}
-	\mathbf{K}_f(k) = \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal (\mathbf{S}(k))^{-1},
+To track a system with time-varying parameters, a dynamic Kalman filter is needed with a time-varying correction gain. $\mathbf{K}(k)$ is calculated at each time instant using
+\begin{equation} \label{eq:Kk}
+	\mathbf{K}(k) = \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal (\mathbf{S}(k))^{-1},
 \end{equation}
 where $\mathbf{S}$
 \begin{equation} \label{eq:Sk}
@@ -295,7 +295,7 @@ is the output error covariance matrix and $\mathbf{P}(k \mid k-1)$ is the estima
 
 $\mathbf{P}(k \mid k-1)$ is updated every time step using
 \begin{equation} \label{eq:Pk}
-	\mathbf{P}(k \mid k) = \mathbf{P}(k \mid k-1) - \mathbf{K}_f(k) \mathbf{S}(k) \mathbf{K}_f^\intercal(k),
+	\mathbf{P}(k \mid k) = \mathbf{P}(k \mid k-1) - \mathbf{K}(k) \mathbf{S}(k) \mathbf{K}^\intercal(k),
 \end{equation}
 given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$. The prediction of the error covariance in the next time step is made using
 \begin{equation} \label{eq:Pkp1}
@@ -313,7 +313,7 @@ Algorithm \ref{alg:kf} describes the sequence in which the Kalman filter update 
 	\begin{algorithmic}
 		\Require $\mathbf{A},\mathbf{B},\mathbf{C},\mathbf{\hat{x}}(k \mid k-1), \mathbf{P}(k \mid k-1), \mathcal{Q}, \mathbf{R}, \mathbf{\gamma}(k), \mathbf{u}(k), \mathbf{y}(k)$
 		\State calculate $\mathbf{S}(k)$ (\ref{eq:Sk})
-		\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk})
+		\State calculate $\mathbf{K}(k)$ (\ref{eq:Kfk})
 		\State calculate $\mathbf{\hat{x}}(k \mid k)$ and $\mathbf{\hat{y}}(k \mid k)$ (\ref{eq:xk_hat})
 		\State calculate $\mathbf{P}(k \mid k)$ (\ref{eq:Pk})
 		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xkp1_hat})
@@ -354,12 +354,12 @@ A state-space representation of the combined system including the disturbance mo
 \end{equation}
 where $\mathbf{x}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented state vector which includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables (i.e. $\mathbf{w}(k)$ and $\mathbf{w}_p(k)$ combined).
 
+Although the random shock in a RODD is unmeasured, it may be observable from the measurements of the outputs of the system. However, as mentioned in Section \ref{chap-lit-review}, systems with RODDs pose problems for state estimation using standard Kalman filters due to the switching of the noise model parameters, namely, the variance of $w_p(k)$ (\ref{eq:wpk2}). As explained by \cite{robertson_detection_1995}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times. Therefore, an alternative method is required.
+
 
 \subsection{Multiple model approaches}
 
-Although the random shock in a RODD is unmeasured, it may be observable from the measurements of the outputs of the system. However, as mentioned in Section \ref{chap-lit-review}, systems with RODDs pose problems for state estimation using standard Kalman filters due to the switching of the noise model parameters, namely, the variance of $w_p(k)$ (\ref{eq:wpk2}). As explained by \cite{robertson_detection_1995}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
-
-Alternatively, a so-called \textit{multiple-model approach} may be considered \citep{buxbaum_recursive_1969, jaffer_estimation_1971}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current states. To achieve this, an independent Kalman filter is maintained for each hypothesis and a weighted average of the estimates by each filter is calculated using the conditional probabilities of each hypothesis given current and past measurements.
+One option for state estimation of switching (i.e. hybrid) systems is the so-called \textit{multiple-model approach}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current states. To achieve this, an independent Kalman filter is maintained for each hypothesis and a weighted average of the estimates by each filter is calculated using the conditional probabilities of each hypothesis given current and past measurements.
 
 Let the number of Kalman filters be $n_h$ and the \textit{shock occurrence hypothesis} associated with Kalman filter $f$ at time instant $k$ be
 \begin{equation} \label{eq:gammak}
@@ -431,8 +431,8 @@ and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicato
 	\end{cases*}
 \end{equation}
 
-At the start of simulation, filter $f$ has an initial estimate of the states, $\mathbf{\hat{x}}_f(0)$, and an initial estimate covariance $\mathbf{P}_f(0)$. At each time instant, starting at $k=0$, the filter correction gain is updated as in (\ref{eq:Kk})
-\begin{equation} \label{eq:Kf}
+At the start of simulation, filter $f$ has an initial estimate of the states, $\mathbf{\hat{x}}_f(0)$, and an initial estimate covariance $\mathbf{P}_f(0)$. At each time instant, starting at $k=0$, the filter correction gain is updated as in (\ref{eq:Kfk})
+\begin{equation} \label{eq:Kfk}
 	K_f(k) = \mathbf{A}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
 \end{equation}
 
@@ -485,7 +485,7 @@ Algorithm \ref{alg:afmm} shows the sequential procedure used to execute these co
 			\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal algorithm update procedure}  % \footnotemark
 			\For{$f \gets 1, n_h$}
 			\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
-			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kf}) \Comment{Filter updates}
+			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk}) \Comment{Filter updates}
 			\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
 			\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
 			\EndFor
@@ -542,15 +542,41 @@ The problem that sub-optimal algorithms address is the inevitable increase in th
 	\label{fig:mm-obs-br}
 \end{figure}
 
+\subsubsection{Generalised pseudo-Bayes algorithm} \label{subsec-GPB}
+
+One of the simplest multiple-model methods is the \textit{generalised pseudo-Bayes algorithm}  \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, it is introduced here because the concept is utilised as a component of the sequence fusion algorithm described in the next sub-section.
+
+There are two main versions of this algorithm, the first order generalised pseudo-Bayesian algorithm (GPB1), and the second order generalised pseudo-Bayesian algorithm (GPB2). In the case of GPB1, the estimate of the system states at time $k$ is branched into $n_j$ hypotheses, where $n_j$ is the total number of possible modes of the system. Each hypothesis is then modelled with a separate Kalman filter and advanced one time step using the system models defined by each hypothesis. These estimates are merged back into a single estimate at the next time instant. This process is depicted in Figure \ref{fig:mm-obs-gpb1} for the case where $n_j=2$.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[height=5cm]{images/mm_obs_seq_gpb1.pdf}
+	\caption{First-order generalised pseudo-Bayes algorithm ($n_j=2$)}
+	\label{fig:mm-obs-gpb1}
+\end{figure}
+
+In the case of GPB2, instead of using the single merged estimate to initialize the Kalman filters at each time step, $n_j$ separate estimates are maintained, one for each possible system mode. Each of these is then branched into $n_j$ hypotheses, creating a total of $n_j^2$ hypotheses which are advanced to the next time step, before being merged back into $n_j$ hypotheses, as depicted in Figure \ref{fig:mm-obs-gpb2}. The $n_j$ estimates are also merged at each time instant to produce an overall estimate of the system states but this estimate is not used in the subsequent steps of the algorithm.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[height=6.5cm]{images/mm_obs_seq_gpb2.pdf}
+	\caption{Second-order generalised pseudo-Bayes algorithm ($n_j=2$)}
+	\label{fig:mm-obs-gpb2}
+\end{figure}
+
+The advantages of the GPB1 and GPB2 algorithms are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite, which limits computational requirements. The disadvantages include the fact that they model every possible transition during each time step, regardless of its probability, and always merge these into a finite set of estimates (only one in the case of GPB1) before the next iteration.
+
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach for RODD state estimation combining three approximation techniques. The first is referred to as \textit{sequence fusion}, also known as the \textit{generalized pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences which are identical over the previous $n_f$ sample times may be  combined. In other words, the maximum length of the unique sequences that must be modelled is $n_f$, which is known as the \textit{fusion horizon}.
+\cite{robertson_detection_1995} propose a sub-optimal approach which combines three approximation techniques specifically intended for RODD state estimation. The first is referred to as \textit{sequence fusion}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences that are identical over the previous $n_f$ sample times may be merged, where $n_f$ is known as the \textit{fusion horizon}. The same techniques used in the generalized pseudo-Bayes algorithm are used to perform the sequence branching and merging at each time step. The differences are that more than $n_j$ hypotheses are maintained and these are based on longer, pre-specified sequences of possible shocks.
 
-In this case, the shock indicator sequences are only defined over the fusion horizon, which is of length $n_f$ sample periods and includes the current sample time,
+The shock indicator sequences are defined over the fusion horizon of length $n_f$ sample periods including the current one,
 \begin{equation} \label{eq:Gamma_kmf_k}
 	\Gamma_f(k-n_f+1,k)=\{\gamma_f(k-n_f+1), ...,  \gamma_f(k-1), \gamma_f(k)\}, f=1,2,...,n_h.
 \end{equation}
+
+% TODO: Need to add sequence branching and merging steps
+
+% TODO: Need to re-write this in revised KF format. 
 
 In place of (\ref{eq:x_hat}), the overall estimate of the states at the next sample time, is calculated at time $k$ using
 \begin{equation} \label{eq:x_f_hat_SF}
@@ -578,7 +604,7 @@ The probabilities of the modelled random shocks are then redefined as
 
 Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than $n_m$ shocks occur during the fusion horizon is low, where $n_m$ may be 1 or a low number. This further reduces the number of filters required.
 
-To illustrate the sequence fusion procedure, consider a simple example. Suppose there is one RODD to estimate. A sequence fusion algorithm is used with a detection interval of $n_d=3$ and a maximum number of shocks over the fusion horizon of $n_m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods, the sequences repeat indefinitely.
+To illustrate the sequence fusion procedure, consider a simple example. Suppose there is one RODD to estimate. A sequence fusion algorithm is used with a detection interval of $n_d=3$ and a maximum number of shocks over the fusion horizon of $n_m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. (For simplicity, the intermediate branching and merging steps illustrated in Figures \ref{fig:mm-obs-gpb1} and \ref{fig:mm-obs-gpb2} for the generalised pseudo-Bayes methods are not shown in the diagrams in this sub-section.) Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods, the sequences repeat indefinitely.
 
 \begin{figure}[htp]
 	\centering
