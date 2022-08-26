@@ -111,7 +111,7 @@ where $\mathbf{w}_p(k)$ is a vector of two independent random shock signals gene
 
 \textit{Hidden Markov models} (HMM) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
-To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state \gls{gamma_k} with two possible values:
+To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state \gls{gamma_k}cd  with two possible values:
 \begin{equation} \label{eq:gamma-k}
 	\gamma(k) = 
 	\begin{cases*}
@@ -553,9 +553,9 @@ The problem that sub-optimal algorithms address is the inevitable increase in th
 
 \subsubsection{Generalised pseudo-Bayes algorithm} \label{subsec-GPB}
 
-One of the simplest multiple-model methods is the \textit{generalised pseudo-Bayes algorithm}  \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, it is introduced here because the concept is utilised as a component of the sequence fusion algorithm described in the next sub-section.
+One of the simplest sub-optimal multiple-model methods is the \textit{generalised pseudo-Bayes algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, the method is described here because it is utilised as a component of the sequence fusion algorithm described in the next sub-section.
 
-There are two main versions of this algorithm, the first order generalised pseudo-Bayesian algorithm (GPB1), and the second order generalised pseudo-Bayesian algorithm (GPB2). In the case of GPB1, the estimate of the system states at time $k$ is branched into $n_j$ hypotheses, where $n_j$ is the total number of possible modes of the system. Each hypothesis is then modelled with a separate Kalman filter and advanced one time step using the system models defined by each hypothesis. These estimates are merged back into a single estimate at the next time instant. This process is depicted in Figure \ref{fig:mm-obs-gpb1} for the case where $n_j=2$.
+There are two basic implementations of this algorithm, the first-order generalised pseudo-Bayesian estimator (GPB1), and a second order generalised pseudo-Bayesian estimator (GPB2). In the case of GPB1, the estimate of the system states at time $k$ is branched into $n_j$ hypotheses, where $n_j$ is the total number of possible modes of the system. Each hypothesis is then modelled with a separate Kalman filter and advanced one time step using the system models defined by each hypothesis. These estimates are merged back into a single estimate at the next time instant. This process is depicted in Figure \ref{fig:mm-obs-gpb1} for the case where $n_j=2$.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[height=5cm]{images/mm_obs_seq_gpb1.pdf}
@@ -639,7 +639,7 @@ Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fu
 \end{equation}
 where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ intervals. They recommend that the total probability should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
 
-In a later paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the possibility of a shock as a sequence of $n_d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed that this improved the performance of the algorithm in simulations.
+In a later journal paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the possibility of a shock as a sequence of $n_d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed that this improved the performance of the algorithm in simulations.
 
 To implement this modification, define a new variable, $\delta(n)$, to represent whether or not at least one shock occurred during the $n$\textsuperscript{th} detection interval:
 

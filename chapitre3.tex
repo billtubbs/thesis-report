@@ -5,7 +5,7 @@ This chapter describes numerical simulations carried out to demonstrate and eval
 
 \section{Generating RODD disturbances} \label{section:sim-RODDs}
 
-RODDs are easy to generate by numerical simulation.  Plot (a) in Figure \ref{fig:rodd-sim-plots} shows a random shock sequence (\ref{eq:wpk1}) of length 1000 samples generated using a pseudo random number generator. Plots (b), (c), and (d) show RODD step, ramp and exponential change disturbances generated with this random shock sequence using the RODD models in (\ref{eq:RODD-step}), (\ref{eq:RODD-ramp}), and (\ref{eq:RODD-exp}). 
+RODDs are easy to generate by numerical simulation.  Plot (a) in Figure \ref{fig:rodd-sim-plots} shows a random shock sequence (\ref{eq:wpk1}) of length 1000 samples generated using a pseudo random number generator. Plots (b), (c), and (d) show step, ramp and exponential change disturbances generated with this random shock sequence using the RODD models in (\ref{eq:RODD-step}), (\ref{eq:RODD-ramp}), and (\ref{eq:RODD-exp}). 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rodd_sim_plots.pdf}
@@ -24,7 +24,7 @@ RODDs are easy to generate by numerical simulation.  Plot (a) in Figure \ref{fig
 
 \subsection{SISO linear system} \label{sim-obs-lin-1}
 
-To demonstrate state estimation in the presence of RODDs, a single RODD was simulated at the input to a SISO process represented by a discrete-time linear model, as shown in the functional diagram in Figure \ref{fig:sim-sys-diag-siso}. In addition to the unmeasured RODD, $p(k)$, the process has a known input variable, $u(k)$, and a measured output variable, $y_M(k)$. The measurements are simulated by adding a random noise $v(k)$ with zero mean and standard deviation $\sigma_M$ to the output of the process. At each sample time, the input and measured output are passed to an observer which calculates estimates of the process states at the next sample time, $\hat{\mathbf{x}}(k+1|k)$ and an estimate of the true process output, $\hat{y}(k+1|k)$.
+To demonstrate state estimation in the presence of RODDs, a single RODD was simulated at the input to a SISO process represented by a discrete-time linear model, as shown in the functional diagram in Figure \ref{fig:sim-sys-diag-siso}. In addition to the unmeasured RODD, $p(k)$, the process has a known input variable, $u(k)$, and a measured output variable, $y_M(k)$. The measurements are simulated by adding a random noise $v(k)$ with zero mean and standard deviation $\sigma_M$ to the output of the process. At each sample time, the input and measured output are passed to an observer which calculates estimates of the process states, $\hat{\mathbf{x}}(k|k)$, and an estimate of the true process output, $\hat{y}(k|k)$, at the current time.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=11.5cm]{images/sim-sys-diag-siso.pdf}
@@ -38,7 +38,7 @@ For the purposes of this experiment, the linear model used to represent the proc
 \end{equation}
 with a sampling period of $T=0.5$.
 
-The RODD was a step disturbance defined by
+The RODD was a step disturbance created by setting
 \begin{equation}
 	\frac{C(z^{-1})}{D(z^{-1})} = \frac{1}{1-z^{-1}}.
 \end{equation}
@@ -75,7 +75,7 @@ where
 
 Note that with this representation, the second model state $x_{a,2}(k)$ corresponds exactly to the input disturbance $p(k)$.
 
-\subsection{Analysis of sub-optimal algorithm behaviour} \label{sim-obs-lin-1-SKF-analysis}
+\subsection{Analysis of sub-optimal estimators} \label{sim-obs-lin-1-SKF-analysis}
 
 \begin{figure}[htp]
 	\centering
@@ -83,7 +83,7 @@ Note that with this representation, the second model state $x_{a,2}(k)$ correspo
 	\caption{Simulation of a SISO linear system with a RODD input disturbance}
 	\label{fig:rod-obs-sim-test-ioplot-SF95}
 \end{figure}
-Before evaluating the performance of the multi-model observers, the system (\ref{eq:sim-sys-siso-ss-aug}) was simulated with one pre-determined shock, no persistent disturbance ($\sigma_{w_p}=0$), and no measurement noise. This allowed the behaviour and internal workings of the observers to be examined in detail. Figure \ref{fig:rod-obs-sim-test-ioplot-SF95} shows the inputs and outputs of this simulation, which was 100 sample periods in duration. The two lower subplots show the system inputs, including the random shock signal. The upper two plots show the system states and outputs as well as the estimates of the states and outputs by the multi-model observer using sequence fusion \citep{robertson_detection_1995}.
+To investigate the behaviour and internal workings of the observers, the system (\ref{eq:sim-sys-siso-ss-aug}) was simulated with one pre-determined shock, no persistent disturbance ($\sigma_{w_p}=0$), and no measurement noise. Figure \ref{fig:rod-obs-sim-test-ioplot-SF95} shows the inputs and outputs of this simulation, which was 100 sample periods in duration. The two lower subplots show the system inputs, including the random shock signal. The upper two plots show the system states and outputs as well as the estimates of the states and outputs by the multi-model observer using sequence fusion \citep{robertson_detection_1995}.
 
 \begin{figure}[htp]
 	\centering
