@@ -19,6 +19,8 @@ Figure \ref{fig:cause-effect} is a schematic diagram illustrating the main cause
 
 \cite{powell_applying_2009} highlighted the interactive (i.e. bi-directional) relationship between mill load and breakage rates and describe how these variables evolve dynamically. A change in ore feed properties, such as a change in hardness or particle sizes, leads to changes in the mill contents, which then affect breakage rates, which have a feedback effect on the evolution of the mill contents. This results in a non-linear response of the output variables which depend on the mill contents.
 
+As mentioned in the introduction, changes in ore feed properties have a significant impact on the process. \cite{morrell_influence_2001} stated that variations in ore competency and the feed size distribution are the top two factors having the greatest influence on SAG mill performance.
+
 SAG mills are usually installed in closed-circuit with a pump and a classifier. Oversize material that passed through the discharge grate of the mill but does not meet the specification of the classifier is returned to the mill, sometimes via a crusher. This feedback mechanism includes a transport delay which further complicates the dynamic response of the process variables to changes in the inputs.
 
 \subsection{Grinding process control}
@@ -65,7 +67,7 @@ One of the case studies presented in \cite{desbiens_using_2008} describes the im
 
 As a result of implementing the MPC system, the variability of the cyclone feed solids content and feed pressure were reduced by 43\% and 22\%, respectively. As well as reduced variation, other benefits were realised, including higher throughput, lower specific energy consumption, and a 4.8\% reduction in the average SAG product size.
 
-C.W. Steyn, C. Sandrock (2013) present results of implementing MPC on an autogenous grinding (AG) mill in South Africa with the goal of reducing variability and to ``continuously drive towards the optimal operating point within system constraints.'' The two main control variables were power consumption and mill load. They report a 66\% reduction in power and a 40\% reduction in the standard deviation of the mill load as a result of implementing the MPC. This reduction in process variability also enabled steady-state experiments to be conducted to determine the optimal product particle size for a given mill feed rate, which lead to a subsequent improvement in mineral recovery.
+\cite{steyn_benefits_2013} present results of implementing MPC on an autogenous grinding (AG) mill in South Africa with the goal of reducing variability and to ``continuously drive towards the optimal operating point within system constraints.'' The two main control variables were power consumption and mill load. They report a 66\% reduction in power and a 40\% reduction in the standard deviation of the mill load as a result of implementing the MPC. This reduction in process variability also enabled steady-state experiments to be conducted to determine the optimal product particle size for a given mill feed rate, which lead to a subsequent improvement in mineral recovery.
 
 \cite{gough_sag_2015} reports using MPC to control the mill weight, feed rate, and rotation speed of various SAG mills in mines in South America. The controller includes measured disturbances such as pebble recycle rate and ore size distribution as feed forward inputs to improve control. He presents results showing that the MPC is able to reduce the variability in mill weight (84\% reduction in standard deviation) and throughput (55\% reduction in standard deviation) compared to the expert systems that were used in these facilities, resulting in higher production rates.
 
@@ -79,7 +81,7 @@ C.W. Steyn, C. Sandrock (2013) present results of implementing MPC on an autogen
 %
 %The controlled variables were cyclone feed density and ball mill power consumption, and the manipulatable variables were pump box water addition rate and ball mill feed water addition rate. The improvements also included a real-time steel charge schedule, and the results show that the system reduced the product particle size from the grinding circuit by 7.5\%.
 
-\textbf{TODO: Add reference to Steyn et al., Investigating the potential benefit of an online particle size analyser on the feed to a primary milling circuit, 2001.}
+\cite{steyn_investigating_2018} investigated the potential benefit of an image-based online particle size analyser of the feed to the primary milling circuit. They consider its use in both feedback (reactive) and feed-forward (proactive) control applications, and also as a process monitoring tool for operators. In the feedback case, they assume that the upstream blasting or ore blending processes can be manipulated to control the feed size. The disadvantage of this approach is the lag time in the response of the system. In the feed-forward case, the information on the feed size is used in the mill control system to compensate for the effects of the disturbance as it impacts the mill. The disadvantage of the feed-forward control strategy is that an accurate model of the process dynamics is needed. They present results of testing the feed-forward control scheme in two mill operations and report reduced variance in process variables when the feed-forward control was operating, although the statistical significance of the results was deemed to be low.
 
 \subsection{Grinding process observers}
 
@@ -101,7 +103,9 @@ In \cite{le_roux_ekf_2017}, an extended Kalman filter (EKF) utilizing a simpler 
 
 Continual variability in ore properties such as \textit{hardness}, \textit{competency}, \textit{particle size distribution} (PSD), and \textit{grade} (valuable mineral content) is normal in mining operations due to the geological characteristics of ore bodies. Additional variability is introduced by mining processes such as blasting and crushing, and during material handling operations such as shovelling, trucking, conveying, and storage. Storage systems such as stockpiles, for example, tend to cause segregation of material by particle size, which can result in dramatic changes in the particle size distribution of ore feeding primary grinding if the feed to the stockpile is interrupted \citep{estrada_hybrid_2014}. The nature of such variations will therefore reflect the particular processes and equipment employed at each site. Although they are not random, the complexities of these numerous effects is such that predicting the variations in the properties of ore arriving at the processing plant is extremely difficult.
 
-\textbf{TODO: Add reference to Morrell and Valery, Influence of Feed Size on AG/SAG Mill Performance, 2001.}
+\textbf{TODO: Add another reference to Morrell and Valery, Influence of Feed Size on AG/SAG Mill Performance, 2001.}
+
+\textbf{TODO: Add another reference to \cite{steyn_investigating_2018} paper which includes two time-series plots showing feed size variations.}
 
 There is limited available data on actual ore variability in real operations, especially on the dynamic nature of these variations. This may be attributed to the lack of cost-effective measurement technology, the cost of sampling and analysing ore, as well as the commercial sensitivity of such data.
 
