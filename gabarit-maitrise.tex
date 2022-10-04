@@ -44,8 +44,9 @@
 % $\mathcal{N} \left( 0, \sigma_{w_p}^2 \right)$
 %\newglossaryentry{normdist}{name=$a$, description={normal distribution of mean zero and variance}}
 
+% General
 \newglossaryentry{qm1}{name=$q^{-1}$, description={backwards shift operator}}
-\newglossaryentry{pk}{name=$p(k)$, description={input disturbance signal at time $k$}}
+\newglossaryentry{pk}{name=$p(k)$, description={disturbance signal at time $k$}}
 \newglossaryentry{wpk}{name=$w_p(k)$, description={random shock signal at time $k$}}
 \newglossaryentry{Ndist}{name={$\mathcal{N}(0,\sigma_{w_p}^2)$}, description={normal distribution with mean zero and variance $\sigma_{w_p}^2$}}
 \newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
@@ -53,6 +54,37 @@
 \newglossaryentry{PrAgB}{name={$\Pr(A \mid B)$}, description={Probability of $A$ given $B$}}
 \newglossaryentry{nabla}{name={$\nabla$}, description={defined as $1-q^{-1}$}}
 \newglossaryentry{gamma_k}{name={$\gamma(k)$}, description={Random shock indicator or Markov model state variable at time $k$}}
+
+% State estimation
+\newglossaryentry{uk}{name=$\mathbf{u}(k)$, description={system inputs at time $k$}}
+\newglossaryentry{xk}{name=$\mathbf{x}(k)$, description={system states at time $k$}}
+\newglossaryentry{yk}{name=$\mathbf{y}(k)$, description={system outputs at time $k$}}
+\newglossaryentry{wk}{name=$\mathbf{w}(k)$, description={process disturbance signals at time $k$}}
+\newglossaryentry{vk}{name=$\mathbf{v}(k)$, description={measurement noise signals at time $k$}}
+\newglossaryentry{A}{name={$\mathbf{A}$}, description={transition matrix of the system model}}
+\newglossaryentry{B}{name={$\mathbf{B}$}, description={input matrix of the system model}}
+\newglossaryentry{C}{name={$\mathbf{C}$}, description={output matrix of the system model}}
+\newglossaryentry{ymk}{name={$\mathbf{y}_m(k)$}, description={system output measurements at time $k$}}
+\newglossaryentry{xkp1_pred}{name={$\hat{\mathbf{x}}(k+1 \mid k)$}, description={predictions of system states at time $k+1$ made with information available at time $k$}}
+\newglossaryentry{xk_pred}{name={$\hat{\mathbf{x}}(k \mid k-1)$}, description={predictions of system states at time $k$ made with information available at time $k-1$}}
+\newglossaryentry{xk_hat}{name={$\hat{\mathbf{x}}(k \mid k)$}, description={estimates of system states at time $k$ made with information available at time $k$}}
+\newglossaryentry{Kpk}{name={$\mathbf{K}_p(k)$}, description={correction gain of the Kalman filter (prediction form)}}
+\newglossaryentry{Kfk}{name={$\mathbf{K}_f(k)$}, description={correction gain of the Kalman filter (filtering form), or correction gain of Kalman filter $f$ (filtering form)}}
+\newglossaryentry{Sk}{name={$\mathbf{S}(k)$}, description={covariance of the output prediction errors}}
+\newglossaryentry{Pk_pred}{name={$\mathbf{P}(k \mid k-1)$}, description={predictions of the state estimation error covariance at time $k$ made with information available at time $k-1$}}
+\newglossaryentry{Pkp1_pred}{name={$\mathbf{P}(k+1 \mid k)$}, description={predictions of the state estimation error covariance at time $k+1$ made with information available at time $k$}}
+\newglossaryentry{Qk}{name={$\mathbf{Q}(k)$}, description={covariance of the process disturbances in the observer model}}
+\newglossaryentry{R}{name={$\mathbf{R}$}, description={covariance of the measurement noises in the observer model}}
+\newglossaryentry{E}{name={$\mathbb{E}\{\cdot\}$}, description={expectation operator}}
+\newglossaryentry{wpkv}{name={$\mathbf{w}_p(k)$}, description={disturbance model noise inputs at time $k$}}
+\newglossaryentry{xak}{name={$\mathbf{x}_a(k)$}, description={augmented system states at time $k$}}
+\newglossaryentry{Aa}{name={$\mathbf{A}_a$}, description={transition matrix of the augmented system model}}
+\newglossaryentry{Ba}{name={$\mathbf{B}_a$}, description={input matrix of the augmented system model}}
+\newglossaryentry{Ca}{name={$\mathbf{C}_a$}, description={output matrix of the augmented system model}}
+
+% Multiple model approaches
+\newglossaryentry{nh}{name={$n_h$}, description={number of hypotheses}}
+\newglossaryentry{gamma_fk}{name={$\gamma_f(k)$}, description={Random shock indicator of hypothesis $f$ at time $k$}}
 
 %  \newacronym{gcd}{GCD}{Greatest Common Divisor}
 %  \newacronym{lcm}{LCM}{Least Common Multiple}

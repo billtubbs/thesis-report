@@ -56,8 +56,7 @@ where $i \in \left\{1, 2, ..., n_p\right\}$.
 The choice of $A(q^{-1})$ and $B(q^{-1})$ in (\ref{eq:RODD}) determines the nature of the RODD. For example, if $B(q^{-1})=1$ and $A(q^{-1})=1-q^{-1}$, $p(k)$ will be a random-walk process with infrequent, large step changes.
 
 % Add symbol to glossary
-\glsadd{nabla}
-Denoting $\nabla=1-q^{-1}$, the RODD \textit{step-disturbance} process can be defined as
+\glsadd{nabla}Denoting $\nabla=1-q^{-1}$, the RODD \textit{step-disturbance} process can be defined as
 \begin{equation} \label{eq:RODD-step}
 	p(k)= \frac{1}{\nabla}w_p(k).
 \end{equation}
@@ -112,7 +111,7 @@ where $\mathbf{w}_p(k)$ is a vector of two independent random shock signals gene
 
 \textit{Hidden Markov models} (HMM) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
-To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state \gls{gamma_k}cd  with two possible values:
+To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state \gls{gamma_k} with two possible values:
 \begin{equation} \label{eq:gamma-k}
 	\gamma(k) = 
 	\begin{cases*}
@@ -122,9 +121,7 @@ To illustrate the basic concept, we can define the state of the random shock gen
 \end{equation}
 
 % Add terms to Glossary
-\glsadd{pagb}
-\glsadd{PrAgB}
-
+\glsadd{pagb} \glsadd{PrAgB}
 $\gamma(k)=0$ represents the state of the process when no shock occurs and $\gamma(k)=1$ represents the state when a shock occurs. The switching of $\gamma(k)$ can then be defined by a \textit{transition matrix}, $\Pi$, which describes the probabilities of transitioning from the state at time $k$ to the state at time $k+1$:
 \begin{equation} \label{eq:Pi}
 	\begin{aligned}
@@ -255,7 +252,7 @@ The BRW concept can be extended to RODDs. A RODD step disturbance (\ref{eq:RODD-
 
 State estimation is the task of estimating the values of the state variables of a dynamic model of a system given a set of measurements from the system. In process control applications, state estimates are required online (i.e. in real time), in order to provide the best possible estimate of the states at the current time (or a prediction of their values at the next time instant) in order to calculate an appropriate control action.
 
-Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, $\mathbf{u}(k) \in \mathbb{R}^{n_u}$ is a vector of measured input variables at time instant $k$, $\mathbf{w}(k) \in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of output disturbances or measurement errors, and $\mathbf{y}(k) \in \mathbb{R}^{n_y}$ is the vector of output variables. The box represents the mathematical model which relates the inputs to the outputs and may be time-varying. 
+\glsadd{uk}\glsadd{yk}\glsadd{wk}\glsadd{vk}Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, \gls{uk} $\in \mathbb{R}^{n_u}$ is a vector of known input variables at time instant $k$, \gls{wk} $\in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of output disturbances or measurement errors, and \gls{yk} $\in \mathbb{R}^{n_y}$ is the vector of output variables. The box represents a mathematical model that relates the inputs to the outputs and may be time-varying. 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=8cm]{images/model_diag_uwvy.pdf}
@@ -263,55 +260,63 @@ Consider the diagram of an input-output system model in Figure \ref{fig:model_di
 	\label{fig:model_diag_uwvy}
 \end{figure}
 
-The most convenient form in which to represent discrete-time, linear, possibly time-varying, dynamical system models for state estimation and control purposes, is the state-space representation
+A convenient form in which to represent discrete-time, linear, possibly time-varying, dynamical system models for state estimation and control purposes, is the state-space representation
 \begin{equation} \label{eq:ss_rep_uwy}
-	\begin{aligned}
+	\begin{aligned} \glsadd{xk} \glsadd{A} \glsadd{B} \glsadd{C}
 		\mathbf{x}(k+1) &= \mathbf{A}(k) \mathbf{x}(k) + \mathbf{B}(k) \mathbf{u}(k) + \mathbf{w}(k), \\
 		\mathbf{y}(k) &= \mathbf{C}(k) \mathbf{x}(k) + \mathbf{v}(k).
 	\end{aligned}
 \end{equation}
+where \gls{xk} $\in \mathbb{R}^n$ is a vector of state variables, \gls{A}$\in \mathbb{R}^{n \times n}$ is the state transition matrix at time $k$, $\mathbf{B}(k) \in \mathbb{R}^{n \times n_u}$ is the input matrix at time $k$, $\mathbf{C}(k) \in \mathbb{R}^{n_y \times n}$ is the output matrix at time $k$. In this work, the system matrices are not time-varying and are therefore denoted $\mathbf{A}$, $\mathbf{B}$, and $\mathbf{C}$ in the remainder of this chapter.
 
-where $\mathbf{x}(k) \in \mathbb{R}^n$ is a vector of state variables, $\mathbf{A}(k) \in \mathbb{R}^{n \times n}$ is the state transition matrix at time $k$, $\mathbf{B}(k) \in \mathbb{R}^{n \times n_u}$ is the input matrix at time $k$, $\mathbf{C}(k) \in \mathbb{R}^{n_y \times n}$ is the output matrix at time $k$. In this work, the system matrices are not time-varying and are therefore denoted $\mathbf{A}$, $\mathbf{B}$, and $\mathbf{C}$ in the remainder of this chapter.
+The \textit{Kalman filter} \citep{kalman_new_1961} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables (with mean values of zero). There are two commonly-used implementations of the Kalman filter, the \textit{prediction form} and the \textit{filtering form}. In the prediction form, the estimates of the states at the next time instant ($k+1$), given the information available at the current time ($k$) are calculated using
+\begin{equation} \glsadd{ymk}
+\begin{aligned} \label{eq:xkp1_hat_p} \glsadd{xkp1_pred} \glsadd{xk_hat} \glsadd{xk_pred} \glsadd{Kpk}
+	\mathbf{\hat{x}}(k+1 \mid k) &= \mathbf{\hat{x}}(k+1 \mid k-1) + \mathbf{K}_p(k) \left[ \mathbf{y}(k) - \mathbf{\hat{y}}(k \mid k-1) \right] \\
+	&= \mathbf{A}\mathbf{\hat{x}}(k \mid k-1) + \mathbf{B}u(k) + \mathbf{K}_p(k) \left[ \mathbf{y}_m(k) - \mathbf{C} \mathbf{\hat{x}}(k \mid k-1) \right]
+\end{aligned}
+\end{equation}
+where \gls{xk_pred} is the prediction of the states at time $k$ that was made with the information available at the previous time ($k-1$), \gls{ymk} is the current measurement of the output, and \gls{Kpk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain matrix.
 
-The \textit{Kalman filter} \citep{kalman_new_1961} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables. The estimated states and outputs at time $k$, given the information available at time $k$, are given by
-\begin{equation}
-	\begin{aligned} \label{eq:xk_hat}
-		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}(k) \left[\mathbf{y}(k) - 		\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)\right] \\
-		\mathbf{\hat{y}}(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}(k \mid k-1)
+In the filtering form, which is used in this work, the estimated states and outputs at the current time are calculated given the information available at the current time using
+\begin{equation} \label{eq:xkyk_hat} \glsadd{Kfk}
+	\begin{aligned}
+		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}_f(k) \left[\mathbf{y}(k) - 	\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)\right] \\
+		\mathbf{\hat{y}}(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}(k \mid k)
 	\end{aligned}
 \end{equation}
-where $\mathbf{\hat{x}}(k \mid k-1)$ is a prediction of the states at time $k$ that was made with the information available at the previous time, $k-1$. $\mathbf{y}(k)$ is the current measurement of the output, and $\mathbf{K}_f(k) \in \mathbb{R}^{n \times n_y}$ is a time-varying correction gain matrix. The prediction of the states at the next time instant is made at the current time using the linear model (\ref{eq:ss_rep_uwy}):
+where \gls{Kfk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain matrix. The predictions of the states at the next time instant are calculated using:
 \begin{equation} \label{eq:xkp1_hat}
 	\mathbf{\hat{x}}(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}(k \mid k) + \mathbf{B} \mathbf{u}(k)
 \end{equation}
 
-An intuitive interpretation of the Kalman filter is that it takes the predictions of the states at time $k$ made using the system model and corrects them based on the difference between the current output measurement, $\mathbf{y}(k)$, and the output predicted by the model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$. The updates (\ref{eq:xk_hat}) and predictions (\ref{eq:xkp1_hat}) are executed iteratively each time step, given a prior prediction of the states at time zero, $\mathbf{\hat{x}}(0 \mid -1)=\mathbf{\hat{x}}_0$.
+An intuitive interpretation of the Kalman filter is that it takes the predictions of the states at time $k$ made in the previous time instant using the system model, and corrects them based on the difference between the current output measurement, $\mathbf{y}(k)$, and the output predicted by the model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$. The correction step (\ref{eq:xkyk_hat}) and prediction step (\ref{eq:xkp1_hat}) are executed iteratively each time step, given a prior prediction of the states at time zero, $\mathbf{\hat{x}}(0 \mid -1)=\mathbf{\hat{x}}_0$.
 
-To track a system with time-varying parameters, a dynamic Kalman filter is needed with a time-varying correction gain. $\mathbf{K}(k)$ is calculated at each time instant using
-\begin{equation} \label{eq:Kk}
-	\mathbf{K}(k) = \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal (\mathbf{S}(k))^{-1},
+Although the predictions, $\mathbf{\hat{x}}(k+1 \mid k)$ and $\mathbf{\hat{y}}(k \mid k-1)$ are identical in both cases, the use of the updated (i.e. \textit{a posteriori}) estimates, $\mathbf{\hat{x}}(k \mid k)$, in the filtering form instead of the predicted states, $\mathbf{\hat{x}}(k \mid k-1)$, leads to an optimal estimator. However, the differences are generally very small and the prediction form of the Kalman filter is suitable in most applications.
+
+To track a system with time-varying parameters, a dynamic estimator is needed with a time-varying correction gain. In the case of the filtering form of the Kalman filter, $\mathbf{K}_f(k)$ is calculated at each time instant using
+\begin{equation} \label{eq:Kfk}
+	\mathbf{K}_f(k) = \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}^{-1}(k),
 \end{equation}
-where $\mathbf{S}$
+where \glsadd{Sk}\gls{Sk}, given by
 \begin{equation} \label{eq:Sk}
-	\mathbf{S}(k) = \mathbf{C}\mathbf{P}(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R}
+	\mathbf{S}(k) = \mathbf{C}\mathbf{P}(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R},
 \end{equation}
-is the output error covariance matrix and $\mathbf{P}(k \mid k-1)$ is the estimation error covariance matrix calculated in the previous time instant.  $\mathbf{R}$, which is also time invariant in this work, is the covariance matrix of the measurement noises,
-\begin{equation} \label{eq:R}
+is the output prediction error covariance matrix and \glsadd{Pk_pred}\gls{Pk_pred} is the state estimation error covariance matrix calculated in the previous time instant.  \glsadd{R}\gls{R}, which is also time invariant in this work, is the covariance matrix of the measurement noises,
+\begin{equation} \label{eq:R} \glsadd{E}
 	\mathbf{R} = \mathbb{E}\{ \mathbf{v}(k) \mathbf{v}^\intercal(k) \},
 \end{equation}
-where $\mathbb{E}\{\cdot\}$ represents the expectation operator.
+where \gls{E} is the expectation operator.
 
-$\mathbf{P}(k \mid k-1)$ is updated every time step using
+\gls{Pk_pred} is updated every time step using
 \begin{equation} \label{eq:Pk}
-	\mathbf{P}(k \mid k) = \mathbf{P}(k \mid k-1) - \mathbf{K}(k) \mathbf{S}(k) \mathbf{K}^\intercal(k),
+	\mathbf{P}(k \mid k) = \mathbf{P}(k \mid k-1) - \mathbf{K}_f(k) \mathbf{S}(k) \mathbf{K}^\intercal(k),
 \end{equation}
-given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$.
-
-The prediction of the error covariance in the next time step is made using
-\begin{equation} \label{eq:Pkp1}
+given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$ and the prediction of the error covariance in the next time step is made using
+\begin{equation} \label{eq:Pkp1} \glsadd{Pkp1_pred}
 	\mathbf{P}(k+1 \mid k) = \mathbf{A} \mathbf{P}(k \mid k)  \mathbf{A}^\intercal  + \mathbf{Q}(k),
 \end{equation}
-where $\mathbf{Q}(k)$ is the time-varying covariance of the state disturbances,
+where \glsadd{Qk}\gls{Qk} is the time-varying covariance of the process disturbances,
 \begin{equation} \label{eq:Q}
 	\mathbf{Q}(k) = \mathbb{E}\{ \mathbf{w}(k) \mathbf{w}^\intercal(k) \}.
 \end{equation}
@@ -323,8 +328,8 @@ Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations at
 	\begin{algorithmic}
 		\Require $\mathbf{A},\mathbf{B},\mathbf{C},\mathbf{\hat{x}}(k \mid k-1), \mathbf{P}(k \mid k-1), \mathcal{Q}, \mathbf{R}, \mathbf{\gamma}(k), \mathbf{u}(k), \mathbf{y}(k)$
 		\State calculate $\mathbf{S}(k)$ (\ref{eq:Sk})
-		\State calculate $\mathbf{K}(k)$ (\ref{eq:Kfk})
-		\State calculate $\mathbf{\hat{x}}(k \mid k)$ and $\mathbf{\hat{y}}(k \mid k)$ (\ref{eq:xk_hat})
+		\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk})
+		\State calculate $\mathbf{\hat{x}}(k \mid k)$ and $\mathbf{\hat{y}}(k \mid k)$ (\ref{eq:xkyk_hat})
 		\State calculate $\mathbf{P}(k \mid k)$ (\ref{eq:Pk})
 		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xkp1_hat})
 		\State $\mathbf{Q}(k) \gets \mathcal{Q}(\gamma(k))$
@@ -346,8 +351,7 @@ In the case where the system has additional disturbance inputs, $\mathbf{p}(k) \
 	\end{aligned}
 \end{equation}
 
-For state estimation in the presence of disturbances, which is always the case in practice, a suitable model of the disturbances is needed. This additional model is shown in Figure \ref{fig:model_diag_wpupwvy} with an additional set of random variables $\mathbf{w}_p(k)$ at its input.
-
+For state estimation in the presence of disturbances, which is always the case in practice, a suitable model of the disturbances is needed. This model is shown in Figure \ref{fig:model_diag_wpupwvy} with an additional set of random variables \glsadd{wpkv}\gls{wpkv} at its input.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12.5cm]{images/model_diag_wpupwvy.pdf}
@@ -356,13 +360,13 @@ For state estimation in the presence of disturbances, which is always the case i
 \end{figure}
 
 A state-space representation of the combined system including the disturbance model can be constructed. This will be referred to as the \textit{augmented model},
-\begin{equation} \label{eq:ss_rep_xa}
+\begin{equation} \label{eq:ss_rep_xa} \glsadd{xak} \glsadd{Aa} \glsadd{Ba} \glsadd{Ca}
 	\begin{aligned}
 		\mathbf{x}_a(k+1) = \mathbf{A}_a \mathbf{x}_a(k) + \mathbf{B}_{a,u} \mathbf{u}(k) + \mathbf{B}_{a,w} \mathbf{w}_{a}(k), \\
 		\mathbf{y}(k) = \mathbf{C}_a \mathbf{x}_a(k) + \mathbf{v}(k),
 	\end{aligned}
 \end{equation}
-where $\mathbf{x}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented state vector which includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables (i.e. $\mathbf{w}(k)$ and $\mathbf{w}_p(k)$ combined).
+where \gls{xak} $\in \mathbb{R}^{n+n_p}$ is an augmented state vector which includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables (i.e. $\mathbf{w}(k)$ and $\mathbf{w}_p(k)$ combined).
 
 Although the random shock in a RODD is unmeasured, it may be observable from the measurements of the outputs of the system. However, as mentioned in Section \ref{chap-lit-review}, systems with RODDs pose problems for state estimation using standard Kalman filters due to the switching of the noise model parameters, namely, the variance of $w_p(k)$ (\ref{eq:wpk2}). As explained by \cite{robertson_detection_1995}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times. Therefore, alternative methods are required.
 
@@ -371,12 +375,12 @@ Although the random shock in a RODD is unmeasured, it may be observable from the
 
 One option for state estimation of switching (i.e. hybrid) systems is the so-called \textit{multiple-model approach}. Multi-model observers account for different possible hypotheses about the current and past states of the system and infer from these an overall `best' estimate of the current states. To achieve this, an independent Kalman filter is maintained for each hypothesis and a weighted average of the estimates by each filter is calculated using the conditional probabilities of each hypothesis given current and past measurements.
 
-Let the number of Kalman filters be $n_h$ and the \textit{shock occurrence hypothesis} associated with Kalman filter $f$ at time instant $k$ be
-\begin{equation} \label{eq:gammak}
+Let the number of Kalman filters be \glsadd{nh}\gls{nh} and the \textit{shock occurrence hypothesis} associated with Kalman filter $f$ at time $k$ be
+\begin{equation} \label{eq:gammak} \glsadd{gamma_fk}
 	\gamma_{f}(k) \in \left\{0, 1 \right\} \forall{k \ge 0}.
 \end{equation}
 
-First, consider the case of estimating only one shock signal (\ref{eq:wpk2}). Therefore, $\gamma_{f}(k)$ is a scalar. The transition probabilities of the random shock are independent of previous shocks:
+First, consider the case of estimating only one shock signal (\ref{eq:wpk2}). Therefore, \gls{gamma_fk} is a scalar. The transition probabilities of the random shock are independent of previous shocks:
 \begin{equation} \label{eq:Pr_gammak_given_gammakm1}
 	\begin{aligned}
 		& \Pr\left(\gamma_{f}(k)=0 \mid \gamma_{f}(k-1)\right) = \Pr\left(\gamma_{f}(k)=0\right) = 1-\epsilon, \\
@@ -441,8 +445,8 @@ and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicato
 	\end{cases*}
 \end{equation}
 
-At the start of simulation, filter $f$ has an initial estimate of the states, $\mathbf{\hat{x}}_f(0)$, and an initial estimate covariance $\mathbf{P}_f(0)$. At each time instant, starting at $k=0$, the filter correction gain is updated as in (\ref{eq:Kfk})
-\begin{equation} \label{eq:Kfk}
+At the start of simulation, filter $f$ has an initial estimate of the states, $\mathbf{\hat{x}}_f(0)$, and an initial estimate covariance $\mathbf{P}_f(0)$. At each time instant, starting at $k=0$, the filter correction gain is updated as in (\ref{eq:Kffk})
+\begin{equation} \label{eq:Kffk}
 	K_f(k) = \mathbf{A}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
 \end{equation}
 
@@ -495,7 +499,7 @@ Algorithm \ref{alg:afmm} shows the sequential procedure used to execute these co
 			\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal algorithm update procedure}  % \footnotemark
 			\For{$f \gets 1, n_h$}
 			\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
-			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk}) \Comment{Filter updates}
+			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kffk}) \Comment{Filter updates}
 			\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
 			\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
 			\EndFor
@@ -556,7 +560,7 @@ The problem that sub-optimal algorithms address is the inevitable increase in th
 One of the simplest sub-optimal multiple-model methods is the \textit{generalised pseudo-Bayesian algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, the method is described here because it is a good starting point for understanding the more complex algorithms of interest.
 
 There are two basic implementations of the algorithm, the first-order generalised pseudo-Bayesian estimator (GPB1), and a second order generalised pseudo-Bayesian estimator (GPB2). In the case of GPB1, an estimate of the system states at time $k$ is branched according to $n_j$ mode hypotheses, where $n_j$ is the total number of possible modes of the system. Each hypothesis is modelled with a separate Kalman filter and updated using the system model associated with it for one time step. The resulting set of $n_j$ estimates is then merged back into a single estimate for use in the next time step.
-
+cc
 This process is depicted in Figure \ref{fig:gpb1-diagram} for the case of two system modes ($n_j=2$). The numbered black squares represent the computation steps---1 and 2 are the model prediction steps (\ref{eq:xfkp1_hat}, ), 3 is the Kalman filter update step (\ref{eq:xk_hat}), 4 is the mode evaluation step (\ref{eq:Pr_Gammak_given_Yk}), and 5 is the hypothesis merging step (\ref{eq:x_hat}). At time $k$, the algorithm takes as inputs, a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \gamma_2(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. To reduce the complexity of the diagram, the state error covariance estimates are not shown. Wherever the state estimates, $\hat{\mathbf{x}}_f(k \mid k-1)$, $\hat{\mathbf{x}}_f(k \mid k)$, and $\hat{\mathbf{x}}(k \mid k)$, are calculated and stored, the associated error covariance estimates, $\mathbf{P}_f(k \mid k-1)$, $\mathbf{P}_f(k \mid k)$, and $\mathbf{P}(k \mid k)$, are also calculated and stored.
 
 \begin{figure}[htp]
