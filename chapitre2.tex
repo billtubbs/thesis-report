@@ -281,7 +281,8 @@ where \gls{xk_pred} is the prediction of the states at time $k$ that was made wi
 In the filtering form, which is used in this work, the estimated states and outputs at the current time are calculated given the information available at the current time using
 \begin{equation} \label{eq:xkyk_hat} \glsadd{Kk}
 	\begin{aligned}
-		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}(k) \big( \mathbf{y}_m(k) - \mathbf{C} \mathbf{\hat{x}}(k \mid k-1) \big) \\
+		\mathbf{\hat{y}}(k \mid k-1) &= \mathbf{C} \mathbf{\hat{x}}(k \mid k-1) \\
+		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}(k) \big( \mathbf{y}_m(k) - \mathbf{\hat{y}}(k \mid k-1)  \big) \\
 		\mathbf{\hat{y}}(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}(k \mid k)
 	\end{aligned}
 \end{equation}
@@ -407,17 +408,25 @@ The measurements up to time $k$ are
 	\end{aligned}
 \end{equation}
 
-Assume that new measurement data is made available at each time instant. The probability of the shock sequence associated with filter $f$ given the data up to time $k-1$ can be calculated recursively:
+Assume that new measurement data is made available at each time instant. The probability of the shock hypothesis sequence associated with filter $f$ given the data up to time $k-1$ can be calculated recursively using
 \begin{multline} \label{eq:Pr_Gammakp1_given_Yk}
 	\Pr(\Gamma_f(k) \mid \mathbf{Y}(k-1)) = 
 	\Pr(\gamma_f(k) \mid \gamma_f(k-1)) \Pr(\Gamma_f(k-1) \mid \mathbf{Y}(k-1)).
 \end{multline}
-The conditional probability densities of the measurements $\mathbf{y}(k)$ are approximated by Gaussian distributions
+
+The conditional probability densities of the measurements $\mathbf{y}_m(k)$ are approximated by Gaussian distributions centred on the output predictions and with the covariance of the output prediction error, \glsadd{Sfk}\gls{Sfk},
+% \mathbf{C} 
 \begin{equation} \label{eq:p_yk_given_Gammak_Ykm1}
-	p(\mathbf{y(k)} \mid \Gamma_f(k), \mathbf{Y}(k-1)) \approx
-	\mathcal{N}\left(\mathbf{y}(k), \mathbf{C} \mathbf{\hat{x}}_{f}(k \mid k-1), \mathbf{C} \mathbf{P}_f(k \mid k-1) \mathbf{C}^\intercal+\mathbf{R}\right)
+	p(\mathbf{y(k)} \mid \Gamma_f(k), \mathbf{Y}(k-1)) \approx \mathcal{N}\left(\mathbf{y}_m(k), \mathbf{\hat{y}}_{f}(k \mid k-1),	\mathbf{S}_f(k) \right)
 \end{equation}
-where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k \mid k-1)$ and $\mathbf{P}_f(k \mid k-1)$ are the state predictions and prediction error covariances of each Kalman filter calculated in the previous time step, and \gls{Ndist2} is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
+where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k \mid k-1)$ and $\mathbf{P}_f(k \mid k-1)$ are the state predictions and prediction error covariances of each Kalman filter calculated in the previous time step, and \gls{Ndist2} is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$. As before, $\mathbf{\hat{y}}_{f}(k \mid k-1)$ and $\mathbf{S}_f(k) $ are given by 
+\begin{equation} \label{eq:yfk_pred}
+	\mathbf{\hat{y}}_{f}(k \mid k-1) = \mathbf{C}\mathbf{\hat{x}}_{f}(k \mid k-1)
+\end{equation}
+and
+\begin{equation} \label{eq:Sfk}
+	\mathbf{S}_f(k) = \mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R}.
+\end{equation}
 
 The estimate of the probability of the shock sequence $\Gamma_f(k)$ given the data up to time $k$ is
 \begin{equation} \label{eq:Pr_Gammak_given_Yk}
@@ -450,16 +459,14 @@ and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicato
 	\end{cases*}
 \end{equation}
 
-At the start of simulation, $f$ Kalman filters are initialized with initial state estimates, $\mathbf{\hat{x}}_f(0) = \mathbf{\hat{x}}_{f,0}$, and initial error covariance estimates $	\mathbf{P}_f(0) = \mathbf{P}_{f,0}$. At each time instant, starting at $k=0$, the correction gains are calculated as in the previous section (\ref{eq:Kk}, \ref{eq:Sk})
+% TODO: add positive definite and symmetric numerical fix.
+
+At the start of simulation, $f$ Kalman filters are initialized with initial state estimates, $\mathbf{\hat{x}}_f(0) = \mathbf{\hat{x}}_{f,0}$, and initial error covariance estimates $	\mathbf{P}_f(0) = \mathbf{P}_{f,0}$. At each time instant, starting at $k=0$, the correction gains are calculated as in the previous section (\ref{eq:Sk})
 \begin{equation} \label{eq:Kfk}
-	\mathbf{K}_f(k) = \mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}_f^{-1}(k),
-\end{equation}
-where \glsadd{Sfk}\gls{Sfk}, which is given by
-\begin{equation} \label{eq:Sfk}
-	\mathbf{S}_f(k) = \mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R},
+	\mathbf{K}_f(k) = \mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}_f^{-1}(k).
 \end{equation}
 
-The estimated states and outputs at the current time are calculated as in (\ref{eq:xkyk_hat}) given the information available at the current time 
+The corrected state and output estimates are calculated as in (\ref{eq:xkyk_hat}) given the current measurement using
 \begin{equation} \label{eq:xfkyfk_hat}
 	\begin{aligned}
 		\mathbf{\hat{x}}_f(k \mid k) &= \mathbf{\hat{x}}_f(k \mid k-1) + \mathbf{K}_f(k) \big( \mathbf{y}_m(k) - \mathbf{C} \mathbf{\hat{x}}_f(k \mid k-1) \big) \\
@@ -478,14 +485,13 @@ The predicted error covariances at the next time instant are calculated as in (\
 \end{equation}
 and the predicted state estimates are calculated as in (\ref{eq:xkp1_hat})
 \begin{equation} \label{eq:xfkp1_hat}
-	\mathbf{\hat{x}}_f(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}_f(k \mid k-1) + \mathbf{B}\mathbf{u}(k) + 
-	\mathbf{K}_f(k)\left[\mathbf{y}(k)-\mathbf{C} \mathbf{\hat{x}}_f(k \mid k-1)\right].
+	\mathbf{\hat{x}}_f(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}_f(k \mid k) + \mathbf{B} \mathbf{u}(k).
 \end{equation}
 
 Note the difference between (\ref{eq:Pfkp1}) and (\ref{eq:Pkp1}).  Here, $\mathbf{P}_f(k+1 \mid k)$ is dependent on $\gamma_f(k)$, which determines the noise covariance matrix used in the update, whereas in (\ref{eq:Pkp1}), $\mathbf{Q}$ is time invariant.
 
 Finally, the merged estimate of the states at the current time is the sum of the Kalman filter estimates weighted by the conditional probabilities from (\ref{eq:Pr_Gammak_given_Yk})
-\begin{equation} \label{eq:x_hat}
+\begin{equation} \label{eq:xk_hat}
 	\mathbf{\hat{x}}(k \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
 \end{equation}
 
@@ -518,11 +524,11 @@ Algorithm \ref{alg:afmm} shows the sequential procedure used to execute these co
 			\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal algorithm update procedure}  % \footnotemark
 			\For{$f \gets 1, n_h$}
 			\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
-			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kffk}) \Comment{Filter updates}
+			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk}) \Comment{Filter updates}
 			\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
 			\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
 			\EndFor
-			\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:x_hat}) \Comment{State estimate}
+			\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xk_hat}) \Comment{State estimate}
 			\State calculate $\mathbf{P}(k+1 \mid k)$ (\ref{eq:P_hat}) \Comment{Error covariance}  % \footnotemark
 			\EndFor
 		\end{algorithmic}
@@ -550,7 +556,7 @@ Algorithm \ref{alg:afmm} shows the sequential procedure used to execute these co
 %		\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
 %		\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
 %		\EndFor
-%		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:x_hat}) \Comment{State estimate}
+%		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xk_hat}) \Comment{State estimate}
 %		\State calculate $\mathbf{P}(k+1 \mid k)$ \Comment{Error covariance\footnotemark}
 %		\EndFor
 %	\end{algorithmic}
@@ -565,7 +571,7 @@ The multi-model observer concept can be used for state estimation of any MJLS (\
 
 \subsection{Sub-optimal algorithms}
 
-The problem that sub-optimal algorithms address is the inevitable increase in the number of hypotheses that must be modelled in an optimal multi-model observer. For a system with one RODD disturbance, the number of possible hypotheses doubles at each time step because each current hypothesis branches into two—one corresponding to the assumption of no shock in the next time period and the other to that of a shock. Figure \ref{fig:mm-obs-br} illustrates that after 3 time instants starting at $k=0$, eight hypotheses are needed to represent the possible shock sequences. For a system with two independent RODD disturbances, the number would be 64.
+The problem that sub-optimal algorithms address is the inevitable increase in the number of hypotheses that would have to be modelled in an optimal multi-model observer. For a system with one RODD disturbance, the number of possible hypotheses doubles at each time step because each current hypothesis branches into two—one corresponding to the assumption of no shock in the next time period and the other to that of a shock. Figure \ref{fig:mm-obs-br} illustrates that after 3 time instants starting at $k=0$, eight hypotheses are needed to represent the possible shock sequences. For a system with two independent RODD disturbances, the number would be 64.
 
 \begin{figure}[htp]
 	\centering
@@ -576,22 +582,9 @@ The problem that sub-optimal algorithms address is the inevitable increase in th
 
 \subsubsection{Generalised pseudo-Bayes algorithm} \label{subsec-GPB}
 
-One of the simplest sub-optimal multiple-model methods is the \textit{generalised pseudo-Bayesian algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, the method is described here because it is a good starting point for understanding the more complex algorithms of interest.
+One of the simplest sub-optimal multiple-model methods is the \textit{generalised pseudo-Bayesian algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, the method is described here because it is a starting point for understanding the hypotheses merging.
 
-There are two basic implementations of the algorithm, the first-order generalised pseudo-Bayesian estimator (GPB1), and a second order generalised pseudo-Bayesian estimator (GPB2). In the case of GPB1, an estimate of the system states at time $k$ is branched according to $n_j$ mode hypotheses, where $n_j$ is the total number of possible modes of the system. Each hypothesis is modelled with a separate Kalman filter and updated using the system model associated with it for one time step. The resulting set of $n_j$ estimates is then merged back into a single estimate for use in the next time step.
-cc
-This process is depicted in Figure \ref{fig:gpb1-diagram} for the case of two system modes ($n_j=2$). The numbered black squares represent the computation steps---1 and 2 are the model prediction steps (\ref{eq:xfkp1_hat}, ), 3 is the Kalman filter update step (\ref{eq:xk_hat}), 4 is the mode evaluation step (\ref{eq:Pr_Gammak_given_Yk}), and 5 is the hypothesis merging step (\ref{eq:x_hat}). At time $k$, the algorithm takes as inputs, a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \gamma_2(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. To reduce the complexity of the diagram, the state error covariance estimates are not shown. Wherever the state estimates, $\hat{\mathbf{x}}_f(k \mid k-1)$, $\hat{\mathbf{x}}_f(k \mid k)$, and $\hat{\mathbf{x}}(k \mid k)$, are calculated and stored, the associated error covariance estimates, $\mathbf{P}_f(k \mid k-1)$, $\mathbf{P}_f(k \mid k)$, and $\mathbf{P}(k \mid k)$, are also calculated and stored.
-
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=15.5cm]{images/gpb1_diagram.pdf}
-	\caption{Information flow diagram for the GPB1 algorithm with $n_j=2$}
-	\label{fig:gpb1-diagram}
-\end{figure}
-
-In the case of the GPB1 algorithm, the mode hypotheses are set to the system modes ($\gamma(k)=\begin{bsmallmatrix} 1 & 2 & \cdots & n_j \end{bsmallmatrix}^\intercal$) and do not change. However, note that in the multiple-model observers of interest in this work, $\gamma(k)$ is time-varying. 
-
-To allow more complex algorithms to be visualised and compared, the computational details can be omitted. Figure \ref{fig:mm-obs-gpb1} is a simplified representation of the same GPB1 algorithm represented in Figure \ref{fig:gpb1-diagram}. The simplified diagram only shows the mode hypotheses and the branching, prediction, updating and merging steps that occur each time step. White and dark grey circles represent estimates produced assuming each of the two possible modes. The light grey circle represents an estimate that is the result of merging two estimates based on previous hypotheses. From this it can be seen that GPB1 is a simple multiple model estimator.
+There are two basic versions of the algorithm, the first-order generalised pseudo-Bayesian estimator (GPB1), and the second order generalised pseudo-Bayesian estimator (GPB2). Figure \ref{fig:mm-obs-gpb1} shows a simplified diagram of the GPB1 process in the case of a system with two modes ($n_j=2$). A single estimate of the system states and error covariance at time $k$ is branched into $n_j$ hypotheses representing the possible modes of the system at that time. These are then used to initialise $n_j$ Kalman filters. Each Kalman filter then makes a prediction of the states in the next time instant using the associated system model. In the next time instant the $n_j$ predictions are corrected using the measurements, and the updated estimates are merged into a single estimate. These steps are then repeated each subsequent time step. 
 
 \begin{figure}[htp]
 	\centering
@@ -600,7 +593,9 @@ To allow more complex algorithms to be visualised and compared, the computationa
 	\label{fig:mm-obs-gpb1}
 \end{figure}
 
-In the case of GPB2, instead of merging the estimates into a single estimate and using this in the next prediction step, $n_j$ separate estimates are maintained, one for each possible system mode. Each of these is then branched into $n_j$ hypotheses, creating a total of $n_j^2$ predictions in the next time instant, which are then updated before being merged back into $n_j$ estimates for the next prediction step. Figure \ref{fig:mm-obs-gpb2} shows a simplified diagram of the GPB2 algorithm. The $n_j$ estimates are also merged at each time instant to produce an overall estimate of the system states but this estimate is not used in the subsequent steps of the algorithm.
+% TODO: add merging and branching equations.
+
+Whereas the GPB1 estimator considers $n_j$ possible mode transitions from time $k-1$ to time $k$, the GPB2 estimator considers $n_j^2$ possible transition sequences from time $k-2$ to time $k$. Figure \ref{fig:mm-obs-gpb2} shows a simplified diagram of the GPB2 algorithm. At time $k$ it maintains $n_j$ separate estimates, each of which is then branched into $n_j$ hypotheses, creating a total of $n_j^2$ hypotheses, represented by $n_j^2$ Kalman filters. At time $k+1$, these predictions are updated and two merging operations are carried out. The first merges the $n_j^2$ estimates into $n_j$ estimates for use in the next step. The second merges the $n_j$ merged estimates into one estimate which is the output of the estimator and is not used in subsequent steps.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[height=6.5cm]{images/gpb2_diagram.pdf}
@@ -608,12 +603,26 @@ In the case of GPB2, instead of merging the estimates into a single estimate and
 	\label{fig:mm-obs-gpb2}
 \end{figure}
 
-The advantages of the GPB1 and GPB2 estimators are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite and constant, which limits computational requirements. The disadvantages include the fact that they model every possible transition during each time step and merge these into a reduced set of estimates before the next iteration.
+The advantages of the GPB1 and GPB2 estimators are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite and constant, which limits computational requirements. The disadvantages include the fact that they model every possible transition over one or two time steps and merge these into a reduced set of estimates before the next iteration. Note that in the case of the GPB1 and GPB2 algorithms, the mode hypotheses are the same each time step, whereas in the case of the multiple-model observer considered here, $\gamma(k)$ is time-varying.
 
+\subsubsection{Implementation details} \label{subsec-implementation}
+
+The diagram in Figure \ref{fig:gpb2-infoflow} depicts the computation steps and information flow of the multi-model observer with hypothesis merging and branching, as implemented in this work. In general, there may be any number, $n_h$, of hypotheses that are merged into $n_m$ hypothesis each time step and then branched into $n_h$ again before the next time step. Obviously, $n_m \le n_h$.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15.5cm]{images/gpb2_infoflow.pdf}
+	\caption{Information flow diagram for the GPB1 algorithm with $n_j=2$}
+	\label{fig:gpb2-infoflow}
+\end{figure}
+
+The numbered black squares in Figure \ref{fig:gpb2-infoflow} represent the computation steps---1 and 2 are the model prediction steps (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), 3 is the Kalman filter update step (\ref{eq:xk_hat}), and 4 is the mode evaluation step (\ref{eq:Pr_Gammak_given_Yk}). Steps 5 and 6 are the hypothesis merging and branching steps, which are specific to each algorithm and may be time-varying.
+
+At time $k$, the algorithm takes as inputs, a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. To reduce the complexity of the diagram, the state error covariances are not shown. Wherever the state estimates, $\hat{\mathbf{x}}_f(k \mid k-1)$, $\hat{\mathbf{x}}_f(k \mid k)$, and $\hat{\mathbf{x}}(k \mid k)$, are calculated and stored, the associated error covariance estimates, $\mathbf{P}_f(k \mid k-1)$, $\mathbf{P}_f(k \mid k)$, and $\mathbf{P}(k \mid k)$, are also calculated and stored.
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach that combines three approximation techniques specifically intended for RODD state estimation. The first is referred to as \textit{sequence fusion}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences that are identical over the previous $n_f$ sample times may be merged, where $n_f$ is known as the \textit{fusion horizon}. The same techniques used in the generalized pseudo-Bayes algorithm are used to perform the sequence branching and merging at each time step. The differences are that more than $n_j^2$ hypotheses are maintained and these are based on longer, pre-specified sequences of possible shocks.
+\cite{robertson_detection_1995} propose a sub-optimal approach that combines three approximation techniques specifically intended for RODD state estimation. The first is referred to as \textit{sequence fusion}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences that are identical over the previous $n_f$ sample times may be merged, where $n_f$ is known as the \textit{fusion horizon}.
+%The same techniques used in the generalized pseudo-Bayes algorithm are used to perform the sequence branching and merging at each time step. The differences are that more than $n_j^2$ hypotheses are maintained and these are based on longer, pre-specified sequences of possible shocks.
 
 The shock indicator sequences are defined over the fusion horizon of length $n_f$ sample periods including the current one,
 \begin{equation} \label{eq:Gamma_kmf_k}
@@ -624,7 +633,7 @@ The shock indicator sequences are defined over the fusion horizon of length $n_f
 
 % TODO: Need to re-write this in revised KF format. 
 
-In place of (\ref{eq:x_hat}), the overall estimate of the states at the next sample time, is calculated at time $k$ using
+In place of (\ref{eq:xk_hat}), the overall estimate of the states at the next sample time, is calculated at time $k$ using
 \begin{equation} \label{eq:x_f_hat_SF}
 	\mathbf{\hat{x}}_f(k+1 \mid k) = \sum_{f=1}^{n_h} \frac{\mathbf{\hat{x}}_f(k+1 \mid k) \Pr(\Gamma_f(k-n_f+1,k) \mid \mathbf{Y}(k))}{\sum_{f=1}^{n_h} \Pr(\Gamma_f(k-n_f+1,k) \mid \mathbf{Y}(k))}
 \end{equation}
