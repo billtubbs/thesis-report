@@ -605,20 +605,6 @@ Whereas the GPB1 estimator considers $n_j$ possible mode transitions from time $
 
 The advantages of the GPB1 and GPB2 estimators are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite and constant, which limits computational requirements. The disadvantages include the fact that they model every possible transition over one or two time steps and merge these into a reduced set of estimates before the next iteration. Note that in the case of the GPB1 and GPB2 algorithms, the mode hypotheses are the same each time step, whereas in the case of the multiple-model observer considered here, $\gamma(k)$ is time-varying.
 
-\subsubsection{Implementation details} \label{subsec-implementation}
-
-The diagram in Figure \ref{fig:gpb2-infoflow} depicts the computation steps and information flow of the multi-model observer with hypothesis merging and branching, as implemented in this work. In general, there may be any number, $n_h$, of hypotheses that are merged into $n_m$ hypothesis each time step and then branched into $n_h$ again before the next time step. Obviously, $n_m \le n_h$.
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=15.5cm]{images/gpb2_infoflow.pdf}
-	\caption{Information flow diagram for the GPB1 algorithm with $n_j=2$}
-	\label{fig:gpb2-infoflow}
-\end{figure}
-
-The numbered black squares in Figure \ref{fig:gpb2-infoflow} represent the computation steps---1 and 2 are the model prediction steps (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), 3 is the Kalman filter update step (\ref{eq:xk_hat}), and 4 is the mode evaluation step (\ref{eq:Pr_Gammak_given_Yk}). Steps 5 and 6 are the hypothesis merging and branching steps, which are specific to each algorithm and may be time-varying.
-
-At time $k$, the algorithm takes as inputs, a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. To reduce the complexity of the diagram, the state error covariances are not shown. Wherever the state estimates, $\hat{\mathbf{x}}_f(k \mid k-1)$, $\hat{\mathbf{x}}_f(k \mid k)$, and $\hat{\mathbf{x}}(k \mid k)$, are calculated and stored, the associated error covariance estimates, $\mathbf{P}_f(k \mid k-1)$, $\mathbf{P}_f(k \mid k)$, and $\mathbf{P}(k \mid k)$, are also calculated and stored.
-
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
 \cite{robertson_detection_1995} propose a sub-optimal approach that combines three approximation techniques specifically intended for RODD state estimation. The first is referred to as \textit{sequence fusion}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences that are identical over the previous $n_f$ sample times may be merged, where $n_f$ is known as the \textit{fusion horizon}.
@@ -723,6 +709,19 @@ To illustrate the sequence pruning procedure, consider the diagram in Figure \re
 \end{figure}
 
 The AFMM algorithm by \cite{gustafsson_estimation_1993} includes a procedure for online estimation of the measurement noise covariance using a forgetting factor to control the speed of adaptation of the estimates. This component was not implemented in this work since it is assumed the measurement noise is time invariant.
+
+\subsubsection{Implementation details} \label{subsec-implementation}
+
+The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flow of the sub-optimal multi-model observers, as implemented in this work. The numbered black squares represent the computation steps---1 and 2 are the model prediction steps (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), 3 is the mode evaluation step (\ref{eq:Pr_Gammak_given_Yk}), and 4 is the Kalman filter update step (\ref{eq:xk_hat}). Step 5 is a place-holder for the sub-optimal procedures which depend on the specific algorithm, but in this work include some combination of sequence pruning, merging and branching. The total number of hypotheses, $n_h$, depends on the algorithm, but is not time-varying.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15.5cm]{images/mkf_infoflow.pdf}
+	\caption{General information flow diagram of a multiple-model observer}
+	\label{fig:mkf-infoflow}
+\end{figure}
+
+At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. The mode indicator vector is either constant, as in the case of the GPB1 and GPB2 algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis sequence are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures (step 5), may have other variables that need to be stored but these are not shown on this diagram.
 
 \section{System identification}
 
