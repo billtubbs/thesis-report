@@ -70,10 +70,16 @@
 \newglossaryentry{xk_pred}{name={$\hat{\mathbf{x}}(k \mid k-1)$}, description={predictions of system states at time $k$ made with information available at time $k-1$}}
 \newglossaryentry{xk_hat}{name={$\hat{\mathbf{x}}(k \mid k)$}, description={estimates of system states at time $k$ made with information available at time $k$}}
 \newglossaryentry{Kpk}{name={$\mathbf{K}_p(k)$}, description={correction gain of the Kalman filter (prediction form)}}
+\newglossaryentry{Kk}{name={$\mathbf{K}(k)$}, description={correction gain of the Kalman filter (filtering form)}}
 \newglossaryentry{Kfk}{name={$\mathbf{K}_f(k)$}, description={correction gain of the Kalman filter (filtering form), or correction gain of Kalman filter $f$ (filtering form)}}
 \newglossaryentry{Sk}{name={$\mathbf{S}(k)$}, description={covariance of the output prediction errors}}
-\newglossaryentry{Pk_pred}{name={$\mathbf{P}(k \mid k-1)$}, description={predictions of the state estimation error covariance at time $k$ made with information available at time $k-1$}}
+\newglossaryentry{Sfk}{name={$\mathbf{S}_f(k)$}, description={covariance of the output prediction errors of Kalman filter $f$}}
+\newglossaryentry{Pk}{name={$\mathbf{P}(k \mid k)$}, description={estimates of the state estimation error covariance at time $k$ made with information available at time $k$}}
 \newglossaryentry{Pkp1_pred}{name={$\mathbf{P}(k+1 \mid k)$}, description={predictions of the state estimation error covariance at time $k+1$ made with information available at time $k$}}
+\newglossaryentry{Pk_pred}{name={$\mathbf{P}(k \mid k-1)$}, description={predictions of the state estimation error covariance at time $k$ made with information available at time $k-1$}}
+\newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, description={estimates of the state estimation error covariance of filter $f$ at time $k$ made with information available at time $k$}}
+\newglossaryentry{Pfkp1_pred}{name={$\mathbf{P}_f(k+1 \mid k)$}, description={predictions of the state estimation error covariance of filter $f$ at time $k+1$ made with information available at time $k$}}
+\newglossaryentry{Pfk_pred}{name={$\mathbf{P}_f(k \mid k-1)$}, description={predictions of the state estimation error covariance of filter $f$ at time $k$ made with information available at time $k-1$}}
 \newglossaryentry{Qk}{name={$\mathbf{Q}(k)$}, description={covariance of the process disturbances in the observer model}}
 \newglossaryentry{R}{name={$\mathbf{R}$}, description={covariance of the measurement noises in the observer model}}
 \newglossaryentry{E}{name={$\mathbb{E}\{\cdot\}$}, description={expectation operator}}

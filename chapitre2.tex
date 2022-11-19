@@ -269,7 +269,7 @@ A convenient form in which to represent discrete-time, linear, possibly time-var
 \end{equation}
 where \gls{xk} $\in \mathbb{R}^n$ is a vector of state variables, \gls{A}$\in \mathbb{R}^{n \times n}$ is the state transition matrix at time $k$, $\mathbf{B}(k) \in \mathbb{R}^{n \times n_u}$ is the input matrix at time $k$, $\mathbf{C}(k) \in \mathbb{R}^{n_y \times n}$ is the output matrix at time $k$. In this work, the system matrices are not time-varying and are therefore denoted $\mathbf{A}$, $\mathbf{B}$, and $\mathbf{C}$ in the remainder of this chapter.
 
-The \textit{Kalman filter} \citep{kalman_new_1961} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables with mean values of zero. There are two commonly-used implementations of the Kalman filter, the \textit{prediction form} and the \textit{filtering form}. In the prediction form, the estimates of the states at the next time instant ($k+1$), given the information available at the current time ($k$) are calculated using
+The \textit{Kalman filter} \citep{kalman_new_1960} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables with mean values of zero. There are two commonly-used implementations of the Kalman filter, the \textit{prediction form} and the \textit{filtering form}. In the prediction form, the estimates of the states at the next time instant ($k+1$), given the information available at the current time ($k$) are calculated using
 \begin{equation} \glsadd{ymk}
 \begin{aligned} \label{eq:xkp1_hat_p} \glsadd{xkp1_pred} \glsadd{xk_hat} \glsadd{xk_pred} \glsadd{Kpk}
 	\mathbf{\hat{x}}(k+1 \mid k) &= \mathbf{\hat{x}}(k+1 \mid k-1) + \mathbf{K}_p(k) \big( \mathbf{y}(k) - \mathbf{\hat{y}}(k \mid k-1) \big) \\
@@ -279,24 +279,24 @@ The \textit{Kalman filter} \citep{kalman_new_1961} is the optimal estimator for 
 where \gls{xk_pred} is the prediction of the states at time $k$ that was made with the information available at the previous time ($k-1$), \gls{ymk} is the current measurement of the output, and \gls{Kpk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain.
 
 In the filtering form, which is used in this work, the estimated states and outputs at the current time are calculated given the information available at the current time using
-\begin{equation} \label{eq:xkyk_hat} \glsadd{Kfk}
+\begin{equation} \label{eq:xkyk_hat} \glsadd{Kk}
 	\begin{aligned}
-		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}_f(k) \big( \mathbf{y}_m(k) - \mathbf{C} \mathbf{\hat{x}}(k \mid k-1) \big) \\
+		\mathbf{\hat{x}}(k \mid k) &= \mathbf{\hat{x}}(k \mid k-1) + \mathbf{K}(k) \big( \mathbf{y}_m(k) - \mathbf{C} \mathbf{\hat{x}}(k \mid k-1) \big) \\
 		\mathbf{\hat{y}}(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}(k \mid k)
 	\end{aligned}
 \end{equation}
-where \gls{Kfk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain. The predictions of the states at the next time instant are calculated using
+where \gls{Kk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain. The predictions of the states at the next time instant are calculated using
 \begin{equation} \label{eq:xkp1_hat}
 	\mathbf{\hat{x}}(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}(k \mid k) + \mathbf{B} \mathbf{u}(k).
 \end{equation}
 
 An intuitive interpretation of the Kalman filter is that it takes the predictions of the states at time $k$ made in the previous time instant using the system model, and corrects them based on the difference between the current output measurement, $\mathbf{y}_m(k)$, and the output predicted by the model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$. The correction step (\ref{eq:xkyk_hat}) and prediction step (\ref{eq:xkp1_hat}) are executed iteratively each time step, given a prior prediction of the states at time zero, $\mathbf{\hat{x}}(0 \mid -1)=\mathbf{\hat{x}}_0$.
 
-Although the predictions, $\mathbf{\hat{x}}(k+1 \mid k)$ and $\mathbf{\hat{y}}(k \mid k-1)$ are identical in both cases, the use of the updated (i.e. \textit{a posteriori}) estimates, $\mathbf{\hat{x}}(k \mid k)$, in the filtering form instead of the predicted states, $\mathbf{\hat{x}}(k \mid k-1)$, leads to an optimal estimator.
+Although the predictions, $\mathbf{\hat{x}}(k \mid k-1)$ and $\mathbf{\hat{y}}(k \mid k-1)$ are identical in both cases, the use of the updated (i.e. \textit{a posteriori}) estimates, $\mathbf{\hat{x}}(k \mid k)$, in the filtering form instead of the predicted states, $\mathbf{\hat{x}}(k \mid k-1)$, leads to an optimal estimate taking account of all the information available.
 
-To track a system with time-varying parameters, a dynamic estimator is needed with a time-varying correction gain. In the case of the filtering form of the Kalman filter, $\mathbf{K}_f(k)$ is calculated at each time instant using
-\begin{equation} \label{eq:Kfk}
-	\mathbf{K}_f(k) = \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}^{-1}(k),
+To track a system with time-varying parameters, a dynamic estimator is needed with a time-varying correction gain. In the case of the filtering form of the Kalman filter, $\mathbf{K}(k)$ is calculated at each time instant using
+\begin{equation} \label{eq:Kk}
+	\mathbf{K}(k) = \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}^{-1}(k),
 \end{equation}
 where \glsadd{Sk}\gls{Sk}, which is given by
 \begin{equation} \label{eq:Sk}
@@ -308,13 +308,13 @@ is the output prediction error covariance matrix and \glsadd{Pk_pred}\gls{Pk_pre
 \end{equation}
 where \gls{E} is the expectation operator.
 
-\gls{Pk_pred} may be updated each time step using
+The corrected error covariance may be calculated using
 \begin{equation} \label{eq:Pk}
-	\mathbf{P}(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}_f(k) \mathbf{C} \right) \mathbf{P}(k \mid k-1),
+	\mathbf{P}(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right) \mathbf{P}(k \mid k-1),
 \end{equation}
-given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$. However, to reduce numerical errors due to rounding, the computation of $\mathbf{P}(k \mid k)$ is carried out in this work using the Joseph Stabilized version of (\ref{eq:Pk})
+given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$. However, to reduce numerical errors due to rounding, the computation of $\mathbf{P}(k \mid k)$ is carried out in this work using the Joseph stabilized version of (\ref{eq:Pk})
  \begin{equation} \label{eq:Pk-stab}
- 	\mathbf{P}(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}_f(k) \mathbf{C} \right ) \mathbf{P}(k \mid k-1) \left( \mathbf{I}_n - \mathbf{K}_f(k) \mathbf{C} \right )^\intercal + \mathbf{K}_f(k)  \mathbf{R} \mathbf{K}_f(k)^\intercal,
+ 	\mathbf{P}(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right ) \mathbf{P}(k \mid k-1) \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right )^\intercal + \mathbf{K}(k)  \mathbf{R} \mathbf{K}(k)^\intercal,
  \end{equation}
 where \gls{identity} is the identity matrix (see \cite{lewis_optimal_2008} for example).
 
@@ -334,7 +334,7 @@ Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations du
 	\begin{algorithmic}
 		\Require $\mathbf{A},\mathbf{B},\mathbf{C},\mathbf{\hat{x}}(k \mid k-1), \mathbf{P}(k \mid k-1), \mathcal{Q}, \mathbf{R}, \mathbf{\gamma}(k), \mathbf{u}(k), \mathbf{y}(k)$
 		\State calculate $\mathbf{S}(k)$ (\ref{eq:Sk})
-		\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk})
+		\State calculate $\mathbf{K}(k)$ (\ref{eq:Kk})
 		\State calculate $\mathbf{\hat{x}}(k \mid k)$ and $\mathbf{\hat{y}}(k \mid k)$ (\ref{eq:xkyk_hat})
 		\State calculate $\mathbf{P}(k \mid k)$ (\ref{eq:Pk-stab})
 		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xkp1_hat})
@@ -417,7 +417,7 @@ The conditional probability densities of the measurements $\mathbf{y}(k)$ are ap
 	p(\mathbf{y(k)} \mid \Gamma_f(k), \mathbf{Y}(k-1)) \approx
 	\mathcal{N}\left(\mathbf{y}(k), \mathbf{C} \mathbf{\hat{x}}_{f}(k \mid k-1), \mathbf{C} \mathbf{P}_f(k \mid k-1) \mathbf{C}^\intercal+\mathbf{R}\right)
 \end{equation}
-where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k \mid k-1)$ and $\mathbf{P}_f(k \mid k-1)$ are the state estimates and estimate covariances of each Kalman filter at the previous time step, and \gls{Ndist2} is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
+where $p(\cdot)$ here represents a probability density function, $\mathbf{\hat{x}}_{f}(k \mid k-1)$ and $\mathbf{P}_f(k \mid k-1)$ are the state predictions and prediction error covariances of each Kalman filter calculated in the previous time step, and \gls{Ndist2} is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$.
 
 The estimate of the probability of the shock sequence $\Gamma_f(k)$ given the data up to time $k$ is
 \begin{equation} \label{eq:Pr_Gammak_given_Yk}
@@ -441,7 +441,6 @@ The system is therefore a \textit{hybrid dynamical system} because it has a swit
 \begin{equation} \label{eq:init_Q_R}
 	\mathcal{Q} = \left\{\mathbf{Q}_0, \mathbf{Q}_1\right\},
 \end{equation}
-
 and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicator variable $\gamma_f(k)$:
 \begin{equation} \label{eq:init_Q}
 	\mathcal{Q}(\gamma_f(k)) = 
@@ -451,36 +450,50 @@ and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicato
 	\end{cases*}
 \end{equation}
 
-At the start of simulation, filter $f$ has an initial estimate of the states, $\mathbf{\hat{x}}_f(0)$, and an initial estimate covariance $\mathbf{P}_f(0)$. At each time instant, starting at $k=0$, the filter correction gain is updated as in (\ref{eq:Kffk})
-\begin{equation} \label{eq:Kffk}
-	K_f(k) = \mathbf{A}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \big(\mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R}\big)^{-1},
+At the start of simulation, $f$ Kalman filters are initialized with initial state estimates, $\mathbf{\hat{x}}_f(0) = \mathbf{\hat{x}}_{f,0}$, and initial error covariance estimates $	\mathbf{P}_f(0) = \mathbf{P}_{f,0}$. At each time instant, starting at $k=0$, the correction gains are calculated as in the previous section (\ref{eq:Kk}, \ref{eq:Sk})
+\begin{equation} \label{eq:Kfk}
+	\mathbf{K}_f(k) = \mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}_f^{-1}(k),
+\end{equation}
+where \glsadd{Sfk}\gls{Sfk}, which is given by
+\begin{equation} \label{eq:Sfk}
+	\mathbf{S}_f(k) = \mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R},
 \end{equation}
 
-the corrected state estimate at time $k+1$ is calculated as in (\ref{eq:xkp1_hat})
+The estimated states and outputs at the current time are calculated as in (\ref{eq:xkyk_hat}) given the information available at the current time 
+\begin{equation} \label{eq:xfkyfk_hat}
+	\begin{aligned}
+		\mathbf{\hat{x}}_f(k \mid k) &= \mathbf{\hat{x}}_f(k \mid k-1) + \mathbf{K}_f(k) \big( \mathbf{y}_m(k) - \mathbf{C} \mathbf{\hat{x}}_f(k \mid k-1) \big) \\
+		\mathbf{\hat{y}}_f(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}_f(k \mid k)
+	\end{aligned}
+\end{equation}
+
+The corrected error covariances are calculated as in (\ref{eq:Pk-stab}) using 
+\begin{equation} \label{eq:Pkf-stab} \glsadd{Pfk}
+	\mathbf{P}_f(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}_f(k) \mathbf{C} \right ) \mathbf{P}_f(k \mid k-1) \left( \mathbf{I}_n - \mathbf{K}_f(k) \mathbf{C} \right )^\intercal + \mathbf{K}_f(k)  \mathbf{R} \mathbf{K}_f(k)^\intercal.
+\end{equation}
+
+The predicted error covariances at the next time instant are calculated as in (\ref{eq:Pkp1}) using
+\begin{equation} \label{eq:Pfkp1} \glsadd{Pfkp1_pred}
+	\mathbf{P}_f(k+1 \mid k) = \mathbf{A} \mathbf{P}_f(k \mid k)  \mathbf{A}^\intercal  + \mathcal{Q}(\gamma_f(k)).
+\end{equation}
+and the predicted state estimates are calculated as in (\ref{eq:xkp1_hat})
 \begin{equation} \label{eq:xfkp1_hat}
 	\mathbf{\hat{x}}_f(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}_f(k \mid k-1) + \mathbf{B}\mathbf{u}(k) + 
-	\mathbf{K}_f(k)\left[\mathbf{y}(k)-\mathbf{C} \mathbf{\hat{x}}_f(k \mid k-1)\right],
+	\mathbf{K}_f(k)\left[\mathbf{y}(k)-\mathbf{C} \mathbf{\hat{x}}_f(k \mid k-1)\right].
 \end{equation}
 
-and the estimation error covariance is updated using
-\begin{multline} \label{eq:Pfk}
-	\mathbf{P}_f(k+1 \mid k) = \mathbf{A}\big[\mathbf{P}_f(k \mid k-1)
-	- \mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal\big(\mathbf{C}\mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \\ + 
-	\mathbf{R}\big)^{-1}\mathbf{C}\mathbf{P}_f(k \mid k-1) \big]\mathbf{A}^\intercal + \mathcal{Q}(\gamma_f(k)). \\
-\end{multline}
+Note the difference between (\ref{eq:Pfkp1}) and (\ref{eq:Pkp1}).  Here, $\mathbf{P}_f(k+1 \mid k)$ is dependent on $\gamma_f(k)$, which determines the noise covariance matrix used in the update, whereas in (\ref{eq:Pkp1}), $\mathbf{Q}$ is time invariant.
 
-Note the difference between (\ref{eq:Pfk}) and (\ref{eq:Pk}).  Here, $\mathbf{P}_f(k+1 \mid k)$ is dependent on $\gamma_f(k)$, which determines the noise covariance matrix used in the update, whereas in (\ref{eq:Pk}), $\mathbf{Q}$ is time invariant.
-
-Finally, the multi-model observer estimate of the states in the next time instant is the sum of the Kalman filter estimates weighted by the conditional probabilities from (\ref{eq:Pr_Gammak_given_Yk}):
+Finally, the merged estimate of the states at the current time is the sum of the Kalman filter estimates weighted by the conditional probabilities from (\ref{eq:Pr_Gammak_given_Yk})
 \begin{equation} \label{eq:x_hat}
-	\mathbf{\hat{x}}(k+1 \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k+1 \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
+	\mathbf{\hat{x}}(k \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
 \end{equation}
 
 An estimate of the covariance of the estimation errors is obtained using
 \begin{equation} \label{eq:P_hat}
 	\begin{aligned}
-	\mathbf{P}(k+1 \mid k) = \sum_{f=1}^{n_h} \Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) \left( \mathbf{P}_f(k+1 \mid k) + \delta_\mathbf{\hat{x}}(k) \delta_\mathbf{\hat{x}}^\intercal(k) \right) \\
-	\delta_\mathbf{\hat{x}}(k) = \mathbf{\hat{x}}(k+1 \mid k) - \mathbf{\hat{x}}_f(k+1 \mid k)
+	\mathbf{P}(k \mid k) = \sum_{f=1}^{n_h} \Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) \left( \mathbf{P}_f(k \mid k) + \delta_\mathbf{\hat{x}}(k) \delta_\mathbf{\hat{x}}^\intercal(k) \right) \\
+	\delta_\mathbf{\hat{x}}(k) = \mathbf{\hat{x}}(k \mid k) - \mathbf{\hat{x}}_f(k \mid k)
 	\end{aligned}
 \end{equation}
 
@@ -590,7 +603,7 @@ To allow more complex algorithms to be visualised and compared, the computationa
 In the case of GPB2, instead of merging the estimates into a single estimate and using this in the next prediction step, $n_j$ separate estimates are maintained, one for each possible system mode. Each of these is then branched into $n_j$ hypotheses, creating a total of $n_j^2$ predictions in the next time instant, which are then updated before being merged back into $n_j$ estimates for the next prediction step. Figure \ref{fig:mm-obs-gpb2} shows a simplified diagram of the GPB2 algorithm. The $n_j$ estimates are also merged at each time instant to produce an overall estimate of the system states but this estimate is not used in the subsequent steps of the algorithm.
 \begin{figure}[htp]
 	\centering
-	\includegraphics[height=6.5cm]{images/mm_obs_seq_gpb2.pdf}
+	\includegraphics[height=6.5cm]{images/gpb2_diagram.pdf}
 	\caption{Simplified diagram of the GPB2 algorithm ($n_j=2$)}
 	\label{fig:mm-obs-gpb2}
 \end{figure}
@@ -600,7 +613,7 @@ The advantages of the GPB1 and GPB2 estimators are their simplicity, the fact th
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
-\cite{robertson_detection_1995} propose a sub-optimal approach which combines three approximation techniques specifically intended for RODD state estimation. The first is referred to as \textit{sequence fusion}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences that are identical over the previous $n_f$ sample times may be merged, where $n_f$ is known as the \textit{fusion horizon}. The same techniques used in the generalized pseudo-Bayes algorithm are used to perform the sequence branching and merging at each time step. The differences are that more than $n_j$ hypotheses are maintained and these are based on longer, pre-specified sequences of possible shocks.
+\cite{robertson_detection_1995} propose a sub-optimal approach that combines three approximation techniques specifically intended for RODD state estimation. The first is referred to as \textit{sequence fusion}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences that are identical over the previous $n_f$ sample times may be merged, where $n_f$ is known as the \textit{fusion horizon}. The same techniques used in the generalized pseudo-Bayes algorithm are used to perform the sequence branching and merging at each time step. The differences are that more than $n_j^2$ hypotheses are maintained and these are based on longer, pre-specified sequences of possible shocks.
 
 The shock indicator sequences are defined over the fusion horizon of length $n_f$ sample periods including the current one,
 \begin{equation} \label{eq:Gamma_kmf_k}
