@@ -409,7 +409,7 @@ The measurements up to time $k$ are
 \end{equation}
 
 Assume that new measurement data is made available at each time instant. The probability of the shock hypothesis sequence associated with filter $f$ given the data up to time $k-1$ can be calculated recursively using
-\begin{multline} \label{eq:Pr_Gammakp1_given_Yk}
+\begin{multline} \label{eq:Pr_Gammak_given_Ykm1}
 	\Pr(\Gamma_f(k) \mid \mathbf{Y}(k-1)) = 
 	\Pr(\gamma_f(k) \mid \gamma_f(k-1)) \Pr(\Gamma_f(k-1) \mid \mathbf{Y}(k-1)).
 \end{multline}
@@ -470,7 +470,7 @@ The corrected state and output estimates are calculated as in (\ref{eq:xkyk_hat}
 \begin{equation} \label{eq:xfkyfk_hat}
 	\begin{aligned}
 		\mathbf{\hat{x}}_f(k \mid k) &= \mathbf{\hat{x}}_f(k \mid k-1) + \mathbf{K}_f(k) \big( \mathbf{y}_m(k) - \mathbf{C} \mathbf{\hat{x}}_f(k \mid k-1) \big) \\
-		\mathbf{\hat{y}}_f(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}_f(k \mid k)
+		\mathbf{\hat{y}}_f(k \mid k) &= \mathbf{C} \mathbf{\hat{x}}_f(k \mid k).
 	\end{aligned}
 \end{equation}
 
@@ -479,27 +479,30 @@ The corrected error covariances are calculated as in (\ref{eq:Pk-stab}) using
 	\mathbf{P}_f(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}_f(k) \mathbf{C} \right ) \mathbf{P}_f(k \mid k-1) \left( \mathbf{I}_n - \mathbf{K}_f(k) \mathbf{C} \right )^\intercal + \mathbf{K}_f(k)  \mathbf{R} \mathbf{K}_f(k)^\intercal.
 \end{equation}
 
-The predicted error covariances at the next time instant are calculated as in (\ref{eq:Pkp1}) using
+The predicted states at the next time instant are calculated as in (\ref{eq:xkp1_hat})
+\begin{equation} \label{eq:xfkp1_hat}
+	\mathbf{\hat{x}}_f(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}_f(k \mid k) + \mathbf{B} \mathbf{u}(k)
+\end{equation}
+and the predicted error covariances at the next time instant are calculated as in (\ref{eq:Pkp1}) using
 \begin{equation} \label{eq:Pfkp1} \glsadd{Pfkp1_pred}
 	\mathbf{P}_f(k+1 \mid k) = \mathbf{A} \mathbf{P}_f(k \mid k)  \mathbf{A}^\intercal  + \mathcal{Q}(\gamma_f(k)).
-\end{equation}
-and the predicted state estimates are calculated as in (\ref{eq:xkp1_hat})
-\begin{equation} \label{eq:xfkp1_hat}
-	\mathbf{\hat{x}}_f(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}_f(k \mid k) + \mathbf{B} \mathbf{u}(k).
 \end{equation}
 
 Note the difference between (\ref{eq:Pfkp1}) and (\ref{eq:Pkp1}).  Here, $\mathbf{P}_f(k+1 \mid k)$ is dependent on $\gamma_f(k)$, which determines the noise covariance matrix used in the update, whereas in (\ref{eq:Pkp1}), $\mathbf{Q}$ is time invariant.
 
-Finally, the merged estimate of the states at the current time is the sum of the Kalman filter estimates weighted by the conditional probabilities from (\ref{eq:Pr_Gammak_given_Yk})
-\begin{equation} \label{eq:xk_hat}
-	\mathbf{\hat{x}}(k \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k))
+Finally, the merged estimates of the states and outputs at the current time are the sum of the Kalman filter estimates weighted by the conditional probabilities from (\ref{eq:Pr_Gammak_given_Yk})
+\begin{equation} \label{eq:xkyk_hat}
+	\begin{aligned}
+		\mathbf{\hat{x}}(k \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{x}}_f(k \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) \\
+		\mathbf{\hat{y}}(k \mid k) = \sum_{f=1}^{n_h} \mathbf{\hat{y}}_f(k \mid k) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k)).
+	\end{aligned}
 \end{equation}
 
 An estimate of the covariance of the estimation errors is obtained using
 \begin{equation} \label{eq:P_hat}
 	\begin{aligned}
 	\mathbf{P}(k \mid k) = \sum_{f=1}^{n_h} \Pr(\Gamma_f(k) \mid \mathbf{Y}(k)) \left( \mathbf{P}_f(k \mid k) + \delta_\mathbf{\hat{x}}(k) \delta_\mathbf{\hat{x}}^\intercal(k) \right) \\
-	\delta_\mathbf{\hat{x}}(k) = \mathbf{\hat{x}}(k \mid k) - \mathbf{\hat{x}}_f(k \mid k)
+	\delta_\mathbf{\hat{x}}(k) = \mathbf{\hat{x}}(k \mid k) - \mathbf{\hat{x}}_f(k \mid k).
 	\end{aligned}
 \end{equation}
 
@@ -511,25 +514,33 @@ Algorithm \ref{alg:afmm} shows the sequential procedure used to execute these co
 	\caption{Multiple model observer calculations}  \label{alg:afmm}
 	%\algorithmfootnote{$y_0$ denotes the initial value.}
 	\begin{algorithmic}
-			\Require $\mathbf{A},\mathbf{B},\mathbf{C},\mathbf{\hat{x}}(0), \mathbf{P}(0), \mathcal{Q}, \mathbf{R}, \epsilon, \mathbf{U}(N), \mathbf{Y}(N)$
-			\State $\mathbf{\hat{x}}_1(0) \gets \mathbf{\hat{x}}(0)$  \Comment{Initialize Kalman filters}  % \footnotemark
-			\State $\mathbf{P}_1(0) \gets \mathbf{P}(0)$
-			\State $\Pr(\Gamma_1(k-1)|\mathbf{Y}(k-1))) \gets 1$
-			\For{$f \gets 2, n_h$}
-			\State $\mathbf{\hat{x}}_f(0) \gets \mathbf{\hat{x}}(0)$
-			\State $\mathbf{P}_f(0) \gets 10^{10}\mathbf{P}(0)$
-			\State $\Pr(\Gamma_f(k-1)|\mathbf{Y}(k-1))) \gets 1^{-10}$
+			\Require $\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{\hat{x}}_0, \mathbf{\Gamma}_0, \mathbf{p}_{\text{init}}, \mathbf{P}_0, \mathcal{Q}, \mathbf{R}, \Pi, \mathbf{U}(N), \mathbf{Y}(N)$
+			\State $\mathbf{\Gamma}(0) \gets \mathbf{\Gamma}_0$
+			\For{$f \gets 1, n_h$}  \Comment{Initialize Kalman filters}  % \footnotemark
+				\State $\mathbf{\hat{x}}_f(0) \gets \mathbf{\hat{x}}_0$
+				\State $\mathbf{P}_f(0) \gets \mathbf{P}_0$
+				\State $\Pr(\Gamma_f(k-1)|\mathbf{Y}(k-1))) \gets p_{\text{init},f}$
 			\EndFor
 			\For{$k \gets 0, N$}
-			\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal algorithm update procedure}  % \footnotemark
 			\For{$f \gets 1, n_h$}
-			\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
-			\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk}) \Comment{Filter updates}
-			\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
-			\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
+				\State calculate $\mathbf{\hat{y}}_f(k \mid k-1)$ (\ref{eq:yfk_pred}) \Comment{KF predictions}
+				\State calculate $\mathbf{S}_f(k \mid k-1)$ (\ref{eq:Sfk})
 			\EndFor
-			\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xk_hat}) \Comment{State estimate}
-			\State calculate $\mathbf{P}(k+1 \mid k)$ (\ref{eq:P_hat}) \Comment{Error covariance}  % \footnotemark
+			\For{$f \gets 1, n_h$}
+				\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammak_given_Ykm1}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})     \Comment{Probability update}  % \footnotemark
+			\EndFor
+			\State $\Gamma_f(k \mid k), \mathbf{\hat{x}}_f(k \mid k), \mathbf{P}_f(k \mid k) \gets ...$ \Comment{Merging, pruning, branching procedures}  % \footnotemark
+			\For{$f \gets 1, n_h$}
+				\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kfk}) \Comment{KF updates}
+				\State calculate $\mathbf{\hat{x}}_f(k \mid k), \mathbf{\hat{y}}_f(k \mid k)$ (\ref{eq:xfkyfk_hat})
+				\State calculate $\mathbf{P}_f(k \mid k)$ (\ref{eq:Pkf-stab})
+			\EndFor
+			\State calculate $\mathbf{\hat{x}}(k \mid k), \mathbf{\hat{y}}(k \mid k)$ (\ref{eq:xkyk_hat}) \Comment{States and output estimate}
+			\State calculate $\mathbf{P}(k \mid k)$ (\ref{eq:P_hat}) \Comment{Error covariance}  % \footnotemark
+			\For{$f \gets 1, n_h$}
+				\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat}) \Comment{KF predictions}
+				\State calculate $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfkp1})
+			\EndFor
 			\EndFor
 		\end{algorithmic}
 \end{algorithm}
@@ -551,12 +562,12 @@ Algorithm \ref{alg:afmm} shows the sequential procedure used to execute these co
 %		\For{$k \gets 0, N$}
 %		\State $\Gamma_f(k), \mathbf{\hat{x}}_f(k), \mathbf{P}_f(k) \gets ...$ \Comment{Sub-optimal procedure occurs here\footnotemark}
 %		\For{$f \gets 1, n_h$}
-%		\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammakp1_given_Yk}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
+%		\State calculate $\Pr(\Gamma_f(k) \mid \mathbf{Y}(k))$ (\ref{eq:Pr_Gammak_given_Ykm1}, \ref{eq:p_yk_given_Gammak_Ykm1}, \ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk})
 %		\State calculate $\mathbf{K}_f(k)$ (\ref{eq:Kf}) \Comment{Filter updates}
 %		\State calculate $\mathbf{\hat{x}}_f(k+1 \mid k)$ (\ref{eq:xfkp1_hat})
 %		\State update $\mathbf{P}_f(k+1 \mid k)$ (\ref{eq:Pfk})
 %		\EndFor
-%		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xk_hat}) \Comment{State estimate}
+%		\State calculate $\mathbf{\hat{x}}(k+1 \mid k)$ (\ref{eq:xkyk_hat}) \Comment{State estimate}
 %		\State calculate $\mathbf{P}(k+1 \mid k)$ \Comment{Error covariance\footnotemark}
 %		\EndFor
 %	\end{algorithmic}
@@ -619,7 +630,7 @@ The shock indicator sequences are defined over the fusion horizon of length $n_f
 
 % TODO: Need to re-write this in revised KF format. 
 
-In place of (\ref{eq:xk_hat}), the overall estimate of the states at the next sample time, is calculated at time $k$ using
+In place of (\ref{eq:xkyk_hat}), the overall estimate of the states at the next sample time, is calculated at time $k$ using
 \begin{equation} \label{eq:x_f_hat_SF}
 	\mathbf{\hat{x}}_f(k+1 \mid k) = \sum_{f=1}^{n_h} \frac{\mathbf{\hat{x}}_f(k+1 \mid k) \Pr(\Gamma_f(k-n_f+1,k) \mid \mathbf{Y}(k))}{\sum_{f=1}^{n_h} \Pr(\Gamma_f(k-n_f+1,k) \mid \mathbf{Y}(k))}
 \end{equation}
@@ -712,7 +723,7 @@ The AFMM algorithm by \cite{gustafsson_estimation_1993} includes a procedure for
 
 \subsubsection{Implementation details} \label{subsec-implementation}
 
-The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flow of the sub-optimal multi-model observers, as implemented in this work. The numbered black squares represent the computation steps---1 and 2 are the model prediction steps (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), 3 is the mode evaluation step (\ref{eq:Pr_Gammak_given_Yk}), and 4 is the Kalman filter update step (\ref{eq:xk_hat}). Step 5 is a place-holder for the sub-optimal procedures which depend on the specific algorithm, but in this work include some combination of sequence pruning, merging and branching. The total number of hypotheses, $n_h$, depends on the algorithm, but is not time-varying.
+The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flow of the sub-optimal multi-model observers, as implemented in this work. The solid black rectangles represent the computation steps and the white circles represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence pruning, merging and branching. During this step, the final estimates of the states and outputs are also calculated.
 
 \begin{figure}[htp]
 	\centering
@@ -721,7 +732,7 @@ The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation ste
 	\label{fig:mkf-infoflow}
 \end{figure}
 
-At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. The mode indicator vector is either constant, as in the case of the GPB1 and GPB2 algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis sequence are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures (step 5), may have other variables that need to be stored but these are not shown on this diagram.
+At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. The mode indicator vector is either constant, as in the case of the GPB1 and GPB2 algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis sequence are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
 
 \section{System identification}
 
@@ -928,12 +939,6 @@ In addition, the RMSD of the control actions, $u_i(k)$, is calculated to provide
 \end{equation}
 
 Because the processes simulated in this work are stochastic, it is important to evaluate observer performance over sufficiently long simulation time periods to ensure that the results are close to the true average performance and are independent of the specific pseudo-random inputs generated for each simulation. This is particularly important when evaluating systems with RODDs because the shocks occur infrequently. As an added precaution, identical random inputs are used when comparing the performance of two or more observers on the same system.
-
-\textbf{TODO: Add details later if needed}:
-\begin{itemize}
-	\item Sensitivity to model error, RODD model parameters.
-	\item Closed loop stability - stability margins? Or simply calculate performance metrics as selected model parameter errors (gain, time constant) are increased.
-\end{itemize}
 
 % Variance calc - not used
 %\begin{equation} \label{eq:var-calc}
