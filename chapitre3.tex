@@ -161,7 +161,7 @@ Standard Kalman filters were used to develop a performance baselines with which 
 \end{equation}
 where $\sigma_{x_1}^2$ is a parameter representing the variance of the errors of the process model state, $x_1$. However, this leads to a filter with a slow response to the shocks. It should be noted that the choice of $\sigma_{x_1}=0.01$ was somewhat arbitrary. In these simulations, the process is simulated by a model that is identical to the model used by the observers, so there is no model error in steady-state. However, during transient periods such as after a shock disturbance, errors between the observer model and the true states occur due to the delays in the system.
 
-A second option is to tune a Kalman filter to the variance of the shocks, $b^2\sigma_{w_p}^2$.  In this case, the Kalman filter, labelled `KF2', has a state disturbance covariance matrix
+A second option is to tune a Kalman fi lter to the variance of the shocks, $b^2\sigma_{w_p}^2$.  In this case, the Kalman filter, labelled `KF2', has a state disturbance covariance matrix
 \begin{equation} \label{eq:sim-sys-siso-KF2-Q}
 	\begin{aligned}
 		\mathbf{Q}_{\text{KF2}}=\mathbf{Q}_1=\begin{bmatrix}
