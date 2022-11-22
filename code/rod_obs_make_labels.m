@@ -14,8 +14,8 @@ y_model_labels = vector_element_labels('y_{model}', '(k)', ny, false);
 
 % Combine all input signal labels
 input_labels = repmat({''}, 1, nu);
-input_labels(u_meas') = u_labels;
-input_labels(~u_meas') = p_labels;
+input_labels(u_known') = u_labels;
+input_labels(~u_known') = p_labels;
 
 % Make observer labels into an array
 n_obs = numel(observers);

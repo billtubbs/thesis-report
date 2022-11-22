@@ -1,9 +1,19 @@
 %% Plot simulation results
 %
 % Author: Bill Tubbs
-% 
+%
+% Plots results of Kalman simulations on SISO linear system
+% with RODD step input (observers: KF1, KF2, KF3).
+%  Fig 1. Plot of process inputs and outputs
+%  Fig 2. Plot of observer estimates vs. true values
+%  Fig 3. Cumulative output error estimates plot
+%
+% There is also a section further down called 
+% 'Observer simulations with grinding simulation model'
+% but it is beyond a return statement.
+%
 % Input data:
-%  - Simulation results in results folder
+%  - Simulation results in results folder specified below.
 %
 
 clear all
@@ -79,7 +89,7 @@ Y_est = sim_data{:, {'Y_est_1', 'Y_est_2', 'Y_est_3'}};
 %% Plot of process inputs and outputs
 
 figure(1); clf
-make_ioplot(Y_m, t, [U(:, u_meas) Pd], [u_labels p_labels], y_labels)
+make_ioplot(Y_m, t, [U(:, u_known) Pd], [u_labels p_labels], y_labels)
 filename = sprintf('rod-obs-sim-1-%d-ioplot.png', test);
 saveas(gcf,fullfile(plot_dir, filename))
 filename = sprintf('rod-obs-sim-1-%d-ioplot.pdf', test);
@@ -110,7 +120,7 @@ for i = 1:ny
     grid on
 end
 
-idx = find(~u_meas);
+idx = find(~u_known);
 for i = 1:n_dist
     axs(ny+i) = subplot(ny+n_dist,1,ny+i);
     labels = cell(1, n_obs);
@@ -199,7 +209,6 @@ rod_obs_P1D_c4
 observers = {KF1, KF2, MMKF, SKF};
 n_obs = length(observers);
 
-
 % Prepare labels for tables and plots
 rod_obs_make_labels
 
@@ -232,7 +241,7 @@ Y_m = sim_data.Y_m;
 Y_model = lsim(Gpss, Wp, t);
 
 figure(1); clf
-make_iodmplot(Y, Y_m, Y_model, t, [U(:, u_meas) Pd], [u_labels p_labels], ...
+make_iodmplot(Y, Y_m, Y_model, t, [U(:, u_known) Pd], [u_labels p_labels], ...
     [y_labels y_m_labels y_model_labels])
 xlim(t([1 end]))
 set(gcf, 'Position', [100 800 360 240])
@@ -381,7 +390,7 @@ return
 % TODO: Make this plot work for 2x2 systems.
 
 % % Index to states that represent input disturbances
-% idx = find(~u_meas);
+% idx = find(~u_known);
 % for i = 1:n_dist
 % 
 %     figure(2+i); clf  % Watch out if n_dist > 2

@@ -1,4 +1,10 @@
 % Simulate AFMM procedure
+%
+% Simulation of AFMM algorithm using old structs
+% for 15 time steps.  Two simple plots.
+%
+% Is this still needed?
+%
 
 addpath('~/process-observers/')
 
