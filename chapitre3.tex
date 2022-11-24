@@ -605,16 +605,28 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
 			\hline
 			% Results with seed = 0
-			30 &   2 &   2 & 466 & 0.8600 & 0.0787 \\
-			30 &   2 &   3 & 211 & 0.8182 & 0.0791 \\
-			30 &   3 &  10 &  42 & 0.7629 & 0.0802 \\
-			30 &   2 &  10 &  22 & 0.7629 & 0.0803 \\
-			50 &   3 &  10 & 176 & 0.6369 & 0.0803 \\
-			45 &   2 &   3 & 466 & 0.7399 & 0.0811 \\
-			25 &   3 &   5 & 176 & 0.8183 & 0.0816 \\
-			25 &   2 &   5 &  56 & 0.8183 & 0.0817 \\
-			20 &   2 &   2 & 211 & 0.9045 & 0.0830 \\
-			15 &   2 &   1 & 466 & 0.9995 & 0.0850 \\
+			% Old results
+%			30 &   2 &   2 & 466 & 0.8600 & 0.0787 \\
+%			30 &   2 &   3 & 211 & 0.8182 & 0.0791 \\
+%			30 &   3 &  10 &  42 & 0.7629 & 0.0802 \\
+%			30 &   2 &  10 &  22 & 0.7629 & 0.0803 \\
+%			50 &   3 &  10 & 176 & 0.6369 & 0.0803 \\
+%			45 &   2 &   3 & 466 & 0.7399 & 0.0811 \\
+%			25 &   3 &   5 & 176 & 0.8183 & 0.0816 \\
+%			25 &   2 &   5 &  56 & 0.8183 & 0.0817 \\
+%			20 &   2 &   2 & 211 & 0.9045 & 0.0830 \\
+%			15 &   2 &   1 & 466 & 0.9995 & 0.0850 \\
+			% 2022-11-23
+				10 &   2 &   1 & 331 & 0.9999 & 0.0301 \\
+				20 &   2 &   2 & 211 & 0.9045 & 0.0309 \\
+				10 &   3 &   2 & 176 & 0.9511 & 0.0309 \\
+				10 &   2 &   2 &  56 & 0.9511 & 0.0309 \\
+				5 &   3 &   1 & 452 & 1.0000 & 0.0309 \\
+				5 &   2 &   1 & 116 & 1.0000 & 0.0310 \\
+				9 &   2 &   3 &  58 & 0.9416 & 0.0313 \\
+				9 &   3 &   3 & 138 & 0.9416 & 0.0313 \\
+				15 &   3 &   3 & 452 & 0.9046 & 0.0313 \\
+				15 &   2 &   3 & 116 & 0.9046 & 0.0313 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -623,7 +635,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF-SF98.} \label{tb:obs-sim2-popt-SF98}
+		\caption{Multi-model observer parameter search results – MKF--SF98.} \label{tb:obs-sim2-popt-SF98}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
@@ -639,17 +651,28 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 			%20 &   2 &   2 & 211 & 0.9990 & 0.1775 \\
 			%5 &   1 &   1 &  11 & 0.9990 & 0.1861 \\
 			%5 &   3 &   1 & 176 & 1.0000 & 0.1861 \\
-			% Results with seed =0, after modification of MKF_SF98
-			45 &   2 &   3 & 466 & 0.9900 & 0.0802 \\
-			15 &   2 &   1 & 466 & 0.9995 & 0.0850 \\
-			5 &   3 &  10 & 176 & 0.9991 & 0.0858 \\
-			30 &   2 &   2 & 466 & 0.9967 & 0.0904 \\
-			9 &   1 &   3 &   7 & 0.9975 & 0.0924 \\
-			9 &   2 &   3 &  22 & 0.9999 & 0.0924 \\
-			9 &   3 &   3 &  42 & 1.0000 & 0.0924 \\
-			6 &   1 &   2 &   7 & 0.9988 & 0.0929 \\
-			6 &   2 &   2 &  22 & 1.0000 & 0.0929 \\
-			6 &   3 &   2 &  42 & 1.0000 & 0.0929 \\
+			% Results with seed =0
+			% Old results
+%			45 &   2 &   3 & 466 & 0.9900 & 0.0802 \\
+%			15 &   2 &   1 & 466 & 0.9995 & 0.0850 \\
+%			5 &   3 &  10 & 176 & 0.9991 & 0.0858 \\
+%			30 &   2 &   2 & 466 & 0.9967 & 0.0904 \\
+%			9 &   1 &   3 &   7 & 0.9975 & 0.0924 \\
+%			9 &   2 &   3 &  22 & 0.9999 & 0.0924 \\
+%			9 &   3 &   3 &  42 & 1.0000 & 0.0924 \\
+%			6 &   1 &   2 &   7 & 0.9988 & 0.0929 \\
+%			6 &   2 &   2 &  22 & 1.0000 & 0.0929 \\
+%			6 &   3 &   2 &  42 & 1.0000 & 0.0929 \\
+				10 &   2 &   1 & 331 & 0.9999 & 0.0301 \\
+				5 &   3 &   1 & 452 & 1.0000 & 0.0309 \\
+				5 &   2 &   1 & 116 & 1.0000 & 0.0310 \\
+				3 &   3 &   1 & 138 & 1.0000 & 0.0339 \\
+				3 &   2 &   1 &  58 & 1.0000 & 0.0339 \\
+				5 &   3 &   2 & 452 & 1.0000 & 0.0345 \\
+				10 &   2 &   2 & 331 & 0.9990 & 0.0345 \\
+				5 &   2 &   2 & 116 & 0.9999 & 0.0346 \\
+				3 &   1 &   1 &  13 & 0.9997 & 0.0349 \\
+				5 &   1 &   1 &  17 & 0.9990 & 0.0355 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -657,7 +680,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF-SP.} \label{tb:obs-sim2-popt-SP}
+		\caption{Multi-model observer parameter search results – MKF--SP.} \label{tb:obs-sim2-popt-SP}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			$n_h$ & $n_\text{min}$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\

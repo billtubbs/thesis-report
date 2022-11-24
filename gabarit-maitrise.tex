@@ -52,8 +52,10 @@
 \newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
 \newglossaryentry{pagb}{name={$p(a \mid b)$}, description={Probability density of $a$ given $b$}}
 \newglossaryentry{PrAgB}{name={$\Pr(A \mid B)$}, description={Probability of $A$ given $B$}}
+\newglossaryentry{nj}{name={$n_j$}, description={the number of modes or models of a switching system}}
+\newglossaryentry{rk}{name={$r(k)$}, description={the mode number of a switching system at time $k$}}
 \newglossaryentry{nabla}{name={$\nabla$}, description={defined as $1-q^{-1}$}}
-\newglossaryentry{gamma_k}{name={$\gamma(k)$}, description={Random shock indicator or Markov model state variable at time $k$}}
+\newglossaryentry{gamma_k}{name={$\gamma(k)$}, description={random shock indicator at time $k$}}
 \newglossaryentry{identity}{name={$\mathbf{I}_n$}, description={($n \times n$) identify matrix}}
 
 % State estimation
@@ -65,7 +67,7 @@
 \newglossaryentry{A}{name={$\mathbf{A}$}, description={transition matrix of the system model}}
 \newglossaryentry{B}{name={$\mathbf{B}$}, description={input matrix of the system model}}
 \newglossaryentry{C}{name={$\mathbf{C}$}, description={output matrix of the system model}}
-\newglossaryentry{ymk}{name={$\mathbf{y}_m(k)$}, description={system output measurements at time $k$}}
+\newglossaryentry{yMk}{name={$\mathbf{y}_M(k)$}, description={system output measurements at time $k$}}
 \newglossaryentry{xkp1_pred}{name={$\hat{\mathbf{x}}(k+1 \mid k)$}, description={predictions of system states at time $k+1$ made with information available at time $k$}}
 \newglossaryentry{xk_pred}{name={$\hat{\mathbf{x}}(k \mid k-1)$}, description={predictions of system states at time $k$ made with information available at time $k-1$}}
 \newglossaryentry{xk_hat}{name={$\hat{\mathbf{x}}(k \mid k)$}, description={estimates of system states at time $k$ made with information available at time $k$}}
@@ -92,6 +94,11 @@
 % Multiple model approaches
 \newglossaryentry{nh}{name={$n_h$}, description={number of hypotheses}}
 \newglossaryentry{gamma_fk}{name={$\gamma_f(k)$}, description={Random shock indicator of hypothesis $f$ at time $k$}}
+\newglossaryentry{nm}{name={$n_m$}, description={number of merged hypotheses}}
+\newglossaryentry{Zmk}{name={$Z_m(k)$}, description={Normalization variable at time $k$ used in merged probability calculations}}
+\newglossaryentry{Hbranch}{name={$\mathcal{H}_{\text{branch}}$}, description={Hypothesis index used in branching operations}}
+\newglossaryentry{Hmerge}{name={$\mathcal{H}_{\text{merge}}$}, description={Hypothesis index used in merging operations}}
+\newglossaryentry{Hmodes}{name={$\mathcal{H}_{\text{modes}}$}, description={Mode index used in hypothesis branching and merging operations}}
 
 %  \newacronym{gcd}{GCD}{Greatest Common Divisor}
 %  \newacronym{lcm}{LCM}{Least Common Multiple}
