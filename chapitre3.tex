@@ -84,7 +84,7 @@ Note that with this representation, the second model state $x_{a,2}(k)$ correspo
 	\caption{Simulation of a SISO linear system with a RODD input disturbance}
 	\label{fig:rod-obs-sim-test-ioplot-SF95}
 \end{figure}
-To investigate the behaviour and internal workings of the observers, the system (\ref{eq:sim-sys-siso-ss-aug}) was simulated with one pre-determined shock, no persistent disturbance ($\sigma_{w_p}=0$), and no measurement noise. Figure \ref{fig:rod-obs-sim-test-ioplot-SF95} shows the inputs and outputs of this simulation, which was 100 sample periods in duration. The two lower subplots show the system inputs, including the random shock signal. The upper two plots show the system states and outputs as well as the estimates of the states and outputs by the multi-model observer using sequence fusion \citep{robertson_detection_1995}.
+To understand and investigate the behaviour of the observers, the system (\ref{eq:sim-sys-siso-ss-aug}) was simulated with one pre-determined shock, no persistent disturbance ($\sigma_{w_p}=0$), and no measurement noise. Figure \ref{fig:rod-obs-sim-test-ioplot-SF95} shows the inputs and outputs of this simulation, which was 100 sample periods in duration. The two lower subplots show the system inputs, including the random shock signal. The upper two plots show the system states and outputs as well as the estimates of the states and outputs of a sub-optimal multi-model observer using the sequence fusion algorithm described by \cite{robertson_detection_1995} with parameters $n_f=15$, $m=1$, and $d=5$.
 
 \begin{figure}[htp]
 	\centering
@@ -93,7 +93,6 @@ To investigate the behaviour and internal workings of the observers, the system 
 	\label{fig:rod-obs-sim-test-probs-SF95}
 \end{figure}
 The two subplots in Figure \ref{fig:rod-obs-sim-test-probs-SF95} provide insight into the computations of the observer, which is labelled `MKF--SF95'. The upper plot shows four time series of the trace (i.e. the sum of the elements on the main diagonal) of the merged error covariance matrices, $\mathbf{P}_m(k)$ for $m=1,2,...,n_m$. The diagonal values of $\mathbf{P}_m(k)$ may be interpreted as indicators of the magnitude of the errors in the state estimates. Recall that the magnitude of $\mathbf{P}_m(k)$ is time-varying and influenced by the process noise covariance, $\mathcal{Q}(\gamma_f(k))$, which switches according to the hypothesis sequences (\ref{eq:Pfkp1}). In this simulation, the covariances at time $t=0$ were initialized to the identify matrix ($\mathbf{P}_m(0)=\mathbf{I}_2$). It can be seen that the trace values initially drop rapidly and tend towards zero, however, at certain times, they increase sharply to a peak before dropping again. The sharp peaks are caused by the shock indications ($\gamma_f(k)=1$) in the pre-determined sequences.
-%% TODO: add parameters to above? with $f=15$ $m=1$ and $d=5$.
 
 The lower plot shows the conditional likelihood estimates of the four hypotheses given the data up to time $k$ (\ref{eq:Pr_Gammak_given_Yk}) made after the merging step. The conditional likelihoods were initialized to equal values ($\operatorname{Pr}\left(\Gamma_m(0) \mid \mathbf{Y}(0)\right)=1/n_m$, for $m=1,2,...,n_m$). It can be seen that the likelihoods of each hypothesis settle on a steady-state by $t=5$ in which hypothesis 1 dominates the probability distribution until $t=10$. This means that the merged estimates of the observer are determined almost completely by hypothesis 1 during this period. This makes sense since hypothesis 1 represents a sequence containing no shocks, and the first shock does not occur until $t=9.5$. A short time after the shock occurs, the probability density shifts to hypothesis sequence 3 which happens to assume a shock at $t=10$ ($\gamma_3(10)=1$). This is evident in the upper plot where it can be seen that the error covariance of hypothesis 3 increases at $t=10.5$ and peaks at $t=11$. The probability switches from hypothesis 1 to 3 at $t=12$ and remains there until $t=17.5$ when it shifts back to hypothesis 1. This final shift can be explained by the fusion horizon, $f$, which in this case is 15 sample periods or 7.5 time units. Hypothesis 3 assumes another shock occurs at this time, which is not the case. Therefore, hypothesis 1 (no shocks) becomes the most likely hypothesis after that.
 
@@ -217,9 +216,9 @@ Parameter values for the sub-optimal multi-model observer algorithms described i
 
 \begin{equation} \label{eq:sim-sys-siso-MKF-SF-param-values}
 	\begin{aligned}
-		\frac{n_f}{n_d} \in \left\{3, 5, 10, 15, 20\right\},  \\
-		n_m \in \left\{1, 2, 3\right\},  \\
-		n_d \in \left\{1, 2, 3, 5, 10\right\}.  \\
+		\frac{n_f}{n_d} &\in \left\{3, 5, 10, 15, 20\right\},  \\
+		n_m &\in \left\{1, 2, 3\right\},  \\
+		n_d &\in \left\{1, 2, 3, 5, 10\right\}.
 	\end{aligned}
 \end{equation}
 
@@ -305,8 +304,8 @@ The sequence pruning algorithm proposed by \cite{eriksson_classification_1996} h
 
 \begin{equation} \label{eq:sim-sys-siso-MKF-SP-param-values}
 	\begin{aligned}
-		n_h \in \left\{3, 4, 5, 7, 10, 14, 19, 25, 32\right\},  \\
-			n_{min} \in \left\{1, 2, 3, 4, 5, 6, 7, 9, 12, 16, 21\right\}.  \\
+		n_h &\in \left\{3, 4, 5, 7, 10, 14, 19, 25, 32\right\},  \\
+			n_{min} &\in \left\{1, 2, 3, 4, 5, 6, 7, 9, 12, 16, 21\right\}.
 		\end{aligned}
 	\end{equation}
 
@@ -555,33 +554,39 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 	\label{fig:rod-obs-sim-2-ioplot}
 \end{figure}
 
-\begin{figure}[htp]
+\begin{figure}[htp] \label{fig:rod-obs-sim2-yest-1-SF}
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est1_SF1.pdf}
 	\caption{Estimates by sequence fusion observer –  $2\times2$ system}
-	\label{fig:rod-obs-sim2-yest-1-SF}
-\end{figure}
+\end{figure}cd 
 
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est2_SP1.pdf}
-	\caption{Estimates by sequence pruning observer –  $2\times2$ system}
-	\label{fig:rod-obs-sim2-yest-2-SF}
-\end{figure}
-
-\begin{figure}[htp]
+\begin{figure}[htp] \label{fig:rod-obs-sim2-yest-1-SP}
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est1_SP1.pdf}
 	\caption{Estimates by sequence pruning observer –  $2\times2$ system}
-	\label{fig:rod-obs-sim2-yest-1-SP}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est2_SF1.pdf}
-	\caption{Estimates by sequence fusion observer –  $2\times2$ system}
-	\label{fig:rod-obs-sim2-yest-2-SP}
+	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est2_MKF.pdf}
+	\caption{Comparison of multi-model observer estimates –  $2\times2$ system}
+	\label{fig:rod-obs-sim2-yest-2-MKF}
 \end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=13cm]{images/rod_obs_sim2_cum_err.pdf}
+	\caption{Cumulative sum of squared errors of output estimates –  $2\times2$ system}
+	\label{fig:sim-sys-sim2-MKF-cumerr}
+\end{figure}
+
+% Replaced with above single plot to save space
+%\begin{figure}[htp]
+%	\centering
+%	\includegraphics[width=13cm]{images/rod_obs_sim2_cum_err2.pdf}
+%	\caption{Cumulative errors of multi-model observer output estimates –  $2\times2$ system}
+%	\label{fig:sim-sys-sim2-MKF-cumerr2}
+%\end{figure}
 
 \begin{figure}[htp]
 	\centering
@@ -616,17 +621,17 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 %			25 &   2 &   5 &  56 & 0.8183 & 0.0817 \\
 %			20 &   2 &   2 & 211 & 0.9045 & 0.0830 \\
 %			15 &   2 &   1 & 466 & 0.9995 & 0.0850 \\
-			% 2022-11-23
-				10 &   2 &   1 & 331 & 0.9999 & 0.0301 \\
-				20 &   2 &   2 & 211 & 0.9045 & 0.0309 \\
-				10 &   3 &   2 & 176 & 0.9511 & 0.0309 \\
-				10 &   2 &   2 &  56 & 0.9511 & 0.0309 \\
-				5 &   3 &   1 & 452 & 1.0000 & 0.0309 \\
-				5 &   2 &   1 & 116 & 1.0000 & 0.0310 \\
-				9 &   2 &   3 &  58 & 0.9416 & 0.0313 \\
-				9 &   3 &   3 & 138 & 0.9416 & 0.0313 \\
-				15 &   3 &   3 & 452 & 0.9046 & 0.0313 \\
-				15 &   2 &   3 & 116 & 0.9046 & 0.0313 \\
+				% 2022-11-24
+				10 &   2 &   1 & 331 & 0.9999 & 0.0309 \\
+				10 &   1 &   1 &  27 & 0.9958 & 0.0313 \\
+				5 &   1 &   1 &  17 & 0.9990 & 0.0317 \\
+				5 &   2 &   1 & 116 & 1.0000 & 0.0318 \\
+				5 &   3 &   1 & 452 & 1.0000 & 0.0318 \\
+				20 &   2 &   2 & 211 & 0.9045 & 0.0319 \\
+				10 &   3 &   2 & 176 & 0.9511 & 0.0320 \\
+				10 &   2 &   2 &  56 & 0.9511 & 0.0320 \\
+				15 &   1 &   1 &  37 & 0.9905 & 0.0322 \\
+				6 &   2 &   2 &  22 & 0.9704 & 0.0324 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -641,17 +646,6 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 			$n_f$ & $n_m$ & $n_d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
 			\hline
 			% Results with seed = 0, nT = 5000 (RMSE_y_sum)
-			%45 &   2 &   3 & 466 & 0.9900 & 0.1555 \\
-			%30 &   2 &   2 & 466 & 0.9967 & 0.1559 \\
-			%30 &   2 &   3 & 211 & 0.9969 & 0.1559 \\
-			%15 &   2 &   1 & 466 & 0.9995 & 0.1701 \\
-			%50 &   3 &  10 & 176 & 0.9991 & 0.1716 \\
-			%50 &   2 &  10 &  56 & 0.9892 & 0.1716 \\
-			%50 &   2 &   5 & 211 & 0.9874 & 0.1737 \\
-			%20 &   2 &   2 & 211 & 0.9990 & 0.1775 \\
-			%5 &   1 &   1 &  11 & 0.9990 & 0.1861 \\
-			%5 &   3 &   1 & 176 & 1.0000 & 0.1861 \\
-			% Results with seed =0
 			% Old results
 %			45 &   2 &   3 & 466 & 0.9900 & 0.0802 \\
 %			15 &   2 &   1 & 466 & 0.9995 & 0.0850 \\
@@ -663,16 +657,17 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 %			6 &   1 &   2 &   7 & 0.9988 & 0.0929 \\
 %			6 &   2 &   2 &  22 & 1.0000 & 0.0929 \\
 %			6 &   3 &   2 &  42 & 1.0000 & 0.0929 \\
-				10 &   2 &   1 & 331 & 0.9999 & 0.0301 \\
-				5 &   3 &   1 & 452 & 1.0000 & 0.0309 \\
-				5 &   2 &   1 & 116 & 1.0000 & 0.0310 \\
-				3 &   3 &   1 & 138 & 1.0000 & 0.0339 \\
-				3 &   2 &   1 &  58 & 1.0000 & 0.0339 \\
-				5 &   3 &   2 & 452 & 1.0000 & 0.0345 \\
-				10 &   2 &   2 & 331 & 0.9990 & 0.0345 \\
-				5 &   2 &   2 & 116 & 0.9999 & 0.0346 \\
-				3 &   1 &   1 &  13 & 0.9997 & 0.0349 \\
-				5 &   1 &   1 &  17 & 0.9990 & 0.0355 \\
+				% Results with seed = 0, 2022-11-24
+				10 &   2 &   1 & 331 & 0.9999 & 0.0309 \\
+				10 &   1 &   1 &  27 & 0.9958 & 0.0313 \\
+				5 &   1 &   1 &  17 & 0.9990 & 0.0317 \\
+				5 &   2 &   1 & 116 & 1.0000 & 0.0318 \\
+				5 &   3 &   1 & 452 & 1.0000 & 0.0318 \\
+				15 &   1 &   1 &  37 & 0.9905 & 0.0322 \\
+				20 &   1 &   1 &  47 & 0.9833 & 0.0336 \\
+				3 &   1 &   1 &  13 & 0.9997 & 0.0340 \\
+				3 &   2 &   1 &  58 & 1.0000 & 0.0342 \\
+				3 &   3 &   1 & 138 & 1.0000 & 0.0342 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -697,17 +692,17 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 %			32 &   9 & 0.0409  \\
 %			25 &   5 & 0.0409  \\
 %			32 &   7 & 0.0409  \\
-			% Results with seed = 0, on 2022-11-22, nT=5000
-			14 &   6 & 0.0370  \\
-			25 &   6 & 0.0379  \\
-			19 &   4 & 0.0380  \\
-			25 &   5 & 0.0380  \\
-			19 &   3 & 0.0380  \\
-			32 &   9 & 0.0380  \\
-			19 &   5 & 0.0380  \\
-			25 &   2 & 0.0380  \\
-			25 &   1 & 0.0380  \\
-			32 &   1 & 0.0380  \\
+			% Results with seed = 0, on 2022-11-24, nT=5000
+			32 &  12 & 0.0317  \\
+			25 &   9 & 0.0317  \\
+			32 &   9 & 0.0317  \\
+			25 &   7 & 0.0317  \\
+			19 &   6 & 0.0317  \\
+			25 &   6 & 0.0317  \\
+			19 &   4 & 0.0317  \\
+			25 &   5 & 0.0317  \\
+			32 &   7 & 0.0318  \\
+			32 &   6 & 0.0318  \\
 		\end{tabular}
 	\end{center}
 \end{table}
@@ -770,7 +765,7 @@ Outline notes:
 	\1 How process model was identified.
 	\1 Augmented model with RODD input step disturbance.
 	\1 Use best observer from previous section (sequence pruning).
-	\1 Table showing observer paramters.
+	\1 Table showing observer parameters.
 	\1 Figure: comparison of observer estimates – Figure \ref{fig:rod_obs_sim_1_est_P2DcTd4}.
 	\1 Figure: Observer responses to disturbances – Figure \ref{fig:sim_resp_plot}.
 	\1 Describe overall performance comparison using metrics in Table \ref{tb:results}.

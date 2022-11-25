@@ -118,23 +118,10 @@ There is limited available data on actual ore variability in real operations, es
 
 A mineralogical simulation model of the grinding circuits was used to estimate the theoretical maximum possible throughput for each ore type while achieving the desired product specification. They found that the achievable throughput with the least competent ore was 4 times higher than that of the most competent. This illustrates the severe impact that ore properties can have on a grinding operation. However, in the actual operation, different ores are blended to reduce the variation in operating conditions. Liu also estimated the optimal mill speeds to process each ore and found that these ranged from 57.2\% to 64.9\% of critical speed. At these speeds, mill power consumption ranged from 7306 to 9511 kilowatts (a variation of -11\% to +15\% of the average). These results provide a rare insight into the relationship between two important ore properties and grinding process conditions. However, it is unclear how generalisable these results are to other operations.
 
-\textbf{TODO: Mention recent innovations in ore hardness testing and add a reference to HIT test studies done by \cite{kojovic_value_2019} (Agnico Eagle) and maybe include range of variation in hardness measurements measured.}
+Recent innovations in ore hardness testing methods and equipment are starting to shed light on the nature of ore hardness variations in real operations, although current methods still involve manual sampling and testing activities, which limits the frequency of measurements and makes them cost-prohibitive for ongoing monitoring \cite{kojovic_value_2019}.
 
 
 \section{Literature review – disturbance modelling}
-
-%Outline notes:
-%\begin{itemize}
-%	\item Definition of a disturbance — unmanipulatable inputs to process.
-%	\item Measured v. unmeasured (and unpredictable)— measured disturbances can be incorporated in a feed-forward control.  Unmeasured disturbances must be estimated in order to reject them.
-%	\item TODO: Importance of considering disturbances in control system design.
-%	\item Disturbance models and process observers.
-%	\item \textbf{Should this section go in Method chapter?}
-%	\item Two categories of disturbances: Infrequent, always-present.
-%	\item Infrequent disturbances could have significant impact on process and control systems (MacGregor et al).
-%	\item Standard approaches to system identification do not consider infrequent disturbances (focus on second order properties)
-%	\item Need for broader range of disturbance model types and ways to incorporate them in control strategies.
-%\end{itemize}
 
 Few examples of academic work on characterising and modelling realistic industrial disturbances were found in the literature. Most of the literature on `disturbance models' or `disturbance characterisation' deals with the design of standard stochastic disturbance models, for example \cite{muske_disturbance_2002}, and \cite{pannocchia_robust_2003}, or is focussed mainly on detection and diagnosis of faults (i.e. unexpected disturbances), see \cite{thornhill_advances_2007} for example. In fault or anomaly detection, models of the normal behaviour of the process are used to identify when an \textit{unmodelled} disturbance occurs. Therefore, a typical fault detection algorithm does not have a model of the actual disturbance and its execution is suspended once the disturbance occurs and until normal operation has resumed. In contrast, the goal of this work is to use disturbance models for state estimation in the presence of disturbances.
 
@@ -203,9 +190,9 @@ Due to the difficulties of MJLS model identification mentioned above, they bypas
 
 \subsection{Hybrid dynamical systems}
 
-The \textit{hybrid dynamical system} is the most general definition, encompassing all dynamical systems which include both real-time (i.e. continuous) dynamics and discrete events \citep{van_der_schaft_introduction_2000}. As well as HMM-based models, it includes models with any other type of switching behaviour, such as those governed by logic.
+The \textit{hybrid dynamical system} is the most general definition, encompassing dynamical systems with both continuous and discrete states \citep{van_der_schaft_introduction_2000}. As well as HMM-based models, it includes models with any type of switching behaviour, such as those governed by logic.
 
-Many physical systems and processes exhibit discontinuous behaviour (i.e. non-smooth changes in states such as steps or ‘jumps’). Since they are ubiquitous in nature as well as in human-engineered systems, the topic has received considerable attention in recent decades \citep{sworder_boyd_1999, bemporad_identification_2001, costa_discrete-time_2005, camacho_model_2010, djemai_hybrid_2014, estrada_hybrid_2014, guo_moving_2013, botha_hybrid_2018, bemporad_fitting_2018, oliveira_iterative_2020, piga_estimation_2020}. Methods of modelling and estimating hybrid systems could be applied to industrial disturbances, which are as multifarious and complex as other systems of interest in this research field.
+Many physical systems and processes exhibit discontinuous behaviour (i.e. non-smooth changes in states such as steps or ‘jumps’). Since they are ubiquitous in nature as well as in human-engineered systems, the topic has received considerable attention in recent decades \citep{sworder_boyd_1999, bemporad_identification_2001, costa_discrete-time_2005, camacho_model_2010, djemai_hybrid_2014, estrada_hybrid_2014, guo_moving_2013, botha_hybrid_2018, bemporad_fitting_2018, oliveira_iterative_2020, piga_estimation_2020}. Methods of modelling and estimating hybrid systems can be applied to industrial disturbances, of which there is a large variety, many exhibiting complex discontinuous behaviour.
 
 \subsection{Non-linear system identification}
 
