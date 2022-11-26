@@ -725,7 +725,7 @@ Consider again the sequences from the previous example in Figure \ref{fig:mm-obs
 	\label{fig:mm-obs-seq-sf95}
 \end{figure}
 
-Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_GPB2},\ref{eq:Hmerge_GPB2}), sequences of branching and merging indices are defined. For this example they are
+Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_GPB2},\ref{eq:Hmerge_GPB2}), sequences of branching and merging indices are defined. For this example these are
 \begin{equation} \label{eq:Hmerge_SFex2}
 	\mathcal{H}_{\text{merge}} = \begin{Bmatrix}
 		\begin{bmatrix}	1 \\ 3 \end{bmatrix} & 1 & 1 & 1 & 1 & \begin{bmatrix}	1 \\ 5 \end{bmatrix} & 1 & 1 & 1 & 1 \\
@@ -750,12 +750,11 @@ Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_
 \end{equation}
 
 Likewise, the merged and branched shock (mode) indicator sequences are
-\begin{equation} \label{eq:Gamma_kmf_k}
-	\begin{aligned}
-	\glsadd{Gammafkmnk}\Gamma_m(0,9) &= \left\{
+\begin{multline} \label{eq:Gamma_km09}
+	\glsadd{Gammafkmnk}\Gamma_m(0,9) = \left\{
 		\mathbf{\gamma}_m(0), \mathbf{\gamma}_m(1), \cdots, \mathbf{\gamma}_m(9)
-	\right\} \\
-	&= \left\{
+	\right\} = \\ 
+	\left\{
 		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
 		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
 		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
@@ -767,46 +766,40 @@ Likewise, the merged and branched shock (mode) indicator sequences are
 		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
 		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
 	\right\}.
-	\end{aligned}
-\end{equation}
-\begin{equation} \label{eq:Gamma_kmf_k}
-	\begin{aligned}
+\end{multline}
+\begin{multline} \label{eq:Gamma_kb09}
+		\Gamma_b(0,9 \mid 9) = \left\{\mathbf{\gamma}_b(0 \mid 0), \mathbf{\gamma}_b(1 \mid 1), \cdots, \mathbf{\gamma}_b(9 \mid 9) \right\} = \\
 		\left\{
-			\mathbf{\gamma}_b(0 \mid 0), \mathbf{\gamma}_b(1 \mid 1), , \cdots, \mathbf{\gamma}_b(9 \mid 9), 
-		\right\} = \\
-		&\left\{
-		\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-		\right\}, \\
+			\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+		\right\},
+\end{multline}
+\begin{multline} \label{eq:Gamma_kb110}
+		\Gamma_b(1,10 \mid 9) = \left\{ \mathbf{\gamma}_b(1 \mid 0), \mathbf{\gamma}_b(2 \mid 1), \cdots, \mathbf{\gamma}_b(10 \mid 9) \right\} = \\
 		\left\{
-		\mathbf{r}_b(1 \mid 0), \mathbf{r}_b(2 \mid 1), , \cdots, \mathbf{r}_b(10 \mid 9), 
-		\right\} = \\
-		& \left\{
-		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+			\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+			\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
 		\right\}.
-	\end{aligned}
-\end{equation}
-
+\end{multline}
 Although the number of branched hypotheses is time-varying, after \gls{nf} time steps the sequences repeat such that 
 \begin{equation} \label{eq:rmkrmkmNf_SFex2}
-	\mathbf{r}_m(k) = \mathbf{r}_m(k-N_f).
+	\mathbf{\gamma}_m(k) = \mathbf{\gamma}_m(k-N_f).
 \end{equation}
 
 As in the \gls{GPB2} algorithm, the overall estimates of the system states and outputs, \gls{xk_hat} and \gls{yk_hat}, are calculated by merging the merged estimates \gls{xmk_hat} and \gls{ymk_hat} in place of \gls{xfk_hat} and \gls{yfk_hat} in (\ref{eq:xkyk_hat_MKF}).
