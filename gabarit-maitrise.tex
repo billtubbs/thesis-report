@@ -43,17 +43,28 @@
 
 % General notation
 \newglossaryentry{qm1}{name=$q^{-1}$, description={backwards shift operator}}
-\newglossaryentry{pk}{name=$p(k)$, description={disturbance signal at time $k$}}
-\newglossaryentry{wpk}{name=$w_p(k)$, description={random shock signal at time $k$}}
 \newglossaryentry{Ndist}{name={$\mathcal{N}(0,\sigma_{w_p}^2)$}, description={normal distribution with mean zero and variance $\sigma_{w_p}^2$}}
 \newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
 \newglossaryentry{pagb}{name={$p(a \mid b)$}, description={probability density of $a$ given $b$}}
 \newglossaryentry{PrAgB}{name={$\Pr(A \mid B)$}, description={probability of $A$ given $B$}}
-\newglossaryentry{nj}{name={$n_j$}, description={the number of modes or models of a switching system}}
-\newglossaryentry{rk}{name={$r(k)$}, description={the mode number of a switching system at time $k$}}
 \newglossaryentry{nabla}{name={$\nabla$}, description={defined as $1-q^{-1}$}}
 \newglossaryentry{gamma_k}{name={$\gamma(k)$}, description={random shock indicator at time $k$}}
 \newglossaryentry{identity}{name={$\mathbf{I}_n$}, description={($n \times n$) identify matrix}}
+
+% Signals
+\newglossaryentry{uk}{name=$\mathbf{u}(k)$, description={system inputs at time $k$}}
+\newglossaryentry{xk}{name=$\mathbf{x}(k)$, description={system states at time $k$}}
+\newglossaryentry{yk}{name=$\mathbf{y}(k)$, description={system outputs at time $k$}}
+\newglossaryentry{wk}{name=$\mathbf{w}(k)$, description={process disturbance signals at time $k$}}
+\newglossaryentry{vk}{name=$\mathbf{v}(k)$, description={measurement noise signals at time $k$}}
+\newglossaryentry{A}{name={$\mathbf{A}$}, description={transition matrix of the system model}}
+\newglossaryentry{B}{name={$\mathbf{B}$}, description={input matrix of the system model}}
+\newglossaryentry{C}{name={$\mathbf{C}$}, description={output matrix of the system model}}
+\newglossaryentry{yMk}{name={$\mathbf{y}_M(k)$}, description={system output measurements at time $k$}}
+\newglossaryentry{pk}{name=$p(k)$, description={disturbance signal at time $k$}}
+\newglossaryentry{wpk}{name=$w_p(k)$, description={random shock signal at time $k$}}
+\newglossaryentry{nj}{name={$n_j$}, description={the number of modes or models of a switching system}}
+\newglossaryentry{rk}{name={$\mathbf{r}(k)$}, description={the mode number of a switching system at time $k$}}
 
 % Introduction and literature review
 \newglossaryentry{SAG}{name={SAG},description={semi-autogenous grinding mill}}
@@ -69,15 +80,6 @@
 \newglossaryentry{BRW}{name={BRW}, description={bounded random walk}}
 
 % State estimation
-\newglossaryentry{uk}{name=$\mathbf{u}(k)$, description={system inputs at time $k$}}
-\newglossaryentry{xk}{name=$\mathbf{x}(k)$, description={system states at time $k$}}
-\newglossaryentry{yk}{name=$\mathbf{y}(k)$, description={system outputs at time $k$}}
-\newglossaryentry{wk}{name=$\mathbf{w}(k)$, description={process disturbance signals at time $k$}}
-\newglossaryentry{vk}{name=$\mathbf{v}(k)$, description={measurement noise signals at time $k$}}
-\newglossaryentry{A}{name={$\mathbf{A}$}, description={transition matrix of the system model}}
-\newglossaryentry{B}{name={$\mathbf{B}$}, description={input matrix of the system model}}
-\newglossaryentry{C}{name={$\mathbf{C}$}, description={output matrix of the system model}}
-\newglossaryentry{yMk}{name={$\mathbf{y}_M(k)$}, description={system output measurements at time $k$}}
 \newglossaryentry{xkp1_pred}{name={$\hat{\mathbf{x}}(k+1 \mid k)$}, description={predictions of system states at time $k+1$ made with information available at time $k$}}
 \newglossaryentry{xk_pred}{name={$\hat{\mathbf{x}}(k \mid k-1)$}, description={predictions of system states at time $k$ made with information available at time $k-1$}}
 \newglossaryentry{xk_hat}{name={$\hat{\mathbf{x}}(k \mid k)$}, description={estimates of system states at time $k$ made with information available at time $k$}}
@@ -90,9 +92,6 @@
 \newglossaryentry{Pk}{name={$\mathbf{P}(k \mid k)$}, description={state estimation error covariance at time $k$ made with information available at time $k$}}
 \newglossaryentry{Pkp1_pred}{name={$\mathbf{P}(k+1 \mid k)$}, description={predictions of the state estimation error covariance at time $k+1$ made with information available at time $k$}}
 \newglossaryentry{Pk_pred}{name={$\mathbf{P}(k \mid k-1)$}, description={predictions of the state estimation error covariance at time $k$ made with information available at time $k-1$}}
-\newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, description={estimates of the state estimation error covariance of filter $f$ at time $k$ made with information available at time $k$}}
-\newglossaryentry{Pfkp1_pred}{name={$\mathbf{P}_f(k+1 \mid k)$}, description={predictions of the state estimation error covariance of filter $f$ at time $k+1$ made with information available at time $k$}}
-\newglossaryentry{Pfk_pred}{name={$\mathbf{P}_f(k \mid k-1)$}, description={predictions of the state estimation error covariance of filter $f$ at time $k$ made with information available at time $k-1$}}
 \newglossaryentry{Qk}{name={$\mathbf{Q}(k)$}, description={covariance of the process disturbances in the observer model}}
 \newglossaryentry{R}{name={$\mathbf{R}$}, description={covariance of the measurement noises in the observer model}}
 \newglossaryentry{E}{name={$\mathbb{E}\{\cdot\}$}, description={expectation operator}}
@@ -107,24 +106,36 @@
 \newglossaryentry{MKF}{name={MKF}, description={multiple-model Kalman filter}}
 \newglossaryentry{GPB1}{name={GPB1}, description={first-order generalised pseudo-Bayesian estimator}}
 \newglossaryentry{GPB2}{name={GPB2}, description={second order generalised pseudo-Bayesian estimator}}
+\newglossaryentry{AFMM}{name={AFMM}, description={adaptive forgetting through multiple models algorithm}}
 \newglossaryentry{nh}{name={$n_h$}, description={number of hypotheses}}
 \newglossaryentry{gamma_fk}{name={$\gamma_f(k)$}, description={random shock indicator of hypothesis $f$ at time $k$}}
 \newglossaryentry{Gammafk}{name={$\Gamma_f(k)$}, description={shock indicator hypotheses sequence $f$ from time $0$ to $k$}}
-\newglossaryentry{Gammafkmnk}{name={$\Gamma_f(k-n_f+1,k)$}, description={shock indicator hypotheses sequence $f$ from time $k-n_f+1$ to $k$}}
+\newglossaryentry{Gammafkmnk}{name={$\Gamma_m(k-N_f+1,k)$}, description={shock indicator hypotheses sequence $f$ from time $k-N_f+1$ to $k$}}
 \newglossaryentry{nm}{name={$n_m$}, description={number of merged hypotheses}}
 \newglossaryentry{Zmk}{name={$Z_m(k)$}, description={normalization variable at time $k$ used in merged probability calculations}}
 \newglossaryentry{Hbranch}{name={$\mathcal{H}_{\text{branch}}$}, description={hypothesis index used in branching operations}}
 \newglossaryentry{Hmerge}{name={$\mathcal{H}_{\text{merge}}$}, description={hypothesis index used in merging operations}}
-\newglossaryentry{Hmodes}{name={$\mathcal{H}_{\text{modes}}$}, description={mode index used in hypothesis branching and merging operations}}
-
-\newglossaryentry{nf}{name={$n_f$}, description={sequence fusion parameter: length of fusion horizon in number of sample periods}}
-\newglossaryentry{m}{name={$m$}, description={sequence fusion parameter: maximum number of shock occurences within the fusion horizon}}
-\newglossaryentry{d}{name={$d$}, description={sequence fusion parameter: shock spacing parameter, or length of detection interval in number of sample periods}}
-\newglossaryentry{nmin}{name={$n_\text{min}$}, description={sequence fusion parameter: maximum number of shock occurences within the fusion horizon}}
-\newglossaryentry{epsilond}{name={$\epsilon_d$}, description={sequence fusion parameter: maximum number of shock occurences within the fusion horizon}}
+\newglossaryentry{rmk}{name={$\mathbf{r}_m(k \mid k)$}, description={indicator of the system modes of the merged hypotheses at time $k$ used at time $k$ in branching and merging operations}}
+\newglossaryentry{rbk}{name={$\mathbf{r}_b(k \mid k)$}, description={indicator of the system modes of the branched hypotheses at time $k$ used at time $k$ in branching and merging operations}}
+\newglossaryentry{rbkp1}{name={$\mathbf{r}_b(k+1 \mid k)$}, description={indicator of the system modes of the branched hypotheses at time $k+1$ used at time $k$ in branching and merging operations}}
+\newglossaryentry{nf}{name={$N_f$}, description={sequence fusion parameter: length of fusion horizon in number of sample periods}}
+\newglossaryentry{m}{name={$n_\text{max}$}, description={sequence fusion parameter: maximum number of shock occurences within the fusion horizon}}
+\newglossaryentry{d}{name={$N_d$}, description={sequence fusion parameter: shock spacing parameter, or length of detection interval in number of sample periods}}
+\newglossaryentry{nmin}{name={$N_\text{min}$}, description={sequence pruning parameter: maximum number of shock occurences within the fusion horizon}}
+\newglossaryentry{epsilond}{name={$\epsilon_d$}, description={sequence fusion parameter: probability of at least one shock within the detection interval}}
+\newglossaryentry{xfk_hat}{name={$\mathbf{\hat{x}}_f(k \mid k)$}, description={estimates of system states at time $k$ for hypothesis $m$}}
+\newglossaryentry{yfk_hat}{name={$\mathbf{\hat{y}}_f(k \mid k)$}, description={estimates of system outputs at time $k$ for hypothesis $m$}}
+\newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, description={state estimation error covariance at time $k$ for hypothesis $m$}}
+\newglossaryentry{Pfkp1_pred}{name={$\mathbf{P}_f(k+1 \mid k)$}, description={predictions of the state estimation error covariance of hypothesis $f$ at time $k+1$}}
+\newglossaryentry{Pfk_pred}{name={$\mathbf{P}_f(k \mid k-1)$}, description={predictions of the state estimation error covariance of filter $f$ at time $k$}}
 \newglossaryentry{xmk_hat}{name={$\mathbf{\hat{x}}_m(k \mid k)$}, description={merged estimates of system states at time $k$ for merged hypothesis $m$}}
 \newglossaryentry{ymk_hat}{name={$\mathbf{\hat{y}}_m(k \mid k)$}, description={merged estimates of system outputs at time $k$ for merged hypothesis $m$}}
 \newglossaryentry{Pmk}{name={$\mathbf{P}_m(k \mid k)$}, description={merged state estimation error covariance at time $k$ for merged hypothesis $m$}}
+
+% Control
+\newglossaryentry{Hp}{name={$H_p$}, description={MPC parameter : prediction horizon in number of sample periods}}
+\newglossaryentry{Hc}{name={$H_c$}, description={MPC parameter : control horizon in number of sample periods}}
+\newglossaryentry{Deltau}{name={$\Delta \mathbf{u}(k)$}, description={change in the manipulatable variable between time $k-1$ and $k$}}
 
 %  \newacronym{gcd}{GCD}{Greatest Common Divisor}
 %  \newacronym{lcm}{LCM}{Least Common Multiple}

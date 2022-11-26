@@ -632,106 +632,200 @@ where \glsadd{Hmerge}\gls{Hmerge} is a set of \gls{nm} indices that determine wh
 
 In the case of \gls{GPB2}, \gls{Hmerge} is defined as
 \begin{equation} \label{eq:Hmerge_GPB2}
-	\mathcal{H}_{\text{merge}} = \left\{ \mathcal{H}_{\text{merge},1}, \mathcal{H}_{\text{merge},2} \right\} = \left\{
-		\begin{bmatrix}	1 \\ 3 \end{bmatrix},
+	\mathcal{H}_{\text{merge}} = \begin{Bmatrix} \mathcal{H}_{\text{merge},1} \\ \mathcal{H}_{\text{merge},2} \end{Bmatrix} = \begin{Bmatrix}
+		\begin{bmatrix}	1 \\ 3 \end{bmatrix} \\
 		\begin{bmatrix}	2 \\ 4 \end{bmatrix}
-	\right\}
+	\end{Bmatrix}
 \end{equation}
 This means that merged estimate $\mathbf{\hat{x}}_1(k \mid k)$ is calculated by merging the estimates associated with hypotheses 1 and 3, and merged estimate $\mathbf{\hat{x}}_2(k \mid k)$ is calculated by merging the estimates of hypotheses 2 and 4.
 
-An associated index, \glsadd{Hbranch}\gls{Hbranch}, is defined to govern the branching operation, which for \gls{GPB2} is
+An associated index, \glsadd{Hbranch}\gls{Hbranch}, governs the branching operation, which for \gls{GPB2} is
 \begin{equation} \label{eq:Hbranch_GPB2}
 	\mathcal{H}_{\text{branch}} = \begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \end{bmatrix}.
 \end{equation}
 This indicates that branched estimates 1 and 2 are clones of merged estimate $\mathbf{\hat{x}}_1(k \mid k)$ and branched estimates 3 and 4 are clones of merged estimate $\mathbf{\hat{x}}_2(k \mid k)$. These definitions match the branching and merging operations depicted in Figure \ref{fig:mm-obs-gpb2}.
 
 % TODO: We don't need this if we define the r(k) and r_m(k) transitions.
-A third index to define the system modes represented by each branched hypothesis, \glsadd{Hmodes}\gls{Hmodes}, may be defined. For \gls{GPB2} this is
-\begin{equation} \label{eq:Hmodes_GPB2}
-	\mathcal{H}_{\text{modes}} = \begin{bmatrix} 1 \\ 2 \\ 1 \\ 2 \end{bmatrix}.
+The system modes, which determine the system model parameters as well as the transition probabilities, also evolve according to the branching and merging indices. In the case of GPB2, the modes associated with the merged hypotheses at time $k$ are defined
+\begin{equation} \label{eq:rmk_GPB2}
+		\glsadd{rmk}\mathbf{r}_m(k) = \begin{bmatrix} 1 \\ 2 \end{bmatrix}.
 \end{equation}
-This indicates that branched hypotheses 1 and 3 assume the system mode is 1, and hypotheses 2 and 4 assume it is 2. This definition matches the hypotheses modes depicted in Figure \ref{fig:mm-obs-gpb2}. Also note that \gls{Hmodes} is consistent with \gls{Hbranch} and \gls{Hmerge}---only hypotheses representing the same mode at the current time are merged and the branched hypotheses have the same mode as the previous merged hypothesis from which they were branched.
+The modes used at time $k$ to determine the modes of the branched hypotheses at time $k$ and $k+1$ are 
+\begin{equation} \label{eq:rbk_GPB2}
+		\mathbf{r}_b(k \mid k) = \begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \end{bmatrix},
+		\glsadd{rbkp1}\mathbf{r}_b(k+1 \mid k) = \begin{bmatrix} 1 \\ 2 \\ 1 \\ 2 \end{bmatrix}.
+\end{equation}
+Note that \gls{rbk} is derived by branching \gls{rmk} using \gls{Hbranch} and \gls{rbkp1} are the modes of the branched hypotheses at the next time step. Merging \gls{rbkp1} using \gls{Hmerge} in the next time step then leads to 
+\begin{equation} \label{eq:rmkp1rmk_GPB2}
+	\mathbf{r}_m(k+1) = \mathbf{r}_m(k),
+\end{equation}
+which is a requirement to ensure that the algorithm is consistent from one time step to the next.
 
-The advantages of the \gls{GPB1} and \gls{GPB2} estimators are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite and constant, which limits computational requirements. The disadvantages include the fact that they model every possible transition over one or two time steps and merge these into a reduced set of estimates before the next iteration. While the branching, modes and merging steps in the \gls{GPB1} and \gls{GPB2} algorithms are the same each time step, they may be time-varying in the case of the sub-optimal multiple-model algorithms considered in this work. The notation above is easily extended to more complex algorithms with arbitrary branching and merging steps by allowing \gls{Hbranch}, \gls{Hmodes} and \gls{Hmerge} to be time-varying.
+The advantages of the \gls{GPB1} and \gls{GPB2} estimators are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite and constant, which limits computational requirements. The disadvantages include the fact that they model every possible transition over one or two time steps and merge these into a reduced set of estimates before the next iteration. While the branching, modes and merging steps in the \gls{GPB1} and \gls{GPB2} algorithms are the same each time step, they may be time-varying in the case of the sub-optimal multiple-model algorithms considered in this work. The notation above is easily extended to more complex algorithms with arbitrary branching and merging steps by allowing \gls{Hbranch}, \gls{rbk} and \gls{Hmerge} to be time-varying.
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
 \cite{robertson_detection_1995} proposed a sub-optimal approach that combines three approximation techniques specifically intended for \gls{RODD} state estimation. The first is referred to as \textit{sequence fusion}. This is based on the assumption that only recent differences in the hypothesis sequences are important for state estimation. Therefore, sequences that are identical over the previous \glsadd{nf}\gls{nf} sample times may be merged, where \gls{nf} is known as the \textit{fusion horizon}.
 %The same techniques used in the generalized pseudo-Bayes algorithm are used to perform the sequence branching and merging at each time step. The differences are that more than $n_j^2$ hypotheses are maintained and these are based on longer, pre-specified sequences of possible shocks.
 
-The shock indicator hypothesis sequences are defined over the fusion horizon of length \gls{nf} sample periods including the current one,
+Rather than allowing the number and length of the shock indicator hypothesis sequences, $\Gamma(k)$, to grow indefinitely, a fixed number of sequences of length \gls{nf} sample periods are defined, consisting of only the current and the previous $N_f-1$ values of $\gamma(k)$
 \begin{equation} \label{eq:Gamma_kmf_k}
-	\glsadd{Gammafkmnk}\Gamma_f(k-n_f+1,k)=\{\gamma_f(k-n_f+1), ...,  \gamma_f(k-1), \gamma_f(k)\}, f=1,2,...,n_m.
+	\glsadd{Gammafkmnk}\Gamma_m(k-N_f+1,k)=\{\gamma_m(k-N_f+1), ...,  \gamma_m(k-1), \gamma_m(k)\}, m=1,2,...,n_m.
 \end{equation}
+These fixed-length sequences are used to limit the number of new hypotheses generated each time step, and to merge similar hypotheses so that the total number remains the same from one timestep to the next.
 
-Secondly, they assume that the exact timing of random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter increases due to the assumption of a shock occurrence, $\gamma(k)=1$, it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length \glsadd{d}\gls{d} samples is therefore
+Secondly, they assume that the exact timing of random shocks within the fusion horizon is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter increases due to the assumption of a shock occurrence ($\gamma_m(k)=1$), it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length \glsadd{d}\gls{d} samples is therefore higher than the probability, $\epsilon$, of a single shock in one sample period, and is given by
 \begin{equation}  \label{eq:p_gamma_d}
-	\glsadd{epsilond}\epsilon_d = 1 - (1 - \epsilon)^{d},
+	\glsadd{epsilond}\epsilon_d = 1 - (1 - \epsilon)^{N_d}.
 \end{equation}
 
-and the probabilities of the modelled random shocks are redefined as
+The occurrence of one or more shocks within a detection interval is then represented by a single shock at the start of the detection interval and the probabilities of a shock at any other time are set to zero
 \begin{equation} \label{eq:Pr_gamma_nd}
 	\begin{aligned}
 		\Pr\left(\gamma_{f}(k)=0\right) = \begin{cases*}
-			1 - \epsilon_d & \text { for } $k = d, 2d, 3d, \ldots$ \\
-			1 & \text { for } $k \ne d, 2d, 3d, \ldots$
+			1 - \epsilon_d & \text { for } $k = N_d, 2N_d, 3N_d, \ldots$ \\
+			1 & \text { for } $k \ne N_d, 2N_d, 3N_d, \ldots$
 		\end{cases*} \\
 		\Pr\left(\gamma_{f}(k)=1\right) = \begin{cases*}
-			\epsilon_d & \text { for } $k = d, 2d, 3d, \ldots$ \\
-			0 & \text { for } $k \ne d, 2d, 3d, \ldots$
+			\epsilon_d & \text { for } $k = N_d, 2N_d, 3N_d, \ldots$ \\
+			0 & \text { for } $k \ne N_d, 2N_d, 3N_d, \ldots$
 		\end{cases*} \\
 	\end{aligned}
 \end{equation}
 
-Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than \glsadd{m}\gls{m} shocks occur during the fusion horizon is low, where \gls{m} may be 1 or a low number. This further reduces the number of filters required.
+Thirdly, they rely on the fact that the random shocks occur infrequently and therefore the probability that more than \glsadd{m}\gls{m} shocks occur during the fusion horizon is low, where \gls{m} may be 1 or some other low number. This further reduces the number of possible sequences that must be modelled.
 
-To illustrate the resulting sequences of shocks, consider an example. Suppose there is one \gls{RODD} to estimate. A sequence fusion algorithm is used with a fusion horizon of $n_f=9$, a detection interval of $d=3$ and a maximum number of shocks over the fusion horizon of $m=1$. Figure \ref{fig:mm-obs-seq-rob1} shows the four hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $f=9$ sample periods, the sequences repeat indefinitely.
+To illustrate the resulting shock hypothesis sequences, consider an example. Suppose there is one \gls{RODD} to estimate. A sequence fusion algorithm is used with a fusion horizon of $N_f=9$, a detection interval of $N_d=3$, and a maximum number of shocks over the fusion horizon of $n_\text{max}=1$. Figure \ref{fig:mm-obs-seq-SFex1} shows the four shock hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $N_f=9$ sample periods, the sequences repeat indefinitely.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/mm_obs_seq_rob1.pdf}
-	\caption{Sequence fusion example 1 ($d=3$, $n_m=1$, $n_f=9$)}
-	\label{fig:mm-obs-seq-rob1}
+	\caption{Sequence fusion example 1 ($N_d=3$, $n_\text{max}=1$, $N_f=9$)}
+	\label{fig:mm-obs-seq-SFex1}
 \end{figure}
 
 Suppose that a shock actually occurred in the system at time $k=4$. In this case, the algorithm should predict that hypothesis 3 is the most likely because this assumes a shock occurred at $k=3$, which is the close to the actual time.
 
-Figure \ref{fig:mm-obs-seq-rob2} illustrates a second example of the sequence fusion algorithm with $n_f=10$, $m=2$ and $d=5$.  This also has four hypotheses. However, note that hypothesis 4 accounts for the possibility of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the most likely hypothesis should be hypothesis 3 because it assumes a shock occurred at $k=5$, which is close to the actual time.
+Figure \ref{fig:mm-obs-seq-SFex2} illustrates a second example of the sequence fusion algorithm with $N_f=10$, $n_\text{max}=2$ and $N_d=5$.  This also has four hypotheses. However, note that hypothesis 4 accounts for the possibility of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the most likely hypothesis should be hypothesis 3 because it assumes a shock occurred at $k=5$, which is close to the actual time.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/mm_obs_seq_rob2.pdf}
-	\caption{Sequence fusion example 2 ($d=5$, $m=2$, $n_f=10$)}
-	\label{fig:mm-obs-seq-rob2}
+	\caption{Sequence fusion example 2 ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
+	\label{fig:mm-obs-seq-SFex2}
 \end{figure}
 
-The shock hypothesis sequences over the fusion horizon, \gls{Gammafkmnk}, determine the branching and merging operations that occur at each time step. The logic is as follows: (i) at time $k$, branch each hypothesis sequence according to the possible mode transitions that may occur between time $k$ and $k+1$, (ii) advance the branched sequences into the next time step, according to the mode transitions, (iii) compare the branched sequences and merge those that are identical over the new fusion horizon from time $k-n_f+2$ to $k+1$.
+As mentioned, the shock hypothesis sequences over the fusion horizon, \gls{Gammafkmnk}, determine the branching and merging operations that occur at each time step. The logic is as follows: (i) at time $k$, branch each hypothesis sequence into the possible mode transitions that occur between time $k$ and $k+1$ according to all the sequences, (ii) advance the branched sequences into the next time step, according to the possible mode transitions, (iii) compare the branched sequences and merge those that are identical over the new fusion horizon from time $k-N_f+2$ to $k+1$.
 
-For example, consider the sequences illustrated above in Figure \ref{fig:mm-obs-seq-rob2}. The branching and merging of these sequences is depicted in Figure \ref{fig:mm-obs-seq-sf95}. At time $k=9$, the sequences span from time 0 to time $k$. At this time, the 4 sequences were branched into 8 and advanced to time $k=10$ with different modes (no shock, shock). At time $k=10$, the 8 branched hypotheses were merged into 4 by combining sequences that are identical over the new fusion horizon which spans from $k=1$ to 10. Note that by applying this logic each time step, branching or merging is only required every 5 time steps. This corresponds to the spacing parameter, $n_d$, which determines when shocks are assumed to be possible. As in the \gls{GPB1} and \gls{GPB2} algorithms, the total number of branched and merged hypotheses are finite ($n_h$). Although they are time-varying, the sequence repeats and the number of hypotheses does not grow indefinitely.
+Consider again the sequences from the previous example in Figure \ref{fig:mm-obs-seq-SFex2}. By applying the logic described above, the branching and merging operations depicted in Figure \ref{fig:mm-obs-seq-sf95} may be deduced (branching and merging is also carried out between time -1 and 0 but this is not shown for simplicity). Consider what happens at time $k=9$. At this time, the fusion horizon spans from time instants 0 to 9 and the 4 sequences are branched into 8 and advanced to the next time instant according to the possible modes at that time (no shock, shock). Then, at time $k=10$ the 8 branched hypotheses are merged back to 4 by combining sequences that are identical over the new fusion horizon, which spans from $k=1$ to 10. Note that by applying this logic each time step, branching and merging are only required once every 5 time steps when shocks are assumed to be possible.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=15cm]{images/mm_obs_seq_sf95.pdf}
-	\caption{Branching and merging example ($d=5$, $m=2$, $n_f=10$)}
+	\caption{Branching and merging example ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
 	\label{fig:mm-obs-seq-sf95}
 \end{figure}
 
-As in the \gls{GPB2} algorithm, the merged estimates \gls{xmk_hat} and \gls{ymk_hat} are merged again at each time instant to produce the overall merged estimates \gls{xk_hat} and \gls{yk_hat} (\ref{eq:xkyk_hat_MKF}).
+Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_GPB2},\ref{eq:Hmerge_GPB2}), sequences of branching and merging indices are defined. For this example they are
+\begin{equation} \label{eq:Hmerge_SFex2}
+	\mathcal{H}_{\text{merge}} = \begin{Bmatrix}
+		\begin{bmatrix}	1 \\ 3 \end{bmatrix} & 1 & 1 & 1 & 1 & \begin{bmatrix}	1 \\ 5 \end{bmatrix} & 1 & 1 & 1 & 1 \\
+		\begin{bmatrix}	2 \\ 4 \end{bmatrix} & 2 & 2 & 2 & 2 & \begin{bmatrix}	3 \\ 7 \end{bmatrix} & 2 & 2 & 2 & 2 \\
+		\begin{bmatrix}	5 \\ 7 \end{bmatrix} & 3 & 3 & 3 & 3 & \begin{bmatrix}	2 \\ 6 \end{bmatrix} & 3 & 3 & 3 & 3 \\
+		\begin{bmatrix}	6 \\ 8 \end{bmatrix} & 4 & 4 & 4 & 4 & \begin{bmatrix}	4 \\ 8 \end{bmatrix} & 4 & 4 & 4 & 4 \\
+	\end{Bmatrix}
+\end{equation}
+\begin{equation} \label{eq:Hbranch_SFex2}
+	\mathcal{H}_{\text{branch}} = \begin{Bmatrix}
+		\begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \\ 3 \\ 3 \\ 4 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \\ 3 \\ 3 \\ 4 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
+		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix}
+	\end{Bmatrix}.
+\end{equation}
+
+Likewise, the merged and branched shock (mode) indicator sequences are
+\begin{equation} \label{eq:Gamma_kmf_k}
+	\begin{aligned}
+	\glsadd{Gammafkmnk}\Gamma_m(0,9) &= \left\{
+		\mathbf{\gamma}_m(0), \mathbf{\gamma}_m(1), \cdots, \mathbf{\gamma}_m(9)
+	\right\} \\
+	&= \left\{
+		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+	\right\}.
+	\end{aligned}
+\end{equation}
+\begin{equation} \label{eq:Gamma_kmf_k}
+	\begin{aligned}
+		\left\{
+			\mathbf{\gamma}_b(0 \mid 0), \mathbf{\gamma}_b(1 \mid 1), , \cdots, \mathbf{\gamma}_b(9 \mid 9), 
+		\right\} = \\
+		&\left\{
+		\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+		\right\}, \\
+		\left\{
+		\mathbf{r}_b(1 \mid 0), \mathbf{r}_b(2 \mid 1), , \cdots, \mathbf{r}_b(10 \mid 9), 
+		\right\} = \\
+		& \left\{
+		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+		\right\}.
+	\end{aligned}
+\end{equation}
+
+Although the number of branched hypotheses is time-varying, after \gls{nf} time steps the sequences repeat such that 
+\begin{equation} \label{eq:rmkrmkmNf_SFex2}
+	\mathbf{r}_m(k) = \mathbf{r}_m(k-N_f).
+\end{equation}
+
+As in the \gls{GPB2} algorithm, the overall estimates of the system states and outputs, \gls{xk_hat} and \gls{yk_hat}, are calculated by merging the merged estimates \gls{xmk_hat} and \gls{ymk_hat} in place of \gls{xfk_hat} and \gls{yfk_hat} in (\ref{eq:xkyk_hat_MKF}).
 
 %TODO: Need to rename m due to conflict with merged estimate index variable.
-\cite{robertson_detection_1995} describe a systematic procedure to choose the \gls{nf}, \gls{m}, and \gls{d} parameters and give the formula for the total probability of the modelled hypotheses as
+\cite{robertson_detection_1995} describe a systematic procedure to choose the parameters \gls{nf}, \gls{m}, and \gls{d} and give the formula for the total probability of the modelled hypotheses as
 \begin{equation} \label{eq:p_gamma}
-	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i d) \leq m\right) = \sum_{j=0}^{m} \binom{n}{j} \epsilon_d^{n-j}(1-\epsilon_d)^{j},
+	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i N_d) \leq n_\text{max}\right) = \sum_{j=0}^{n_\text{max}} \binom{n}{j} \epsilon_d^{n-j}(1-\epsilon_d)^{j},
 \end{equation}
 where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ detection intervals. They recommend that the total probability should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
 
-In a later journal paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-rob1} and \ref{fig:mm-obs-seq-rob2}, they propose to represent the possibility of a shock as a sequence of \gls{d} smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed that this improved the performance of the algorithm in simulations.
+In a later journal paper, \cite{robertson_method_1998} describe a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-SFex1} and \ref{fig:mm-obs-seq-SFex2}, they propose to represent the possibility of a shock as a sequence of \gls{d} smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed this improved the performance of the algorithm in their simulations.
 
 To implement this modification, define a new variable, $\delta(n)$, to represent whether or not at least one shock occurred during the $n$\textsuperscript{th} detection interval:
 
 \begin{equation} \label{eq:deltak}
 	\delta(n) = \begin{cases*}
-		0 & \text{if} $\sum_{k=(n-1) d}^{n d - 1} \gamma(k)=0$, \\
-		1 & \text{if} $\sum_{k=(n-1) d}^{n d - 1} \gamma(k)\ge0$.
+		0 & \text{if} $\sum_{k=(n-1) N_d}^{n N_d - 1}{\gamma(k)} = 0$, \\
+		1 & \text{if} $\sum_{k=(n-1) N_d}^{n N_d - 1}{\gamma(k)} \ge 1$.
 	\end{cases*}
 \end{equation}
 
@@ -740,32 +834,32 @@ Then, replace the random shock variable used at each sample time, $w_p(k)$ (\ref
 	w_{p,d}(k) \sim 
 	\begin{cases*}
 		\mathcal{N}\left(0, \sigma_{w_p}^2\right) & \text{when} $\delta(n) = 0$, \\
-		\mathcal{N}\left(0, \frac{b^2\sigma_{w_p}^2}{d}\right) & \text{when} $\delta(n) = 1$.
+		\mathcal{N}\left(0, \frac{b^2\sigma_{w_p}^2}{N_d}\right) & \text{when} $\delta(n) = 1$.
 	\end{cases*}
 \end{equation}
 
-Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the interval length \gls{d}.
+Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the detection interval length \gls{d}. In this version of the algorithm, the branching and merging procedure is only carried out at the end of each detection interval. In the steps within the detection interval, the Kalman filters are updated using the measurements, but no branching or merging occurs.
 
 \subsubsection{Sequence pruning} \label{subsec-pruning}
 
-\textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} (AFMM) algorithm by \cite{andersson_adaptive_1985} for \gls{RODD} estimation. The AFMM uses sequence pruning to limit the number of filters. In this algorithm, the current hypotheses at each time step are ranked according to their conditional probabilities, calculated using (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of \gls{RODD} disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_f$.
+\textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} (\glsadd{AFMM}\gls{AFMM}) algorithm by \cite{andersson_adaptive_1985} for \gls{RODD} estimation. The \gls{AFMM} uses sequence pruning to limit the number of filters. In this algorithm, the current hypotheses at each time step are ranked according to their conditional probabilities (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of \gls{RODD} disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, \gls{nh}.
 
-The caveat mentioned above, is that no hypothesis may be eliminated less than $n_{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_f$ must be at least sufficient to accommodate the \textit{minimum life}, $n_{min}$, of all new hypotheses. Note that in the case of systems with more than one \gls{RODD} disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
+The caveat mentioned above, is that no hypothesis may be eliminated less than \gls{nmin} time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, \gls{nh} must be at least sufficient to accommodate the \textit{minimum life}, \gls{nmin}, of all new hypotheses. Note that in the case of systems with more than one \gls{RODD} disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
 
-To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-erik}. This shows one possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely hypotheses at each time instant, identified by the circles with thicker outlines, branch into two at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next sample time. Note that at time $k=6$, hypothesis 2 becomes the most likely based on the available measurements at that time. Also note that no new branches are terminated in less than two sample times.
+To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-SP}. This shows one possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely hypotheses at each time instant, identified by the circles with thicker outlines, branch into two at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next. Note that at time $k=6$, hypothesis 2 becomes the most likely based on the available measurements at that time. Also note that no new branches are terminated in less than two sample times.
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[height=7.5cm]{images/mm_obs_seq_erik.pdf}
-	\caption{Sequence pruning example ($n_f=5$, $n_{min}=2$)}
-	\label{fig:mm-obs-seq-erik}
+	\includegraphics[width=10.7cm]{images/mm_obs_seq_SP.pdf}
+	\caption{Sequence pruning example ($n_h=5$, $n_\text{min}=2$)}
+	\label{fig:mm-obs-seq-SP}
 \end{figure}
 
-The AFMM algorithm by \cite{gustafsson_estimation_1993} includes a procedure for online estimation of the measurement noise covariance using a forgetting factor to control the speed of adaptation of the estimates. This component was not implemented in this work since it is assumed the measurement noise is time invariant.
+The \gls{AFMM} algorithm by \cite{gustafsson_estimation_1993} includes a procedure for online estimation of the measurement noise covariance using a forgetting factor to control the speed of adaptation of the estimates. This component was not implemented in this work since it is assumed the measurement noise is time invariant.
 
 \subsubsection{Implementation details} \label{subsec-implementation}
 
-The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flow of the sub-optimal multi-model observers, as implemented in this work. The solid black rectangles represent the computation steps and the white circles represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence pruning, merging and branching. During this step, the final estimates of the states and outputs are also calculated.
+The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flows of the sub-optimal multi-model observers, as implemented in this work. The solid black rectangles represent the computation steps and the white circles represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence pruning, merging and branching. During this step, the final estimates of the states and outputs are also calculated.
 
 \begin{figure}[htp]
 	\centering
@@ -774,20 +868,22 @@ The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation ste
 	\label{fig:mkf-infoflow}
 \end{figure}
 
-At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis sequence are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
+At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, \gls{xk_hat}, and outputs, \gls{yk_hat}. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
 
-\section{System identification}
-
-Outline notes:
-\begin{itemize}
-	\item Explain Isaksson and Eriksson's perspective on standard system identification approach.
-	\item Explain distinction between system detection or `discrimination' and system identification, reference Isaksson and Eriksson's paper on disturbance classification (whether disturbance at input or output of process).
-	\item Introduce other approaches—MLE, EM algorithm (Dempster et al., Wong \& Lee)
-	\item Methods proposed by Bemporad (Fitting jump models, 2018 and Jump Box-Jenkins, 2020).
-	\item Theory and challenges Costa book. Others?
-	\item In recent years, numerical methods to overcome the intractability of the probabilistic integral have received a lot of attention.
-	\item Sequential Monte-Carlo methods, (incl. particle filtering), Stochastic Variational Inference, ... (read Special issue in IEEE control magazine for an overview of these methods)
-\end{itemize}
+%\section{System identification}
+%
+%$TODO: Not complete.
+%
+%Outline notes:
+%\begin{itemize}
+%	\item Explain Isaksson and Eriksson's perspective on standard system identification approach.
+%	\item Explain distinction between system detection or `discrimination' and system identification, reference Isaksson and Eriksson's paper on disturbance classification (whether disturbance at input or output of process).
+%	\item Introduce other approaches—MLE, EM algorithm (Dempster et al., Wong \& Lee)
+%	\item Methods proposed by Bemporad (Fitting jump models, 2018 and Jump Box-Jenkins, 2020).
+%	\item Theory and challenges Costa book. Others?
+%	\item In recent years, numerical methods to overcome the intractability of the probabilistic integral have received a lot of attention.
+%	\item Sequential Monte-Carlo methods, (incl. particle filtering), Stochastic Variational Inference, ... (read Special issue in IEEE control magazine for an overview of these methods)
+%\end{itemize}
 
 % Note: may remove this if we aren’t using any formal methods.
 
@@ -800,7 +896,7 @@ In this work, the goal is to test the performance of different observers in a cl
 
 \textit{Model predictive control} (\gls{MPC}) is a well known and widely used multi-variable control algorithm used in industrial applications. This is largely due to the fact that constraints can be imposed on the manipulatable variables and control variables, as well as its intuitive design and the ease with which it can be tuned to achieve control objectives \citep{maciejowski_predictive_2002}. Although it is a computationally complex algorithm, numerous proven commercial products exist to enable its implementation.
 
-\gls{MPC} utilizes a prediction equation based on the dynamic model of the system to find feasible future trajectories of the system outputs as a function of the manipulatable variables and the states of the model at the current time. The length of the prediction horizon, $H_p$, is defined in terms of the number sample times starting at the next time instant, $k+1$. The predicted outputs over the prediction horizon, calculated at the current time $k$, are denoted $\hat{\textbf{y}}(k+i | k)$ for $i=1,2,...,H_p$. The length of the control horizon, $H_c$, is defined starting at the current time, $k$, and the manipulatable inputs are denoted $\mathbf{u}(k+i-1)$ for $i=1,2,...,H_c$. The control horizon is usually shorter than the prediction horizon, in which case, $\mathbf{u}(k+j)=\mathbf{u}(k+H_c-1)$ for $j=H_c,H_c+1,...,H_p$.
+\gls{MPC} utilizes a prediction equation based on the dynamic model of the system to find feasible future trajectories of the system outputs as a function of the manipulatable variables and the states of the model at the current time. The length of the prediction horizon, \glsadd{Hp}\gls{Hp}, is defined in terms of the number sample times starting at the next time instant, $k+1$. The predicted outputs over the prediction horizon, calculated at the current time $k$, are denoted $\hat{\textbf{y}}(k+i | k)$ for $i=1,2,...,H_p$. The length of the control horizon, \glsadd{Hc}\gls{Hc}, is defined starting at the current time, $k$, and the manipulatable inputs are denoted $\mathbf{u}(k+i-1)$ for $i=1,2,...,H_c$. The control horizon is usually shorter than the prediction horizon, in which case, $\mathbf{u}(k+j)=\mathbf{u}(k+H_c-1)$ for $j=H_c,H_c+1,...,H_p$.
 
 The constrained optimization problem, which is solved at each time step, is
 \begin{align} \label{eq:mpc-opt}
@@ -816,7 +912,7 @@ The constrained optimization problem, which is solved at each time step, is
 \end{align}\textbf{[TODO: Consider including slack variables to ensure feasibility]}
 where $\mathbf{r}(k+i)$ for $i=1,2,...,H_p$ is the reference output trajectory, and $\Delta \mathbf{u}(k)$ is the change in the manipulatable variable at time $k$, defined as $\Delta \mathbf{u}(k) = \mathbf{u}(k) - \mathbf{u}(k-1)$. The tunable parameters are $H_p$, $H_c$, $\mathbf{\Phi}$, and $\mathbf{\Lambda}$, and the constraints are $\mathbf{u}_{min}$, $\mathbf{u}_{max}$, $\Delta \mathbf{u}_{min}$, $\Delta \mathbf{u}_{max}$, $\mathbf{y}_{min}$, and $\mathbf{y}_{max}$. Note that the last constraint (\ref{eq:mpc-cons-3}) only guarantees that the estimate of the system output will not violate the constraints. This does not imply that the true system output will respect them at all times.
 
-Once a solution to the optimization problem is found, only the control actions at the current time, $\mathbf{u}(k)$, are transmitted to the plant. The procedure is then repeated every future time instant to compute the subsequent control actions. This is referred to as \textit{receding horizon control}.
+Once a solution to the optimization problem is found, only the control actions at the current time, \gls{uk}, are transmitted to the plant. The procedure is then repeated every future time instant to compute the subsequent control actions. This is referred to as \textit{receding horizon control}.
 
 
 \section{Grinding simulation model}
@@ -842,11 +938,11 @@ Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, cons
 	\label{fig:sag-diag}
 \end{figure}
 
-For the purposes of this work, two ore feed streams with different PSDs were simulated. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). The two streams are mixed before discharging onto the conveyor. Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two ore sources and the two mixtures.
+For the purposes of this work, two ore feed streams with different PSDs were simulated. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). The two streams are mixed before discharging onto the conveyor. Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two mixtures.
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=9cm]{images/coarse_fine_psd_plot.pdf}
+	\includegraphics[width=9cm]{images/coarse_fine_cumpsd_plot.pdf}
 	\caption{Ore particle size distributions}
 	\label{fig:coarse_fine_psd_plot}
 \end{figure}
