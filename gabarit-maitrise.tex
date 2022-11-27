@@ -64,7 +64,7 @@
 \newglossaryentry{pk}{name=$p(k)$, description={disturbance signal at time $k$}}
 \newglossaryentry{wpk}{name=$w_p(k)$, description={random shock signal at time $k$}}
 \newglossaryentry{nj}{name={$n_j$}, description={the number of modes or models of a switching system}}
-\newglossaryentry{rk}{name={$\mathbf{r}(k)$}, description={the mode number of a switching system at time $k$}}
+\newglossaryentry{rk}{name={$\mathbf{r}(k)$}, description={mode indicator of a switching system at time $k$ (scalar or vector)}}
 
 % Introduction and literature review
 \newglossaryentry{SAG}{name={SAG},description={semi-autogenous grinding mill}}
@@ -75,9 +75,12 @@
 % Disturbance models
 \newglossaryentry{RODD}{name={RODD}, description={randomly-occurring deterministic disturbance}}
 \newglossaryentry{epsilon}{name={$\epsilon$}, description={probability of a random shock}}
+\newglossaryentry{sigmawp}{name={$\sigma_{w_p}$}, description={variance of the noise component of the random shock variable}}
+\newglossaryentry{b}{name={$b$}, description={ratio of the variance of the shocks and the noise component of the random shock process}}
 \newglossaryentry{HMM}{name={HMM}, description={hidden Markov model}}
 \newglossaryentry{Piwp}{name={$\Pi_{w_{p}}$}, description={transition probability matrix of the disturbance process $w_p$}}
 \newglossaryentry{BRW}{name={BRW}, description={bounded random walk}}
+\newglossaryentry{sigmaM}{name={$\sigma_M$}, description={standard deviation of the measurement noise}}
 
 % State estimation
 \newglossaryentry{xkp1_pred}{name={$\hat{\mathbf{x}}(k+1 \mid k)$}, description={predictions of system states at time $k+1$ made with information available at time $k$}}
@@ -110,7 +113,7 @@
 \newglossaryentry{nh}{name={$n_h$}, description={number of hypotheses}}
 \newglossaryentry{gamma_fk}{name={$\gamma_f(k)$}, description={random shock indicator of hypothesis $f$ at time $k$}}
 \newglossaryentry{Gammafk}{name={$\Gamma_f(k)$}, description={shock indicator hypotheses sequence $f$ from time $0$ to $k$}}
-\newglossaryentry{Gammafkmnk}{name={$\Gamma_m(k-N_f+1,k)$}, description={shock indicator hypotheses sequence $f$ from time $k-N_f+1$ to $k$}}
+\newglossaryentry{Gammafkmnk}{name={$\Gamma_m(k-N_f+1,k)$}, description={shock indicator hypotheses sequence $f$ over the fusion horizon}}
 \newglossaryentry{nm}{name={$n_m$}, description={number of merged hypotheses}}
 \newglossaryentry{Zmk}{name={$Z_m(k)$}, description={normalization variable at time $k$ used in merged probability calculations}}
 \newglossaryentry{Hbranch}{name={$\mathcal{H}_{\text{branch}}$}, description={hypothesis index used in branching operations}}
