@@ -646,22 +646,24 @@ An associated index, \glsadd{Hbranch}\gls{Hbranch}, governs the branching operat
 This indicates that branched estimates 1 and 2 are clones of merged estimate $\mathbf{\hat{x}}_1(k \mid k)$ and branched estimates 3 and 4 are clones of merged estimate $\mathbf{\hat{x}}_2(k \mid k)$. These definitions match the branching and merging operations depicted in Figure \ref{fig:mm-obs-gpb2}.
 
 % TODO: We don't need this if we define the r(k) and r_m(k) transitions.
-The system modes, which determine the system model parameters as well as the transition probabilities, also evolve according to the branching and merging indices. In the case of GPB2, the modes associated with the merged hypotheses at time $k$ are defined
+The system modes, which determine the system model parameters as well as the transition probabilities, evolve according to the branching and merging indices. Starting with the modes associated with the merged hypotheses at time $k$, which in the case of GPB2 are
 \begin{equation} \label{eq:rmk_GPB2}
-		\glsadd{rmk}\mathbf{r}_m(k) = \begin{bmatrix} 1 \\ 2 \end{bmatrix}.
+		\glsadd{rmk}\mathbf{r}_m(k) = \begin{bmatrix} 1 \\ 2 \end{bmatrix},
 \end{equation}
-The modes used at time $k$ to determine the modes of the branched hypotheses at time $k$ and $k+1$ are 
+the branched modes after branching at time $k$ and before merging at time $k+1$ are
 \begin{equation} \label{eq:rbk_GPB2}
-		\mathbf{r}_b(k \mid k) = \begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \end{bmatrix},
-		\glsadd{rbkp1}\mathbf{r}_b(k+1 \mid k) = \begin{bmatrix} 1 \\ 2 \\ 1 \\ 2 \end{bmatrix}.
+	\begin{aligned}
+		\glsadd{rb2k}\mathbf{r}_{b,2}(k) &= \begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \end{bmatrix},
+		\glsadd{rb1k}\mathbf{r}_{b,1}(k+1) &= \begin{bmatrix} 1 \\ 2 \\ 1 \\ 2 \end{bmatrix}.
+	\end{aligned}
 \end{equation}
-Note that \gls{rbk} is derived by branching \gls{rmk} using \gls{Hbranch} and \gls{rbkp1} are the modes of the branched hypotheses at the next time step. Merging \gls{rbkp1} using \gls{Hmerge} in the next time step then leads to 
+Note that \gls{rb2k} is derived by branching \gls{rmk} using \gls{Hbranch} and that when $\mathbf{r}_{b,1}(k+1)$ is merged using \gls{Hmerge} in the next time step, it leads to 
 \begin{equation} \label{eq:rmkp1rmk_GPB2}
-	\mathbf{r}_m(k+1) = \mathbf{r}_m(k),
+	\mathbf{r}_m(k+1) = \begin{bmatrix} 1 \\ 2 \end{bmatrix} = \mathbf{r}_m(k).
 \end{equation}
-which is a requirement to ensure that the algorithm is consistent from one time step to the next.
+Due to this condition, the algorithm is consistent when executed consecutively every time step.
 
-The advantages of the \gls{GPB1} and \gls{GPB2} estimators are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite and constant, which limits computational requirements. The disadvantages include the fact that they model every possible transition over one or two time steps and merge these into a reduced set of estimates before the next iteration. While the branching, modes and merging steps in the \gls{GPB1} and \gls{GPB2} algorithms are the same each time step, they may be time-varying in the case of the sub-optimal multiple-model algorithms considered in this work. The notation above is easily extended to more complex algorithms with arbitrary branching and merging steps by allowing \gls{Hbranch}, \gls{rbk} and \gls{Hmerge} to be time-varying.
+The advantages of the \gls{GPB1} and \gls{GPB2} estimators are their simplicity, the fact that they can be applied to any switching system, and that the number of hypotheses ($n_j$ and $n_j^2$) is finite and constant, which limits computational requirements. The disadvantages include the fact that they model every possible transition over one or two time steps and merge these into a reduced set of estimates before the next iteration. While the branching, modes and merging steps in the \gls{GPB1} and \gls{GPB2} algorithms are the same each time step, they may be time-varying in the case of the sub-optimal multiple-model algorithms considered in this work. The notation above is easily extended to more complex algorithms with arbitrary branching and merging steps by allowing \gls{Hbranch}, \gls{Hmerge}, \gls{rb1k}, and \gls{rb2k} to be time-varying.
 
 \subsubsection{Sequence fusion} \label{subsec-fusion}
 
@@ -717,26 +719,17 @@ Figure \ref{fig:mm-obs-seq-SFex2} illustrates a second example of the sequence f
 
 As mentioned, the shock hypothesis sequences over the fusion horizon, \gls{Gammafkmnk}, determine the branching and merging operations that occur at each time step. The logic is as follows: (i) at time $k$, branch each hypothesis sequence into the possible mode transitions that occur between time $k$ and $k+1$ according to all the sequences, (ii) advance the branched sequences into the next time step, according to the possible mode transitions, (iii) compare the branched sequences and merge those that are identical over the new fusion horizon from time $k-N_f+2$ to $k+1$.
 
-Consider again the sequences from the previous example in Figure \ref{fig:mm-obs-seq-SFex2}. By applying the logic described above, the branching and merging operations depicted in Figure \ref{fig:mm-obs-seq-sf95} may be deduced (branching and merging is also carried out between time -1 and 0 but this is not shown for simplicity). Consider what happens at time $k=9$. At this time, the fusion horizon spans from time instants 0 to 9 and the 4 sequences are branched into 8 and advanced to the next time instant according to the possible modes at that time (no shock, shock). Then, at time $k=10$ the 8 branched hypotheses are merged back to 4 by combining sequences that are identical over the new fusion horizon, which spans from $k=1$ to 10. Note that by applying this logic each time step, branching and merging are only required once every 5 time steps when shocks are assumed to be possible.
+Consider again the sequences from the previous example in Figure \ref{fig:mm-obs-seq-SFex2}. By applying the logic described above, the branching and merging operations depicted in Figure \ref{fig:mm-obs-seq-sf95} may be deduced. Consider what happens at time $k=9$. At this time, the fusion horizon spans from time instants 0 to 9 and the 4 sequences are branched into 8 and advanced to the next time instant according to the possible modes at that time (no shock, shock). Then, at time $k=10$ the 8 branched hypotheses are merged back to 4 by combining sequences that are identical over the new fusion horizon, which spans from $k=1$ to 10. Note that by applying this logic each time step, branching and merging are only required once every 5 time steps when shocks are assumed to be possible.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=15cm]{images/mm_obs_seq_sf95.pdf}
-	\caption{Branching and merging example ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
+	\caption{Sequence branching and merging example ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
 	\label{fig:mm-obs-seq-sf95}
 \end{figure}
 
-Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_GPB2},\ref{eq:Hmerge_GPB2}), sequences of branching and merging indices are defined. For this example these are
-\begin{equation} \label{eq:Hmerge_SFex2}
-	\mathcal{H}_{\text{merge}} = \begin{Bmatrix}
-		\begin{bmatrix}	1 \\ 3 \end{bmatrix} & 1 & 1 & 1 & 1 & \begin{bmatrix}	1 \\ 5 \end{bmatrix} & 1 & 1 & 1 & 1 \\
-		\begin{bmatrix}	2 \\ 4 \end{bmatrix} & 2 & 2 & 2 & 2 & \begin{bmatrix}	3 \\ 7 \end{bmatrix} & 2 & 2 & 2 & 2 \\
-		\begin{bmatrix}	5 \\ 7 \end{bmatrix} & 3 & 3 & 3 & 3 & \begin{bmatrix}	2 \\ 6 \end{bmatrix} & 3 & 3 & 3 & 3 \\
-		\begin{bmatrix}	6 \\ 8 \end{bmatrix} & 4 & 4 & 4 & 4 & \begin{bmatrix}	4 \\ 8 \end{bmatrix} & 4 & 4 & 4 & 4 \\
-	\end{Bmatrix}
-\end{equation}
+Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_GPB2},\ref{eq:Hmerge_GPB2}), sequences of branching and merging indices are defined. Based on the mode sequences of this example, these are
 \begin{equation} \label{eq:Hbranch_SFex2}
 	\mathcal{H}_{\text{branch}} = \begin{Bmatrix}
-		\begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \\ 3 \\ 3 \\ 4 \\ 4 \end{bmatrix} &
 		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
 		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
 		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
@@ -746,65 +739,78 @@ Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_
 		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
 		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
 		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix}
+		\begin{bmatrix} 1 \\ 1 \\ 2 \\ 2 \\ 3 \\ 3 \\ 4 \\ 4 \end{bmatrix} &
+	\end{Bmatrix},
+\end{equation}
+and
+\begin{equation} \label{eq:Hmerge_SFex2}
+	\mathcal{H}_{\text{merge}} = \begin{Bmatrix}
+		\begin{bmatrix}	1 \\ 3 \end{bmatrix} & 1 & 1 & 1 & 1 & \begin{bmatrix}	1 \\ 5 \end{bmatrix} & 1 & 1 & 1 & 1 \\
+		\begin{bmatrix}	2 \\ 4 \end{bmatrix} & 2 & 2 & 2 & 2 & \begin{bmatrix}	3 \\ 7 \end{bmatrix} & 2 & 2 & 2 & 2 \\
+		\begin{bmatrix}	5 \\ 7 \end{bmatrix} & 3 & 3 & 3 & 3 & \begin{bmatrix}	2 \\ 6 \end{bmatrix} & 3 & 3 & 3 & 3 \\
+		\begin{bmatrix}	6 \\ 8 \end{bmatrix} & 4 & 4 & 4 & 4 & \begin{bmatrix}	4 \\ 8 \end{bmatrix} & 4 & 4 & 4 & 4 \\
 	\end{Bmatrix}.
 \end{equation}
 
-Likewise, the merged and branched shock (mode) indicator sequences are
-\begin{multline} \label{eq:Gamma_km09}
-	\glsadd{Gammafkmnk}\Gamma_m(0,9) = \left\{
-		\mathbf{\gamma}_m(0), \mathbf{\gamma}_m(1), \cdots, \mathbf{\gamma}_m(9)
-	\right\} = \\ 
-	\left\{
-		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-	\right\}.
-\end{multline}
-\begin{multline} \label{eq:Gamma_kb09}
-		\Gamma_b(0,9 \mid 9) = \left\{\mathbf{\gamma}_b(0 \mid 0), \mathbf{\gamma}_b(1 \mid 1), \cdots, \mathbf{\gamma}_b(9 \mid 9) \right\} = \\
-		\left\{
-			\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-		\right\},
-\end{multline}
-\begin{multline} \label{eq:Gamma_kb110}
-		\Gamma_b(1,10 \mid 9) = \left\{ \mathbf{\gamma}_b(1 \mid 0), \mathbf{\gamma}_b(2 \mid 1), \cdots, \mathbf{\gamma}_b(10 \mid 9) \right\} = \\
-		\left\{
-			\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-			\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
-			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-		\right\}.
-\end{multline}
+% Remove these: they don't add anything since these can be derived from the sequence
+% and the branching/merging indices. Also, this convention for \Gamma_b and \Gamma_m
+% was not defined. \Gamma_f was defined as single sequence and arguably would be
+% better restricted to the merged sequences, than the branched ones.
+%Likewise, the merged and branched shock (mode) indicator sequences are
+%\begin{multline} \label{eq:Gamma_km09}
+%	\glsadd{Gammafkmnk}\Gamma_m(0,9) = \left\{
+%		\mathbf{\gamma}_m(0), \mathbf{\gamma}_m(1), \cdots, \mathbf{\gamma}_m(9)
+%	\right\} = \\ 
+%	\left\{
+%		\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%		\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+%	\right\}.
+%\end{multline}
+%\begin{multline} \label{eq:Gamma_kb09}
+%		\Gamma_b(0,9 \mid 9) = \left\{\mathbf{\gamma}_b(0 \mid 0), \mathbf{\gamma}_b(1 \mid 1), \cdots, \mathbf{\gamma}_b(9 \mid 9) \right\} = \\
+%		\left\{
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ 1 \\ 1 \\ 1 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+%			\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \\ 0 \\ 0 \\ 1 \\ 1 \end{bmatrix},
+%		\right\},
+%\end{multline}
+%\begin{multline} \label{eq:Gamma_kb110}
+%		\Gamma_b(1,10 \mid 9) = \left\{ \mathbf{\gamma}_b(1 \mid 0), \mathbf{\gamma}_b(2 \mid 1), \cdots, \mathbf{\gamma}_b(10 \mid 9) \right\} = \\
+%		\left\{
+%			\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+%			\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+%		\right\}.
+%\end{multline}
 Although the number of branched hypotheses is time-varying, after \gls{nf} time steps the sequences repeat such that 
 \begin{equation} \label{eq:rmkrmkmNf_SFex2}
 	\mathbf{\gamma}_m(k) = \mathbf{\gamma}_m(k-N_f).
 \end{equation}
 
-As in the \gls{GPB2} algorithm, the overall estimates of the system states and outputs, \gls{xk_hat} and \gls{yk_hat}, are calculated by merging the merged estimates \gls{xmk_hat} and \gls{ymk_hat} in place of \gls{xfk_hat} and \gls{yfk_hat} in (\ref{eq:xkyk_hat_MKF}).
+As in the \gls{GPB2} algorithm, the overall estimates of the system states and outputs, \gls{xk_hat} and \gls{yk_hat}, are calculated by merging the partially-merged estimates into one overall estimate. This is achieved by substituting \gls{xmk_hat} and \gls{ymk_hat} for \gls{xfk_hat} and \gls{yfk_hat} in (\ref{eq:xkyk_hat_MKF}).
 
-%TODO: Need to rename m due to conflict with merged estimate index variable.
 \cite{robertson_detection_1995} describe a systematic procedure to choose the parameters \gls{nf}, \gls{m}, and \gls{d} and give the formula for the total probability of the modelled hypotheses as
 \begin{equation} \label{eq:p_gamma}
 	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i N_d) \leq n_\text{max}\right) = \sum_{j=0}^{n_\text{max}} \binom{n}{j} \epsilon_d^{n-j}(1-\epsilon_d)^{j},
@@ -833,6 +839,15 @@ Then, replace the random shock variable used at each sample time, $w_p(k)$ (\ref
 
 Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the detection interval length \gls{d}. In this version of the algorithm, the branching and merging procedure is only carried out at the end of each detection interval. In the steps within the detection interval, the Kalman filters are updated using the measurements, but no branching or merging occurs.
 
+Figure \ref{fig:mm-obs-seq-sf98} shows the sequences and the merging and branching steps for the 1998 version of the algorithm with the same parameters as the 1995 version in the previous example.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=15cm]{images/mm_obs_seq_sf98.pdf}
+	\caption{Sequence branching and merging example – 1998 version ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
+	\label{fig:mm-obs-seq-sf98}
+\end{figure}
+Note the two main differences when compared to the 1995 version in Figure \ref{fig:mm-obs-seq-sf95}. Firstly, the system mode indicators are the same throughout the detection interval, whereas in the 1996 version the shocks were assumed to occur in the first time instant of each detection interval only. Secondly, note that after branching, the hypotheses are maintained for the duration of the detection interval before being merged and branched again in the last step of the detection interval. The idea of these modifications is to allow $N_d-1$ Kalman filter updates (with the modified shock variance parameter \ref{eq{wpdk}) to occur before merging the estimates. This is expected to produce a better estimate of the conditional probabilities of the hypotheses in situations where it takes more than one time step to detect changes in the system such as shock occurrences.
+	
 \subsubsection{Sequence pruning} \label{subsec-pruning}
 
 \textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} (\glsadd{AFMM}\gls{AFMM}) algorithm by \cite{andersson_adaptive_1985} for \gls{RODD} estimation. The \gls{AFMM} uses sequence pruning to limit the number of filters. In this algorithm, the current hypotheses at each time step are ranked according to their conditional probabilities (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of \gls{RODD} disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, \gls{nh}.
