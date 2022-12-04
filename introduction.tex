@@ -5,7 +5,7 @@
 
 % Note: This is an un-numbered chapter.
 
-Grinding is a particle size reduction process used in mineral processing industries to liberate valuable minerals from ore as part of the concentration process. Figure \ref{fig:process-block-diagram} shows the block diagram of the steps in a typical copper concentration process.
+Grinding is a particle size reduction process used in the mineral processing industry to liberate valuable minerals from ore as part of the concentration process. Figure \ref{fig:process-block-diagram} shows the block diagram of the steps in a typical copper concentration process.
 
 \begin{figure}[htp]
 	\centering
@@ -13,13 +13,17 @@ Grinding is a particle size reduction process used in mineral processing industr
 	\caption{Processing steps in a copper concentrator} \label{fig:process-block-diagram}
 \end{figure}
 
+%TODO: JB suggested more introduction to grinding circuits and a diagram:
+%I think you miss a description of the process:- grinding machines- physical breakage- typical circuit you'll be focussing on: SAG mill
+% Doesn't have to be very long, but you could probably have a few paragraphes and a couple of figures.
+
 Effective control and optimization of grinding operations is challenging for a number of reasons---large variations in the properties of the ore feed material, multiple strongly-coupled interacting variables, long time delays, non-linear and time-varying input-output characteristics, process variables that are difficult to measure, and difficulties in identifying process models of actual operations \citep{olivier_dual_2012, gough_sag_2015, le_roux_throughput_2016, aguila-camacho_control_2017}. 
 
-Any input that has a material effect on the state or behaviour of a process and is not manipulatable by the control system is defined as a disturbance. Changes in the properties of the ore feed are a significant problem because they are difficult to measure accurately in real time and their impact on the grinding process and control system can be severe \citep{herbst_optimal_1988, garrido_multivariable_2009, remes_grinding_2010, liu_development_2018}. \cite{powell_applying_2009} summarized the effects of ore variability as follows:
+Any input that has a material effect on the state or behaviour of a process and is not manipulated by the control system is defined as a disturbance. Changes in the properties of the ore feed are a significant problem because they are difficult to measure accurately in real time and their impact on the grinding process and control system can be severe \citep{herbst_optimal_1988, garrido_multivariable_2009, remes_grinding_2010, liu_development_2018}. \cite{powell_applying_2009} summarized the effects of variations in ore properties as a chain reaction:
 
 Variable ore $\to$ variable operation $\to$ variable grind $\to$ variable recovery $\to$ lower recovery. 
 
-One of the primary goals of industrial process control is to maintain desired performance in the presence of unmeasured disturbances \citep{astrom_computer_1997}. By detecting and correcting errors in the estimates of the process outputs or states, feedback control systems are able to attenuate the effects of disturbances and thus reduce variation in process variables. This is known as the regulation problem and is common in industrial process control applications where the goal is to maintain steady-state operating conditions as closely as possible.
+One of the primary goals of industrial process control is to maintain desired performance in the presence of unmeasured disturbances \citep{astrom_computer_1997}. By detecting and correcting errors in the estimates of the process outputs or states, feedback control systems are able to attenuate the effects of disturbances and thus reduce variation in process variables. This is known as the regulation problem and is common in industrial process control applications where the goal is to maintain steady operating conditions as closely as possible.
 
 The main benefit of effective regulation is that the process variables remain close to their optimal settings. This is particularly important when there are operating constraints on critical variables that limit the overall process performance. For example, the power output capacity of an electric motor must not be exceeded for safety reasons. In such cases, it may not be possible to reject a disturbance completely. Some variations in the output variables may be unavoidable and thus, ore feed disturbances can have knock-on effects on the downstream process operations (i.e. the separation process). By reducing the magnitude of variability caused by disturbances, the process may be operated closer to the operating constraints on average, yielding a higher performance than would be achievable with high variability, and reducing the magnitude of variations transmitted to downstream processes.
 
@@ -34,8 +38,8 @@ The motivation for this work is to improve grinding process control design throu
 The work is part of a three-year research and development project by the \textit{Laboratoire d’observation et d’optimisation des procédés} (LOOP) at \textit{Universit\'e Laval}, with financial support from the Government of Qu\'ebec and Nemaska Lithium Corporation. The overall goal of the project is to determine the extent to which technological innovations could transform the current paradigm of mineral processing which is energy intensive and results in significant greenhouse gas emissions. The project consists of two main initiatives:
 
 \begin{enumerate}
-	\item Development of dynamic operating models of production units
-	\item Development of circuit configurations, process controls, and real time optimization strategies.
+	\item development of dynamic operating models of production units,
+	\item development of circuit configurations, process controls, and real time optimization strategies.
 \end{enumerate}
 
 Aligned with the second initiative, the specific goals of this work are to identify or develop disturbance models and observers specifically tailored to the types of disturbances that exist in grinding operations.
