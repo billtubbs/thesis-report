@@ -509,11 +509,11 @@ where
 
 Note that with this representation, the third and fourth model states, $x_{a,3}(k)$ and $x_{a,4}(k)$, correspond exactly to the two input disturbances, $p_1(k)$ and $p_2(k)$.
 
-The two random shocks were both simulated with the same parameters as in the previous SISO simulation, $\epsilon_i=0.01, \sigma_{w_{p,i}}=0.01$, and $b_i=100$ . However, the standard deviations of the measurement noises, $\sigma_{M,1}$ and $\sigma_{M,2}$, were $0.2$, twice as large as in the SISO simulations, and the sampling period, \gls{Ts}, was 1, twice as long.
+The two random shocks were both simulated with the same parameters as in the SISO simulation, $\epsilon_i=0.01, \sigma_{w_{p,i}}=0.01$, and $b_i=100$ . However, the standard deviations of the measurement noises, $\sigma_{M,1}$ and $\sigma_{M,2}$, were $0.2$, twice as large as in the SISO simulations, and the sampling period was twice as long.
 
-Figure \ref{fig:rod-obs-sim-2-ioplot} shows the first 600 input-output data samples from a simulation of the system with a total duration of 2500 (5000 samples). The lower of the two plots shows the input signals, $u_1(k)$, $u_2(k)$, $p_1(k)$, and $p_2(k)$. From this it can be seen that a large shock occurred to $p_1(k)$ at $t=122$ and 6 random shocks occurred to $p_2(k)$ of various magnitudes. In this simulation, there were no changes to the known input variables. The upper plot shows the simulated output measurements, $y_1(k)$ and $y_2(k)$. No input disturbances other than $w_{p,1}(k)$ and $w_{p,2}(k)$ were simulated (i.e. $w_1(k)=w_2(k)=0$).
+Figure \ref{fig:rod-obs-sim-2-ioplot} shows the first 300 input-output data samples from a simulation of the system with a total duration of 5000. The lower of the two plots shows the input signals, $u_1(k)$, $u_2(k)$, $p_1(k)$, and $p_2(k)$. In this simulation, there were no changes to the known input variables. The upper plot shows the simulated output measurements, $y_1(k)$ and $y_2(k)$. No input disturbances other than $w_{p,1}(k)$ and $w_{p,2}(k)$ were simulated (i.e. $w_1(k)=w_2(k)=0$).
 
-As in the previous experiment, a standard Kalman filter was tuned experimentally to achieve a low \gls{RMSE} of the output estimates. The details of this tuning process are included in Annex \ref{section:annex-sim-2-KF-tuning}. 
+As in the previous experiment, a standard Kalman filter was tuned experimentally to achieve a low \gls{RMSE} of the output estimates. The details of this tuning process are included in Annex \ref{section:annex-sim-2-KF-tuning} including the chosen value of $\mathbf{Q}_{\text{KF3}}$ (\ref{eq:sim-sys-sim3-KF3-Q}). 
 % Best KF tuning was $\sigma_{w_p}^2=0.0075$  After changing measurement noise, it is now it is 0.01.
 
 \begin{figure}[htp]
@@ -686,7 +686,8 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 	\end{center}
 \end{table}
 
-From these results, it was concluded that the multi-model observer proposed by \cite{robertson_method_1998} was not a good state estimator for this SISO system with one \gls{RODD} step disturbance. The sequence pruning algorithm proposed by \cite{eriksson_classification_1996}, on the other hand, seems to be a very good state estimator, significantly better than a single, well tuned Kalman filter.
+% TODO: No longer correct
+%From these results, it was concluded that the multi-model observer proposed by \cite{robertson_method_1998} was not a good state estimator for this SISO system with one \gls{RODD} step disturbance. The sequence pruning algorithm proposed by \cite{eriksson_classification_1996}, on the other hand, seems to be a very good state estimator, significantly better than a single, well tuned Kalman filter.
 
 \begin{itemize}
 	\item Summary table comparing performance metrics for all three observers (KF3, MKF-SF, MKF-SP) - metrics: MSE, MSE-transitions, MSE-steady-state, variance-steady-state, MSD-steady-state.
