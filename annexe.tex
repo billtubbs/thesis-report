@@ -17,7 +17,7 @@ Figure \ref{fig:sim-sys-2x2-KF3-tuning-sens} shows the variation in the \gls{RMS
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=14cm]{images/rod_obs_sim2_3KF_Q_seed_0.pdf}
+	\includegraphics[width=14cm]{images/rod_obs_sim3_3KF_Q_seed_0.pdf}
 	\caption{Tuning of Kalman filter KF3 – $2\times2$ system}
 	\label{fig:sim-sys-2x2-KF3-tuning}
 \end{figure}
@@ -27,9 +27,9 @@ Figure \ref{fig:sim-sys-2x2-KF3-tuning-sens} shows the variation in the \gls{RMS
 
 \subsection{Pseudo-random numbers}
 
-Many of the simulation results are sensitive to the initialization of the pseudo-random number generator (PRNG) used to simulate random processes. In particular, the \gls{RODD} step disturbance (\ref{eq:wpk2}) is simulated by generating three pseudo-random sequences, two random noise sequences and a random binary sequence to simulate the infrequent shocks.  Since the random shocks are infrequent and tend to have a large magnitude, their effect on the simulation results can be significant.
+Many of the simulation results are sensitive to the initialization of the pseudo-random number generator (PRNG) used to simulate random processes. In particular, the \gls{RODD} step disturbance (\ref{eq:wpk2}) is simulated by generating three pseudo-random sequences---two random noise sequences and a random binary sequence. Since the random shocks are infrequent and tend to have a large magnitude, their effect on the simulation results can be significant.
 
-To visualize this effect, consider the plot in Figure \ref{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}. This shows the \gls{RMSE} of the output estimates of the three Kalman filters described in Section \ref{sim-obs-lin-1} for 10 simulations, each generated with a different \textit{seed}—the seed is a scalar argument used to initialize the PRNG algorithm in a unique state. The \gls{RMSE} is calculated for every simulation duration, $t_N=0.5,1,1.5,...,2500$. The coloured areas represent the range between the lowest and the highest \gls{RMSE} obtained for the 10 different simulations of each duration. The dark lines represent the median values.
+To visualize this effect, consider the plot in Figure \ref{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}. This shows the \gls{RMSE} of the output estimates of the three Kalman filters described in Section \ref{sim-obs-lin-1} for 10 simulations, each generated with a different \textit{seed}—the seed is a scalar argument used to initialize the PRNG algorithm with a unique state. The \gls{RMSE} is calculated for every simulation duration, $N_t=0.5,1,1.5,...,2500$. The coloured areas represent the range between the lowest and the highest \gls{RMSE} obtained for the 10 different simulations of each duration. The dark lines represent the median values.
 
 \begin{figure}[htp]
 	\centering
@@ -53,7 +53,7 @@ Figure \ref{fig:sim-sys-2x2-KF3-tuning-sens} shows the results of a similar sens
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=14cm]{images/rod_obs_sim2_3KF_Q_statplot.pdf}
+	\includegraphics[width=14cm]{images/rod_obs_sim3_3KF_Q_statplot.pdf}
 	\caption{Sensitivity of Kalman filter tuning – $2\times2$ system}
 	\label{fig:sim-sys-2x2-KF3-tuning-sens}
 \end{figure}

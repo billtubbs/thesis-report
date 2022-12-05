@@ -1,6 +1,6 @@
 % !TEX encoding = UTF-8 Unicode
 \chapter{Simulation results}  \label{chap-simulation}
-
+%
 This chapter describes numerical simulations carried out to demonstrate and evaluate the disturbance models and observer designs described in Chapter \ref{chap-methods}. Section \ref{section:sim-RODDs} describes simulated examples of different \gls{RODD}s. Section \ref{section:sim-obs-lin} describes experiments to evaluate the two observers in estimating the states of two simulated systems, a single-input single-output (SISO) linear system with one \gls{RODD} step disturbance, followed by a 2-input, 2-output linear system with two \gls{RODD} step disturbances. Section \ref{section:sim-ore-SISO} describes an experiment to evaluate the observers on the simulated grinding circuit model with one output variable and a step disturbance in the ore feed mix. Section \ref{section:sim-ore-mimo-ctrl} describes an experiment to evaluate the observers in a multi-variable feedback control scenario with the simulated grinding circuit model.
 
 
@@ -25,7 +25,7 @@ This chapter describes numerical simulations carried out to demonstrate and eval
 
 \subsection{SISO linear system} \label{sim-obs-lin-1}
 
-To demonstrate state estimation in the presence of \gls{RODD}s, a single \gls{RODD} was simulated at the input to a SISO process represented by a discrete-time linear model, as shown in the functional diagram in Figure \ref{fig:sim-sys-diag-siso}. In addition to the unmeasured \gls{RODD}, $p(k)$, the process has a known input, $u(k)$, and a measured output, $y_M(k)$. The measurements are simulated by adding a random noise $v(k)$ with zero mean and standard deviation \glsadd{sigmaM}\gls{sigmaM} to the output of the process. At each sample time, the input and measured output are passed to an observer which calculates estimates of the process states, $\hat{\mathbf{x}}(k|k)$, and an estimate of the true process output, $\hat{y}(k|k)$.
+To demonstrate state estimation in the presence of \gls{RODD}s, a single \gls{RODD} was simulated at the input to a SISO process represented by a discrete-time linear model, as shown in the functional diagram in Figure \ref{fig:sim-sys-diag-siso}. In addition to the unmeasured \gls{RODD}, $p(k)$, the process has a known input, $u(k)$, and a measured output, $y_M(k)$. The measurements are simulated by adding a random noise $v(k)$ with zero mean and standard deviation \gls{sigmaM} to the output of the process. At each sample time, the input and measured output are passed to an observer which calculates estimates of the process states, $\hat{\mathbf{x}}(k|k)$, and an estimate of the true process output, $\hat{y}(k|k)$.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=11.5cm]{images/sim-sys-diag-siso.pdf}
@@ -37,7 +37,7 @@ For the purposes of this experiment, the linear model used to represent the proc
 \begin{equation}
 	\frac{B(z^{-1})}{A(z^{-1})} = \frac{0.3z^{-1}}{1-0.7z^{-1}}
 \end{equation}
-with a sampling period of $T=0.5$.
+with a sampling period, \gls{Ts}, of 0.5.
 
 The \gls{RODD} was a step disturbance created by setting
 \begin{equation}
@@ -233,7 +233,7 @@ Parameter values for the sub-optimal multi-model observer algorithms described i
 	\end{aligned}
 \end{equation}
 
-Note that $\frac{N_f}{N_d}$ represents the number of detection intervals within the fusion horizon and is always a whole number. For example, when $N_d=3$, the lengths of the fusion were 9, 15, 30, 45, and 60. However, not all combinations were simulated. Any combination with more than 500 hypotheses ($n_h>500$) or with a total probability modelled (\ref{eq:p_gamma}) less than 0.85 was rejected. The remaining 58 combinations were then evaluated by simulating the observer and calculating the \gls{RMSE} of the output estimates on the 5000 data samples from the simulated system. Tables \ref{tb:obs-sim1-popt-SF95} and \ref{tb:obs-sim1-popt-SF98} show the resulting \gls{RMSE} results for the 10 best combinations of parameter values (those with the lowest output \gls{RMSE}) for the 1995 and 1998 variants of this algorithm.
+Note that $\frac{N_f}{N_d}$ represents the number of detection intervals within the fusion horizon and is always a whole number. For example, when $N_d=3$, the lengths of the fusion were 9, 15, 30, 45, and 60. However, not all combinations were simulated. Any combination with more than 200 hypotheses ($n_h>200$) or with a total probability modelled (\ref{eq:p_gamma}) less than 0.85 was rejected. The remaining 58 combinations were then evaluated by simulating the observer and calculating the \gls{RMSE} of the output estimates on the 5000 data samples from the simulated system. Tables \ref{tb:obs-sim1-popt-SF95} and \ref{tb:obs-sim1-popt-SF98} show the resulting \gls{RMSE} results for the 10 best combinations of parameter values (those with the lowest output \gls{RMSE}) for the 1995 and 1998 variants of this algorithm.
 
 \begin{table}[hb]
 	\begin{center}
@@ -334,10 +334,9 @@ Combinations where rejected when $n_h - N_\text{min} < 1$, or in other words, wh
 \end{table}
 
 As above, the differences between the \gls{RMSE}s of the best 10 combinations are small, indicating that the choice of parameters from these combinations is not critical. The first combination($n_h=10,N_\text{min}=7$) was chosen for the observer labelled `MKF--SP1' in the evaluation below. Table \ref{tb:obs-params-sim1} contains a summary of the parameters chosen for all the observers evaluated below.
-
 \begin{table}[hb]
 	\begin{center}
-		\caption{Observers parameters for SISO linear system.} \label{tb:obs-params-sim1}
+		\caption{Observer parameters for SISO linear system.} \label{tb:obs-params-sim1}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.1\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
 			& KF3 & MKF--SF95 & MKF--SP \\
@@ -417,13 +416,15 @@ Figure \ref{fig:rod-obs-sim1-xest-RMSE-bar} compares the \gls{RMSE}s of the stat
 	\label{fig:rod-obs-sim1-xest-RMSE-bar}
 \end{figure}
 
-Because these processes are stochastic, it is important to run simulations of sufficient duration to be confident that the results are representative of the expected performance of the observers. Figure \ref{fig:rod-obs-sim1-yest-all-seed-RMSE-box} provides an indication of the sensitivity of the \gls{RMSE} values to the initialization of the pseudo-random number generator used in these simulations. This figure shows the results of 10 simulations of 5000 samples each, carried out with different initializations. From these results it can be seen that the \gls{RMSE} values are somewhat sensitive to the random initialization but that the differences between the three observers are significant enough and highly unlikely to be a result of the random initialization. Therefore, these simulations of duration 5000 sample periods may be considered sufficient for the purposes of evaluating the relative performance of these observers.
+Because these processes are stochastic, it is important to run simulations of sufficient duration to be confident that the results are representative of the expected performance of the observers. Figure \ref{fig:rod-obs-sim1-yest-all-seed-RMSE-box} provides an indication of the sensitivity of the \gls{RMSE} values to the initialization of the pseudo-random number generator used in these simulations. This figure shows the results of 10 simulations of 5000 samples each, carried out with different initializations. From these results it can be seen that the \gls{RMSE} values are somewhat sensitive to the random initialization but that the differences between the two multi-model observers and the Kalman filter are significant and unlikely to be a result of the random initialization. Therefore, these simulations of duration 5000 sample periods may be considered sufficient for the purposes of evaluating the relative performance of these observers.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_err_box.pdf}
 	\caption{Sensitivity of output estimation errors to random initialization – SISO system}
 	\label{fig:rod-obs-sim1-yest-all-seed-RMSE-box}
 \end{figure}
+
+Figure \ref{fig:rod-obs-sim1-yest-all-seed-RMSE-box} shows that the multi-model observers are a significant improvement on the best single Kalman filter. However, there is very little difference between the two in terms of RMSE. The performance of the two multiple-model observers is close to that of the scheduled Kalman filter, which is the best that could be achieved given the true shock sequence, $\Gamma(k)$.
 
 % Plots for analysis of SF performance
 %
@@ -450,29 +451,40 @@ Because these processes are stochastic, it is important to run simulations of su
 
 \subsection{MIMO linear system} \label{sim-obs-lin-2}
 
-To investigate the performance of the observers in estimating the states of a \textit{multiple-input, multiple output} (MIMO) system, a 2-input, 2-output ($2\times2$) process model was chosen, with two independent \gls{RODD} step disturbances added to each manipulated input, as shown in the functional diagram in Figure \ref{fig:sim-sys-diag-2x2}. 
+\cite{robertson_method_1998} stated that in the case of more than one RODD disturbance, it often takes many sampling intervals to discriminate among the possible disturbances. The main motivation for the detection intervals used in their approach is to achieve a longer \textit{detection horizon} without requiring a very large number of hypotheses. To evaluate this particular problem, a \textit{multiple-input, multiple output} (MIMO) system with a 2-input, 2-output ($2\times2$) process model was chosen. The system has two independent \gls{RODD} step disturbances added to each manipulated input, as shown in the functional diagram in Figure \ref{fig:sim-sys-diag-2x2}. 
 
 The model used to simulate the process is a discrete-time linear model derived from the continuous-time system,
+% 2x2 system #1 - see sys_rodin_step_2x2sym.m
+%\begin{equation} \label{eq:sim-sys-siso--ct}
+%	\mathbf{G}(s) = \left[\begin{array}{cc}
+%		G_{11}(s) & G_{12}(s)  \\
+%		G_{21}(s) & G_{22}(s)  \\
+%	\end{array}\right] = \left[\begin{array}{cc}
+%		\frac{1}{1+8.5s} & \frac{-0.5}{1+8.5s}  \\
+%		\frac{-0.5}{1+8.5s} & \frac{1}{1+8.5s}  \\
+%	\end{array}\right]
+%\end{equation}
+% 2x2 system #2 - see sys_rodin_step_2x2sym2.m
 \begin{equation} \label{eq:sim-sys-siso--ct}
-	\mathbf{G}_p(s) = \left[\begin{array}{cc}
+	\mathbf{G}(s) = \left[\begin{array}{cc}
 		G_{11}(s) & G_{12}(s)  \\
 		G_{21}(s) & G_{22}(s)  \\
 	\end{array}\right] = \left[\begin{array}{cc}
-		\frac{1}{1+8.5s} & \frac{-0.5}{1+8.5s}  \\
-		\frac{-0.5}{1+8.5s} & \frac{1}{1+8.5s}  \\
+		\frac{1}{1+8.5s} & \frac{0.5}{1+8.5s}  \\
+		\frac{0.5}{1+8.5s} & \frac{1}{1+8.5s}  \\
 	\end{array}\right]
 \end{equation}
-where $s$ is the Laplace variable.  This was converted to a discrete-time model with a sampling period of $T=1$. The discrete-time state space representation used to simulate the augmented system including disturbances was
+where $s$ is the Laplace variable.  This model was chosen because the dynamics of each input-output combination have the same time constants. The only differences are in the magnitude of the static gains. The model was converted to a discrete-time model with a sampling period, \gls{Ts} of 1. The discrete-time state space model used in the observers to simulate the augmented system including disturbance models was
 \begin{equation} \label{eq:sim-sys-2x2-ss-aug}
 	\begin{split}
 		\mathbf{x}_{a}(k+1) & =\left[\begin{array}{cccc}
-			0.8890 & 0 & 1 & -0.5 \\
-			0 & 0.8890 & -0.5 & 1 \\
+			0.8890 & 0 & 1 & 0.5 \\
+			0 & 0.8890 & 0.5 & 1 \\
 			0 & 0 & 1 & 0 \\
 			0 & 0 & 0 & 1
 		\end{array}\right] \mathbf{x}_{a}(k) + \left[\begin{array}{cc}
-			1 & -0.5 \\
-			-0.5 & 1
+			1 & 0.5 \\
+			0.5 & 1
 		\end{array}\right] \mathbf{u}(k) + \mathbf{w}_{a}(k) \\
 		y(k) & =\left[\begin{array}{cccc}
 			0.1110 & 0 & 0 & 0 \\
@@ -495,7 +507,11 @@ where
 	\end{array}\right].
 \end{equation}
 
-Random shocks with probabilities $\epsilon=\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal, \sigma_{wp}=0.01$, and $b=100$ were simulated. Figure \ref{fig:rod-obs-sim-2-ioplot} shows the first 600 input-output data samples from a simulation of the system with a total duration of 2500 (5000 samples). The lower of the two plots shows the input signals, $u_1(k)$, $u_2(k)$, $p_1(k)$, and $p_2(k)$. From this it can be seen that a large shock occurred to $p_1(k)$ at $t=122$ and 6 random shocks occurred to $p_2(k)$ of various magnitudes. In this simulation, there were no changes to the known input variables. The upper plot shows the simulated output measurements, $y_1(k)$ and $y_2(k)$. The standard deviation of the measurement noises, $\sigma_{M,1}$ and $\sigma_{M,2}$, were both $0.2$. No input disturbances other than $w_{p,1}(k)$ and $w_{p,2}(k)$ were simulated (i.e. $w_1(k)=w_2(k)=0$).
+Note that with this representation, the third and fourth model states, $x_{a,3}(k)$ and $x_{a,4}(k)$, correspond exactly to the two input disturbances, $p_1(k)$ and $p_2(k)$.
+
+The two random shocks were both simulated with the same parameters as in the previous SISO simulation, $\epsilon_i=0.01, \sigma_{w_{p,i}}=0.01$, and $b_i=100$ . However, the standard deviations of the measurement noises, $\sigma_{M,1}$ and $\sigma_{M,2}$, were $0.2$, twice as large as in the SISO simulations, and the sampling period, \gls{Ts}, was 1, twice as long.
+
+Figure \ref{fig:rod-obs-sim-2-ioplot} shows the first 600 input-output data samples from a simulation of the system with a total duration of 2500 (5000 samples). The lower of the two plots shows the input signals, $u_1(k)$, $u_2(k)$, $p_1(k)$, and $p_2(k)$. From this it can be seen that a large shock occurred to $p_1(k)$ at $t=122$ and 6 random shocks occurred to $p_2(k)$ of various magnitudes. In this simulation, there were no changes to the known input variables. The upper plot shows the simulated output measurements, $y_1(k)$ and $y_2(k)$. No input disturbances other than $w_{p,1}(k)$ and $w_{p,2}(k)$ were simulated (i.e. $w_1(k)=w_2(k)=0$).
 
 As in the previous experiment, a standard Kalman filter was tuned experimentally to achieve a low \gls{RMSE} of the output estimates. The details of this tuning process are included in Annex \ref{section:annex-sim-2-KF-tuning}. 
 % Best KF tuning was $\sigma_{w_p}^2=0.0075$  After changing measurement noise, it is now it is 0.01.
@@ -509,21 +525,21 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_ioplot.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_ioplot.pdf}
 	\caption{Simulation of linear MIMO system with two \gls{RODD}s}
 	\label{fig:rod-obs-sim-2-ioplot}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est1_SF1.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_y_est1_SF95_SF1.pdf}
 	\caption{Estimates by sequence fusion observer –  $2\times2$ system}
 	\label{fig:rod-obs-sim2-yest-1-SF}
 \end{figure}
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est1_SP1.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_y_est1_SP1.pdf}
 	\caption{Estimates by sequence pruning observer –  $2\times2$ system}
 	\label{fig:rod-obs-sim2-yest-1-SP}
 \end{figure}
@@ -536,7 +552,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 %\end{figure}
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim2_cum_err.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_cum_err_y2.pdf}
 	\caption{Cumulative sum of squared errors of output estimates –  $2\times2$ system}
 	\label{fig:sim-sys-sim2-MKF-cumerr}
 \end{figure}
@@ -545,7 +561,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 %\begin{figure}[htp]
 %	\centering
 %	\includegraphics[width=13cm]{images/rod_obs_sim2_cum_err2.pdf}
-%	\caption{Cumulative errors of multi-model observer output estimates –  $2\times2$ system}
+%	\caption{Cumulative errors of multi-model observer output estimates –  $2\t_y2mes2$ system}
 %	\label{fig:sim-sys-sim2-MKF-cumerr2}
 %\end{figure}
 
@@ -558,7 +574,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=11cm]{images/rod_obs_sim2_all_seed_y_err_box.pdf}
+	\includegraphics[width=11cm]{images/rod_obs_sim3_all_seed_y_err_box.pdf}
 	\caption{Root-mean-squared errors of output estimates – $2\times2$ system}
 	\label{fig:rod-obs-sim2-yest-all-seed-RMSE-box}
 \end{figure}
@@ -570,41 +586,18 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			\gls{nf} & \gls{m}  & \gls{d}  & \gls{nh} & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
 			\hline
-			% Results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
-%			10 &   2 &   1 & 331 & 0.9990 & 0.0644 \\
-%			6 &   2 &   2 &  22 & 0.8863 & 0.0670 \\
-%			6 &   3 &   2 &  42 & 0.8864 & 0.0670 \\
-%			5 &   3 &   1 & 452 & 1.0000 & 0.0680 \\
-%			5 &   2 &   1 & 116 & 0.9999 & 0.0681 \\
-%			6 &   1 &   2 &   7 & 0.8835 & 0.0683 \\
-%			10 &   1 &   1 &  27 & 0.9841 & 0.0684 \\
-%			5 &   1 &   1 &  17 & 0.9962 & 0.0688 \\
-%			15 &   1 &   1 &  37 & 0.9653 & 0.0713 \\
-%			3 &   3 &   1 & 138 & 1.0000 & 0.0739 \\
-			% See script rod_obs_sim2_MKF_SF95_popt_table.m
-			% 30-Nov-2022 17:56:06 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
-%			20 &   2 &   2 & 211 & 0.9930 & 0.0640 \\
-%			15 &   3 &   3 & 452 & 0.9999 & 0.0644 \\
-%			10 &   2 &   1 & 331 & 0.9990 & 0.0644 \\
-%			30 &   2 &   3 & 331 & 0.9795 & 0.0644 \\
-%			15 &   2 &   3 & 116 & 0.9973 & 0.0644 \\
-%			10 &   2 &   2 &  56 & 0.9991 & 0.0646 \\
-%			10 &   3 &   2 & 176 & 1.0000 & 0.0646 \\
-%			25 &   3 &   5 & 176 & 0.9990 & 0.0648 \\
-%			15 &   2 &   5 &  22 & 0.9979 & 0.0649 \\
-%			9 &   2 &   3 &  58 & 0.9995 & 0.0649 \\
 			% See script rod_obs_sim3_MKF_SF95_popt_table.m
-			% 01-Dec-2022 15:04:33 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
-			30 &   2 &   3 & 331 & 0.9795 & 0.0877 \\
-			15 &   2 &   3 & 116 & 0.9973 & 0.0878 \\
-			15 &   3 &   3 & 452 & 0.9999 & 0.0880 \\
-			9 &   1 &   3 &  13 & 0.9904 & 0.0882 \\
-			20 &   2 &   2 & 211 & 0.9930 & 0.0887 \\
-			9 &   2 &   3 &  58 & 0.9995 & 0.0887 \\
-			9 &   3 &   3 & 138 & 1.0000 & 0.0888 \\
-			10 &   1 &   1 &  27 & 0.9841 & 0.0888 \\
-			10 &   2 &   1 & 331 & 0.9990 & 0.0889 \\
-			10 &   1 &   2 &  11 & 0.9859 & 0.0892 \\
+			% 05-Dec-2022 00:14:39 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
+			15 &   2 &   3 & 116 & 0.9973 & 0.0736 \\
+			10 &   2 &   2 & 116 & 0.9991 & 0.0740 \\
+			10 &   1 &   1 &  27 & 0.9841 & 0.0744 \\
+			10 &   1 &   2 &  17 & 0.9859 & 0.0745 \\
+			9 &   2 &   3 &  58 & 0.9995 & 0.0746 \\
+			9 &   3 &   3 & 138 & 1.0000 & 0.0746 \\
+			9 &   1 &   3 &  13 & 0.9904 & 0.0749 \\
+			15 &   3 &   5 & 138 & 0.9999 & 0.0753 \\
+			15 &   2 &   5 &  58 & 0.9979 & 0.0754 \\
+			25 &   2 &   5 & 116 & 0.9891 & 0.0755 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -617,41 +610,18 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			\gls{nf} & \gls{m}  & \gls{d}  & \gls{nh} & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
 			\hline
-			% See script rod_obs_sim2_MKF_SF98_popt_table.m
-			% 30-Nov-2022 18:04:56 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
-%			10 &   2 &   1 & 331 & 0.9990 & 0.0644 \\
-%			5 &   3 &   1 & 452 & 1.0000 & 0.0680 \\
-%			5 &   2 &   1 & 116 & 0.9999 & 0.0681 \\
-%			10 &   1 &   1 &  27 & 0.9841 & 0.0684 \\
-%			5 &   1 &   1 &  17 & 0.9962 & 0.0688 \\
-%			15 &   1 &   1 &  37 & 0.9653 & 0.0713 \\
-%			3 &   3 &   1 & 138 & 1.0000 & 0.0739 \\
-%			3 &   2 &   1 &  58 & 1.0000 & 0.0740 \\
-%			3 &   1 &   1 &  13 & 0.9988 & 0.0743 \\
-%			20 &   1 &   1 &  47 & 0.9411 & 0.0759 \\
-%			% 29-Nov-2022 18:55:40 results with seed = 0, sigma_M = [0.2 0.2], d_min = 2
-%			10 &   2 &   2 & 331 & 0.9930 & 0.0782 \\
-%			5 &   3 &   2 & 452 & 1.0000 & 0.0791 \\
-%			5 &   2 &   2 & 116 & 0.9991 & 0.0791 \\
-%			5 &   1 &   2 &  17 & 0.9859 & 0.0832 \\
-%			3 &   3 &   2 & 138 & 1.0000 & 0.0834 \\
-%			3 &   2 &   2 &  58 & 0.9998 & 0.0834 \\
-%			3 &   1 &   2 &  13 & 0.9956 & 0.0864 \\
-%			10 &   2 &   3 & 331 & 0.9795 & 0.0878 \\
-%			10 &   1 &   2 &  27 & 0.9444 & 0.0881 \\
-%			5 &   3 &   3 & 452 & 0.9999 & 0.0882 \\
 			% See script rod_obs_sim3_MKF_SF98_popt_table.m
-			% 01-Dec-2022 15:08:41 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
-			20 &   2 &   2 & 331 & 0.9930 & 0.0888 \\
-			10 &   1 &   1 &  27 & 0.9841 & 0.0888 \\
-			10 &   2 &   1 & 331 & 0.9990 & 0.0889 \\
-			10 &   3 &   2 & 452 & 1.0000 & 0.0891 \\
-			10 &   2 &   2 & 116 & 0.9991 & 0.0891 \\
-			10 &   1 &   2 &  17 & 0.9859 & 0.0898 \\
-			6 &   3 &   2 & 138 & 1.0000 & 0.0904 \\
-			6 &   2 &   2 &  58 & 0.9998 & 0.0904 \\
-			6 &   1 &   2 &  13 & 0.9956 & 0.0905 \\
-			15 &   1 &   1 &  37 & 0.9653 & 0.0907 \\
+			% 04-Dec-2022 22:57:10 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
+			10 &   1 &   1 &  27 & 0.9841 & 0.0744 \\
+			15 &   1 &   1 &  37 & 0.9653 & 0.0780 \\
+			5 &   1 &   1 &  17 & 0.9962 & 0.0786 \\
+			5 &   2 &   1 & 116 & 0.9999 & 0.0790 \\
+			20 &   1 &   1 &  47 & 0.9411 & 0.0823 \\
+			10 &   2 &   2 & 116 & 0.9991 & 0.0856 \\
+			3 &   1 &   1 &  13 & 0.9988 & 0.0861 \\
+			3 &   2 &   1 &  58 & 1.0000 & 0.0862 \\
+			3 &   3 &   1 & 138 & 1.0000 & 0.0862 \\
+			10 &   1 &   2 &  17 & 0.9859 & 0.0868 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -664,29 +634,18 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
 			\gls{nh} & \gls{nmin} & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
 			\hline
-			% 29-Nov-2022 18:31:09 results with seed = 0, sigma_M = [0.2 0.2]
-%			14 &   6 & 0.0705  \\
-%			32 &  12 & 0.0720  \\
-%			32 &   9 & 0.0723  \\
-%			25 &   5 & 0.0723  \\
-%			32 &   5 & 0.0724  \\
-%			25 &   6 & 0.0724  \\
-%			25 &   1 & 0.0724  \\
-%			32 &   7 & 0.0724  \\
-%			32 &   4 & 0.0724  \\
-%			32 &   6 & 0.0724  \\
 			% See script rod_obs_sim3_MKF_SP_popt_table.m
-			% 01-Dec-2022 15:07:09 results with seed = 0, sigma_M = [0.2 0.2]
-			32 &   4 & 0.0875  \\
-			32 &   3 & 0.0875  \\
-			32 &   5 & 0.0876  \\
-			32 &   6 & 0.0877  \\
-			25 &   4 & 0.0877  \\
-			32 &   2 & 0.0877  \\
-			32 &   7 & 0.0878  \\
-			25 &   5 & 0.0879  \\
-			25 &   3 & 0.0879  \\
-			25 &   2 & 0.0880  \\
+			% 05-Dec-2022 00:42:18 results with seed = 0, sigma_M = [0.2 0.2]
+			46 &  21 & 0.0765  \\
+			24 &   4 & 0.0770  \\
+			46 &  16 & 0.0772  \\
+			46 &  12 & 0.0773  \\
+			24 &   3 & 0.0773  \\
+			46 &   7 & 0.0773  \\
+			46 &   9 & 0.0773  \\
+			46 &   6 & 0.0773  \\
+			46 &   5 & 0.0773  \\
+			68 &  21 & 0.0773  \\
 		\end{tabular}
 	\end{center}
 \end{table}
@@ -695,28 +654,33 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 	\begin{center}
 		\caption{Observer parameters for $2\times2$ linear system.} \label{tb:obs-params-sim2}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
-		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
-			& KF1 & KF2 & KF3 & MKF--SF1 & MKF--SP1 \\
+		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.11\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
+			& KF3 & MKF--SF95 & MKF--SF1 & MKF--SP1 \\
 			\hline
-			Type & Kalman filter & Kalman filter & Kalman filter & Multi-model Kalman filter & Multi-model Kalman filter \\
-			Sub-optimal algorithm & - & - & - & Sequence fusion & Sequence pruning \\
+			Type & Kalman filter & Multi-model Kalman filter & Multi-model Kalman filter & Multi-model Kalman filter \\
+			Sub-optimal algorithm & - & Sequence fusion 95 & Sequence fusion & Sequence pruning \\
 			\hline
-			Parameters &  &  &  & &  \\
-			$\mathbf{Q}$ & $\mathbf{Q}_0$ & $\mathbf{Q}_1$ & $\mathbf{Q}_{opt}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ \\
-			$\mathbf{R}$ & $\left[\begin{smallmatrix}0.1^2 & 0 \\ 0 & 0.1^2\end{smallmatrix}\right]$
-				& $\left[\begin{smallmatrix}0.1^2 & 0 \\ 0 & 0.1^2\end{smallmatrix}\right]$
-				& $\left[\begin{smallmatrix}0.1^2 & 0 \\ 0 & 0.1^2\end{smallmatrix}\right]$
-				& $\left[\begin{smallmatrix}0.1^2 & 0 \\ 0 & 0.1^2\end{smallmatrix}\right]$
-				& $\left[\begin{smallmatrix}0.1^2 & 0 \\ 0 & 0.1^2\end{smallmatrix}\right]$ \\
-			$\mathbf{P}(0)$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ \\
-			\gls{nh} & 1 & 1 & 1 & 56 & 19 \\
-			\gls{nf} & - & - & - & 25 & - \\
-			\gls{m} & - & - & - & 2 & - \\
-			\gls{d} & - & - & - & 5 & - \\
-			\gls{nmin} & - & - & - & - & 5 \\
-			\gls{epsilon} & - & - & - & 0.005 & 0.005 \\
-			\gls{sigmawp} & - & - & - & 0.01 & 0.01 \\
-			\gls{b} & - & - & - & 100 & 100 \\
+			Parameters &  &  & &  \\
+			$\mathbf{Q}$ & $\mathbf{Q}_{opt}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ \\
+			$\mathbf{R}$ & $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
+				& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
+				& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
+				& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$ \\
+			$\mathbf{P}(0)$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ \\
+			\gls{nh} & 1 & 116 & 27 & 46 \\
+			\gls{nf} & - & 15 & 10 & - \\
+			\gls{m} & - & 2 & 1 & - \\
+			\gls{d} & - & 3 & 1 & - \\
+			\gls{nmin} & - & - & - & 21 \\
+			\gls{epsilon} & - & $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$
+				& $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$ 
+				& $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$ \\
+			\gls{sigmawp} & - & $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$
+				& $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$ 
+				& $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$ \\
+			\gls{b} & - & $\begin{bsmallmatrix}100 & 100\end{bsmallmatrix}^\intercal$
+			& $\begin{bsmallmatrix}100 & 100\end{bsmallmatrix}^\intercal$ 
+			& $\begin{bsmallmatrix}100 & 100\end{bsmallmatrix}^\intercal$ \\
 			\hline
 		\end{tabular}
 	\end{center}
