@@ -111,7 +111,7 @@ where $\mathbf{w}_p(k)$ is a vector of two independent random shock signals gene
 
 \textit{Hidden Markov models} (\gls{HMM}) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
-To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state \gls{gamma_k} with two possible values:
+To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state \gls{gammak} with two possible values:
 \begin{equation} \label{eq:gamma-k}
 	\gamma(k) = 
 	\begin{cases*}
@@ -122,7 +122,7 @@ To illustrate the basic concept, we can define the state of the random shock gen
 
 % Add terms to Glossary
 \glsadd{pagb} \glsadd{PrAgB}
-$\gamma(k)=0$ represents the system mode when no shock occurs and $\gamma(k)=1$ represents the mode when a shock occurs. The switching of \gls{gamma_k} can then be defined by a \textit{transition matrix}, $\Pi$, which describes the probabilities of transitioning from the mode at time $k$ to the mode at time $k+1$:
+$\gamma(k)=0$ represents the system mode when no shock occurs and $\gamma(k)=1$ represents the mode when a shock occurs. The switching of \gls{gammak} can then be defined by a \textit{transition matrix}, $\Pi$, which describes the probabilities of transitioning from the mode at time $k$ to the mode at time $k+1$:
 \begin{equation} \label{eq:Pi}
 	\begin{aligned}
 	\Pi &= \left(\pi_{ij} \forall i,j\in \{1,2,...,n_j\}\right) \\
@@ -817,7 +817,7 @@ As in the \gls{GPB2} algorithm, the overall estimates of the system states and o
 
 \cite{robertson_detection_1995} describe a systematic procedure to choose the parameters \gls{nf}, \gls{m}, and \gls{d} and give the formula for the total probability of the modelled hypotheses as
 \begin{equation} \label{eq:p_gamma}
-	\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i N_d) \leq n_\text{max}\right) = \sum_{j=0}^{n_\text{max}} \binom{n}{j} \epsilon_d^{n-j}(1-\epsilon_d)^{j},
+	\glsadd{beta}\beta=\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i N_d) \leq n_\text{max}\right) = \sum_{j=0}^{n_\text{max}} \binom{n}{j} \epsilon_d^{n-j}(1-\epsilon_d)^{j},
 \end{equation}
 where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ detection intervals. They recommend that the total probability should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
 

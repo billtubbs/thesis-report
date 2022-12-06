@@ -36,6 +36,91 @@ Therefore the process noise covariance matrix of KF3 was
 	\end{aligned}
 \end{equation}
 
+\section{Tuning of MKF observers for MIMO linear system} \label{section:annex-sim-2-MKF-tuning}
+
+ In the case of the sequence fusion algorithm, the candidate parameter values were chosen from the same sets as those used for the SISO system (\ref{eq:sim-sys-siso-MKF-SF-param-values}). Again, only observers with 200 hypotheses or less and a total hypothesis probability, \gls{beta), greater than 0.85 were tested. For the selection of the sequence pruning algorithm parameters, the possible number of hypotheses was increased to 200 since it was expected to require more hypothesis sequences in the MIMO experiment. The candidate values for the sequence pruning parameters were
+\begin{equation} \label{eq:sim-sys-mimo-MKF-SP-param-values}
+	\begin{aligned}
+		n_h &\in \left\{ 24, 46, 68, 90, 112, 134, 156, 178, 200 \right\},  \\
+		N_\text{min} &\in \left\{1, 2, 3, 4, 5, 6, 7, 9, 12, 16, 21\right\}.
+	\end{aligned}
+\end{equation}
+
+As in the SISO experiment, the resulting observers were simulated on a set of 5000 input-output samples from the simulated process (\ref{eq:sim-sys-mimo-ct}), and the RMSEs calculated. Tables \ref{tb:obs-sim2-popt-SF95}, \ref{tb:obs-sim2-popt-SF98}, and \ref{tb:obs-sim2-popt-SP} show the results of the 10 best combinations of parameter values for the two sequence fusion algorithms (1995 and 1998 versions), and the sequence pruning algorithm.
+\begin{table}[hb]
+	\begin{center}
+		\caption{Multi-model observer parameter search results – MKF--SF95.} \label{tb:obs-sim2-popt-SF95}
+		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
+		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
+			\gls{nf} & \gls{m}  & \gls{d}  & \gls{nh} & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
+			\hline
+			% See script rod_obs_sim3_MKF_SF95_popt_table.m
+			% 05-Dec-2022 00:14:39 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
+			15 &   2 &   3 & 116 & 0.9973 & 0.0736 \\
+			10 &   2 &   2 & 116 & 0.9991 & 0.0740 \\
+			10 &   1 &   1 &  27 & 0.9841 & 0.0744 \\
+			10 &   1 &   2 &  17 & 0.9859 & 0.0745 \\
+			9 &   2 &   3 &  58 & 0.9995 & 0.0746 \\
+			9 &   3 &   3 & 138 & 1.0000 & 0.0746 \\
+			9 &   1 &   3 &  13 & 0.9904 & 0.0749 \\
+			15 &   3 &   5 & 138 & 0.9999 & 0.0753 \\
+			15 &   2 &   5 &  58 & 0.9979 & 0.0754 \\
+			25 &   2 &   5 & 116 & 0.9891 & 0.0755 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\begin{table}[hb]
+	\begin{center}
+		\caption{Multi-model observer parameter search results – MKF--SF98.} \label{tb:obs-sim2-popt-SF98}
+		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
+		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
+			\gls{nf} & \gls{m}  & \gls{d}  & \gls{nh} & $\beta$ & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
+			\hline
+			% See script rod_obs_sim3_MKF_SF98_popt_table.m
+			% 04-Dec-2022 22:57:10 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
+			10 &   1 &   1 &  27 & 0.9841 & 0.0744 \\
+			15 &   1 &   1 &  37 & 0.9653 & 0.0780 \\
+			5 &   1 &   1 &  17 & 0.9962 & 0.0786 \\
+			5 &   2 &   1 & 116 & 0.9999 & 0.0790 \\
+			20 &   1 &   1 &  47 & 0.9411 & 0.0823 \\
+			10 &   2 &   2 & 116 & 0.9991 & 0.0856 \\
+			3 &   1 &   1 &  13 & 0.9988 & 0.0861 \\
+			3 &   2 &   1 &  58 & 1.0000 & 0.0862 \\
+			3 &   3 &   1 & 138 & 1.0000 & 0.0862 \\
+			10 &   1 &   2 &  17 & 0.9859 & 0.0868 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+In the case of the 1995 version of the sequence fusion algorithm, the lowest RMSEs were achieved with a detection interval, \gls{d}, in the range 1 to 5, whereas, for the SISO system no detection interval was needed ($N_d=1$). Based on these results, a sequence fusion observer labelled `MKF--SF95' was simulated with the parameters  $N_f=15$, $n_\text{max}=2$, and $N_d=3$. However, in the case of the 1998 version of the sequence fusion algorithm, the detection interval was 1 in nearly all the top 10 results (note that when the detection interval is 1, the algorithms are identical). Therefore, in this case, as in the SISO experiment, the 1998 version of the algorithm was redundant. However, in the interests of comparing it, an observer labelled `MKF--SF2' was simulated with the parameters $N_f=10$, $n_\text{max}=2$, and $N_d=2$. The sequence fusion observers both require 116 Kalman filters, although it should be noted that various other combinations with less hypotheses also performed well.
+
+\begin{table}[hb]
+	\begin{center}
+		\caption{Multi-model observer parameter search results – MKF--SP.} \label{tb:obs-sim2-popt-SP}
+		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
+		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.24\textwidth}}
+			\gls{nh} & \gls{nmin} & $\operatorname{RMSE}(\hat{Y}(N),Y(N))$  \\
+			\hline
+			% See script rod_obs_sim3_MKF_SP_popt_table.m
+			% 05-Dec-2022 00:42:18 results with seed = 0, sigma_M = [0.2 0.2]
+			46 &  21 & 0.0765  \\
+			24 &   4 & 0.0770  \\
+			46 &  16 & 0.0772  \\
+			46 &  12 & 0.0773  \\
+			24 &   3 & 0.0773  \\
+			46 &   7 & 0.0773  \\
+			46 &   9 & 0.0773  \\
+			46 &   6 & 0.0773  \\
+			46 &   5 & 0.0773  \\
+			68 &  21 & 0.0773  \\
+		\end{tabular}
+	\end{center}
+\end{table}
+For the sequence pruning algorithm, the best combination of parameters, $n_h=46$ and $N_\text{min}=21$, was chosen, although the combination with 24 hypotheses performed almost as well. A summary of all the parameter values used in the MIMO simulations is included in Table \ref{tb:obs-params-sim2} in the main body of the report.
+
+
 \section{Sensitivity analyses}
 
 \subsection{Pseudo-random numbers}

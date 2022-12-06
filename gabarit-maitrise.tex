@@ -41,18 +41,35 @@
 % According to this, these warnings can be ignored:
 % https://tex.stackexchange.com/questions/163479/glossaries-conflict-with-memoir
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 % General notationis
-\newglossaryentry{qm1}{name=$q^{-1}$, description={backwards shift operator}}
-\newglossaryentry{Ndist}{name={$\mathcal{N}(0,\sigma_{w_p}^2)$}, description={normal distribution with mean zero and variance $\sigma_{w_p}^2$}}
-\newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
+\newglossaryentry{qm1}{name={$q^{-1}$}, description={backwards shift operator}}
+\newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, 
+	description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
+\newglossaryentry{Ndist}{name={$\mathcal{N}(0,\sigma_{w_p}^2)$}, 
+	description={normal distribution with mean zero and variance $\sigma_{w_p}^2$}}
 \newglossaryentry{pagb}{name={$p(a \mid b)$}, description={probability density of $a$ given $b$}}
 \newglossaryentry{PrAgB}{name={$\Pr(A \mid B)$}, description={probability of $A$ given $B$}}
 \newglossaryentry{nabla}{name={$\nabla$}, description={defined as $1-q^{-1}$}}
-\newglossaryentry{gamma_k}{name={$\gamma(k)$}, description={random shock indicator at time $k$}}
+\newglossaryentry{gammak}{name={$\gamma(k)$}, description={random shock indicator at time $k$}}
 \newglossaryentry{identity}{name={$\mathbf{I}_n$}, description={($n \times n$) identify matrix}}
 
 % Signals
-\newglossaryentry{Ts}{name=$T_s$, description={sampling interval in units of time}}
+\newglossaryentry{Ts}{name={$T_s$}, description={sampling interval in units of time}}
 \newglossaryentry{uk}{name=$\mathbf{u}(k)$, description={system inputs at time $k$}}
 \newglossaryentry{xk}{name=$\mathbf{x}(k)$, description={system states at time $k$}}
 \newglossaryentry{yk}{name=$\mathbf{y}(k)$, description={system outputs at time $k$}}
@@ -127,6 +144,7 @@
 \newglossaryentry{d}{name={$N_d$}, description={sequence fusion parameter: shock spacing parameter, or length of detection interval in number of sample periods}}
 \newglossaryentry{nmin}{name={$N_\text{min}$}, description={sequence pruning parameter: maximum number of shock occurences within the fusion horizon}}
 \newglossaryentry{epsilond}{name={$\epsilon_d$}, description={sequence fusion parameter: probability of at least one shock within the detection interval}}
+\newglossaryentry{beta}{name={$\beta$}, description={sequence fusion parameter: total probability of the modelled shock hypothesis sequences}}
 \newglossaryentry{xfk_hat}{name={$\mathbf{\hat{x}}_f(k \mid k)$}, description={estimates of system states at time $k$ for hypothesis $m$}}
 \newglossaryentry{yfk_hat}{name={$\mathbf{\hat{y}}_f(k \mid k)$}, description={estimates of system outputs at time $k$ for hypothesis $m$}}
 \newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, description={state estimation error covariance at time $k$ for hypothesis $m$}}
