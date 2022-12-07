@@ -36,7 +36,7 @@ In this formulation, \gls{sigmawp} represents the standard deviation of the nois
 
 Figure \ref{fig:wpk-pdf} illustrates the probability density of \gls{wpk} in the case of (\ref{eq:wpk2}) with $\sigma_{w_p}=0.01$, $b=100$, and $\epsilon=0.01$. Although it is difficult to discern from the plot, this is a mixture distribution with two components. The component that generates the infrequent shocks is barely visible because of its low probability. In this example, 99 percent of the probability lies within a narrow range (-0.036 < \gls{wpk} < 0.036). However, the shocks, which occur with probability 0.01, have much higher amplitude ($b\sigma_{w_p}=1$).
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=11.5cm]{wpk-pdf-4.pdf}
 	\caption{Probability density of a random shock signal}
@@ -201,7 +201,7 @@ where $\beta$, $\alpha_{1}$, and $\alpha_{2}$ are constants.  From (\ref{eq:brw}
 
 Therefore, $a(p(k))$ has the effect of an additive bias or time-varying adjustment to $p(k+1)$ that depends on $p(k)$. The shape of $a(\cdot)$ is determined by the constants $\alpha_{1}$,  $\alpha_{2}$, $\beta$, and $\tau$. Figure \ref{fig:brw-a} shows $a(p(k))$ in the case where $\tau=100$, $\beta=-15$, $\alpha_{1}=3$, and $\alpha_{2}=3$.  From this, it is clear that in the vicinity of $p(k)=\tau$, $a(p(k))\approx0$. When $a(p(k))=0$, (\ref{eq:brw}) is the equation for a random walk. However, outside a neighbourhood of $p(k)=\tau$, $a(p(k))$ increases for low $p(k)$ or decreases for high $p(k)$. This has the effect of causing $p(k+1)$ to revert towards the mean ($\tau$) whenever $p(k)$ strays outside the neighbourhood. 
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/brw_a.pdf}
 	\caption{A bounded random walk bias function}
@@ -210,7 +210,7 @@ Therefore, $a(p(k))$ has the effect of an additive bias or time-varying adjustme
 
 Figure \ref{fig:brw-sim} shows a simulation of a bounded random walk with the parameter values as above, and for comparison, an unbounded random walk (labelled `RW') generated with the same noise input. The dashed lines at $p(k)=95$ and $p(k)=105$ roughly indicate the location of the lower and upper bounds which the BRW only marginally exceeds.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/brw_sim.pdf}
 	\caption{Examples of a bounded and unbounded random walk}
@@ -223,7 +223,7 @@ Unlike a simple random walk, the \gls{BRW} is stationary. \cite{nicolau_stationa
 %	p_{BRW}(x) \propto \sigma^{-2} \exp \left\{-\frac{2 e^{k}}{\sigma^{2}}\left(\frac{e^{-\alpha_{1}(x-\tau)}}{\alpha_{1}}+\frac{e^{\alpha_{2}(x-\tau)}}{\alpha_{2}}\right)\right\}
 %\end{equation}
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/brw_pdf.pdf}
 	\caption{Probability distributions of bounded and unbounded random walks}
@@ -252,7 +252,7 @@ The \gls{BRW} concept can be extended to \gls{RODD}s. A \gls{RODD} step disturba
 State estimation is the task of estimating the values of the state variables of a dynamic model of a system given a set of measurements from the system. In process control applications, state estimates are required online (i.e. in real time), in order to provide the best possible estimate of the states at the current time (or a prediction of their values at the next time instant) in order to calculate an appropriate control action.
 
 Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, \gls{uk} $\in \mathbb{R}^{n_u}$ is a vector of known input variables at time instant $k$, \gls{wk} $\in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of output disturbances or measurement errors, and \gls{yk} $\in \mathbb{R}^{n_y}$ is the vector of output variables. The box represents a mathematical model that relates the inputs to the outputs and may be time-varying. 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering \glsadd{uk}\glsadd{yk}\glsadd{wk}\glsadd{vk}
 	\includegraphics[width=8cm]{images/model_diag_uwvy.pdf}
 	\caption{System model diagram}
@@ -344,7 +344,7 @@ Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations du
 \end{algorithm}
 Note that in a control application, the manipulated input \gls{uk} must be computed by the control algorithm. This may be done before the Kalman filter calculations in algorithm \ref{alg:kf} if the prior prediction of the states in the current time instant, \gls{xk_pred}, is used by the control algorithm. Alternatively, slightly better control performance might be achieved if the control algorithm uses the updated (a-posteriori) state estimates, \gls{xk_hat}, instead. In the latter case, the Kalman filter calculations must be interrupted to compute the control action after the state correction step (\ref{eq:xkyk_hat}) and prior to the prediction step (\ref{eq:xkp1_hat}), when \gls{uk} is needed.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=8cm]{images/model_diag_upwvy.pdf}
 	\caption{System model with disturbance inputs and manipulated inputs}
@@ -359,7 +359,7 @@ In the case where the system has additional disturbance inputs, $\mathbf{p}(k) \
 \end{equation}
 
 For state estimation in the presence of disturbances, which is always the case in practice, a suitable model of the disturbances is needed. This model is shown in Figure \ref{fig:model_diag_wpupwvy} with an additional set of random variables \gls{wpkv} at its input.
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=12.5cm]{images/model_diag_wpupwvy.pdf}
 	\caption{System with process model and disturbance model}
@@ -589,7 +589,7 @@ The multi-model observer concept can be used for state estimation of any MJLS (\
 
 The problem that sub-optimal algorithms address is the inevitable growth in the number of hypotheses that would have to be modelled in an optimal multi-model observer. For a system with one \gls{RODD} disturbance, the number of possible hypotheses doubles at each time step because each current hypothesis branches into two—one corresponding to the assumption of no shock in the next time period and the other to that of a shock. Figure \ref{fig:mm-obs-br} illustrates that after 3 time instants starting at $k=0$, eight hypotheses are needed to represent the possible shock sequences. For a system with two independent \gls{RODD} disturbances, the number would be 64.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[height=7.5cm]{images/mm_obs_seq_br.pdf}
 	\caption{Sequence branching}
@@ -602,7 +602,7 @@ One of the simplest sub-optimal multiple-model methods is the \textit{generalise
 
 There are two basic versions of the algorithm, the first-order generalised pseudo-Bayesian estimator (\gls{GPB1}), and the second order generalised pseudo-Bayesian estimator (\gls{GPB2}). Figure \ref{fig:mm-obs-gpb1} shows a simplified diagram of the \gls{GPB1} process in the case of a system with two modes ($n_j=2$). A single estimate of the system states and error covariance at time $k$ is branched into $n_j$ hypotheses representing the possible modes of the system at that time. In this context, \textit{branching} simply means duplicating or cloning the hypothesis state estimates and error covariance into $n_j$ copies. These are then used to initialise $n_j$ Kalman filters. Each Kalman filter then makes a prediction of the states in the next time instant using the system model associated with one of the possible modes. In the next time instant, the $n_j$ predictions are corrected using the measurements, and the updated estimates are merged into a single set of estimates. The final merged estimates at each time $k$ are calculated using the multi-model observer merging procedure described in the previous section (\ref{eq:xkyk_hat_MKF},\ref{eq:Pk_MKF}). These branching and merging steps are then repeated each subsequent time step.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/mm_obs_seq_gpb1.pdf}
 	\caption{Simplified diagram of the \gls{GPB1} algorithm ($n_j=2$)}
@@ -610,7 +610,7 @@ There are two basic versions of the algorithm, the first-order generalised pseud
 \end{figure}
 
 Whereas the \gls{GPB1} estimator considers $n_j$ possible mode transitions from time $k-1$ to time $k$, the \gls{GPB2} estimator considers $n_j^2$ possible transition sequences from time $k-2$ to time $k$. Figure \ref{fig:mm-obs-gpb2} shows a simplified diagram of the \gls{GPB2} algorithm in the case of two modes ($n_j=2$). At time $k$ it maintains $n_j$ merged estimates and associated variables, $\left\{ \hat{\mathbf{x}}_m(k \mid k), \mathbf{P}_m(k \mid k), \hat{\mathbf{y}}_m(k \mid k), \Pr(\Gamma_m(k) \mid \mathbf{Y}(k)) \right\}$, for $m=1,2,...,n_j$. Each of these is then branched into $n_j$ estimates, creating a total of $n_h=n_j^2$ hypotheses, represented by \gls{nh} Kalman filters labelled $f=1,2,...n_h$. At time $k+1$, the Kalman filter predictions are corrected to produce \gls{nh} estimates. Then two merging operations are carried out on these estimates. The first merges the \gls{nh} estimates into $n_m=n_j$ estimates for use in the next step. The second merges the \gls{nm} merged estimates again, into one final estimate which is the output of the observer and is not used in subsequent steps.
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[height=6.5cm]{images/gpb2_diagram.pdf}
 	\caption{Simplified diagram of the \gls{GPB2} algorithm ($n_j=2$)}
@@ -703,7 +703,7 @@ Thirdly, they rely on the fact that the random shocks occur infrequently and the
 
 To illustrate the resulting shock hypothesis sequences, consider an example. Suppose there is one \gls{RODD} to estimate. A sequence fusion algorithm is used with a fusion horizon of $N_f=9$, a detection interval of $N_d=3$, and a maximum number of shocks over the fusion horizon of $n_\text{max}=1$. Figure \ref{fig:mm-obs-seq-SFex1} shows the four shock hypotheses that would be required in this case. Note that hypothesis 1 assumes no shocks at any time. Hypothesis 2 assumes shocks occur at times $k=0,9,18,...$. Hypothesis 3 assumes shocks occur at times $k=3,12,21,...$, and so on. After $N_f=9$ sample periods, the sequences repeat indefinitely.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=13cm]{images/mm_obs_seq_rob1.pdf}
 	\caption{Sequence fusion example 1 ($N_d=3$, $n_\text{max}=1$, $N_f=9$)}
@@ -714,7 +714,7 @@ Suppose that a shock actually occurred in the system at time $k=4$. In this case
 
 Figure \ref{fig:mm-obs-seq-SFex2} illustrates a second example with $N_f=10$, $n_\text{max}=2$, and $N_d=5$. This also has four hypotheses. However, note that hypothesis 4 accounts for the possibility of two shocks within the fusion horizon. As in the previous example, if a true shock occurred at time $k=4$, the most likely hypothesis should be hypothesis 3 because it assumes a shock occurred at $k=5$, which is close to the actual time.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=13cm]{images/mm_obs_seq_rob2.pdf}
 	\caption{Sequence fusion example 2 ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
@@ -724,7 +724,7 @@ Figure \ref{fig:mm-obs-seq-SFex2} illustrates a second example with $N_f=10$, $n
 As mentioned, the shock hypothesis sequences over the fusion horizon, \gls{Gammafkmnk}, determine the branching and merging operations that occur at each time step. The logic is as follows: (i) at time $k$, branch each hypothesis sequence into the possible mode transitions that occur between time $k$ and $k+1$, (ii) advance the branched sequences into the next time step, according to the possible mode transitions, (iii) compare the branched sequences and merge those that are identical over the new fusion horizon from time $k-N_f+2$ to $k+1$.
 
 Consider again the sequences from the previous example in Figure \ref{fig:mm-obs-seq-SFex2}. By applying the logic described above, the branching and merging operations depicted in Figure \ref{fig:mm-obs-seq-sf95} may be deduced. For example, consider what happens at time $k=9$. At this time, the fusion horizon spans from time 0 to 9. The four sequences are branched into 8 and advanced to the next time instant according to the possible modes at that time (no shock, shock). Then, at time $k=10$ the 8 branched hypotheses are merged back to 4 by combining sequences that are identical over the new fusion horizon, which spans from $k=1$ to 10. Note that by applying this logic each time step, branching and merging are only required once every 5 time steps when shocks are assumed to be possible.
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=15cm]{images/mm_obs_seq_sf95.pdf}
 	\caption{Sequence branching and merging example ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
@@ -844,7 +844,7 @@ Then, replace the random shock variable used at each sample time, $w_p(k)$ (\ref
 Note that the variance of a single shock, $b^2\sigma_{w_p}^2$, is divided by the detection interval length \gls{d}. In this version of the algorithm, the branching and merging procedure is only carried out at the end of each detection interval. In the steps within the detection interval, the Kalman filters are updated using the measurements, but no branching or merging occurs.
 
 Figure \ref{fig:mm-obs-seq-sf98} shows the shock hypothesis sequences and the merging and branching steps of the 1998 version of the sequence fusion algorithm with the same parameters as in the previous example.
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=15cm]{images/mm_obs_seq_sf98.pdf}
 	\caption{Sequence branching and merging example – 1998 version ($N_d=5$, $n_\text{max}=2$, $N_f=10$)}
@@ -860,7 +860,7 @@ The caveat mentioned above, is that no hypothesis may be eliminated less than \g
 
 To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-SP}. This shows one possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely hypotheses at each time instant, identified by the circles with thicker outlines, branch into two at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next. Note that at time $k=6$, hypothesis 2 becomes the most likely based on the available measurements at that time. Also note that no new branches are terminated in less than two sample times.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=10.7cm]{images/mm_obs_seq_SP.pdf}
 	\caption{Sequence pruning example ($n_h=5$, $N_\text{min}=2$)}
@@ -873,7 +873,7 @@ The \gls{AFMM} algorithm by \cite{gustafsson_estimation_1993} includes a procedu
 
 The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flows of the sub-optimal multi-model observers, as implemented in this work. The solid black rectangles represent the computation steps and the white circles represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence pruning, merging and branching. During this step, the final estimates of the states and outputs are also calculated.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=15.5cm]{images/mkf_infoflow.pdf}
 	\caption{General information flow diagram of a multiple-model observer}
@@ -943,7 +943,8 @@ Once a solution to the optimization problem is found, only the control actions a
 
 A dynamic simulation model of the primary grinding circuit of a gold mine in Quebec is used to simulate the effects of changes in ore feed properties on the grinding circuit over time. The model was developed by \cite{perez_garcia_dynamic_2020} following the methodology described by \cite{grimble_dynamic_2010} and was calibrated to match operating data collected from the plant \citep{perez-garcia_systematic_2020}. Grinding in the SAG mill is simulated by a \textit{population balance model} with 24 discrete ore particle size intervals and constant specific-energy selection rates (i.e. breakage rates are proportional to total energy consumption) and a constant breakage matrix.
 
-Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, consisting of a variable speed feed conveyor, SAG mill with variable speed motor, pump box, pump, and a bank of hydro-cyclones.\begin{figure}[htp]
+Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, consisting of a variable speed feed conveyor, SAG mill with variable speed motor, pump box, pump, and a bank of hydro-cyclones.
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=12.5cm]{images/sag-circuit-diag.pdf}
 	\caption{Simplified process flow diagram}
@@ -952,7 +953,7 @@ Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, cons
 
 For the purposes of this work, two ore feed streams with different PSDs were simulated. Each stream is a different mix of two different ores. One ore has a fine PSD and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). The two streams are mixed before discharging onto the conveyor. Figure \ref{fig:coarse_fine_psd_plot} shows the PSDs of the two mixtures.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=9cm]{images/coarse_fine_cumpsd_plot.pdf}
 	\caption{Ore particle size distributions}
@@ -963,7 +964,7 @@ The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. 
 
 The measurable process variables used in this work are the mill weight, which includes the weight of the shell and liners as well as the mill contents, mill power consumption, the solids-content of the cyclone feed stream, and the particle size (P80) of the ground product in the cyclone overflow. Mill filling level and other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.  Figure \ref{fig:grind_sim_io_diag} summarizes the inputs and outputs of the simulation model. Table \ref{tb:grind-vars} lists the normal operating points, units, and minimum and maximum operating limits of each variable.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=15cm]{images/grind_sim_io_diag.pdf}
 	\caption{Grinding simulation model inputs and outputs}
@@ -1006,14 +1007,14 @@ These results are equivalent to the grind curves proposed by \cite{powell_applyi
 
 A similar set of simulations were carried out to understand the effect of changing the ore mix factor on the steady-state values of the output variables. The results are shown in Figure \ref{fig:grind_sim_ss_plot2}. From these it can be seen that the change in ore mix has no effect on the steady-state power consumption of the mill. However, there are changes in the steady-state throughput (ore feed rate), cyclone feed solids fraction, and product particle size. The throughput is approximately 4 tons-per-hour higher and the product particle size is 1.5 microns smaller when the ore mix contains the higher fraction (0.5) of coarse ore.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=15cm]{images/grind_sim_ss_plot1.pdf}
 	\caption{Steady-state operating points}
 	\label{fig:grind_sim_ss_plot1}
 \end{figure}
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=15cm]{images/grind_sim_ss_plot2.pdf}
 	\caption{Effect of ore mix factor on steady-state operating points}

@@ -235,7 +235,7 @@ Parameter values for the sub-optimal multiple-model observer algorithms describe
 
 Note that $\frac{N_f}{N_d}$ represents the number of detection intervals within the fusion horizon and is always a whole number. For example, when $N_d=3$, the lengths of the fusion were 9, 15, 30, 45, and 60. However, not all combinations were simulated. Any combination with more than 200 hypotheses ($n_h>200$) or with a total probability modelled, \gls{beta} (\ref{eq:p_gamma}), less than 0.85 was rejected. The remaining 58 combinations were then evaluated by simulating the observer and calculating the \gls{RMSE} of the output estimates on the 5000 data samples from the simulated system. Tables \ref{tb:obs-sim1-popt-SF95} and \ref{tb:obs-sim1-popt-SF98} show the resulting \gls{RMSE} results for the 10 best combinations of parameter values (those with the lowest output \gls{RMSE}) for the 1995 and 1998 variants of this algorithm.
 
-\begin{table}[hb]
+\begin{table}[ht]
 	\begin{center}
 		\caption{Multi-model observer parameter search results – MKF--SF95.} \label{tb:obs-sim1-popt-SF95}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
@@ -259,7 +259,7 @@ Note that $\frac{N_f}{N_d}$ represents the number of detection intervals within 
 	\end{center}
 \end{table}
 
-\begin{table}[hb]
+\begin{table}[ht]
 	\begin{center}
 		\caption{Multi-model observer parameter search results – MKF--SF98.} \label{tb:obs-sim1-popt-SF98}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
@@ -309,7 +309,7 @@ The sequence pruning algorithm proposed by \cite{eriksson_classification_1996} h
 
 Combinations where rejected when $n_h - N_\text{min} < 1$, or in other words, when the minimum life, \gls{nmin}, was greater than or equal to the number of hypotheses, \gls{nh}. This is a necessary condition since there must be enough filters to simulate the hypotheses until they exceed their minimum life. Each remaining combination was then evaluated in the same way, by calculating the \gls{RMSE} of the output estimates on the same 5000 samples used in the tuning of the sequence fusion observers described above. Table \ref{tb:obs-sim1-popt-SP} shows the top 10 combinations of parameter values in terms of lowest \gls{RMSE}.
 
-\begin{table}[hb]
+\begin{table}[ht]
 	\begin{center}
 		\caption{Multi-model observer parameter search results – MKF--SP.} \label{tb:obs-sim1-popt-SP}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
@@ -334,7 +334,7 @@ Combinations where rejected when $n_h - N_\text{min} < 1$, or in other words, wh
 \end{table}
 
 As above, the differences between the \gls{RMSE}s of the best 10 combinations are small, indicating that the choice of parameters from these combinations is not critical. The first combination ($n_h=10,N_\text{min}=7$) was chosen and the observer was labelled `MKF--SP1' in the simulations below. Table \ref{tb:obs-params-sim1} is a summary of the parameters of the observers simulated.
-\begin{table}[h]
+\begin{table}[ht]
 	\begin{center}
 		\caption{Observer parameters for SISO linear system.} \label{tb:obs-params-sim1}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
@@ -345,8 +345,8 @@ As above, the differences between the \gls{RMSE}s of the best 10 combinations ar
 			Algorithm & - & Sequence fusion & Sequence pruning \\
 			\hline
 			Parameters &  &  &  \\
-			$\mathbf{Q}$ & $\mathbf{Q}_{opt}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ \\
-			$R$ & $0.1^2$ & $0.1^2$ & $0.1^2$ \\
+			\gls{Qset} & $\mathbf{Q}_{opt}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ \\
+			\gls{R} & $0.1^2$ & $0.1^2$ & $0.1^2$ \\
 			$\mathbf{P}(0)$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ \\
 			\gls{nh} & 1 & 4 & 10 \\
 			\gls{nf} & - & 5 & - \\
@@ -529,7 +529,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 \subsubsection{Selection of multiple-model observer parameters}
 
 Parameter values for the sub-optimal multiple-model observers were chosen by a similar method to that of the SISO experiment. The details of the parameter search and selection process are in Annex \ref{section:annex-sim-2-MKF-tuning}. As in the SISO experiment, the 1998 version of the sequence fusion algorithm did not offer an improvement on the performance of the 1995 version. The best performance of the 1998 version was obtained when the length of the detection interval was 1, which means it is no different than the 1995 version. Nevertheless, this time it was included in the simulations for comparison and labelled `MKF--SF2'. Table \ref{tb:obs-params-sim2} summarises the observer parameters used in the simulations.
-\begin{table}[h]
+\begin{table}[ht]
 	\begin{center}
 		\caption{Observer parameters for MIMO linear system.} \label{tb:obs-params-sim2}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
@@ -540,8 +540,8 @@ Parameter values for the sub-optimal multiple-model observers were chosen by a s
 			Algorithm & - & Sequence fusion 95 & Sequence fusion 98 & Sequence pruning \\
 			\hline
 			Parameters &  &  & &  \\
-			$\mathbf{Q}$ & $\mathbf{Q}_{opt}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ \\
-			$\mathbf{R}$ & $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
+			\gls{Qset} & $\mathbf{Q}_{opt}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ & $\{\mathbf{Q}_0,\mathbf{Q}_1\}$ \\
+			\gls{R} & $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
 			& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
 			& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
 			& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$ \\
@@ -620,6 +620,25 @@ As in the SISO case, 10 different simulations were carried out with different ra
 
 \section{Grinding process simulation} \label{section:sim-ore-SISO}
 
+In this section, results of an experiment to test the observers using data from the grinding process simulator are presented. This work is an extension of work published at a recent conference. %\citep{}.
+
+For the purposes of this experiment, the size of the ground product (P80) leaving the cyclone overflow is sampled every 3 minutes and a zero-mean Gaussian measurement noise with a standard deviation of 5 $\mu\text{m}$ is added directly to the simulation output.
+
+\subsection{System Identification} \label{section-sysid}
+
+Model-based observers such as the Kalman filter require a dynamic model of the process. 
+Here, a single-input, single-output (SISO) process model is considered with a RODD step disturbance at the input, as shown in Figure \ref{fig:obs_model}. The disturbance, $p(k)$, represents step changes in the ore mix factor described in Section \ref{section-simulator}. The output variable, $y(k)$, is the product P80. $v(k)$ is an additive measurement noise. 
+%For simplicity, no manipulatable variables or other measured variables are considered although the approach is not limited to SISO systems.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=8.5cm]{images/obs-model-diag.pdf}
+	\caption{Observer model structure}
+	\label{fig:obs_model}
+\end{figure}
+
+
+
 Outline notes:
 \begin{outline}
 	\1 Unlike previous simulations, this is a non-linear model.
@@ -669,7 +688,7 @@ Outline notes:
 	\label{fig:sim_resp_plot}
 \end{figure}
 
-\begin{table}[hb]
+\begin{table}[ht]
 	\begin{center}
 		\caption{Observer performance evaluation metrics.} \label{tb:results}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
