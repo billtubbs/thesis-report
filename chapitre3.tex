@@ -620,24 +620,33 @@ As in the SISO case, 10 different simulations were carried out with different ra
 
 \section{Grinding process simulation} \label{section:sim-ore-SISO}
 
-In this section, results of an experiment to test the observers using data from the grinding process simulator are presented. This work is an extension of work published at a recent conference. %\citep{}.
+In this section, results of an experiment to test the observers with data from the grinding process simulator are presented. This work is an extension of previously published work \citep{tubbs_observer_2022}. In the original work, a multiple model observer with sequence pruning was tested. In this work, both types of multiple model observer are evaluated and compared (sequence fusion and sequence pruning). Also, in this work, Kalman filters in filtering form are used, whereas in the previous work the prediction form (\ref{eq:xkp1_hat_p}) was used.
 
-For the purposes of this experiment, the size of the ground product (P80) leaving the cyclone overflow is sampled every 3 minutes and a zero-mean Gaussian measurement noise with a standard deviation of 5 $\mu\text{m}$ is added directly to the simulation output.
+For the purposes of this experiment, the size of the ground product leaving the cyclone overflow is sampled every 3 minutes and a zero-mean Gaussian measurement noise with a standard deviation of 5 $\mu\text{m}$ is added directly to the simulation output. No other known inputs are available to the observer.
 
 \subsection{System Identification} \label{section-sysid}
 
-Model-based observers such as the Kalman filter require a dynamic model of the process. 
-Here, a single-input, single-output (SISO) process model is considered with a RODD step disturbance at the input, as shown in Figure \ref{fig:obs_model}. The disturbance, $p(k)$, represents step changes in the ore mix factor described in Section \ref{section-simulator}. The output variable, $y(k)$, is the product P80. $v(k)$ is an additive measurement noise. 
-%For simplicity, no manipulatable variables or other measured variables are considered although the approach is not limited to SISO systems.
-
-\begin{figure}[htp]
+Model-based observers such as the Kalman filter require a dynamic model of the process. In practice, models of the process dynamics are not available and must be identified from operating data. Here, a single-input, single-output (SISO) process model is considered with a RODD step disturbance at the input, as shown in Figure \ref{fig:grind1_obs_model}. 
+\begin{figure}[ht]
 	\centering
-	\includegraphics[width=8.5cm]{images/obs-model-diag.pdf}
+	\includegraphics[width=8.5cm]{images/grind1-obs-model-diag.pdf}
 	\caption{Observer model structure}
-	\label{fig:obs_model}
+	\label{fig:grind1_obs_model}
 \end{figure}
 
+The disturbance, $p(k)$, represents step changes in the ore mix factor, as described in Section \ref{sec:grinding-simulator}. The output variable, $y(k)$, is the product P80. $v(k)$ is an additive measurement noise.
 
+To construct a multi-model observer for this system, the structure and parameters of the process model as well as the disturbance model are needed. As mentioned in the previous chapter, standard system identification techniques such as linear regression are not suitable for estimating hybrid dynamical systems with discrete states.
+
+To avoid this problem, it is assumed here that the time and magnitude of the ore changes can be determined for a period of time sufficient for system identification. This could be the case when analysis of samples of ore is possible but too costly to continuously in normal operation.
+
+Or when stocks of ores with well-known properties can be fed to the mill in a controlled manner. It is also assumed that the structure of the RODD model (\ref{eq:RODD}) is known, and that values for the parameters $\sigma_{w_p}$, $b$ and $\epsilon$ are available.
+
+In practice, $\epsilon$ could potentially be estimated from historic operating data by simply counting the number of ore changes in a sufficiently long period and dividing by the number of sample periods, although this method is somewhat inaccurate because small shocks are undetectable in noisy data. Estimating $b$$\sigma_{w_p}$ may require prior knowledge of the P80 of the ores, from geological data or periodic testing.
+
+%An approximate model can be identified from process measurements using system identification as described by \cite{ljungSystemIdentification1999} and others.
+%To mimic a realistic system identification exercise, three independent data acquisition experiments, each of 15 hours duration, were simulated using the grinding simulation model described in Section \ref{section-simulator}. During each, a random binary sequence of step changes in the ore mix factor was introduced. The process was at steady-state at the beginning of each sequence and the first 3 hours of data (60 samples) were used to estimate the steady-state values of the process variables.
+Figure \ref{fig:sim_ioplots} shows the input-output data used for estimation of the process model.
 
 Outline notes:
 \begin{outline}
@@ -659,13 +668,6 @@ Outline notes:
 	\2 (1) to model error, compare Kalman filter and MKF. Figures \ref{fig:rod_obs_sim_sens_model_KF2_MSE_y_est} and \ref{fig:rod_obs_sim_sens_model_MKF_MSE_y_est}.
 	\2 (2) MKF sensitivity to \gls{RODD} model parameters. Figure  \ref{fig:rod_obs_sim_sens_rod_MKF_MSE_y_est}
 \end{outline}
-
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=10cm]{images/obs-model-diag.pdf}
-	\caption{Observer model structure}
-	\label{fig:obs_model}
-\end{figure}
 
 \begin{figure}[htp]
 	\centering

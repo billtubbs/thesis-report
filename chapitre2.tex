@@ -882,10 +882,15 @@ The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation ste
 
 At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, \gls{xk_hat}, and outputs, \gls{yk_hat}. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
 
-%\section{System identification}
+\section{System identification}
 %
 %$TODO: Not complete.
 %
+
+% Some text not used in IFAC report
+
+To construct a multi-model observer for RODD estimation, the structure and parameters of the process model as well as the disturbance model are needed. RODDs are discrete-time \textit{Markov jump linear systems} (\gls{MJLS}) \citep{costa_discrete-time_2005}. Standard approaches to system identification such as least-squares regression are not applicable to hybrid dynamical systems. Identification of these types of systems is challenging and the subject of ongoing research. See for example, \cite{piga_estimation_2020}.
+
 %Outline notes:
 %\begin{itemize}
 %	\item Explain Isaksson and Eriksson's perspective on standard system identification approach.
@@ -927,7 +932,7 @@ where $\mathbf{r}(k+i)$ for $i=1,2,...,H_p$ is the reference output trajectory, 
 Once a solution to the optimization problem is found, only the control actions at the current time, \gls{uk}, are transmitted to the plant. The procedure is then repeated every future time instant to compute the subsequent control actions. This is referred to as \textit{receding horizon control}.
 
 
-\section{Grinding simulation model}
+\section{Grinding simulation model} \label{sec:grinding-simulator}
 
 %Outline notes:
 %\begin{outline}
