@@ -35,13 +35,13 @@ To demonstrate state estimation in the presence of \gls{RODD}s, a single \gls{RO
 
 For the purposes of this experiment, the linear model used to represent the process was the stable first order system,
 \begin{equation}
-	\frac{B(z^{-1})}{A(z^{-1})} = \frac{0.3z^{-1}}{1-0.7z^{-1}}
+	\frac{B(q^{-1})}{A(q^{-1})} = \frac{0.3q^{-1}}{1-0.7q^{-1}}
 \end{equation}
 with a sampling period, \gls{Ts}, of 0.5.
 
 The \gls{RODD} was a step disturbance created by setting
 \begin{equation}
-	\frac{C(z^{-1})}{D(z^{-1})} = \frac{1}{1-z^{-1}}.
+	\frac{C(q^{-1})}{D(q^{-1})} = \frac{1}{1-q^{-1}}.
 \end{equation}
 The random shock, $w_p(k)$, was defined by (\ref{eq:wpik2}) with $\epsilon=0.01$, $\sigma_{w_p}=0.01$, and $b=100$.
 
@@ -234,7 +234,6 @@ Parameter values for the sub-optimal multiple-model observer algorithms describe
 \end{equation}
 
 Note that $\frac{N_f}{N_d}$ represents the number of detection intervals within the fusion horizon and is always a whole number. For example, when $N_d=3$, the lengths of the fusion were 9, 15, 30, 45, and 60. However, not all combinations were simulated. Any combination with more than 200 hypotheses ($n_h>200$) or with a total probability modelled, \gls{beta} (\ref{eq:p_gamma}), less than 0.85 was rejected. The remaining 58 combinations were then evaluated by simulating the observer and calculating the \gls{RMSE} of the output estimates on the 5000 data samples from the simulated system. Tables \ref{tb:obs-sim1-popt-SF95} and \ref{tb:obs-sim1-popt-SF98} show the resulting \gls{RMSE} results for the 10 best combinations of parameter values (those with the lowest output \gls{RMSE}) for the 1995 and 1998 variants of this algorithm.
-
 \begin{table}[ht]
 	\begin{center}
 		\caption{Multi-model observer parameter search results – MKF--SF95.} \label{tb:obs-sim1-popt-SF95}
@@ -258,7 +257,6 @@ Note that $\frac{N_f}{N_d}$ represents the number of detection intervals within 
 		\end{tabular}
 	\end{center}
 \end{table}
-
 \begin{table}[ht]
 	\begin{center}
 		\caption{Multi-model observer parameter search results – MKF--SF98.} \label{tb:obs-sim1-popt-SF98}
@@ -295,9 +293,11 @@ Note that $\frac{N_f}{N_d}$ represents the number of detection intervals within 
 	\end{center}
 \end{table}
 
-In terms of overall estimation errors, both variants of the algorithm performed equally well in this simulation and the best combinations of parameter values are also the same. This can be attributed to the fact that in nearly all the top 10 combinations tested, the best value of the spacing parameter $N_d$ is 1. Recall that the only differences between the two variants of the algorithm are in the way the estimates are updated during the steps of the detection interval. Therefore, when $N_d=1$ the algorithms are identical. From this it may be deduced that the use of a detection interval has no benefit in this experiment. \cite{robertson_method_1998} state that their approach is a means of obtaining a long detection horizon, which is necessary when many sampling intervals are required to discriminate among various abrupt changes that may occur. On this basis, it makes sense that a long detection interval was not necessary here, since the system only has one RODD.
+From a practical standpoint, it is not desirable to simulate a large number of hypotheses. On this basis, the third combination in Table \ref{tb:obs-sim1-popt-SF95} ($N_f=10,n_\text{max}=2,N_d=1$, requiring 76 hypotheses) or the fifth ($N_f=5,n_\text{max}=1,N_d=1$, requiring only 8 hypotheses) are good choices for the 1995 version. The fifth combination was chosen for the simulations and the observer was labelled `MKF--SF95'. 
 
-From a practical standpoint, it is not desirable to simulate a large number of hypotheses. On this basis, the third combination listed ($N_f=10,n_\text{max}=2,N_d=1$, requiring 76 hypotheses) or the fifth ($N_f=5,n_\text{max}=1,N_d=1$, requiring only 8 hypotheses) are good choices. The fifth combination was chosen for the simulations and the observer is labelled `MKF--SF95'. The `MKF--SF98' observer was not simulated since it provided no performance improvement over the 1995 version in this case.
+In terms of overall estimation errors, the two sequence fusion algorithms are very similar. Note that in the case of the 1998 version, it produces identical results to the MKF--SF95 observer when the spacing parameter $N_d$ is 1. The differences between the two algorithms are only in the way the estimates are updated during the steps of the detection interval. Therefore, results for the 1998 algorithm with $N_d=1$ were discarded. \cite{robertson_method_1998} state that the approach is a means of obtaining a long detection horizon, which is necessary when many sampling intervals are required to discriminate among multiple abrupt changes that may occur. Since in this simulation there is only one RODD disturbance, and the best results were achieved with a detection interval of 1, it was concluded that these features of the 1998 algorithm were not applicable to this problem.
+
+Nevertheless, based on the results in Table \ref{tb:obs-sim1-popt-SF98}, an observer labelled `MKF--SF1' was selected for simulation with $N_f=6$, $n_\text{max}=1$, and $N_d=2$. This requires only 6 hypotheses and achieves as good a performance as `MKF--SF95'.
 
 The sequence pruning algorithm proposed by \cite{eriksson_classification_1996} has two parameters that must be specified, \gls{nh}, and \gls{nmin}. Candidate values for these parameters were generated by considering all combinations satisfying
 
@@ -308,7 +308,7 @@ The sequence pruning algorithm proposed by \cite{eriksson_classification_1996} h
 	\end{aligned}
 \end{equation}
 
-Combinations where rejected when $n_h - N_\text{min} < 1$, or in other words, when the minimum life, \gls{nmin}, was greater than or equal to the number of hypotheses, \gls{nh}. This is a necessary condition since there must be enough filters to simulate the hypotheses until they exceed their minimum life. Each remaining combination was then evaluated in the same way, by calculating the \gls{RMSE} of the output estimates on the same 5000 samples used in the tuning of the sequence fusion observers described above. Table \ref{tb:obs-sim1-popt-SP} shows the top 10 combinations of parameter values in terms of lowest \gls{RMSE}.
+Combinations where rejected when $n_h - N_\text{min} < 1$, or in other words, when the minimum life, \gls{nmin}, was greater than or equal to the number of hypotheses, \gls{nh}. This is a necessary condition since there must be enough filters to simulate the hypotheses until they reach the minimum life. Each remaining combination was then evaluated in the same way by calculating the \gls{RMSE} of the output estimates on the same 5000 samples used in the tuning of the sequence fusion observers described above. Table \ref{tb:obs-sim1-popt-SP} shows the top 10 combinations of parameter values in terms of lowest \gls{RMSE}.
 
 \begin{table}[ht]
 	\begin{center}
@@ -597,7 +597,7 @@ Figure \ref{fig:sim-sys-sim2-MKF-cumerr} shows the squared output estimation err
 As in the SISO case, 10 simulations were carried out with different random initializations to check the sensitivity of the results. Figure \ref{fig:rod-obs-sim2-yest-all-seed-RMSE-box} shows the variation in the RMSEs. This confirms that the performance of the three multiple-model observers is quite similar but MKF--SF95 and MKF--SF1 achieve a slightly lower error on average.
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=11cm]{images/rod_obs_sim3_all_seed_y_err_box.pdf}
+	\includegraphics[width=12cm]{images/rod_obs_sim3_all_seed_y_err_box.pdf}
 	\caption{Root-mean-squared errors of output estimates – $2\times2$ system}
 	\label{fig:rod-obs-sim2-yest-all-seed-RMSE-box}
 \end{figure}
@@ -622,7 +622,7 @@ The disturbance, $p(k)$, represents step changes in the ore mix factor, as descr
 
 To construct multiple-model observers for this system, the structure and parameters of the process model as well as the disturbance model are needed. As mentioned in section \ref{sec:sys-id}, standard system identification techniques are not suitable for estimating hybrid dynamical systems. To avoid this problem, it is assumed here that the time and magnitude of ore changes have been determined for a period of time sufficient for system identification. This might be possible by sampling the ore and carrying out a particle size analysis. Alternatively, it may be the case that stocks of ores with well-known properties can be fed to the mill in a controlled manner.
 
-It is also assumed that the structure of the RODD model (\ref{eq:RODD}) is known, and that values for the parameters $\sigma_{w_p}$, $b$ and $\epsilon$ are available. In practice, $\epsilon$ could potentially be estimated from historic operating data by simply counting the number of ore changes in a sufficiently long period and dividing by the number of sample periods, although this method is somewhat inaccurate because small shocks are undetectable in noisy data. Estimating $b$$\sigma_{w_p}$ may require prior knowledge of the P80 of the ores, perhaps from geological data or test work.
+It is also assumed that the structure of the RODD model (\ref{eq:RODD}) is known, and that values for the parameters $\sigma_{w_p}$, $b$, and $\epsilon$ are available. In practice, $\epsilon$ could potentially be estimated from historic operating data by simply counting the number of ore changes in a sufficiently long period and dividing by the number of sample periods, although this method is somewhat inaccurate because small shocks are undetectable in noisy data. Estimating the magnitude of the shocks, $b$$\sigma_{w_p}$, may require prior knowledge of the P80 of the ores, perhaps from geological data or test work.
 
 To mimic a realistic system identification exercise, three independent data acquisition experiments, each of 15 hours duration, were simulated using the grinding simulation model described in Section \ref{sec:grinding-simulator}. During each, a random binary sequence of step changes in the ore mix factor was introduced. The process was at steady-state at the beginning of each sequence and the first 3 hours of data (60 samples) were used to estimate the steady-state values of the process variables.
 
@@ -666,7 +666,7 @@ The discrete-time state-space representation of the augmented model (including R
 	\end{bmatrix} \mathbf{x}(k) + \mathbf{v}(k). \\
 \end{multline}
 
-The noise covariance matrix (\ref{eq:init_Q_R}) switches between two values,
+The noise covariance (\ref{eq:init_Q_R}) switches between two values,
 \begin{equation} \label{eq:Q0}
 	\begin{aligned}
 		\mathbf{Q}_0=\begin{bmatrix}
@@ -698,9 +698,9 @@ and
 		\end{bmatrix},
 	\end{aligned}
 \end{equation}
-where $\sigma_{x_i}^2$ ($i=1,2,...,6$) are noise variance parameters of the process model states. Since model errors are not known in practice, an arbitrary value of  $0.01^2$ was chosen, although it did not have a significant impact on the results. In this work, $\sigma_{w_p}$ and $b$ are assumed to be known and were set to match the characteristics of the simulated disturbance. In practice, they would have to be estimated, either using prior knowledge of the disturbance source, or possibly from system output measurements using an appropriate system identification method---see \cite{schon_sequential_2015} for one possible approach---provided a sufficiently long sequence of data is available.
+where $\sigma_{x_i}^2$ ($i=1,2,...,6$) are noise variance parameters of the process model states. Since model errors are not known in practice, an arbitrary value of  $0.01^2$ was chosen, although it did not have a significant impact on the results. In this work, the covariance model was set to the true variances of the simulated RODD, $\sigma_{w_p}^2$ and $b^2\sigma_{w_p}^2$.
 
-The performance of the multi-model observers was compared to a standard Kalman filters, labelled `KF3' with the parameters shown in Table \ref{tb:grind1-obs-params-sim1}. KF3 has a manually-tuned covariance matrix:
+The performance of the multi-model observers was compared to a standard Kalman filter, labelled `KF3' with the parameters shown in Table \ref{tb:grind1-obs-params-sim1}. KF3 has a manually-tuned covariance matrix:
 \begin{equation} \label{eq:Q_opt}
 	\mathbf{Q}_{opt}=\begin{bmatrix}
 		0.01^2 & \cdots & 0 & 0 \\

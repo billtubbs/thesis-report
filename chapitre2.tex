@@ -271,7 +271,7 @@ where \gls{xk} $\in \mathbb{R}^n$ is a vector of state variables, \gls{A}$\in \m
 The \textit{Kalman filter} \citep{kalman_new_1960} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables with mean values of zero. There are two commonly-used implementations of the Kalman filter, the \textit{prediction form} and the \textit{filtering form}. In the prediction form, the estimates of the states at the next time instant ($k+1$), given the information available at the current time ($k$) are calculated using
 \begin{equation} \glsadd{yMk}
 \begin{aligned} \label{eq:xkp1_hat_p}
-	\glsadd{xkp1_pred}\mathbf{\hat{x}}(k+1 \mid k) &= \mathbf{\hat{x}}(k+1 \mid k-1) + \mathbf{K}_p(k) \big( \mathbf{y}(k) - \mathbf{\hat{y}}(k \mid k-1) \big) \\
+	\glsadd{xkp1_pred}\mathbf{\hat{x}}(k+1 \mid k) &= \mathbf{\hat{x}}(k+1 \mid k-1) + \mathbf{K}_p(k) \big( \mathbf{y}_M(k) - \mathbf{\hat{y}}(k \mid k-1) \big) \\
 	&= \mathbf{A}\mathbf{\hat{x}}(k \mid k-1) + \mathbf{B}u(k) + \mathbf{K}_p(k) \big( \mathbf{y}_M(k) - \mathbf{C} \mathbf{\hat{x}}(k \mid k-1) \big)
 \end{aligned}
 \end{equation}
@@ -332,7 +332,7 @@ Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations du
 	\caption{Kalman filter update}\label{alg:kf}
 	%\algorithmfootnote{$y_0$ denotes the initial value.}
 	\begin{algorithmic}
-		\Require $\mathbf{A},\mathbf{B},\mathbf{C},\mathbf{\hat{x}}(k \mid k-1), \mathbf{P}(k \mid k-1), \mathcal{Q}, \mathbf{R}, \mathbf{\gamma}(k), \mathbf{u}(k), \mathbf{y}(k)$
+		\Require $\mathbf{A},\mathbf{B},\mathbf{C},\mathbf{\hat{x}}(k \mid k-1), \mathbf{P}(k \mid k-1), \mathcal{Q}, \mathbf{R}, \mathbf{\gamma}(k), \mathbf{u}(k), \mathbf{y}_M(k)$
 		\State calculate $\mathbf{S}(k)$ (\ref{eq:Sk})
 		\State calculate $\mathbf{K}(k)$ (\ref{eq:Kk})
 		\State calculate $\mathbf{\hat{x}}(k \mid k)$ and $\mathbf{\hat{y}}(k \mid k)$ (\ref{eq:xkyk_hat})
@@ -434,7 +434,7 @@ The estimate of the probability of the shock sequence $\Gamma_f(k)$ given the da
 \end{equation}
 where
 \begin{equation} \label{eq:qfk}
-	q_f(k) = p(\mathbf{y}(k) \mid \Gamma_f(k), \mathbf{Y}(k-1)) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k-1)).
+	q_f(k) = p(\mathbf{y}_M(k) \mid \Gamma_f(k), \mathbf{Y}(k-1)) \Pr(\Gamma_f(k) \mid \mathbf{Y}(k-1)).
 \end{equation}
 
 The Kalman filters for tracking each hypothesis use the state-space representation of the augmented system model (\ref{eq:ss_rep_xa}). 
@@ -880,7 +880,7 @@ The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation ste
 	\label{fig:mkf-infoflow}
 \end{figure}
 
-At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, \gls{xk_hat}, and outputs, \gls{yk_hat}. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
+At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, \gls{yMk}, and input, \gls{uk}, and produces estimates of the states, \gls{xk_hat}, and outputs, \gls{yk_hat}. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
 
 \section{System identification} \label{sec:sys-id}
 %
@@ -902,6 +902,9 @@ To construct a multi-model observer for RODD estimation, the structure and param
 %	\item In recent years, numerical methods to overcome the intractability of the probabilistic integral have received a lot of attention.
 %	\item Sequential Monte-Carlo methods, (incl. particle filtering), Stochastic Variational Inference, ... (read Special issue in IEEE control magazine for an overview of these methods)
 %\end{itemize}
+
+% More text from IAFAC paper:
+%are assumed to be known and were set to match the characteristics of the simulated disturbance. In practice, they would have to be estimated, either using prior knowledge of the disturbance source, or possibly from system output measurements using an appropriate system identification method---see \cite{schon_sequential_2015} for one possible approach---provided a sufficiently long sequence of data is available.
 
 % Note: may remove this if we aren’t using any formal methods.
 
