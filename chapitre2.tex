@@ -1062,7 +1062,7 @@ Although some of these process variables would likely be sampled at higher rates
 
 \section{Performance evaluation}
 
-Various metrics are used in this work to evaluate the performance of the observers. Since a simulation model of the plant is used and the input disturbances are simulated, the true values of the system inputs and outputs (i.e. without measurement errors) are available.
+Various metrics are used in this work to evaluate the performance of the observers. Since a simulation model of the plant is used and the input disturbances are also simulated, the true values of the system inputs and outputs (i.e. without measurement errors) are available.
 
 The first metric is the \textit{root-mean-squared-error} (\gls{RMSE}) of the system output estimates, which is an indication of the magnitude of the differences between the estimates of an output signal, $\hat{Y}_i(N)=\left\{\hat{y}_i(1),\hat{y}_i(2), ..., \hat{y}_i(N)\right\}$, and its true values, $Y_i(N)=\left\{y_i(1),y_i(2), ..., y_i(N)\right\}$, (i.e. the output estimation errors),
 \begin{equation} \label{eq:rmse-calc-yest}
@@ -1086,17 +1086,20 @@ The fourth metric is the \textit{root-mean-squared-differences} (RMSD) in the es
 
 This is a measure of the magnitude of high frequency changes in the estimates, which is an indication of the sensitivity of an observer to measurement noise.
 
-To evaluate the potential benefits of the observers in process control applications, simulations were carried out with an observer, a simulated controller, and the simulated process in closed-loop. In these cases, the \gls{RMSE}s of the control variables, $y_i(k)$, compared to a set of reference values, $R_i(N)$, is calculated to evaluate the performance of the control system,
-\begin{equation} \label{eq:rmse-calc-y}
-	\newcommand{\RMSE}{\textrm{RMSE}}
-	\RMSE(Y_i(N),R_i(N)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(y_i(k)-r_i(k))^2}}.
-\end{equation}
+Note that to simplify the notation in the rest of this report, the subscripts, $N$, indicating the length of the data series, are not always shown.
 
-In addition, the RMSD of the control actions, $u_i(k)$, is calculated to provide an indication of the sensitivity of the control system to measurement noise,
-\begin{equation} \label{eq:rmsd-calc-u}
-	\newcommand{\RMSD}{\textrm{RMSD}}
-	\RMSD(U_i(N)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(u_i(k)-u_i(k-1))^2}}.
-\end{equation}
+% Removed since not doing control simulations.
+%To evaluate the potential benefits of the observers in process control applications, simulations were carried out with an observer, a simulated controller, and the simulated process in closed-loop. In these cases, the \gls{RMSE}s of the control variables, $y_i(k)$, compared to a set of reference values, $R_i(N)$, is calculated to evaluate the performance of the control system,
+%\begin{equation} \label{eq:rmse-calc-y}
+%	\newcommand{\RMSE}{\textrm{RMSE}}
+%	\RMSE(Y_i(N),R_i(N)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(y_i(k)-r_i(k))^2}}.
+%\end{equation}
+%
+%In addition, the RMSD of the control actions, $u_i(k)$, is calculated to provide an indication of the sensitivity of the control system to measurement noise,
+%\begin{equation} \label{eq:rmsd-calc-u}
+%	\newcommand{\RMSD}{\textrm{RMSD}}
+%	\RMSD(U_i(N)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(u_i(k)-u_i(k-1))^2}}.
+%\end{equation}
 
 Because the processes simulated in this work are stochastic, it is important to evaluate observer performance over sufficiently long simulation time periods to ensure that the results are close to the true average performance and are independent of the specific pseudo-random inputs generated for each simulation. This is particularly important when evaluating systems with \gls{RODD}s because the shocks occur infrequently. As an added precaution, identical random inputs are used when comparing the performance of two or more observers on the same system.
 
