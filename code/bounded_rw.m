@@ -169,9 +169,8 @@ end
 
 
 function p = brwpdf(x, alpha1, alpha2, beta, tau, sd_e)
-% This is the function 'a(x)' from Nicolau (2002) used in the
-% difference equation of the bounded random walk (BRW) 
-% (see Eq. 1 in the paper).
+% Stationary probability density of the bounded random 
+% walk (BRW). See Eq. 1 in Nicolau (2002)).
 % Note: beta is the 'k' parameter in Nicolau's paper.
 %
     p = sd_e^(-2) * exp( ...
