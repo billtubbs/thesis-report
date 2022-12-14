@@ -82,9 +82,9 @@
 \newglossaryentry{yMk}{name=\ensuremath{\mathbf{y}_M(k)}, description={system output measurements at time $k$}}
 \newglossaryentry{pk}{name=\ensuremath{p(k)}, description={disturbance signal at time $k$}}
 \newglossaryentry{wpk}{name=\ensuremath{w_p(k)}, description={random shock signal at time $k$}}
-\newglossaryentry{nj}{name=\ensuremath{n_j}, description={the number of modes or models of a switching system}}
 \newglossaryentry{rk}{name=\ensuremath{\mathbf{r}(k)}, description={mode indicator of a switching system at time $k$ (scalar or vector)}}
 \newglossaryentry{porek}{name=\ensuremath{p_\text{ore}(k)}, description={simulated ore disturbance signal at time $k$}}
+\newglossaryentry{np}{name=\ensuremath{n_p}, description={number of independent random shocks}}
 
 % Introduction and literature review
 \newglossaryentry{SAG}{name={SAG},description={semi-autogenous grinding mill}}
@@ -133,7 +133,9 @@
 \newglossaryentry{Aa}{name={$\mathbf{A}_a$}, description={transition matrix of the augmented system model}}
 \newglossaryentry{Ba}{name={$\mathbf{B}_a$}, description={input matrix of the augmented system model}}
 \newglossaryentry{Ca}{name={$\mathbf{C}_a$}, description={output matrix of the augmented system model}}
-\newglossaryentry{RMSE}{name={RMSE}, description={root-mean-squared error}}
+\newglossaryentry{RMSE}{name=\ensuremath{\mathrm{RMSE}}, description={root-mean-squared error}}
+\newglossaryentry{RMSEY}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y)}, description={root-mean-squared error of the output estimates compared to the true system outputs}}
+\newglossaryentry{RMSEYM}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y_M)}, description={root-mean-squared error of the output estimates compared to the system output meaurements}}
 \newglossaryentry{RMSD}{name={RMSD}, description={root-mean-squared differences}}
 
 % Grinding simulator
@@ -146,17 +148,18 @@
 \newglossaryentry{GPB1}{name={GPB1}, description={first-order generalised pseudo-Bayesian estimator}}
 \newglossaryentry{GPB2}{name={GPB2}, description={second order generalised pseudo-Bayesian estimator}}
 \newglossaryentry{AFMM}{name={AFMM}, description={adaptive forgetting through multiple models algorithm}}
+\newglossaryentry{nj}{name=\ensuremath{n_j}, description={the number of modes or models of a switching system}}
 \newglossaryentry{nh}{name=\ensuremath{n_h}, description={number of hypotheses}}
-\newglossaryentry{gamma_fk}{name={$\gamma_f(k)$}, description={random shock indicator of hypothesis $f$ at time $k$}}
-\newglossaryentry{Gammafk}{name={$\Gamma_f(k)$}, description={shock indicator hypotheses sequence $f$ from time $0$ to $k$}}
-\newglossaryentry{Gammafkmnk}{name={$\Gamma_m(k-N_f+1,k)$}, description={shock indicator hypotheses sequence $f$ over the fusion horizon}}
+\newglossaryentry{gamma_fk}{name=\ensuremath{\gamma_f(k)}, description={random shock indicator of hypothesis $f$ at time $k$}}
+\newglossaryentry{Gammafk}{name=\ensuremath{\Gamma_f(k)}, description={shock indicator hypotheses sequence $f$ from time $0$ to $k$}}
+\newglossaryentry{Gammafkmnk}{name=\ensuremath{\Gamma_m(k-N_f+1,k)}, description={shock indicator hypotheses sequence $f$ over the fusion horizon}}
 \newglossaryentry{nm}{name=\ensuremath{n_m}, description={number of merged hypotheses}}
-\newglossaryentry{Zmk}{name={$Z_m(k)$}, description={normalization variable at time $k$ used in merged probability calculations}}
-\newglossaryentry{Hbranch}{name={$\mathcal{H}_{\text{branch}}$}, description={hypothesis index used in branching operations}}
-\newglossaryentry{Hmerge}{name={$\mathcal{H}_{\text{merge}}$}, description={hypothesis index used in merging operations}}
-\newglossaryentry{rmk}{name={$\mathbf{r}_m(k)$}, description={indicator of the system modes of the merged hypotheses at time $k$ used at time $k$ in branching and merging operations}}
-\newglossaryentry{rb1k}{name={$\mathbf{r}_{b,1}(k)$}, description={indicators of the system modes of the branched hypotheses at time $k$ before merging}}
-\newglossaryentry{rb2k}{name={$\mathbf{r}_{b,2}(k)$}, description={indicators of the system modes of the branched hypotheses at time $k$ after branching}}
+\newglossaryentry{Zmk}{name=\ensuremath{Z_m(k)}, description={normalization variable at time $k$ used in merged probability calculations}}
+\newglossaryentry{Hbranch}{name=\ensuremath{\mathcal{H}_{\text{branch}}}, description={hypothesis index used in branching operations}}
+\newglossaryentry{Hmerge}{name=\ensuremath{\mathcal{H}_{\text{merge}}}, description={hypothesis index used in merging operations}}
+\newglossaryentry{rmk}{name=\ensuremath{\mathbf{r}_m(k)}, description={indicator of the system modes of the merged hypotheses at time $k$ used at time $k$ in branching and merging operations}}
+\newglossaryentry{rb1k}{name=\ensuremath{\mathbf{r}_{b,1}(k)}, description={indicators of the system modes of the branched hypotheses at time $k$ before merging}}
+\newglossaryentry{rb2k}{name=\ensuremath{\mathbf{r}_{b,2}(k)}, description={indicators of the system modes of the branched hypotheses at time $k$ after branching}}
 \newglossaryentry{nf}{name=\ensuremath{N_f}, description={sequence fusion parameter: length of fusion horizon in number of sample periods}}
 \newglossaryentry{m}{name=\ensuremath{n_\text{max}}, description={sequence fusion parameter: maximum number of shock occurences within the fusion horizon}}
 \newglossaryentry{d}{name=\ensuremath{N_d}, description={sequence fusion parameter: shock spacing parameter or length of detection interval, in number of sample periods}}
@@ -273,6 +276,7 @@
 \include{chapitre2}             % chapitre 2
 \include{chapitre3}             % chapitre 3
 %\include{chapitre4}             % chapitre 4, etc.  REMOVED - RESULTS NOT COMPLETED
+\include{discussion}            % discussion
 \include{conclusion}            % conclusion
 
 \appendix                       % annexes le cas échéant

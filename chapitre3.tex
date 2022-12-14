@@ -1,12 +1,12 @@
 % !TEX encoding = UTF-8 Unicode
 \chapter{Simulation results}  \label{chap-simulation}
 %
-This chapter describes numerical simulations carried out to demonstrate and evaluate the disturbance models and observer designs described in Chapter \ref{chap-methods}. Section \ref{sec:sim-RODDs} presents a few simulated examples of different \gls{RODD}s. Section \ref{sec:sim-obs-lin} describes experiments to evaluate the multiple-model observers in estimating the states of two simulated systems, a single-input single-output (SISO) linear system with one \gls{RODD} step disturbance, and a 2-input, 2-output linear system with two \gls{RODD} step disturbances. Section \ref{sec:sim-ore-SISO} describes an experiment to evaluate the observer performance on the simulated grinding circuit model with one output variable and a step disturbance in the ore feed mix. %\textcolor{red}{Section \ref{sec:sim-ore-mimo-ctrl} describes an experiment to evaluate the observers in a multi-variable feedback control scenario with the simulated grinding circuit model.}
+This chapter describes numerical simulations carried out to demonstrate and evaluate the disturbance models and observer designs described in Chapter \ref{chap-methods}. Section \ref{sec:sim-RODDs} presents a few simulated examples of different \gls{RODD}s. Section \ref{sec:sim-obs-lin} describes experiments to evaluate the multiple-model observers in estimating the states of two simulated systems, a single-input single-output (\glsadd{SISO}\gls{SISO}) linear system with one \gls{RODD} step disturbance, and a 2-input, 2-output linear system with two \gls{RODD} step disturbances. Section \ref{sec:sim-ore-SISO} describes an experiment to evaluate the observer performance on the simulated grinding circuit model with one output variable and a step disturbance in the ore feed mix. %\textcolor{red}{Section \ref{sec:sim-ore-mimo-ctrl} describes an experiment to evaluate the observers in a multi-variable feedback control scenario with the simulated grinding circuit model.}
 
 
 \section{Generating RODD disturbances} \label{sec:sim-RODDs}
 
-\gls{RODD}s are easy to generate by numerical simulation.  Plot (a) in Figure \ref{fig:rodd-sim-plots} shows a random shock sequence (\ref{eq:wpk1}) of length 1000 samples generated using a pseudo-random number generator. Plots (b), (c), and (d) show step, ramp and exponential change disturbances generated with this random shock sequence using the \gls{RODD} models in (\ref{eq:RODD-step}), (\ref{eq:RODD-ramp}), and (\ref{eq:RODD-exp}). Figure \ref{fig:rodd-sim-plot2} shows a combined RODD with abruptly changing ramps and steps (\ref{eq:RODD-step-ramp}).
+\gls{RODD}s are easy to generate by numerical simulation.  Plot (a) in Figure \ref{fig:rodd-sim-plots} shows a random shock sequence defined by (\ref{eq:wpk1}) of length 1000 samples generated using a pseudo-random number generator. Plots (b), (c), and (d) show step, ramp, and exponential change disturbances generated with this random shock sequence using the \gls{RODD} models in (\ref{eq:RODD-step}), (\ref{eq:RODD-ramp}), and (\ref{eq:RODD-exp}). Figure \ref{fig:rodd-sim-plot2} shows a combined \gls{RODD} with abruptly changing ramps and steps defined by (\ref{eq:RODD-step-ramp}).
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rodd_sim_plots.pdf}
@@ -102,9 +102,9 @@ The lower plot shows the conditional likelihood estimates of the four hypotheses
 	\caption{Multi-model observer state estimates – MKF--SF95}
 	\label{fig:rod-obs-sim-test-x_est-SF95}
 \end{figure}
-Figure \ref{fig:rod-obs-sim-test-x_est-SF95} shows the merged state estimates associated with each hypothesis (thin coloured lines), as well as the overall state estimate (thick blue lines) and the true states of the system (dashed lines). These plots reveal the role that each hypothesis plays in the overall estimates. The estimates of hypothesis 3 (purple lines) are the first to respond to the first shock at time $t=9.5$ and the overall estimate closely follows this hypothesis. The other estimates (green, yellow and orange lines) respond at later intervals and do not play a role in the overall estimate. After the second shock occurs, the overall estimate follows that of hypothesis 4 at first, then it switches to 2, however, it lags the true system state and the response of the output estimate is slower and overshoots the true system output for a few time steps. These simulation results demonstrate that the performance of the sequence fusion algorithm is somewhat sensitive to the timing of the true shocks.
+Figure \ref{fig:rod-obs-sim-test-x_est-SF95} shows the merged state estimates associated with each hypothesis (thin coloured lines), as well as the overall state estimate (thick blue lines) and the true states of the system (dashed lines). These plots reveal the role that each hypothesis plays in the overall estimates. The estimates of hypothesis 3 (purple lines) are the first to respond to the first shock at time $t=9.5$ and the overall estimate closely follows this hypothesis. The other estimates (green, yellow and orange lines) respond at later intervals and do not play a role in the overall estimate. After the second shock occurs, the overall estimate follows that of hypothesis 4 at first, then it switches to 2, however, it lags the true system state and the response of the output estimate is slower and overshoots the true system output for a few time steps. These simulation results demonstrate that the performance of the sequence fusion algorithm is somewhat sensitive to the timing of the true shocks. Nevertheless, the output estimates are quite good and would likely be satisfactory in most process control applications. 
 
-As described in Section \ref{sec:fusion}, Robertson and coworkers proposed an alternative implementation of the sequence fusion algorithm \citep{robertson_method_1998}. There are two differences between this and the previous algorithm. Firstly, shocks are assumed to act over the duration of the detection interval rather than at one sample time within it. Secondly, the variance of the shocks, $\gls{b}^2\gls{sigmawp}^2$, is reduced according to the interval length, (\ref{eq:wpdk}).
+As described in Section \ref{sec:fusion}, Robertson and coworkers proposed an alternative implementation of the sequence fusion algorithm \citep{robertson_method_1998}. There are two differences between this and the previous algorithm. Firstly, shocks are assumed to act over the duration of the detection interval rather than at one sample time within it. Secondly, the variance of the shocks, $\gls{b}^2\gls{sigmawp2}$, is reduced according to the interval length (\ref{eq:wpdk}).
 %% TODO: add parameters to above? with $f=15$ $m=1$ and $d=5$.
 
 \begin{figure}[htp]
@@ -147,7 +147,7 @@ To effectively evaluate and compare the performance of these observers, longer s
 
 \subsubsection{Tuning of Kalman filters} \label{sim-obs-lin-1-KF-tuning}
 
-Standard Kalman filters were used to develop performance baselines with which to evaluate the sub-optimal multiple-model observers. The question of how to set the gain of a Kalman filter when there is a \gls{RODD} affecting the system is open to interpretation. One naive approach is to tune the Kalman filter using the variance of the persistent component of the disturbance, $\gls{sigmawp}^2$, if it is known. In this case, the Kalman filter, which is labelled `KF1', has a noise covariance matrix
+Standard Kalman filters were used to develop performance baselines with which to evaluate the sub-optimal multiple-model observers. The question of how to set the gain of a Kalman filter when there is a \gls{RODD} affecting the system is open to interpretation. One naive approach is to tune the Kalman filter using the variance of the persistent component of the disturbance, $\gls{sigmawp2}$, if it is known. In this case, the Kalman filter, which is labelled `KF1', has a noise covariance matrix
 \begin{equation} \label{eq:sim-sys-siso-KF1-Q}
 	\begin{aligned}
 		\mathbf{Q}_{\text{KF1}}=\mathbf{Q}_0=\begin{bmatrix}
@@ -161,7 +161,7 @@ Standard Kalman filters were used to develop performance baselines with which to
 \end{equation}
 where $\sigma_{x}^2$ is a parameter representing the variance of the errors of the process model state, $x(k)$. However, this leads to a filter with a slow response to shocks. The choice of $\sigma_{x}=0.1$ was somewhat arbitrary. In these simulations, the process is simulated by a model that is identical to the model used by the observers, so there is no model error in steady-state. However, in transient periods such as after a shock disturbance, and in real applications, errors between the observer model and the true states are expected.
 
-A second option is to tune a Kalman filter to the variance of the infrequent shocks, $\gls{b}^2\gls{sigmawp}^2$.  In this case, the Kalman filter, labelled `KF2', has a state disturbance covariance
+A second option is to tune a Kalman filter to the variance of the infrequent shocks, $\gls{b}^2\gls{sigmawp2}$.  In this case, the Kalman filter, labelled `KF2', has a state disturbance covariance
 \begin{equation} \label{eq:sim-sys-siso-KF2-Q}
 	\begin{aligned}
 		\mathbf{Q}_{\text{KF2}}=\mathbf{Q}_1=\begin{bmatrix}
@@ -337,7 +337,7 @@ Combinations where rejected when $\gls{nh} - \gls{nmin} < 1$, or in other words,
 As above, the differences between the \gls{RMSE}s of the best 10 combinations are small, indicating that the choice of parameters from these combinations is not critical. The first combination ($\gls{nh}=10,\gls{nmin}=7$) was chosen and the observer was labelled `MKF--SP1' in the simulations below. Table \ref{tb:obs-params-sim1} is a summary of the parameters of the observers simulated.
 \begin{table}[ht]
 	\begin{center}
-		\caption{Observer parameters for SISO linear system.} \label{tb:obs-params-sim1}
+		\caption{Observer parameters for \gls{SISO} linear system.} \label{tb:obs-params-sim1}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.12\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
 			& KF3 & MKF--SF95 & MKF--SF1 & MKF--SP \\
@@ -372,7 +372,7 @@ Figure \ref{fig:rod-obs-sim1-yest-1-SF} shows the estimates of the sequence fusi
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_y_est1_SF95_SF1.pdf}
-	\caption{Estimates by sequence fusion observers – SISO system}
+	\caption{Estimates by sequence fusion observers – \gls{SISO} system}
 	\label{fig:rod-obs-sim1-yest-1-SF}
 \end{figure}
 
@@ -380,7 +380,7 @@ Figure \ref{fig:rod-obs-sim1-yest-1-SP} shows the estimates of the sequence prun
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_y_est1_SP1.pdf}
-	\caption{Estimates by sequence pruning observer – SISO system}
+	\caption{Estimates by sequence pruning observer – \gls{SISO} system}
 	\label{fig:rod-obs-sim1-yest-1-SP}
 \end{figure}
 
@@ -392,11 +392,11 @@ The plots in Figure \ref{fig:rod-obs-sim1-cum-err-y1-all} show the squared outpu
 	\label{fig:rod-obs-sim1-cum-err-y1-all}
 \end{figure}
 
-Figure \ref{fig:rod-obs-sim1-xest-RMSE-bar} compares the \gls{RMSE}s of the state estimates of the five observers over the full simulation. From this, it can be seen that the multiple-model observers achieve lower RMSEs than KF3, both in simulations with and without noise. The reduction in the errors due to the lower sensitivity to measurement noise (orange bars) is a more significant contribution to the improved performance of the multiple-model observers. It is noteworthy that most of the errors in the estimates of state 2, which corresponds to the input disturbance, are not due to measurement noise. This may partly be attributed to the delay in the process, which makes it impossible for the observers to immediately detect an unmeasured disturbance. They are also due to errors in tracking the persistent component of the disturbance, which can be seen in Figures \ref{fig:rod-obs-sim1-yest-1-SF} and \ref{fig:rod-obs-sim1-yest-1-SP}.
+Figure \ref{fig:rod-obs-sim1-xest-RMSE-bar} compares the \gls{RMSE}s of the state estimates of the five observers over the full simulation. From this, it can be seen that the multiple-model observers achieve lower \gls{RMSE}s than KF3, both in simulations with and without noise. The reduction in the errors due to the lower sensitivity to measurement noise (orange bars) is a more significant contribution to the improved performance of the multiple-model observers. It is noteworthy that most of the errors in the estimates of state 2, which corresponds to the input disturbance, are not due to measurement noise. This may partly be attributed to the delay in the process, which makes it impossible for the observers to immediately detect an unmeasured disturbance. They are also due to errors in tracking the persistent component of the disturbance, which can be seen in Figures \ref{fig:rod-obs-sim1-yest-1-SF} and \ref{fig:rod-obs-sim1-yest-1-SP}.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_x_err_bar.pdf}
-	\caption{Root-mean-squared errors of state estimates – SISO system}
+	\caption{Root-mean-squared errors of state estimates – \gls{SISO} system}
 	\label{fig:rod-obs-sim1-xest-RMSE-bar}
 \end{figure}
 
@@ -635,7 +635,7 @@ As in the previous work, the size of the ground product leaving the cyclone over
 
 \subsection{System identification} \label{sec:grind1-sysid}
 
-The system model consists of a single-input, single-output (SISO) process model with a RODD step disturbance, $p(k)$, at the input, as shown in Figure \ref{fig:grind1_obs_model}.
+The system model consists of a single-input, single-output (SISO) process model with a \gls{RODD} step disturbance, $p(k)$, at the input, as shown in Figure \ref{fig:grind1_obs_model}.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=9.5cm]{images/grind1-obs-model-diag.pdf}
@@ -661,11 +661,11 @@ The Mathworks System Identification Toolbox™ was used to carry out the system 
 \end{equation}
 It has a delay of 0.2 hours (i.e. 4 sample periods, or 12 minutes) and a settling time (to within $\pm5\%$ of steady-state) of approximately 42 minutes. The upper plot in Figure \ref{fig:grind1-sim_ioplots} also shows the predictions of this model, $y_{model}(k)$, compared to the true output, $y(k)$. Note that there is a visible mismatch between the predictions of the identified linear model and the outputs of the grinding process simulator.
 
-It was also assumed that the structure of the RODD model (\ref{eq:RODD}) was known, in this case a RODD step disturbance (\ref{eq:RODD-step}), and that values of the parameters $\sigma_{w_p}$, $b$, and $\epsilon$ were available. In practice, it should be possible to estimate $\epsilon$ from historic operating data by simply counting the number of ore changes in a sufficiently long period and dividing by the number of sample periods, although this method is somewhat inaccurate because small shocks are undetectable in noisy data. Estimating the magnitude of the shocks, $b$$\sigma_{w_p}$, could be more difficult. It may require prior knowledge of the true size distributions of the ores, perhaps from geological data or test work.
+It was also assumed that the structure of the \gls{RODD} model (\ref{eq:RODD}) was known, in this case a \gls{RODD} step disturbance (\ref{eq:RODD-step}), and that values of the parameters $\sigma_{w_p}$, $b$, and $\epsilon$ were available. In practice, it should be possible to estimate $\epsilon$ from historic operating data by simply counting the number of ore changes in a sufficiently long period and dividing by the number of sample periods, although this method is somewhat inaccurate because small shocks are undetectable in noisy data. Estimating the magnitude of the shocks, $b$$\sigma_{w_p}$, could be more difficult. It may require prior knowledge of the true size distributions of the ores, perhaps from geological data or test work.
 
 \subsection{Observer design} \label{sec:grind1-obs-design}
 
-The discrete-time state-space representation of the augmented model (including RODD disturbance) used by the observers was
+The discrete-time state-space representation of the augmented model (including \gls{RODD} disturbance) used by the observers was
 % P2DcTd4
 \begin{multline} \label{eq:grind1-obs_ss_model}
 	\mathbf{x}(k+1) = 
@@ -723,7 +723,7 @@ and
 \end{equation}
 where $\sigma_{x_i}^2$ ($i=1,2,...,6$) are noise variance parameters of the process model states. Since model errors are not known in practice, an arbitrary value of  $0.01^2$ was chosen, although it did not have a significant impact on the results. In this work, the random shock variances, $\sigma_{w_p}^2$ and $b^2\sigma_{w_p}^2$, were set according to the simulated ore changes, as described below.
 
-To evaluate the observers, longer simulations with randomly-occurring step changes in the ore mix factor were simulated. Each simulation consisted of an initial period of 3 hours at steady-state followed by 120 hours (equivalent to 5 days) of randomly-occurring step changes. Note that this is not a RODD according to the definition because the magnitude of the shocks is not random. RODDs are unbounded and therefore not realistic representations of actual process disturbances, which are unlikely to be Gaussian random variables. Instead, a simple switching ore mix factor, \glsadd{porek}\gls{porek}, was used. \gls{porek} is a discrete random variable with two possible values, that switches according to the shock probability \gls{epsilon}. It can be represented by a \gls{HMM} with one binary state, \gls{rk}, such that
+To evaluate the observers, longer simulations with randomly-occurring step changes in the ore mix factor were simulated. Each simulation consisted of an initial period of 3 hours at steady-state followed by 120 hours (equivalent to 5 days) of randomly-occurring step changes. Note that this is not a \gls{RODD} according to the definition because the magnitude of the shocks is not random. \gls{RODD}s are unbounded and therefore not realistic representations of actual process disturbances, which are unlikely to be Gaussian random variables. Instead, a simple switching ore mix factor, \glsadd{porek}\gls{porek}, was used. \gls{porek} is a discrete random variable with two possible values, that switches according to the shock probability \gls{epsilon}. It can be represented by a \gls{HMM} with one binary state, \gls{rk}, such that
 \begin{equation} \label{eq:pk-grind}
 	p_\text{ore}(k) = \begin{cases*}
 		0.2283 & if $r(k)=1$, \\
@@ -738,13 +738,13 @@ and with the transition probability matrix
 	\end{bmatrix}.
 \end{equation}
 
-The parameters of the RODD model used in the observer design were chosen in the following way. Although the probability density of $p_\text{ore}(k)$ is obviously not Gaussian, it has a conditional standard deviation of either 0.2717 (the difference between 0.5 and 0.2283) or 0. Based on this, $b\sigma_{w_p}$ was set to 0.2717 and \gls{b} was arbitrarily set to 100, meaning that \gls{sigmawp} was 0.002717. \gls{epsilon} was set to 0.01, which was the true value used in (\ref{eq:Pi-rk-grind}) to simulate $p_\text{ore}(k)$. $\epsilon=0.01$ means that, on average, an ore change occurred every 100 sample periods, or every 5 hours.
+The parameters of the \gls{RODD} model used in the observer design were chosen in the following way. Although the probability density of $p_\text{ore}(k)$ is obviously not Gaussian, it has a conditional standard deviation of either 0.2717 (the difference between 0.5 and 0.2283) or 0. Based on this, $b\sigma_{w_p}$ was set to 0.2717 and \gls{b} was arbitrarily set to 100, meaning that \gls{sigmawp} was 0.002717. \gls{epsilon} was set to 0.01, which was the true value used in (\ref{eq:Pi-rk-grind}) to simulate $p_\text{ore}(k)$. $\epsilon=0.01$ means that, on average, an ore change occurred every 100 sample periods, or every 5 hours.
 
 Three multiple-model observers were designed using a similar method to that described in Section \ref{sec:sim-obs-lin-1-MKF-tuning}. It was found that large data sets from long simulations were necessary to obtain good combinations of parameter values for these observers. When this was attempted with shorter data sets like simulations 1--3, the results were variable, and the performance of the observers was often poor. This can be explained by the fact that shocks are infrequent, and also that the sequence fusion algorithms in particular, are somewhat sensitive to the exact timing of shocks. The simulations must be long enough to provide a sufficient number and diversity of shock sequences to avoid `overfitting' the parameters to the data.
 
 For this reason, data from one of the longer simulations was used (number 6) to obtain the parameter values of the observers evaluated below. This simulation was 5 days in duration (2460 samples), simulated with $p_\text{ore}(k)$ as the input, and included 32 step changes. This was sufficient to obtain good parameter values. Note that the true values of the disturbance are not needed for observer parameter selection.
 
-However, in practice it would not be possible to use the true process outputs because they are unknown. In that case, the parameter tuning would have to be done using the \gls{RMSE} of the measured outputs, $\text{RMSE}(\hat{\mathbf{Y}}(N), \mathbf{Y}_M(N))$. The true outputs from the simulation model were used in this experiment to ensure the best possible parameter values were obtained and thus allow a more reliable comparison of the possible performance of each observer type.
+However, in practice it would not be possible to use the true process outputs because they are unknown. In that case, the parameter tuning would have to be done using the \gls{RMSE} of the measured outputs, $\gls{RMSE}(\hat{\mathbf{Y}}(N), \mathbf{Y}_M(N))$. The true outputs from the simulation model were used in this experiment to ensure the best possible parameter values were obtained and thus allow a more reliable comparison of the possible performance of each observer type.
 
 The performance of the multiple-model observers was again compared to a standard Kalman filter labelled `KF3', with a manually-tuned covariance matrix,
 \begin{equation} \label{eq:Q_opt}
@@ -756,7 +756,7 @@ The performance of the multiple-model observers was again compared to a standard
 	\end{bmatrix}.
 \end{equation}
 
-$\mathbf{Q}_{opt}$ was found to produce the lowest average error of the output estimates, $\text{RMSE}(\hat{\mathbf{Y}}(N),\mathbf{Y}(N))$, when simulated on the data from simulation number 6.
+$\mathbf{Q}_{opt}$ was found to produce the lowest average error of the output estimates, $\gls{RMSE}(\hat{Y}(N),Y(N))$, when simulated on the data from simulation number 6.
 
 All three observers used the same initial covariance of the state estimates:
 \begin{equation} \label{eq:P0}
@@ -839,29 +839,29 @@ As in the previous experiments, longer simulations are needed to evaluate the ob
 			%			RMSD($\hat{\mathbf{Y}},\mathbf{Y}$) steady-state &0.62 & 0.43 & 0.45 & 0.43 & 0.17 \\
 			% See script rod_obs_calc_metrics.m
 			% 13-Dec-2022 09:56:07 results with system P2DcTd4, sigma_M = 5, tau_ss = 1.2
-			RMSE($\hat{\mathbf{Y}},\mathbf{Y}$) overall & 1.81 & 1.70 & 1.66 & 1.67 & 1.24 \\
-			RMSE($\hat{\mathbf{Y}},\mathbf{Y}$) transient & 2.69 & 2.95 & 2.83 & 2.93 & 2.04 \\
-			RMSE($\hat{\mathbf{Y}},\mathbf{Y}$) steady-state & 1.46 & 1.12 & 1.12 & 1.08 & 0.90 \\
-			Var($\hat{\mathbf{Y}}$) steady-state & 1.61 & 0.66 & 0.70 & 0.58 & 0.25 \\
-			RMSD($\hat{\mathbf{Y}},\mathbf{Y}$) steady-state &0.62 & 0.44 & 0.45 & 0.43 & 0.17 \\
+			\gls{RMSEY} overall & 1.81 & 1.70 & 1.66 & 1.67 & 1.24 \\
+			\gls{RMSEY} transient & 2.69 & 2.95 & 2.83 & 2.93 & 2.04 \\
+			\gls{RMSEY} steady-state & 1.46 & 1.12 & 1.12 & 1.08 & 0.90 \\
+			Var($\hat{Y}$) steady-state & 1.61 & 0.66 & 0.70 & 0.58 & 0.25 \\
+			\gls{RMSD}($\hat{Y},Y$) steady-state &0.62 & 0.44 & 0.45 & 0.43 & 0.17 \\
 			\hline
 		\end{tabular}
 	\end{center}
 \end{table}
 Table \ref{tb:grind1-RMSE-results} shows the values of the five metrics for the five observers when evaluated on the data from the 10 longer simulations. In terms of the overall \gls{RMSE}s, the multiple-model observers offer only a marginal improvement compared to the Kalman filter (which was tuned to minimize overall \gls{RMSE}). MKF--SF1 has the lowest overall \gls{RMSE}, which is 8.3\% lower than that of KF3. However, it is 39\% higher than that of the scheduled Kalman filter (SKF). The greater difference between the performance of the SKF and the other observers in this experiment may be attributed to the discrete-time delays in the process model (\ref{eq:grind1-obs_ss_model}) (it is impossible for any observer to respond to an input disturbance before its effect has reached the measured outputs, leading to inevitable estimation errors).
 
-The other metrics in Table \ref{tb:grind1-RMSE-results} allow the specific strengths and weaknesses of each observer to be compared. In terms of transient errors, the multiple-model observers are inferior to KF3, with 5.2 to 9.7\% higher \gls{RMSE}s. However, in steady-state periods, they perform significantly better, with 23.3 to 26.0\% lower RMSEs. The \gls{RMSD}s of the multiple-model observers are 27.4 to 30.7\% lower, suggesting that insensitivity to measurement noise may be their main advantage. A reduced sensitivity to noise, combined with low transient errors, would be beneficial in feedback control applications where the closed-loop response time is limited by the speed of the observer and where sensitivity to noise causes problems---for example wear or damage to actuators.
+The other metrics in Table \ref{tb:grind1-RMSE-results} allow the specific strengths and weaknesses of each observer to be compared. In terms of transient errors, the multiple-model observers are inferior to KF3, with 5.2 to 9.7\% higher \gls{RMSE}s. However, in steady-state periods, they perform significantly better, with 23.3 to 26.0\% lower \gls{RMSE}s. The \gls{RMSD}s of the multiple-model observers are 27.4 to 30.7\% lower, suggesting that insensitivity to measurement noise may be their main advantage. A reduced sensitivity to noise, combined with low transient errors, would be beneficial in feedback control applications where the closed-loop response time is limited by the speed of the observer and where sensitivity to noise causes problems---for example wear or damage to actuators.
 
-Recall that the observers in this evaluation were selected using the overall RMSE metric (\ref{eq:rmse-calc-yest}). As mentioned in Section \ref{sim-obs-lin-1-KF-tuning}, this is only one of many possible ways to make a compromise between responsiveness and sensitivity to measurement noise. The multiple-model observers in Table \ref{tb:grind1-RMSE-results} all have higher RMSEs in transient periods than the Kalman filter and lower ones in steady-state, which makes it difficult to compare them precisely. Figure \ref{fig:grind1-RMSE-scatter} allows their performance to be compared in both dimensions---transient and steady-state performance. The plot shows the results of all the parameter search simulations in yellow and blue, as well as the final observers chosen for evaluation, which are shown in orange and labelled `min RMSE'. Note that these simulations were run using data from grinding simulation 6 only. Therefore, the RMSE values in this plot are not the same as those in Table \ref{tb:grind1-RMSE-results}, which were based on averages of 10 simulations.
+Recall that the observers in this evaluation were selected using the overall \gls{RMSE} metric (\ref{eq:rmse-calc-yest}). As mentioned in Section \ref{sim-obs-lin-1-KF-tuning}, this is only one of many possible ways to make a compromise between responsiveness and sensitivity to measurement noise. The multiple-model observers in Table \ref{tb:grind1-RMSE-results} all have higher \gls{RMSE}s in transient periods than the Kalman filter and lower ones in steady-state, which makes it difficult to compare them precisely. Figure \ref{fig:grind1-RMSE-scatter} allows their performance to be compared in both dimensions---transient and steady-state performance. The plot shows the results of all the parameter search simulations in yellow and blue, as well as the final observers chosen for evaluation, which are shown in orange and labelled `min RMSE'. Note that these simulations were run using data from grinding simulation 6 only. Therefore, the \gls{RMSE} values in this plot are not the same as those in Table \ref{tb:grind1-RMSE-results}, which were based on averages of 10 simulations.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/grind1_rod_obs_sim_popt_RMSE_scatter.pdf}
 	\caption{RMSE trade-off comparison}
 	\label{fig:grind1-RMSE-scatter}
 \end{figure}
-The lines connecting the different tunings of KF3 give an indication of the \textit{Pareto front} of the performance of the Kalman filter. Any multiple-model result to the left or below the Pareto front of KF3 is an improvement since it has a lower RMSE in either transient or steady-state, or both. From this it can be seen that even though the observers selected for evaluation have different transient RMSE performance, the multiple-model observers are all clearly a significant improvement over any Kalman filter tuning.
+The lines connecting the different Kalman filter tunings (`KF') give an indication of the \textit{Pareto front} of the performance of a Kalman filter. Any multiple-model result to the left or below the Pareto front of KF is an improvement since it has a lower \gls{RMSE} in transient or steady-state, or both. From this it can be seen that the best multiple-model observers are clearly a significant improvement over any KF tuning.
 
-Figure \ref{fig:grind1-RMSE-scatter} shows that the combined Pareto front of the performance of all observers switches from KF3 for low transient errors with high steady-state errors, to the multiple-model observers for low steady-state errors and higher transient errors. Thus, if low transient errors are more important than low steady-state errors, a Kalman filter is the best solution. However, at a certain point along the Pareto front, it becomes better to use a multiple-model observer and at this point, a significant drop in the steady-state error is achievable. Again, this suggests that multiple-model observers may be advantages in applications where sensitivity to measurement noise is important and where the best transient performance is not essential. The plot also reveals that even lower steady-state errors can be achieved using different parameter-settings of the sequence pruning observer, resulting in steady-state RMSEs up to 27\% lower than the KF3, although these settings result in high transient errors.
+Figure \ref{fig:grind1-RMSE-scatter} also shows that the combined Pareto front of the performance of all observers switches from KF for low transient errors and high steady-state errors, to the multiple-model observers for low steady-state errors and higher transient errors. Thus, if low transient errors are more important than low steady-state errors, a Kalman filter is the best solution. However, at a certain point along the Pareto front, it becomes better to use a multiple-model observer and at this point, a significant drop in the steady-state error is achievable. Again, this suggests that multiple-model observers may be advantageous in applications where sensitivity to measurement noise is important and where the best transient performance is not essential. The plot also reveals that even lower steady-state errors can be achieved using sequence pruning observers with different parameter-settings. Some of these have steady-state \gls{RMSE}s up to 27\% lower than KF, although these settings result in high transient errors.
 
 To provide further insight into the transient behaviour of one of the observers, 100 responses of the sequence fusion observer MKF-SF1 to step disturbances were selected from simulations 6 to 15. Step changes were selected only when the system was in steady-state with ore mix \#1 when a step change occurred to mix \#2 and the process subsequently reached steady-state. The response sequences were aligned by subtracting the step time, \glsadd{tstep}\gls{tstep}, from the times of each response. Then the mean, minimum, and maximum values of the observer output estimates were calculated at each sample time since the step change. The results are shown in Figure \ref{fig:sim_resp_plot_MKF_SF1} as a thick orange line representing the average of the 100 responses, and a pale orange area indicating the minima and maxima. Similar data for the Kalman filter, KF3, and the true system output are superimposed in the plot. This allows both the average (i.e. expected) observer response and the range of the variation that occurred, to be visualised and compared.
 %\begin{figure}[htp]
@@ -890,7 +890,7 @@ Figure \ref{fig:sim_resp_plot2_MKF_SF1} is a similar plot produced in the same w
 	\label{fig:sim_resp_plot2_MKF_SF1}
 \end{figure}
 
-Figures \ref{fig:sim_resp_plot_MKF_SF1} and \ref{fig:sim_resp_plot2_MKF_SF1} reveal a few interesting characteristics of the multiple-model observer. Firstly, the average response has a characteristic `S'-shape when compared to that of KF3. It is initially slightly slower to respond, then overtakes the response of KF3 and reaches the vicinity of the true system output significantly earlier. This can be explained by the bi-modal behaviour of the multiple-model observer, which is insensitive to noise most of the time but has a high correction gain once a shock is detected. However, the average response is not representative of individual responses. It can seen from the minimum and maximum values that during the transition period, the multiple-model observer exhibits high variation and often larger estimation errors than the Kalman filter. Around 1.5 hours after the shocks, the variation in the estimates of MKF--SF1 reduces to less than that of KF3. 
+Figures \ref{fig:sim_resp_plot_MKF_SF1} and \ref{fig:sim_resp_plot2_MKF_SF1} reveal a few interesting characteristics of the multiple-model observer. Firstly, the average response has a characteristic `S'-shape when compared to that of KF3. It is initially slightly slower to respond, then overtakes the response of KF3 and reaches the vicinity of the true system output significantly earlier. This can be explained by the bi-modal behaviour of the multiple-model observer, which is insensitive to noise most of the time but has a high correction gain once a shock is detected. However, the average response is not representative of individual responses. It can seen from the minimum and maximum values that during the transition period, the multiple-model observer exhibits high variation and often larger estimation errors than the Kalman filter. Around 1.5 hours after the shocks, the variation in the estimates of MKF--SF1 reduces to less than that of KF3.
 
 \subsection{Sensitivity analysis} \label{sec:grind1-sensitivity-analysis}
 Finally, an analysis was carried out to investigate the sensitivity of the observer performance to selected parameters. Firstly, the sensitivity of the overall \gls{RMSE}s to the process model parameters was analysed. The continuous-time linear process model identified from simulation data (\ref{eq:grind1-id-model-ctf}) was generalised by introducing two adjustable parameters, a static gain, \glsadd{Kp}\gls{Kp}, and a time constant, \glsadd{Tp1}\gls{Tp1},
@@ -902,15 +902,15 @@ The process delay of 0.2 hours remained fixed. Each parameter was than adjusted 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=15cm]{images/rod_obs_sim_sens_sys_4obs_RMSE_y_est.pdf}
-	\caption{Percentage changes in RMSEs due to changes in process model parameters}
+	\caption{Percentage changes in \gls{RMSE}s due to changes in process model parameters}
 	\label{fig:grind1-obs-sim-sens-model-y-est}
 \end{figure}
 
-From these results it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -5.2 to +11.3\% over the range of parameter values simulated. The highest errors occurred when the process gain, \gls{Kp} was doubled. The effect of changes in the time constant, \gls{Tp1}, was less significant.
+From these results, it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -5.2 to +11.3\% over the range of parameter values simulated. The highest errors occurred when the process gain, \gls{Kp} was doubled. The effect of changes in the time constant, \gls{Tp1}, was less significant.
 
 By comparing these variations to those of KF3, it can be seen that the multiple-model observers are less sensitive to the model parameters. The few cases where the changes in the performance of the multiple-model observers are larger, are all cases where the estimation errors were lower than the KF3, therefore better performance. Based on this, there does not appear to be a significant downside to the multiple-model observers when it comes to the accuracy of the process model. In fact, it shows that better overall estimation performance may have been possible with different parameter values.
 
-In the second part of this analysis, the sensitivity of the observer performance to the \gls{RODD} model parameters, \gls{sigmawp} and \gls{epsilon}, was investigated. The two parameters were adjusted in the same way as in the previous analysis and the changes in the overall \gls{RMSE}s calculated. The results are shown in Figure \ref{fig:grind1-obs-sim-sens-rod-y-est}. Note that the Kalman filter does not include a RODD model and was therefore excluded. Instead, the sensitivity of the scheduled Kalman filter, SKF, was included for comparison.
+In the second part of this analysis, the sensitivity of the observer performance to the \gls{RODD} model parameters, \gls{sigmawp} and \gls{epsilon}, was investigated. The two parameters were adjusted in the same way as in the previous analysis and the changes in the overall \gls{RMSE}s calculated. The results are shown in Figure \ref{fig:grind1-obs-sim-sens-rod-y-est}. Note that the Kalman filter does not include a \gls{RODD} model and was therefore excluded. Instead, the sensitivity of the scheduled Kalman filter, SKF, was included for comparison.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=15cm]{images/rod_obs_sim_sens_rod_4obs_RMSE_y_est.pdf}

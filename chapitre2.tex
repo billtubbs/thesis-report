@@ -7,7 +7,7 @@
 
 \subsection{Randomly-occurring deterministic disturbances} \label{sec:RODD}
 
-\textit{Randomly-occurring deterministic disturbances} (\gls{RODD}s) \citep{macgregor_duality_1984} are a family of stochastic process models suitable for simulating various types of infrequently-occurring disturbances in discrete-time.  The structure of the RODD model is
+\textit{Randomly-occurring deterministic disturbances} (\gls{RODD}s) \citep{macgregor_duality_1984} are a family of stochastic process models suitable for simulating various types of infrequently-occurring disturbances in discrete-time.  The structure of the \gls{RODD} model is
 \begin{equation} \label{eq:RODD}
 	p(k)= \frac{B(q^{-1})}{A(q^{-1})}\gls{wpk},
 \end{equation}
@@ -43,7 +43,7 @@ Figure \ref{fig:wpk-pdf} illustrates the probability density of \gls{wpk} in the
 	\label{fig:wpk-pdf}
 \end{figure}
 
-When dealing with a system having more than one RODD, where each random shock is independent, the notation is
+When dealing with a system having more than one \gls{RODD}, where each random shock is independent, the notation is
 \begin{equation} \label{eq:wpik2}
 	w_{p,i}(k) \sim 
 	\begin{cases*}
@@ -53,24 +53,24 @@ When dealing with a system having more than one RODD, where each random shock is
 \end{equation}
 where $i \in \left\{1, 2, ..., n_p\right\}$.
 
-The choice of $A(q^{-1})$ and $B(q^{-1})$ in (\ref{eq:RODD}) determines the nature of the RODD. For example, if $B(q^{-1})=1$ and $A(q^{-1})=1-q^{-1}$, $p(k)$ will be a random-walk process with infrequent, large step changes.
+The choice of $A(q^{-1})$ and $B(q^{-1})$ in (\ref{eq:RODD}) determines the nature of the \gls{RODD}. For example, if $B(q^{-1})=1$ and $A(q^{-1})=1-q^{-1}$, $p(k)$ will be a random-walk process with infrequent, large step changes.
 
 % Add symbol to glossary
-Using \gls{nabla} to denote $1-q^{-1}$, the RODD \textit{step-disturbance} process can be defined as
+Using \gls{nabla} to denote $1-q^{-1}$, the \gls{RODD} \textit{step-disturbance} process can be defined as
 \begin{equation} \label{eq:RODD-step}
 	\gls{pk} = \frac{1}{\gls{nabla}}\gls{wpk}.
 \end{equation}
 
-A RODD \textit{ramp-disturbance}, consisting of a series of ramps with randomly-occurring changes in slope, may be generated using
+A \gls{RODD} \textit{ramp-disturbance}, consisting of a series of ramps with randomly-occurring changes in slope, may be generated using
 \begin{equation} \label{eq:RODD-ramp}
 	\gls{pk} = \frac{1}{\gls{nabla}^2}\gls{wpk}.
 \end{equation}
 
-A RODD consisting of randomly-occurring decaying exponential changes may be generated using
+A \gls{RODD} consisting of randomly-occurring decaying exponential changes may be generated using
 \begin{equation} \label{eq:RODD-exp}
 	\gls{pk} = \frac{1}{(1-a_1q^{-1})\gls{nabla}}\gls{wpk},
 \end{equation}
-where  $0<a_1<1$. Note that $a_1=0$ corresponds to the case of a RODD step disturbance (\ref{eq:RODD-step}) and $a_1=1$ to that of a RODD ramp disturbance (\ref{eq:RODD-ramp}). 
+where  $0<a_1<1$. Note that $a_1=0$ corresponds to the case of a \gls{RODD} step disturbance (\ref{eq:RODD-step}) and $a_1=1$ to that of a \gls{RODD} ramp disturbance (\ref{eq:RODD-ramp}). 
 
 An equivalent state-space representation of (\ref{eq:RODD-exp}) is
 \begin{equation} \label{eq:RODD-ss}
@@ -89,7 +89,7 @@ An equivalent state-space representation of (\ref{eq:RODD-exp}) is
 \end{equation}
 where $\mathbf{x}_p(k) \in \mathbb{R}^2$ is the state vector.
 
-A disturbance with a combination of different RODD types is also possible.  For example, a state-space representation of a RODD consisting of step changes and ramps is
+A disturbance with a combination of different \gls{RODD} types is also possible.  For example, a state-space representation of a \gls{RODD} consisting of step changes and ramps is
 \begin{equation} \label{eq:RODD-step-ramp}
 	\begin{split}
 		\mathbf{x}_p(k+1) & =\left[\begin{array}{cc}
@@ -109,7 +109,7 @@ where $\mathbf{w}_p(k)$ is a vector of two independent random shock signals gene
 
 \subsection{Hidden Markov models} \label{sec:HMM}
 
-\textit{Hidden Markov models} (\gls{HMM}) can be used to simulate a more diverse set of switching behaviours than those of the RODD model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
+\textit{Hidden Markov models} (\gls{HMM}) can be used to simulate a more diverse set of switching behaviours than those of the \gls{RODD} model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A HMM is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
 To illustrate the basic concept, we can define the state of the random shock generating process (\ref{eq:wpk2}) as a Markov model state \gls{gammak} with two possible values:
 \begin{equation} \label{eq:gamma-k}
@@ -131,7 +131,7 @@ $\gls{gammak}=0$ represents the system mode when no shock occurs and $\gls{gamma
 \end{equation}
 where \gls{nj} is the number of possible system modes---which is 2 in this case of the random shock---and $\pi_{ij}$ is the probability that the shock mode at time $k$ is $j-1$ given that it was $i-1$ at time $k-1$.
 
-For example, the Markov process equivalent to the random shock used in the RODD model (\ref{eq:wpk2}) would have the transition probability matrix
+For example, the Markov process equivalent to the random shock used in the \gls{RODD} model (\ref{eq:wpk2}) would have the transition probability matrix
 \begin{equation} \label{eq:Pi-RODD-step}
 	\glsadd{Piwp}\Pi_{w_{p}} = \begin{bmatrix}
 	1-\epsilon & \epsilon \\
@@ -174,7 +174,7 @@ With this notation, (\ref{eq:mog-example}) can be written more concisely as
 \end{equation}
 where $\mu_{w_p}\in\left\{\mu_{w_p,1},\mu_{w_p,2},...,\mu_{w_p,n_j}\right\}$. This model is known as a \textit{mixture of Gaussians} and can be considered a special-case of a HMM-based disturbance model \citep{wong_disturbance_2007}.
 
-The general HMM disturbance process is described by the following \textit{Markov jump linear system} (MJLS) \citep{costa_discrete-time_2005}. A state-space representation with time-varying system matrices $\mathbf{A}(\gamma(k))$, $\mathbf{B}(\gamma(k))$, and $\mathbf{C}(\gamma(k))$ can then be defined
+The general \gls{HMM} disturbance process is described by the following \textit{Markov jump linear system} (\gls{MJLS}) \citep{costa_discrete-time_2005}. A state-space representation with time-varying system matrices $\mathbf{A}(\gamma(k))$, $\mathbf{B}(\gamma(k))$, and $\mathbf{C}(\gamma(k))$ can then be defined
 \begin{equation} \label{eq:MJLS}
 	\begin{aligned}
 	\mathbf{x}_p(k+1) &= \mathbf{A}(r(k)) \mathbf{x}_p(k) + \mathbf{B}(r(k))\mathbf{w}_p(k) \\
@@ -373,7 +373,7 @@ A state-space representation of the combined system including the disturbance mo
 		\mathbf{y}(k) = \mathbf{C}_a \mathbf{x}_a(k) + \mathbf{v}(k),
 	\end{aligned}
 \end{equation}
-where \gls{xak} $\in \mathbb{R}^{n+n_p}$ is an augmented state vector that includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables combining $\mathbf{w}(k)$ and $\mathbf{w}_p(k)$.
+where \gls{xak} $\in \mathbb{R}^{n+n_p}$ is an augmented state vector that includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables combining $\mathbf{w}(k)$ and $\mathbf{w}_p(k)$. However, this notation with subscript `a' is only used in this chapter. In subsequent chapters, the subscript is dropped for simplicity since all references to the model state vector and model state estimates relate to the augmented model used in state estimation.
 
 Although the random shock in a \gls{RODD} is unmeasured, it may be observable from the measurements of the outputs of the system. However, as mentioned in Section \ref{chap-lit-review}, systems with \gls{RODD}s pose problems for state estimation using standard Kalman filters due to the switching of the noise model parameters, namely, the variance of $w_p(k)$ (\ref{eq:wpk2}). As explained by \cite{andersson_adaptive_1985}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
 
@@ -890,7 +890,7 @@ At time $k$, the algorithm requires a mode indicator vector, $\gls{gammak}=\begi
 % Some text not used in IFAC report
 Model-based observers such as the Kalman filter require a dynamic model of the process. In practice, models of the process dynamics are not available but they can be identified when input-output data sampled from the process is available. In this case, system identification methods are common practice and described by \cite{ljung_system_1999} among others.
 
-To construct a multi-model observer for RODD estimation, the structure and parameters of the process model as well as the disturbance model are needed. RODDs are discrete-time \textit{Markov jump linear systems} (\gls{MJLS}) \citep{costa_discrete-time_2005}. Standard approaches to system identification such as least-squares regression are not applicable to hybrid dynamical systems with both discrete and continuous states. Identification of these types of systems is challenging and the subject of ongoing research. See for example, \cite{piga_estimation_2020}.
+To construct a multi-model observer for \gls{RODD} estimation, the structure and parameters of the process model as well as the disturbance model are needed. \gls{RODD}s are discrete-time \textit{Markov jump linear systems} (\gls{MJLS}) \citep{costa_discrete-time_2005}. Standard approaches to system identification such as least-squares regression are not applicable to hybrid dynamical systems with both discrete and continuous states. Identification of these types of systems is challenging and the subject of ongoing research. See for example, \cite{piga_estimation_2020}.
 
 %Outline notes:
 %\begin{itemize}
@@ -1076,7 +1076,7 @@ Similarly, the \gls{RMSE} of the estimates of an unmeasured input disturbance si
 	\RMSE(\hat{P}_i(N),P_i(N)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(\hat{p}_i(k)-p_i(k))^2}}.
 \end{equation}
  
-As well as the overall \gls{RMSE}, two additional \gls{RMSE} metrics are used to evaluate observer performance on systems with \gls{RODD}s. The \gls{RMSE} \textit{in transition}, which is the \gls{RMSE} during a period after a random shock, is used to evaluate the response of an observer to infrequent, abrupt disturbances. The transition period is defined as the samples occurring within $t_{st}$ hours of the disturbance arriving at the input to the process, where $t_{st}$ is the \textit{settling time}, defined as the time taken for the process outputs to converge to within $\pm5\%$ of their final steady-state values. The \gls{RMSE} \textit{in steady-state} is defined as the samples occurring more than $t_{st}$ hours after a disturbance and before the next one occurs.
+As well as the overall \gls{RMSE}, two additional \gls{RMSE} metrics are used to evaluate observer performance on systems with \gls{RODD}s. The \gls{RMSE} \textit{in transition}, which is the \gls{RMSE} during a period after a random shock, is used to evaluate the response of an observer to infrequent, abrupt disturbances. The transition period is defined as the samples occurring within \gls{tset95} hours of the disturbance arriving at the input to the process, where \gls{tset95} is the \textit{settling time}, defined as the time taken for the process outputs to converge to within $\pm5\%$ of the final steady-state values. The \gls{RMSE} \textit{in steady-state} is defined as the samples occurring more than \gls{tset95} hours after a disturbance and before the next one occurs.
 
 The fourth metric is the \textit{root-mean-squared-differences} (\glsadd{RMSD}\gls{RMSD}) in the estimates,
 \begin{equation} \label{eq:rmsd-calc-yest}

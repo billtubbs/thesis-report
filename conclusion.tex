@@ -18,34 +18,5 @@ While the multi-model observer has a number of clear advantages over a single Ka
 Secondly, the multiple-model algorithm is limited to infrequently-occurring disturbances where the disturbance model is known. Finally, the complexity of the algorithm is a significant disadvantage from the perspective of practical implementation.
 
 
-The settling time of the process in number-of-sample-periods is the settling time divided by the sampling interval,
-\begin{equation} \label{eq:Nsettle}
-	\glsadd{Nset95}N_{\pm 5\%}=\frac{t_{\pm 5\%}}{T_s}.
-\end{equation}
 
-\begin{table}[ht]
-	\begin{center}
-		\caption{Summary of experiments -- observer parameters} \label{tb:summary-all-sims}
-		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
-		\begin{tabular}{
-				>{\centering\arraybackslash}p{0.18in}
-				>{\centering\arraybackslash}p{0.52in}
-				>{\centering\arraybackslash}p{0.43in}
-				>{\centering\arraybackslash}p{0.26in}
-				>{\centering\arraybackslash}p{0.26in}
-				>{\centering\arraybackslash}p{0.28in}
-				>{\centering\arraybackslash}p{0.8in}
-				>{\centering\arraybackslash}p{0.8in}
-				>{\centering\arraybackslash}p{0.8in}}
-			Sec. & System & Dim. & \gls{Ts} & \gls{SNR} & $N_{\pm 5\%} $ & MKF--SF95 (\gls{nf},\gls{m},\gls{d}) & MKF--SF1 (\gls{nf},\gls{m},\gls{d}) & MKF-SP  (\gls{nh},\gls{nmin}) \\
-			\hline
-			\ref{sec:sim-obs-lin} & linear & \gls{SISO} & 0.5 & 10 & 9 & 5,1,1 & 6,1,2 & 10,7 \\
-			\ref{sec:sim-obs-lin} & linear & $2 \times 2$ & 1 & 5 & 26 & 15,2,3 & 18,2,5 & 46,21 \\
-			\ref{sec:sim-ore-SISO} & nonlinear & \gls{SISO} & 0.05 & 1.9 & 24 & 60,2,10 & 60,2,12 & 25,23  \\
-			\hline
-		\end{tabular}
-	\end{center}
-\end{table}
-
-These are quite different to those of the observers evaluated in section \ref{sec:sim-obs-lin}. In the case of the sequence fusion observers, the best lengths of the detection horizon are much longer at 10 and 12 sample periods, compared to 1 and 2 for the SISO linear system and 3 and 5 for the MIMO linear system. The best fusion horizons here are also much longer, at 60 sample periods compared to 5, 6, and 15 for linear system simulations. In the case of the sequence pruning observer, the \gls{nmin} parameter is higher, at 23, compared to 7 for the SISO linear system, but similar to its value for the MIMO linear system which was 21. Although the numbers of hypotheses used by all three observers here are higher than for the SISO linear system, they are significantly lower than the numbers needed by the observers for the MIMO linear system, which were 116, 58, and 46.
 
