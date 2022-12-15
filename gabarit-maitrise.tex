@@ -13,25 +13,28 @@
 %% et les langues les plus courantes. Le français sera la langue par
 %% défaut du document.
 \documentclass[MSc,english,french]{ulthese}
-  %% Encodage utilisé pour les caractères accentués dans les fichiers
-  %% source du document. Les gabarits sont encodés en UTF-8. Inutile
-  %% avec XeLaTeX, qui gère Unicode nativement.
-  \ifxetex\else \usepackage[utf8]{inputenc} \fi
-  %% Charger ici les autres paquetages nécessaires pour le document.
-  %% Quelques exemples; décommenter au besoin.
-  \usepackage{amsmath}       % recommandé pour les mathématiques
-  \usepackage{amssymb}    % using for intercal symbol
-  %\usepackage{icomma}        % gestion de la virgule dans les nombres
-  \usepackage{mathtools}
-  \usepackage{graphicx}
-  \usepackage{outlines}  % for nested lists
-  \graphicspath{ {./images/} }
-  \usepackage{algorithm}
-  \usepackage{algpseudocode}
-  \usepackage{natbib}   % for citep command
-  \usepackage{array}  % for arraybackslash command in tables
-  \usepackage{booktabs}  % for table formatting
-  \renewcommand{\arraystretch}{1.4}  % Makes table row heights higher
+
+%% Encodage utilisé pour les caractères accentués dans les fichiers
+%% source du document. Les gabarits sont encodés en UTF-8. Inutile
+%% avec XeLaTeX, qui gère Unicode nativement.
+\ifxetex\else \usepackage[utf8]{inputenc} \fi
+%% Charger ici les autres paquetages nécessaires pour le document.
+%% Quelques exemples; décommenter au besoin.
+\usepackage{amsmath}       % recommandé pour les mathématiques
+\usepackage{amssymb}    % using for intercal symbol
+%\usepackage{icomma}        % gestion de la virgule dans les nombres
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{outlines}  % for nested lists
+\graphicspath{ {./images/} }
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{natbib}   % for citep command
+\usepackage{array}  % for arraybackslash command in tables
+\usepackage{booktabs}  % for table formatting
+\renewcommand{\arraystretch}{1.4}  % Makes table row heights higher
+\usepackage{multirow}  % for table column headings in discussion
+\usepackage[raggedrightboxes]{ragged2e}  % for table column headings in discussion
 
  % \usepackage{easyReview}  % Only used for highlighting edits - REMOVE IN FINAL DRAFT
 
@@ -41,21 +44,7 @@
 % According to this, these warnings can be ignored:
 % https://tex.stackexchange.com/questions/163479/glossaries-conflict-with-memoir
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 % NOTE: Don't add periods at end of description.  Don't use capitals at beginning of description.
-
 % General notation
 \newglossaryentry{qm1}{name=\ensuremath{q^{-1}}, description={backwards shift operator}}
 \newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, 
@@ -177,7 +166,7 @@
 
 % Simulations
 \newglossaryentry{PRBS}{name={PRBS}, description={Pseudo-random binary sequence}}
-\newglossaryentry{SNR}{name={SNR}, description={Signal-to-noise ratio}}
+\newglossaryentry{SNR}{name=\ensuremath{\mathrm{SNR}}, description={Signal-to-noise ratio}}
 \newglossaryentry{tset95}{name=\ensuremath{t_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state}}
 \newglossaryentry{Nset95}{name=\ensuremath{N_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state, measured in number of sample periods}}
 \newglossaryentry{Tp1}{name=\ensuremath{T_{p,1}}, description={adjustable time constant of the process model, used in sensitivity analysis}}
@@ -221,7 +210,7 @@
   %% Composition de la page frontispice. Remplacer les éléments entre < >.
   %% Supprimer les caractères < >. Couper un long titre ou un long
   %% sous-titre manuellement avec \\.
-  \titre{A Disturbance Model and Observer for Grinding Process Applications}
+  \titre{Process Observers for Detecting Ore Feed Disturbances in Grinding Operations}
   % \titre{Ceci est un exemple de long titre \\
   %   avec saut de ligne manuel}
   % \soustitre{Sous-titre le cas échéant}
@@ -229,8 +218,8 @@
   %   avec saut de ligne manuel}
   \auteur{William J. Tubbs}
   \programme{Maîtrise en <discipline> <-- majeure, s'il y a lieu>}
-  \direction{<Prénom Nom>, <directeur ou directrice> de recherche}
-  % \codirection{<Prénom Nom>, <codirecteur ou codirectrice> de recherche}
+  \direction{André Desbiens, directeur de recherche}
+  \codirection{Jocelyn Bouchard, codirecteur de recherche}
   % \codirection{<Prénom Nom>, <codirecteur ou codirectrice> de recherche \\
   %              <Prénom Nom>, <codirecteur ou codirectrice> de recherche}
 
@@ -276,7 +265,6 @@
 \include{chapitre2}             % chapitre 2
 \include{chapitre3}             % chapitre 3
 %\include{chapitre4}             % chapitre 4, etc.  REMOVED - RESULTS NOT COMPLETED
-\include{discussion}            % discussion
 \include{conclusion}            % conclusion
 
 \appendix                       % annexes le cas échéant
