@@ -2,11 +2,11 @@
 \chapter{Additional results and sensitivity analysis}     % numérotée
 \label{chap-Annex}                   % étiquette pour renvois (à compléter!)
 
-\section{Algorithms} \label{sec:annex-alg-KF}
-
-\begin{itemize}
-	\item Multi-model algorithms MKF--SF and MKF--SP.  TODO: Not sure if this is needed...
-\end{itemize}
+%\section{Algorithms} \label{sec:annex-alg-KF}
+%
+%\begin{itemize}
+%	\item Multi-model algorithms MKF--SF and MKF--SP.  TODO: Not sure if this is needed...
+%\end{itemize}
 
 \section{Tuning of KF3 for MIMO linear system} \label{sec:annex-sim-2-KF-tuning}
 
@@ -139,19 +139,19 @@ For the sequence pruning algorithm, the best combination of parameters, $\gls{nh
 
 Many of the simulation results are sensitive to the initialization of the \textit{pseudo-random number generator} (\gls{PRNG}) used to simulate random processes. For example, the \gls{RODD} step disturbance (\ref{eq:wpk2}) is simulated by generating three pseudo-random sequences---two random noise sequences and a random binary sequence. Since the random shocks are infrequent and tend to have a large magnitude, their effect on the simulation results can be significant.
 
-To visualize this effect, consider the plot in Figure \ref{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}. This shows the \gls{RMSE} of the output estimates of the three Kalman filters described in Section \ref{sim-obs-lin-1} for 10 simulations, each generated with a different \textit{seed}—the seed is a scalar argument used to initialize the \gls{PRNG} algorithm with a unique state. The \gls{RMSE} is calculated for every simulation duration, $\gls{N}=0.5,1,1.5,...,2500$. The coloured areas represent the range between the lowest and the highest \gls{RMSE} obtained for the 10 different simulations of each duration. The dark lines represent the median values.
+To visualize this effect, consider the plot in Figure \ref{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}. This shows the \gls{RMSE} of the output estimates of the three Kalman filters described in Section \ref{sec:sim-obs-lin-1} for 10 simulations, each generated with a different \textit{seed}—the seed is a scalar argument used to initialize the \gls{PRNG} algorithm with a unique state. The \gls{RMSE} is calculated for every simulation duration, $\gls{N}=0.5,1,1.5,...,2500$. The coloured areas represent the range between the lowest and the highest \gls{RMSE} obtained for the 10 different simulations of each duration. The dark lines represent the median values.
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=14cm]{images/rod_obs_sim1_3KF_seed_crmse_statsplot.pdf}
+	\includegraphics[width=14cm]{images/rod_obs_sim1_3KF_seed_crmse_statsplot.png}  % use png here
 	\caption{Effect of random variables on the \gls{RMSE} results.}
 	\label{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}
-\end{figure}  %TODO: This needs updating as do figures below.
+\end{figure}  %TODO: This needs updating because simulations are old.  Also figures in text.
 
-As expected, the differences in the results due to \gls{PRNG} initialization are smaller the longer the simulation. However, the magnitude of the differences is not the same for each observer. The \gls{RMSE} values of KF1, which has the lowest gain, are more sensitive to the random initialization than those of the other two filters. Therefore it is not possible to estimate the expected value of the \gls{RMSE} of KF1 from a single simulation of this duration---a longer simulation or a larger number of simulations would be needed. On the other hand, the variations in the \gls{RMSE}s of KF2 and KF3 are significantly lower. After the full length of the simulations ($\gls{N}=2500$), the \gls{RMSE} of KF2 is between \textcolor{red}{-0.0039 (-2.5\%) and 0.0019 (1.3\%) of the median value, which is $0.1550$.  That of KF3 is between -0.0035 (-4.0\%) / 0.0047 (5.3\%) of the median, 0.0889}.  Therefore it is reasonable to conclude that the \gls{RMSE} of KF3 is consistently about 0.05 lower than that of KF2. Note that the \gls{RMSE}s of KF2 and KF3 reported in Section \ref{sim-obs-lin-1} are 0.0935 and 0.0672. These values are both within the minimum and maximum values of this sensitivity analysis.
-%TODO: The simulation results above need updating.
+As expected, the differences in the results due to \gls{PRNG} initialization decrease as the simulation duration increases. However, the magnitude of the differences is not the same for each observer. The \gls{RMSE} values of KF1, which has the lowest gain, are more sensitive to the random initialization than those of the other two filters. Therefore it is not possible to estimate the expected value of the \gls{RMSE} of KF1 from a single simulation of this duration---a longer simulation or a larger number of simulations would be needed. On the other hand, the variations in the \gls{RMSE}s of KF2 and KF3 are significantly lower. After the full length of the simulations ($\gls{N}=2500$), the \gls{RMSE} of KF2 is between -0.0039 (-2.5\%) and 0.0019 (1.3\%) of the median value, which is $0.1550$.  That of KF3 is between -0.0035 (-4.0\%) / 0.0047 (5.3\%) of the median, which is 0.0889.  Therefore it is reasonable to conclude that the \gls{RMSE} of KF3 is consistently about 0.05 lower than that of KF2. Note that the \gls{RMSE}s of KF2 and KF3 reported in Section \ref{sec:sim-obs-lin-1} are 0.0935 and 0.0672. These values are both within the minimum and maximum values of this sensitivity analysis.
+%TODO: The simulation results above need checking/updating.
 
-A similar sensitivity analysis was carried out on the results of the Kalman Filter tuning shown in Figure \ref{eq:sim-sys-siso-KF3-Q}, where KF3 was tuned using a set of 5000 input-output samples from the system. Figure \ref{fig:sim-sys-siso-KF3-sensitivity} shows the variation in this result when ten different sets of pseudo-random simulation data are used.  Although there is considerable variation in the \gls{RMSE} values for each parameter value, the best overall choice of \gls{sigmawp} to achieve the lowest average error across all 10 simulations was found to be the same as that of the single simulation (0.01).
+A similar sensitivity analysis was carried out on the results of the Kalman filter tuning shown in Figure \ref{eq:sim-sys-siso-KF3-Q}, where KF3 was tuned using a set of 5000 input-output samples from the system. Figure \ref{fig:sim-sys-siso-KF3-sensitivity} shows the variation in this result when ten different sets of pseudo-random simulation data are used.  Although there is considerable variation in the \gls{RMSE} values for each parameter value, the best overall choice of \gls{sigmawp2} to achieve the lowest average error across all 10 simulations was found to be the same as that of the single simulation (0.01).
 
 \begin{figure}[htp]
 	\centering
