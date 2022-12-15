@@ -949,16 +949,14 @@ To construct a multiple-model observer for systems with \gls{RODD}s, the structu
 
 A dynamic simulation model of the primary grinding circuit of a gold mine in Quebec is used to simulate the effects of changes in ore feed properties on the grinding circuit over time. The model was developed by \cite{perez_garcia_dynamic_2020} following the methodology described by \cite{grimble_dynamic_2010} and was calibrated to match operating data collected from the plant \citep{perez-garcia_systematic_2020}. Grinding in the \gls{SAG} mill is simulated by a \textit{population balance model} with 24 discrete ore particle size intervals and constant specific-energy selection rates (i.e. breakage rates are proportional to total energy consumption) and a constant breakage matrix.
 
-Figure \ref{fig:sag-diag} is a simplified diagram of the simulated circuit, consisting of a variable speed feed conveyor, \gls{SAG} mill with variable speed motor, pump box, pump, and a bank of hydro-cyclones.
+Figure \ref{fig:sag-diag} is a simplified diagram of the simulated \gls{SAG} mill in a closed circuit consisting of a feed conveyor, pump box, pump, and a bank of hydro-cyclones.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=12.5cm]{images/sag-circuit-diag.pdf}
 	\caption{Simplified process flow diagram}
 	\label{fig:sag-diag}
 \end{figure}
-
 For the purposes of this work, two ore feed streams with different \gls{PSD}s were simulated. Each stream is a different mix of two different ores. One ore has a fine \gls{PSD} and the other is coarse. The mix for stream \#1 (`mix 1') consists of 22.83\% coarse ore (\textit{mix factor} of 0.2283) and mix \#2 is an even mix of both ores (mix factor of 0.5). The two streams are mixed before discharging onto the conveyor. Figure \ref{fig:coarse_fine_psd_plot} shows the \gls{PSD}s of the two mixtures.
-
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=9cm]{images/coarse_fine_cumpsd_plot.pdf}
@@ -966,68 +964,63 @@ For the purposes of this work, two ore feed streams with different \gls{PSD}s we
 	\label{fig:coarse_fine_psd_plot}
 \end{figure}
 
-The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The \gls{SAG} mill water addition set-point is set by ratio control to a fraction of the fresh ore feed rate, which is measured on the conveyor. This water addition ratio is also manipulated. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate set-point. The \gls{SAG} rotational speed set-point may also be manipulated.
+The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The main process variable used in this work is the product P80 measurement, which is a simulated online analyser that estimates the 80\% passing size of the material leaving the circuit. In this work, the water addition rate to the mill inlet, the conveyor speed, the discharge pump speed, and the mill rotational speed are all fixed.
 
-The measurable process variables used in this work are the mill weight, which includes the weight of the shell and liners as well as the mill contents, mill power consumption, the solids-content of the cyclone feed stream, and the particle size (P80) of the ground product in the cyclone overflow. Mill filling level and other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.  Figure \ref{fig:grind_sim_io_diag} summarizes the inputs and outputs of the simulation model. Table \ref{tb:grind-vars} lists the normal operating points, units, and minimum and maximum operating limits of each variable.
+%The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The \gls{SAG} mill water addition set-point is set by ratio control to a fraction of the fresh ore feed rate, which is measured on the conveyor. This water addition ratio is also manipulated. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate set-point. The \gls{SAG} rotational speed set-point may also be manipulated.
+%
+%The measurable process variables used in this work are the mill weight, which includes the weight of the shell and liners as well as the mill contents, mill power consumption, the solids-content of the cyclone feed stream, and the particle size (P80) of the ground product in the cyclone overflow. Mill filling level and other simulation variables are available for analysis but are assumed to be unmeasured in the real operation and therefore not available for process control.  Figure \ref{fig:grind_sim_io_diag} summarizes the inputs and outputs of the simulation model. Table \ref{tb:grind-vars} lists the normal operating points, units, and minimum and maximum operating limits of each variable.
+%
+%%TODO: Table of process variables and normal operating points, limits etc.
+%\begin{table}[ht]
+%	\centering
+%	\caption{Grinding simulation model inputs and outputs} \label{tb:grind-vars}
+%	% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
+%	% Also: https://www.overleaf.com/learn/latex/Tables
+%	\begin{tabular}{c c >{\raggedright}p{5.5cm} c c c c}
+%		%\toprule
+%		& Label & Description & Op. pt. & Units & Min. & Max \\
+%		\midrule
+%		\multicolumn{7}{l}{\textit{manipulated variables}} \\
+%		%\midrule
+%		  & MV1       & Ore feed rate & 122.7 & tons/h & 0 & 200 \\   
+%		  & MV2       & Mill speed (fraction of critical speed) & 0.77 & - & 0 & 0.85 \\ 
+%		  & MV3       & Water addition ratio (fraction of ore feed rate) & 0.341 & - & 0 & 1 \\ 
+%		%\midrule
+%		\multicolumn{7}{l}{\textit{Unmeasured disturbance input}} \\
+%		%\midrule
+%		  & UD1        & Ore mix factor & 0.2283 & - & 0 & 1  \\ 
+%		%\midrule
+%		\multicolumn{7}{l}{\textit{Output variables}} \\
+%		%\midrule
+%		  & OV1        & Mill weight & 279.4 & tons & 100 & 320  \\ 
+%		  & OV2       & Mill power consumption & 2391 & kW & 0 & 2400  \\ 
+%		  & OV3       & Cyclone feed solids fraction & 61.4 & \% & 50 & 70  \\ 
+%		  & OV4       & Cyclone overflow P80 & 105.4 & \% & 0 & 200  \\ 
+%		\bottomrule
+%	\end{tabular}
+%\end{table}
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=15cm]{images/grind_sim_io_diag.pdf}
-	\caption{Grinding simulation model inputs and outputs}
-	\label{fig:grind_sim_io_diag}
-\end{figure}
+%To better understand the relationships between the input and output variables, a set of simulations were carried out to determine steady-state operating conditions in the vicinity of the normal operating point. Figure \ref{fig:grind_sim_ss_plot1} shows how the steady-state values of the four output variables are affected by changes in the mill fill level (fraction of internal volume occupied by the charge) and rotation speed. The normal operating points are also shown, represented by solid markers. For these simulations, a simple PI controller was used to control the mill filling level by manipulating the ore feed rate and each simulation was run until all variables converged to steady-state values. However, no constraints were imposed during these simulations, therefore power consumption exceeds the maximum possible in some cases.
+%
+%These results are equivalent to the grind curves proposed by \cite{powell_applying_2009} for evaluating steady-state characteristics and optimal operating points for \gls{SAG} mills. However, compared to the curves presented by \cite{powell_applying_2009}, which were based on measurements from real operations, these are noticeably much closer to straight lines (i.e. linear relationships).
+%
+%A similar set of simulations were carried out to understand the effect of changing the ore mix factor on the steady-state values of the output variables. The results are shown in Figure \ref{fig:grind_sim_ss_plot2}. From these it can be seen that the change in ore mix has no effect on the steady-state power consumption of the mill. However, there are changes in the steady-state throughput (ore feed rate), cyclone feed solids fraction, and product particle size. The throughput is approximately 4 tons-per-hour higher and the product particle size is 1.5 microns smaller when the ore mix contains the higher fraction (0.5) of coarse ore.
+%
+%\begin{figure}[ht]
+%	\centering
+%	\includegraphics[width=15cm]{images/grind_sim_ss_plot1.pdf}
+%	\caption{Steady-state operating points}
+%	\label{fig:grind_sim_ss_plot1}
+%\end{figure}
+%
+%\begin{figure}[ht]
+%	\centering
+%	\includegraphics[width=15cm]{images/grind_sim_ss_plot2.pdf}
+%	\caption{Effect of ore mix factor on steady-state operating points}
+%	\label{fig:grind_sim_ss_plot2}
+%\end{figure}
 
-%TODO: Table of process variables and normal operating points, limits etc.
-\begin{table}[ht]
-	\centering
-	\caption{Grinding simulation model inputs and outputs} \label{tb:grind-vars}
-	% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
-	% Also: https://www.overleaf.com/learn/latex/Tables
-	\begin{tabular}{c c >{\raggedright}p{5.5cm} c c c c}
-		%\toprule
-		& Label & Description & Op. pt. & Units & Min. & Max \\
-		\midrule
-		\multicolumn{7}{l}{\textit{manipulated variables}} \\
-		%\midrule
-		  & MV1       & Ore feed rate & 122.7 & tons/h & 0 & 200 \\   
-		  & MV2       & Mill speed (fraction of critical speed) & 0.77 & - & 0 & 0.85 \\ 
-		  & MV3       & Water addition ratio (fraction of ore feed rate) & 0.341 & - & 0 & 1 \\ 
-		%\midrule
-		\multicolumn{7}{l}{\textit{Unmeasured disturbance input}} \\
-		%\midrule
-		  & UD1        & Ore mix factor & 0.2283 & - & 0 & 1  \\ 
-		%\midrule
-		\multicolumn{7}{l}{\textit{Output variables}} \\
-		%\midrule
-		  & OV1        & Mill weight & 279.4 & tons & 100 & 320  \\ 
-		  & OV2       & Mill power consumption & 2391 & kW & 0 & 2400  \\ 
-		  & OV3       & Cyclone feed solids fraction & 61.4 & \% & 50 & 70  \\ 
-		  & OV4       & Cyclone overflow P80 & 105.4 & \% & 0 & 200  \\ 
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-To better understand the relationships between the input and output variables, a set of simulations were carried out to determine steady-state operating conditions in the vicinity of the normal operating point. Figure \ref{fig:grind_sim_ss_plot1} shows how the steady-state values of the four output variables are affected by changes in the mill fill level (fraction of internal volume occupied by the charge) and rotation speed. The normal operating points are also shown, represented by solid markers. For these simulations, a simple PI controller was used to control the mill filling level by manipulating the ore feed rate and each simulation was run until all variables converged to steady-state values. However, no constraints were imposed during these simulations, therefore power consumption exceeds the maximum possible in some cases.
-
-These results are equivalent to the grind curves proposed by \cite{powell_applying_2009} for evaluating steady-state characteristics and optimal operating points for \gls{SAG} mills. However, compared to the curves presented by \cite{powell_applying_2009}, which were based on measurements from real operations, these are noticeably much closer to straight lines (i.e. linear relationships).
-
-A similar set of simulations were carried out to understand the effect of changing the ore mix factor on the steady-state values of the output variables. The results are shown in Figure \ref{fig:grind_sim_ss_plot2}. From these it can be seen that the change in ore mix has no effect on the steady-state power consumption of the mill. However, there are changes in the steady-state throughput (ore feed rate), cyclone feed solids fraction, and product particle size. The throughput is approximately 4 tons-per-hour higher and the product particle size is 1.5 microns smaller when the ore mix contains the higher fraction (0.5) of coarse ore.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=15cm]{images/grind_sim_ss_plot1.pdf}
-	\caption{Steady-state operating points}
-	\label{fig:grind_sim_ss_plot1}
-\end{figure}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=15cm]{images/grind_sim_ss_plot2.pdf}
-	\caption{Effect of ore mix factor on steady-state operating points}
-	\label{fig:grind_sim_ss_plot2}
-\end{figure}
-
-Zero-mean Gaussian measurement noises are added to the outputs of the simulation model to simulate measurement errors. The standard deviations of these noises are shown in Table \ref{tb:meas-noise}. Except for the measurement noises and the input disturbance described above, the model itself is deterministic.
+%Zero-mean Gaussian measurement noises are added to the outputs of the simulation model to simulate measurement errors. The standard deviations of these noises are shown in Table \ref{tb:meas-noise}. Except for the measurement noises and the input disturbance described above, the model itself is deterministic.
 
 % Scaling factors
 % 2
@@ -1038,23 +1031,23 @@ Zero-mean Gaussian measurement noises are added to the outputs of the simulation
 %& 24
 %& 0.2
 %& 2
-
-\begin{table}[h!]
-	\centering
-	\caption{Simulated output measurements} \label{tb:meas-noise}
-	\begin{tabular}{c >{\raggedright}p{5.5cm} c c}
-		Label & Description & Sampling period (hours) & Noise std. dev. \\
-		\midrule
-		CV1        & Mill weight & 0.05 & XX \\ 
-		CV2       & Mill power consumption & 0.05 & XX \\ 
-		CV3       & Cyclone feed solids fraction & 0.05 & XX \\ 
-		CV4       & Cyclone overflow P80 & 0.05 & XX \\ 
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-
-Although some of these process variables would likely be sampled at higher rates in practice, it is assumed, for simplicity, that they are all sampled at the same rate of 1 sample every 3 minutes (i.e. a sampling period of 0.05 hours). This was deemed to be a typical sampling rate of a standard online particle size analyser that might be used for the P80 measurement.
+%
+%\begin{table}[h!]
+%	\centering
+%	\caption{Simulated output measurements} \label{tb:meas-noise}
+%	\begin{tabular}{c >{\raggedright}p{5.5cm} c c}
+%		Label & Description & Sampling period (hours) & Noise std. dev. \\
+%		\midrule
+%		CV1        & Mill weight & 0.05 & XX \\ 
+%		CV2       & Mill power consumption & 0.05 & XX \\ 
+%		CV3       & Cyclone feed solids fraction & 0.05 & XX \\ 
+%		CV4       & Cyclone overflow P80 & 0.05 & XX \\ 
+%		\bottomrule
+%	\end{tabular}
+%\end{table}
+%
+%
+%Although some of these process variables would likely be sampled at higher rates in practice, it is assumed, for simplicity, that they are all sampled at the same rate of 1 sample every 3 minutes (i.e. a sampling period of 0.05 hours). This was deemed to be a typical sampling rate of a standard online particle size analyser that might be used for the P80 measurement.
 
 
 \section{Performance evaluation} \label{sec:evaluation}
