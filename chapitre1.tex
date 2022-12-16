@@ -1,8 +1,8 @@
 % !TEX encoding = UTF-8 Unicode
-\chapter{Literature review, objectives, and contributions}
+\chapter{Literature review, objectives, and contribution}
 \label{chap-lit-review}
 
-The literature review was in two parts. The first part, which is summarised in Section \ref{sec:lit-grinding}, describes previous research related to grinding process control. This includes an introduction to the dynamics of the grinding process and previous work on grinding process control, process observers, and grinding process disturbances. This informed the objectives of the work which are described in Section \ref{sec:objectives}. Section \ref{sec:lit-disturb-models} is the second part of the literature review, which focussed on industrial process disturbance models, observers for estimating disturbances, and other methods related to the work. Finally, Section \ref{sec:contributions} lists the main contributions of this research.
+The literature review was in two parts. The first part, which is summarised in Section \ref{sec:lit-grinding}, describes previous research related to grinding process control. This includes an introduction to the dynamics of the grinding process and work on grinding process control, process observers, and grinding process disturbances. This informed the objectives of the work which are described in Section \ref{sec:objectives}. Section \ref{sec:lit-disturb-models} is the second part of the literature review, which focussed on industrial process disturbance models, observers for estimating disturbances, and other methods related to the work. Finally, Section \ref{sec:contributions} lists the main contributions of this research.
 
 \section{Literature review part 1 – grinding process control} \label{sec:lit-grinding}
 
@@ -122,7 +122,7 @@ Recent innovations in ore hardness testing methods and equipment are starting to
 
 From the literature review described in Section \ref{sec:lit-grinding}, it was apparent that changes in ore properties in the feed to the grinding process have been a focus of research for many years. Many of the studies included step changes in particle size and hardness (or breakage rates) in control simulation experiments. There is evidence that ore feed disturbances have severe impacts on the grinding process and therefore pose a problem for process control, which aims to reduce variation in the main process variables. This problem is compounded by the fact that many of the internal states of the process are not measurable and models of the process dynamics have so far been found to be unobservable given the process measurements available in typical operations. 
 
-Although some studies report the absolute magnitude of variations in ore properties, there is a lack of data on the dynamic nature of ore disturbances, no doubt due to the practical difficulties of measuring them. What data there is (see \cite{steyn_investigating_2018} for example), suggests that this dynamic behaviour is complex, including step changes, ramps and abrupt changes in the magnitude of high frequency variations. Based on the literature reviewed here, there has been no work on developing novel disturbance models suited to grinding process control, or in incorporating such models into process observers to improve state estimation.
+Although some studies report the absolute magnitude of variations in ore properties, there is a lack of publicly-available data on the dynamic nature of ore disturbances. What data there are (see \cite{steyn_investigating_2018} for example), suggest that this dynamic behaviour is complex, including step changes, ramps and abrupt changes in the magnitude of high frequency variations. Based on the literature reviewed here, there has been no work on developing specialised disturbance models for grinding process control, or in incorporating such models into process observers to improve state estimation.
 
 The objectives of this research are:
 \begin{enumerate}
@@ -131,7 +131,7 @@ The objectives of this research are:
 \end{enumerate}
 % More specific objective?
 %This work aims to address the problem of detecting and estimating infrequent, abrupt changes in the ore feed.
-A further search and review of the academic literature was carried out to identify work on industrial process disturbances potentially relevant to grinding process control. This is described in the next section.
+A search of the academic literature was carried out to identify work on industrial process disturbances potentially relevant to grinding process control. The results of this are described in the next section.
 
 
 \section{Literature review part 2 – disturbance models} \label{sec:lit-disturb-models}
@@ -150,7 +150,7 @@ The structural form of a \gls{RODD} model is an \textit{autoregressive integrate
 
 MacGregor and coworkers also showed that the optimal control law derived for a process perturbed by a \gls{RODD} is no different than that which would be derived for a process subject to a standard stochastic noise.  This is due to the common \gls{ARIMA} structure of the models and the fact that the expected value (i.e. mean) of the random shock signal in the \gls{RODD} model is zero as it is for a Gaussian noise. As a result, it is well-suited to process control design.
 
-\subsection{Detection and estimation of RODDs}\label{detection_RODDs}
+\subsection{Detection and estimation of RODDs} \label{detection_RODDs}
 
 \cite{robertson_detection_1995} described how unmeasured \gls{RODD}s perturbing a system can be estimated online using a \textit{multiple-model} filtering approach. Traditional methods such as Kalman filters are unable to efficiently estimate \gls{RODD}s due to the inevitable trade-off that must be made between the ability to track the disturbance when it occurs and the sensitivity to noise at other times. Multiple-model approaches involve simultaneously maintaining multiple hypotheses about the possible sequence of past disturbances. Each hypothesis is modelled by a separate Kalman filter with different parameters and the resulting state estimates are combined to produce a best-estimate of the system states \citep{jaffer_estimation_1971, buxbaum_recursive_1969, tugnait_detection_1982}.
 % Unnecessary:
@@ -231,7 +231,7 @@ The main contributions of this work are:
 	%\item Development of computer code to simulate two multiple-model observer algorithms for estimating \gls{RODD}s.
 	\item Evaluation of the capabilities of two multiple-model observer algorithms for \gls{RODD} estimation by numerical simulation.
 	\item Evaluation of the performance of the multiple-model observers applied to state estimation of a simulated grinding process with a switching ore feed disturbance.
-	\item Performance comparison of the observers with a standard state estimator to identify advantages and disadvantages.
+	\item Comparison of the performance of the observers with a standard Kalman filter to identify advantages and disadvantages.
 	%	\item Evaluation of the benefits of the multiple-model observer as part of a simulated control system applied to a multivariable grinding process with an ore feed disturbance.
 	%\item \textbf{T.b.d.: A case study of the application of a disturbance model identification technique to characterise disturbances using simulated disturbance data and data from a real industrial operation.}
 \end{enumerate}
