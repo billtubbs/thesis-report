@@ -40,7 +40,9 @@
 
 % This package raises warnings 'overriding \printglossary'. 'overriding 'theglossary' environment
 \usepackage{glossaries}
+% The command \makeglossaries must be written before the first glossary entry.
 \makeglossaries
+% The command \printglossaries is the one that will actually render the list of words and definitions
 % According to this, these warnings can be ignored:
 % https://tex.stackexchange.com/questions/163479/glossaries-conflict-with-memoir
 
@@ -55,7 +57,7 @@
 \newglossaryentry{PrAgB}{name={$\Pr(A \mid B)$}, description={probability of $A$ given $B$}}
 \newglossaryentry{nabla}{name=\ensuremath{\nabla}, description={defined as $1-q^{-1}$}}
 \newglossaryentry{gammak}{name=\ensuremath{\gamma(k)}, description={random shock indicator at time $k$}}
-\newglossaryentry{identity}{name={$\mathbf{I}_n$}, description={($n \times n$) identify matrix}}
+\newglossaryentry{identity}{name={$\mathbf{I}_n$}, description={the identity matrix ($n \times n$)}}
 
 % Signals
 \newglossaryentry{Ts}{name=\ensuremath{T_s}, description={sampling interval in units of time}}
@@ -63,15 +65,15 @@
 \newglossaryentry{uk}{name=\ensuremath{\mathbf{u}(k)}, description={system inputs at time $k$}}
 \newglossaryentry{xk}{name=\ensuremath{\mathbf{x}(k)}, description={system states at time $k$}}
 \newglossaryentry{yk}{name=\ensuremath{\mathbf{y}(k)}, description={system outputs at time $k$}}
-\newglossaryentry{wk}{name=\ensuremath{\mathbf{w}(k)}, description={process disturbance signals at time $k$}}
-\newglossaryentry{vk}{name=\ensuremath{\mathbf{v}(k)}, description={measurement noise signals at time $k$}}
+\newglossaryentry{wk}{name=\ensuremath{\mathbf{w}(k)}, description={process disturbances at time $k$}}
+\newglossaryentry{vk}{name=\ensuremath{\mathbf{v}(k)}, description={measurement noises at time $k$}}
 \newglossaryentry{A}{name=\ensuremath{\mathbf{A}}, description={transition matrix of the system model}}
 \newglossaryentry{B}{name=\ensuremath{\mathbf{B}}, description={input matrix of the system model}}
 \newglossaryentry{C}{name=\ensuremath{\mathbf{C}}, description={output matrix of the system model}}
 \newglossaryentry{yMk}{name=\ensuremath{\mathbf{y}_M(k)}, description={system output measurements at time $k$}}
 \newglossaryentry{pk}{name=\ensuremath{p(k)}, description={disturbance signal at time $k$}}
 \newglossaryentry{wpk}{name=\ensuremath{w_p(k)}, description={random shock signal at time $k$}}
-\newglossaryentry{rk}{name=\ensuremath{\mathbf{r}(k)}, description={mode indicator of a switching system at time $k$ (scalar or vector)}}
+\newglossaryentry{rk}{name=\ensuremath{\mathbf{r}(k)}, description={mode indicator of a switching system at time $k$ (vector)}}
 \newglossaryentry{porek}{name=\ensuremath{p_\text{ore}(k)}, description={simulated ore disturbance signal at time $k$}}
 \newglossaryentry{np}{name=\ensuremath{n_p}, description={number of independent random shocks}}
 
@@ -88,13 +90,17 @@
 \newglossaryentry{ARIMA}{name={ARIMA},description={autoregressive integrated moving average}}
 \newglossaryentry{kWh}{name={kWh},description={kilowatt-hours}}
 \newglossaryentry{MLE}{name={MLE},description={maximum likelihood estimation}}
+\newglossaryentry{DOB}{name={DOB},description={disturbance observer based (control)}}
+\newglossaryentry{LQG}{name={LQG},description={linear quadratic Gaussian (control)}}
+\newglossaryentry{GMM}{name={GMM},description={Gaussian mixture model}}
+\newglossaryentry{EM}{name={EM},description={expectation maximisation}}
 
 % Disturbance models
 \newglossaryentry{RODD}{name={RODD}, description={randomly-occurring deterministic disturbance}}
 \newglossaryentry{epsilon}{name=\ensuremath{\epsilon}, description={probability of a random shock}}
 \newglossaryentry{sigmawp}{name=\ensuremath{\sigma_{w_p}}, description={standard deviation of the persistent noise component of the random shock variable}}
 \newglossaryentry{sigmawp2}{name=\ensuremath{\sigma_{w_p}^2}, description={variance of the persistent noise component of the random shock variable}}
-\newglossaryentry{b}{name=\ensuremath{b}, description={ratio of the variance of the shocks and the noise component of the random shock process}}
+\newglossaryentry{b}{name=\ensuremath{b}, description={ratio of the variance of the shocks and the persistent noise components of the random shock process}}
 \newglossaryentry{HMM}{name={HMM}, description={hidden Markov model}}
 \newglossaryentry{Piwp}{name={$\Pi_{w_{p}}$}, description={transition probability matrix of the disturbance process $w_p$}}
 \newglossaryentry{BRW}{name={BRW}, description={bounded random walk}}
@@ -108,13 +114,13 @@
 \newglossaryentry{Kpk}{name={$\mathbf{K}_p(k)$}, description={correction gain of the Kalman filter (prediction form)}}
 \newglossaryentry{Kk}{name={$\mathbf{K}(k)$}, description={correction gain of the Kalman filter (filtering form)}}
 \newglossaryentry{Kfk}{name={$\mathbf{K}_f(k)$}, description={correction gain of the Kalman filter (filtering form), or correction gain of Kalman filter $f$ (filtering form)}}
-\newglossaryentry{Sk}{name=\ensuremath{\mathbf{S}(k)}, description={covariance of the output prediction errors}}
-\newglossaryentry{Sfk}{name=\ensuremath{\mathbf{S}_f(k)}, description={covariance of the output prediction errors of Kalman filter $f$}}
+\newglossaryentry{Sk}{name=\ensuremath{\mathbf{S}(k)}, description={covariance of the output prediction errors at time $k$}}
+\newglossaryentry{Sfk}{name=\ensuremath{\mathbf{S}_f(k)}, description={covariance of the output prediction errors of Kalman filter $f$ at time $k$}}
 \newglossaryentry{Pk}{name={$\mathbf{P}(k \mid k)$}, description={state estimation error covariance at time $k$ made with information available at time $k$}}
 \newglossaryentry{Pkp1_pred}{name={$\mathbf{P}(k+1 \mid k)$}, description={predictions of the state estimation error covariance at time $k+1$ made with information available at time $k$}}
 \newglossaryentry{Pk_pred}{name={$\mathbf{P}(k \mid k-1)$}, description={predictions of the state estimation error covariance at time $k$ made with information available at time $k-1$}}
-\newglossaryentry{Qset}{name=\ensuremath{\mathcal{Q}}, description={set of process noise covariance matrices for a switching system}}
-\newglossaryentry{Qk}{name=\ensuremath{\mathbf{Q}(k)}, description={covariance of the process disturbances in the observer model}}
+\newglossaryentry{Qset}{name=\ensuremath{\mathcal{Q}}, description={set of process noise covariance matrices of a switching system model}}
+\newglossaryentry{Qk}{name=\ensuremath{\mathbf{Q}(k)}, description={covariance of the process disturbances in the observer model at time $k$}}
 \newglossaryentry{R}{name=\ensuremath{\mathbf{R}}, description={covariance of the measurement noises in the observer model}}
 \newglossaryentry{E}{name={$\mathbb{E}\{\cdot\}$}, description={expectation operator}}
 \newglossaryentry{wpkv}{name={$\mathbf{w}_p(k)$}, description={disturbance model noise inputs at time $k$}}
@@ -136,8 +142,8 @@
 \newglossaryentry{GPB}{name={GPB}, description={generalised pseudo-Bayesian estimator}}
 \newglossaryentry{GPB1}{name={GPB1}, description={first-order generalised pseudo-Bayesian estimator}}
 \newglossaryentry{GPB2}{name={GPB2}, description={second order generalised pseudo-Bayesian estimator}}
-\newglossaryentry{AFMM}{name={AFMM}, description={adaptive forgetting through multiple models algorithm}}
-\newglossaryentry{nj}{name=\ensuremath{n_j}, description={the number of modes or models of a switching system}}
+\newglossaryentry{AFMM}{name={AFMM}, description={adaptive forgetting through multiple models (algorithm)}}
+\newglossaryentry{nj}{name=\ensuremath{n_j}, description={number and modes or models of a switching system}}
 \newglossaryentry{nh}{name=\ensuremath{n_h}, description={number of hypotheses}}
 \newglossaryentry{gamma_fk}{name=\ensuremath{\gamma_f(k)}, description={random shock indicator of hypothesis $f$ at time $k$}}
 \newglossaryentry{Gammafk}{name=\ensuremath{\Gamma_f(k)}, description={shock indicator hypotheses sequence $f$ from time $0$ to $k$}}
@@ -146,31 +152,31 @@
 \newglossaryentry{Zmk}{name=\ensuremath{Z_m(k)}, description={normalization variable at time $k$ used in merged probability calculations}}
 \newglossaryentry{Hbranch}{name=\ensuremath{\mathcal{H}_{\text{branch}}}, description={hypothesis index used in branching operations}}
 \newglossaryentry{Hmerge}{name=\ensuremath{\mathcal{H}_{\text{merge}}}, description={hypothesis index used in merging operations}}
-\newglossaryentry{rmk}{name=\ensuremath{\mathbf{r}_m(k)}, description={indicator of the system modes of the merged hypotheses at time $k$ used at time $k$ in branching and merging operations}}
+\newglossaryentry{rmk}{name=\ensuremath{\mathbf{r}_m(k)}, description={indicator of the system modes of the merged hypotheses at time $k$ used in branching and merging operations}}
 \newglossaryentry{rb1k}{name=\ensuremath{\mathbf{r}_{b,1}(k)}, description={indicators of the system modes of the branched hypotheses at time $k$ before merging}}
 \newglossaryentry{rb2k}{name=\ensuremath{\mathbf{r}_{b,2}(k)}, description={indicators of the system modes of the branched hypotheses at time $k$ after branching}}
-\newglossaryentry{nf}{name=\ensuremath{N_f}, description={sequence fusion parameter: length of fusion horizon in number of sample periods}}
-\newglossaryentry{m}{name=\ensuremath{n_\text{max}}, description={sequence fusion parameter: maximum number of shock occurences within the fusion horizon}}
-\newglossaryentry{d}{name=\ensuremath{N_d}, description={sequence fusion parameter: shock spacing parameter or length of detection interval, in number of sample periods}}
+\newglossaryentry{nf}{name=\ensuremath{N_f}, description={sequence fusion parameter: length of fusion horizon in number of sampling intervals}}
+\newglossaryentry{m}{name=\ensuremath{n_\text{max}}, description={sequence fusion parameter: maximum number of shock occurrences within the fusion horizon}}
+\newglossaryentry{d}{name=\ensuremath{N_d}, description={sequence fusion parameter: shock spacing parameter or length of detection interval, in number of sampling intervals}}
 \newglossaryentry{nmin}{name=\ensuremath{N_\text{min}}, description={sequence pruning parameter: minimum life of a branched hypothesis}}
 \newglossaryentry{epsilond}{name=\ensuremath{\epsilon_d}, description={sequence fusion parameter: probability of at least one shock within the detection interval}}
 \newglossaryentry{beta}{name=\ensuremath{\beta}, description={sequence fusion parameter: total probability of the modelled shock hypothesis sequences}}
-\newglossaryentry{xfk_hat}{name={$\mathbf{\hat{x}}_f(k \mid k)$}, description={estimates of system states at time $k$ for hypothesis $m$}}
-\newglossaryentry{yfk_hat}{name={$\mathbf{\hat{y}}_f(k \mid k)$}, description={estimates of system outputs at time $k$ for hypothesis $m$}}
-\newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, description={state estimation error covariance at time $k$ for hypothesis $m$}}
+\newglossaryentry{xfk_hat}{name={$\mathbf{\hat{x}}_f(k \mid k)$}, description={estimates of the system states at time $k$ for hypothesis $f$}}
+\newglossaryentry{yfk_hat}{name={$\mathbf{\hat{y}}_f(k \mid k)$}, description={estimates of the system outputs at time $k$ for hypothesis $f$}}
+\newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, description={state estimation error covariance at time $k$ for hypothesis $f$}}
 \newglossaryentry{Pfkp1_pred}{name={$\mathbf{P}_f(k+1 \mid k)$}, description={predictions of the state estimation error covariance of hypothesis $f$ at time $k+1$}}
 \newglossaryentry{Pfk_pred}{name={$\mathbf{P}_f(k \mid k-1)$}, description={predictions of the state estimation error covariance of filter $f$ at time $k$}}
-\newglossaryentry{xmk_hat}{name={$\mathbf{\hat{x}}_m(k \mid k)$}, description={merged estimates of system states at time $k$ for merged hypothesis $m$}}
-\newglossaryentry{ymk_hat}{name={$\mathbf{\hat{y}}_m(k \mid k)$}, description={merged estimates of system outputs at time $k$ for merged hypothesis $m$}}
+\newglossaryentry{xmk_hat}{name={$\mathbf{\hat{x}}_m(k \mid k)$}, description={merged estimates of the system states at time $k$ for merged hypothesis $m$}}
+\newglossaryentry{ymk_hat}{name={$\mathbf{\hat{y}}_m(k \mid k)$}, description={merged estimates of the system outputs at time $k$ for merged hypothesis $m$}}
 \newglossaryentry{Pmk}{name={$\mathbf{P}_m(k \mid k)$}, description={merged state estimation error covariance at time $k$ for merged hypothesis $m$}}
 
 % Simulations
 \newglossaryentry{PRBS}{name={PRBS}, description={Pseudo-random binary sequence}}
 \newglossaryentry{SNR}{name=\ensuremath{\mathrm{SNR}}, description={Signal-to-noise ratio}}
 \newglossaryentry{tset95}{name=\ensuremath{t_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state}}
-\newglossaryentry{Nset95}{name=\ensuremath{N_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state, measured in number of sample periods}}
-\newglossaryentry{Tp1}{name=\ensuremath{T_{p,1}}, description={adjustable time constant of the process model, used in sensitivity analysis}}
-\newglossaryentry{Kp}{name=\ensuremath{K_p}, description={adjustable gain of the process model, used in sensitivity analysis}}
+\newglossaryentry{Nset95}{name=\ensuremath{N_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state, measured in number of sampling intervals}}
+\newglossaryentry{Tp1}{name=\ensuremath{T_{p,1}}, description={time constant of the process model used in sensitivity analysis}}
+\newglossaryentry{Kp}{name=\ensuremath{K_p}, description={gain of the process model used in sensitivity analysis}}
 \newglossaryentry{tstep}{name=\ensuremath{t_{step}}, description={time when a step change in the ore feed occurred in the grinding process simulations}}
 \newglossaryentry{PRNG}{name={PRNG}, description={pseudo-random number generator}}
 
@@ -179,8 +185,8 @@
 
 
 % Control
-%\newglossaryentry{Hp}{name={$H_p$}, description={MPC parameter : prediction horizon in number of sample periods}}
-%\newglossaryentry{Hc}{name={$H_c$}, description={MPC parameter : control horizon in number of sample periods}}
+%\newglossaryentry{Hp}{name={$H_p$}, description={MPC parameter : prediction horizon in number of sampling intervals}}
+%\newglossaryentry{Hc}{name={$H_c$}, description={MPC parameter : control horizon in number of sampling intervals}}
 %\newglossaryentry{Deltau}{name={$\Delta \mathbf{u}(k)$}, description={change in the manipulatable variable between time $k-1$ and $k$}}
 
 
@@ -214,7 +220,7 @@
   %% Composition de la page frontispice. Remplacer les éléments entre < >.
   %% Supprimer les caractères < >. Couper un long titre ou un long
   %% sous-titre manuellement avec \\.
-  \titre{Process Observers for Detecting Ore Feed Disturbances in Grinding Operations}
+  \titre{Multiple-Model Observers for Detecting Ore Feed Disturbances in Grinding Operations}
   % \titre{Ceci est un exemple de long titre \\
   %   avec saut de ligne manuel}
   % \soustitre{Sous-titre le cas échéant}
@@ -250,8 +256,8 @@
 \listoffigures                  % production de la liste des figures
 \cleardoublepage
 
-\dedicace{<Dédicace si désiré>}
-\cleardoublepage
+%\dedicace{<Dédicace si désiré>}
+%\cleardoublepage
 
 \epigraphe{<Texte de l'épigraphe>}{<Source ou auteur>}
 \cleardoublepage
@@ -259,7 +265,8 @@
 \include{remerciements}         % remerciements
 %\include{avantpropos}           % avant-propos
 
-\printglossary
+\printglossaries
+%\printglossary  % original code
 %\printglossary[type=\acronymtype]
 
 \mainmatter                     % corps du document
