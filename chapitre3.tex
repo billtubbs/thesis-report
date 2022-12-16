@@ -497,7 +497,7 @@ where
 
 Note that with this representation, the third and fourth model states, $x_{a,3}(k)$ and $x_{a,4}(k)$, correspond exactly to the two input disturbances, $p_1(k)$ and $p_2(k)$.
 
-The two random shocks were simulated with the same parameters as those in the \gls{SISO} simulation, $\epsilon_i=0.01, \sigma_{w_{p,i}}=0.01$, and $b_i=100$. However, the standard deviations of the measurement noises, $\sigma_{M,1}$ and $\sigma_{M,2}$, were 0.2, which is twice as high as they were in the \gls{SISO} simulations.
+The two random shocks were simulated with the same parameters as those in the \gls{SISO} simulation, $\varepsilon_i=0.01, \sigma_{w_{p,i}}=0.01$, and $b_i=100$. However, the standard deviations of the measurement noises, $\sigma_{M,1}$ and $\sigma_{M,2}$, were 0.2, which is twice as high as they were in the \gls{SISO} simulations.
 
 Figure \ref{fig:rod-obs-sim-2-ioplot} shows the first 300 input-output samples from a simulation of the system with a total duration of 5000. The lower of the two plots shows the input signals, $u_1(k)$, $u_2(k)$, $p_1(k)$, and $p_2(k)$. In this simulation, there were no changes to the known input variables. The upper plot shows the simulated output measurements, $y_1(k)$ and $y_2(k)$. No input disturbances other than $w_{p,1}(k)$ and $w_{p,2}(k)$ were simulated (i.e. $w_1(k)=w_2(k)=0$).
 \begin{figure}[htp]
@@ -606,7 +606,7 @@ As in the SISO case, 10 simulations were carried out with different random initi
 
 In this section, results of an experiment to test the observers with data from the grinding process simulator are presented. Unlike the simulations presented in section \ref{sec:sim-obs-lin}, the grinding simulator (described in Section \ref{sec:grinding-simulator}) is a non-linear model with a high number of state variables and complex dynamics based on a real grinding process.
 
-This work is an extension of previously published work \citep{tubbs_observer_2022}. In the previous work, a multiple-model observer with sequence pruning was tested. Here, observers with sequence fusion and sequence pruning are evaluated and compared. Also, note that in the previous work, the prediction form of the Kalman filter (\ref{eq:xkp1_hat_p}) was used and the mean-squared errors (MSEs) of the estimates were compared, not the \gls{RMSE}s (\ref{eq:rmse-calc-yest}).
+This work is an extension of previously published work \citep{tubbs_observer_2022}. In the previous work, the same data from grinding simulator was used to test a multiple-model observer with sequence pruning and similar results were presented. However, the work here has some differences. Here, both types of observer with sequence fusion and sequence pruning were evaluated and compared. Also, note that in the previous work, the prediction form of the Kalman filter (\ref{eq:xkp1_hat_p}) was used and the mean-squared errors (MSEs) of the estimates were compared, not the \gls{RMSE}s (\ref{eq:rmse-calc-yest}).
 
 As in the previous work, the size of the ground product leaving the cyclone overflow was sampled at 3 minute intervals ($T_s=0.05$ hours) and a zero-mean Gaussian measurement noise with a standard deviation of 5 $\mu\text{m}$ was added directly to the simulator output. No other inputs were available to the observers. In total, data from 13 different runs of the simulation model were used. Table \ref{tb:grind1-sims} summarises the type of input signal used in each simulation, the duration, number of samples, and the simulation outputs that were used. The use of this data is described in the subsequent sections.
 \begin{table}[ht]
@@ -635,14 +635,13 @@ As in the previous work, the size of the ground product leaving the cyclone over
 
 \subsection{System identification} \label{sec:grind1-sysid}
 
-The system model consists of a single-input, single-output (SISO) process model with a \gls{RODD} step disturbance, $p(k)$, at the input, as shown in Figure \ref{fig:grind1_obs_model}.
+The system model consists of a single-input, single-output (SISO) process model with a \gls{RODD} step disturbance, $p(k)$, at the input, representing step-changes in the ore mix factor, and a measured output of the P80 of the ground product. The functional diagram of this system is shown in Figure \ref{fig:grind1_obs_model}.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=9.5cm]{images/grind1-obs-model-diag.pdf}
 	\caption{Observer model structure}
 	\label{fig:grind1_obs_model}
 \end{figure}
-The output variable, $y(k)$, is the product P80. $v(k)$ is an additive measurement noise and $y_M(k)$ is the measurement.
 
 To construct multiple-model observers for this system, the structure and parameters of the disturbance model and process model are needed. As mentioned in Section \ref{sec:sys-id}, standard system identification techniques are not suitable for estimating hybrid dynamical systems. To avoid this problem, it is assumed here that the time and magnitude of the disturbances (i.e. changes in the ore mix) have been determined for a period of time sufficient for identification of a process model. In practice, this might be possible by sampling the ore and carrying out a particle size analysis, or in the case where stocks of ores with known properties can be fed to the mill in a controlled manner for the duration of the data acquisition.
 
@@ -657,11 +656,13 @@ To mimic the system identification process as realistically as possible, three s
 The Mathworks System Identification Toolbox™ was used to carry out the system identification. The data from simulation 1 was used to estimate the parameters of candidate process models. A model structure was selected after fitting a number of different models and calculating the prediction errors on the input-output data from simulation 2. After checking the significance of the estimated model parameters, a simple second-order model with a delay was selected. The transfer function of this model is
 % Model name P2DcTd4
 \begin{equation} \label{eq:grind1-id-model-ctf}
-	G_p(s)= \frac{-32.4\exp(-0.2s)}{(1 + 0.106s)^2}.
+	Y(s)= \frac{-32.4\exp(-0.2s)}{(1 + 0.106s)^2}U(s),
 \end{equation}
-It has a delay of 0.2 hours (i.e. 4 sample periods, or 12 minutes) and a settling time (to within $\pm5\%$ of steady-state) of approximately 42 minutes. The upper plot in Figure \ref{fig:grind1-sim_ioplots} also shows the predictions of this model, $y_{model}(k)$, compared to the true output, $y(k)$. Note that there is a visible mismatch between the predictions of the identified linear model and the outputs of the grinding process simulator.
+where \gls{Ys} and \gls{Us} here, are the Laplace transforms of the continuous-time output and input signals.
 
-It was also assumed that the structure of the \gls{RODD} model (\ref{eq:RODD}) was known, in this case a \gls{RODD} step disturbance (\ref{eq:RODD-step}), and that values of the parameters $\sigma_{w_p}$, $b$, and $\epsilon$ were available. In practice, it should be possible to estimate $\epsilon$ from historic operating data by simply counting the number of ore changes in a sufficiently long period and dividing by the number of sample periods, although this method is somewhat inaccurate because small shocks are undetectable in noisy data. Estimating the magnitude of the shocks, $b$$\sigma_{w_p}$, could be more difficult. It may require prior knowledge of the true size distributions of the ores, perhaps from geological data or test work.
+This model has a delay of 0.2 hours (i.e. 4 sample periods, or 12 minutes) and a settling time (to within $\pm5\%$ of steady-state) of approximately 42 minutes. The upper plot in Figure \ref{fig:grind1-sim_ioplots} also shows the predictions of this model, $y_{model}(k)$, compared to the true output, $y(k)$. Note that there is a visible mismatch between the predictions of the identified linear model and the outputs of the grinding process simulator.
+
+It was also assumed that the structure of the \gls{RODD} model (\ref{eq:RODD}) was known, in this case a \gls{RODD} step disturbance (\ref{eq:RODD-step}), and that values of the parameters \gls{sigmawp}, \gls{b}, and \gls{epsilon} were available. In practice, it should be possible to estimate \gls{epsilon} from historic operating data by simply counting the number of ore changes in a sufficiently long period and dividing by the number of sample periods, although this method is somewhat inaccurate because small shocks are undetectable in noisy data. Estimating the magnitude of the shocks, \gls{b}\gls{sigmawp}, could be more difficult. It may require prior knowledge of the true size distributions of the ores, perhaps from geological data or test work.
 
 \subsection{Observer design} \label{sec:grind1-obs-design}
 
@@ -721,11 +722,11 @@ and
 		\end{bmatrix},
 	\end{aligned}
 \end{equation}
-where $\sigma_{x_i}^2$ ($i=1,2,...,6$) are noise variance parameters of the process model states. Since model errors are not known in practice, an arbitrary value of  $0.01^2$ was chosen, although it did not have a significant impact on the results. In this work, the random shock variances, $\sigma_{w_p}^2$ and $b^2\sigma_{w_p}^2$, were set according to the simulated ore changes, as described below.
+where $\sigma_{x_i}^2$ ($i=1,2,...,6$) are noise variance parameters of the process model states. Since model errors are not known in practice, an arbitrary value of  $0.01^2$ was chosen, although it did not have a significant impact on the results. In this work, the random shock variances, \gls{sigmawp2} and $\gls{b}^2\gls{sigmawp2}$, were set according to the simulated ore changes, as described below.
 
 To evaluate the observers, longer simulations with randomly-occurring step changes in the ore mix factor were simulated. Each simulation consisted of an initial period of 3 hours at steady-state followed by 120 hours (equivalent to 5 days) of randomly-occurring step changes. Note that this is not a \gls{RODD} according to the definition because the magnitude of the shocks is not random. \gls{RODD}s are unbounded and therefore not realistic representations of actual process disturbances, which are unlikely to be Gaussian random variables. Instead, a simple switching ore mix factor, \glsadd{porek}\gls{porek}, was used. \gls{porek} is a discrete random variable with two possible values, that switches according to the shock probability \gls{epsilon}. It can be represented by a \gls{HMM} with one binary state, \gls{rk}, such that
 \begin{equation} \label{eq:pk-grind}
-	p_\text{ore}(k) = \begin{cases*}
+	\gls{porek} = \begin{cases*}
 		0.2283 & if $r(k)=1$, \\
 		0.5 & if $r(k)=2$,
 	\end{cases*} \\
@@ -733,18 +734,18 @@ To evaluate the observers, longer simulations with randomly-occurring step chang
 and with the transition probability matrix
 \begin{equation} \label{eq:Pi-rk-grind}
 	\glsadd{Piwp}\Pi_{p_\text{ore}} = \begin{bmatrix}
-		1-\epsilon & \epsilon \\
-		\epsilon & 1-\epsilon
+		1-\gls{epsilon} & \gls{epsilon} \\
+		\gls{epsilon} & 1-\gls{epsilon}
 	\end{bmatrix}.
 \end{equation}
 
-The parameters of the \gls{RODD} model used in the observer design were chosen in the following way. Although the probability density of $p_\text{ore}(k)$ is obviously not Gaussian, it has a conditional standard deviation of either 0.2717 (the difference between 0.5 and 0.2283) or 0. Based on this, $b\sigma_{w_p}$ was set to 0.2717 and \gls{b} was arbitrarily set to 100, meaning that \gls{sigmawp} was 0.002717. \gls{epsilon} was set to 0.01, which was the true value used in (\ref{eq:Pi-rk-grind}) to simulate $p_\text{ore}(k)$. $\epsilon=0.01$ means that, on average, an ore change occurred every 100 sample periods, or every 5 hours.
+The parameters of the \gls{RODD} model used in the observer design were chosen in the following way. Although the probability density of $p_\text{ore}(k)$ is obviously not Gaussian, it has a conditional standard deviation of either 0.2717 (the difference between 0.5 and 0.2283) or 0. Based on this, $\gls{b}\gls{sigmawp}$ was set to 0.2717 and \gls{b} was arbitrarily set to 100, meaning that \gls{sigmawp} was 0.002717. \gls{epsilon} was set to 0.01, which was the true value used in (\ref{eq:Pi-rk-grind}) to simulate $p_\text{ore}(k)$. This means that, on average, an ore change occurred every 100 sample periods, or every 5 hours.
 
 Three multiple-model observers were designed using a similar method to that described in Section \ref{sec:sim-obs-lin-1-MKF-tuning}. It was found that large data sets from long simulations were necessary to obtain good combinations of parameter values for these observers. When this was attempted with shorter data sets like simulations 1--3, the results were variable, and the performance of the observers was often poor. This can be explained by the fact that shocks are infrequent, and also that the sequence fusion algorithms in particular, are somewhat sensitive to the exact timing of shocks. The simulations must be long enough to provide a sufficient number and diversity of shock sequences to avoid `overfitting' the parameters to the data.
 
 For this reason, data from one of the longer simulations was used (number 6) to obtain the parameter values of the observers evaluated below. This simulation was 5 days in duration (2460 samples), simulated with $p_\text{ore}(k)$ as the input, and included 32 step changes. This was sufficient to obtain good parameter values. Note that the true values of the disturbance are not needed for observer parameter selection.
 
-However, in practice it would not be possible to use the true process outputs because they are unknown. In that case, the parameter tuning would have to be done using the \gls{RMSE} of the measured outputs, $\gls{RMSE}(\hat{\mathbf{Y}}(N), \mathbf{Y}_M(N))$. The true outputs from the simulation model were used in this experiment to ensure the best possible parameter values were obtained and thus allow a more reliable comparison of the possible performance of each observer type.
+However, in practice it would not be possible to use the true process outputs because they are unknown. In that case, the parameter tuning would have to be done using the \gls{RMSE} of the measured outputs, $\gls{RMSE}(\hat{Y}(N), Y_M(N))$. The true outputs from the simulation model were used in this experiment to ensure the best possible parameter values were obtained and thus allow a more reliable comparison of the possible performance of each observer type.
 
 The performance of the multiple-model observers was again compared to a standard Kalman filter labelled `KF3', with a manually-tuned covariance matrix,
 \begin{equation} \label{eq:Q_opt}
@@ -893,8 +894,8 @@ Figures \ref{fig:sim_resp_plot_MKF_SF1} and \ref{fig:sim_resp_plot2_MKF_SF1} rev
 
 \subsection{Sensitivity analysis} \label{sec:grind1-sensitivity-analysis}
 Finally, an analysis was carried out to investigate the sensitivity of the observer performance to selected parameters. Firstly, the sensitivity of the overall \gls{RMSE}s to the process model parameters was analysed. The continuous-time linear process model identified from simulation data (\ref{eq:grind1-id-model-ctf}) was generalised by introducing two adjustable parameters, a static gain, \glsadd{Kp}\gls{Kp}, and a time constant, \glsadd{Tp1}\gls{Tp1},
-\begin{equation} \label{eq:grind1-id-model-ctf}
-	G_p(s)= \frac{K_p \exp(-0.2s)}{(1 + T_{p,1})^2}.
+\begin{equation} \label{eq:grind1-sens-model-ctf}
+	Y(s)= \frac{K_p \exp(-0.2s)}{(1 + T_{p,1})^2}U(s).
 \end{equation}
 
 The process delay of 0.2 hours remained fixed. Each parameter was than adjusted according to a set of 7 ratios from 0.5 to 2 (including 1) and the adjusted models were used in the observers and simulated using data set number 6. Since all possible combinations of both parameter values were considered, there were $7\times7=49$ simulations. After each simulation, the ratios of the overall \gls{RMSE} of each observer, to that with the original parameter values were calculated. The results are shown in Figure \ref{fig:grind1-obs-sim-sens-model-y-est} as percentage differences, with a colour-mapping to indicate the magnitude of the changes.
@@ -947,7 +948,7 @@ In this section, the results presented in sections \ref{sec:sim-obs-lin} and \re
 
 \subsection{Observer parameters} \label{sec-disc-obs-params}
 
-By comparing the best observer parameter values selected for each of the three simulation experiments, it is possible to identify relations between certain parameters and relevant characteristics of the simulated systems. These correlations should align with intuitive expectations based on the designs of the algorithms. Selected details of the three simulated systems are listed on the left of Table \ref{tb:param-summary-all-sims}, including the type of process model (linear or non-linear), the input-output dimensions of the process, the probability of the simulated shocks, \gls{epsilon}, an indication of the \textit{signal-to-noise ratio} (SNR) of the output measurements, and the settling time of the process in number of sample periods, denoted \gls{Nset95}. On the right of the table are the selected parameter values of the multiple-model observers.
+By comparing the best observer parameter values selected for each of the three simulation experiments, it is possible to identify relations between certain parameters and relevant characteristics of the simulated systems. These correlations should align with intuitive expectations based on the design of the algorithms. Selected details of the three simulated systems are listed on the left of Table \ref{tb:param-summary-all-sims}, including the type of process model (linear or non-linear), the input-output dimensions of the process, the probability of the simulated shocks, \gls{epsilon}, the \textit{signal-to-noise ratio} (SNR) (\ref{eq:SNR}) of the output measurements, and the settling time of the process in number of sampling intervals, $\gls{Nset95}=t_{\pm 5\%} / T_s$, where \gls{tset95} is the time taken for the process output, $y(k)$, to reach within $\pm5\%$ of the steady-state value. On the right of the table are the selected parameter values of the multiple-model observers.
 \begin{table}[ht]
 	\begin{center}
 		\caption{Summary of experiments -- observer parameters} \label{tb:param-summary-all-sims}
@@ -988,13 +989,8 @@ By comparing the best observer parameter values selected for each of the three s
 	\end{center}
 \end{table}
 
-\gls{Nset95} is defined as the settling time of the process, \gls{tset95}, which is the time taken for the process output, $y(k)$, to reach within $\pm5\%$ of the steady-state value, divided by the sampling interval,
-\begin{equation} \label{eq:Nsettle}
-	\glsadd{Nset95}\gls{Nset95}=\frac{t_{\pm 5\%}}{T_s}.
-\end{equation}
-
-The signal-to-noise ratio is defined as the magnitude of the range of the process output, $y(k)$, during the whole simulation, divided by the magnitude of the measurement noise,
-\begin{equation} \label{eq:Nsettle}
+The signal-to-noise ratio is defined
+\begin{equation} \label{eq:SNR}
 	\glsadd{SNR}\gls{SNR}_i=\frac{\max{Y_i(N)}-\min{Y_i(N)}}{\gls{sigmaM}}.
 \end{equation}
 
@@ -1007,7 +1003,7 @@ Something worth noting about the sequence pruning algorithm is the relationship 
 	\gls{nh} = \gls{np}(\gls{nmin}+2).
 \end{equation}
 
-One thing that is contrary to expectations is the number of hypotheses needed by the sequence fusion algorithms compared to the sequence pruning algorithm. \cite{robertson_method_1998} stated that the sequence fusion algorithm with detection intervals is designed to reduce the number of hypotheses required when the detection horizon is long, especially when there is more than one \gls{RODD} to distinguish between. In both the $2 \times 2$ simulation and the grinding process simulations, MKF--SP1 requires less hypotheses than either MKF--SF95 or MKF--SF1. Nevertheless, the number of hypotheses used by the 1998 version of the algorithm is significantly less than that of the 1995 version in this simulation, so it is an improvement in this respect.
+One thing that is contrary to expectations is the number of hypotheses needed by the sequence fusion algorithms compared to the sequence pruning algorithm. \cite{robertson_method_1998} stated that the sequence fusion algorithm with detection intervals is designed to reduce the number of hypotheses required when the detection horizon is long, especially when there is more than one \gls{RODD} to distinguish between. In both the $2 \times 2$ simulation and the grinding process simulations, MKF--SP1 requires less hypotheses than either MKF--SF95 or MKF--SF1. Nevertheless, the number of hypotheses used by MKF--SF1 is significantly less than that of MKF--SF95 in this simulation, so it is an improvement in this respect.
 
 The shock probability, \gls{epsilon}, was the same in all experiments, so its effect on the observer parameters cannot be inferred from these results.
 

@@ -152,7 +152,6 @@ As expected, the differences in the results due to \gls{PRNG} initialization dec
 %TODO: The simulation results above need checking/updating.
 
 A similar sensitivity analysis was carried out on the results of the Kalman filter tuning shown in Figure \ref{eq:sim-sys-siso-KF3-Q}, where KF3 was tuned using a set of 5000 input-output samples from the system. Figure \ref{fig:sim-sys-siso-KF3-sensitivity} shows the variation in this result when ten different sets of pseudo-random simulation data are used.  Although there is considerable variation in the \gls{RMSE} values for each parameter value, the best overall choice of \gls{sigmawp2} to achieve the lowest average error across all 10 simulations was found to be the same as that of the single simulation (0.01).
-
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_obs_sim1_3KF_Q_statplot.pdf}
