@@ -35,20 +35,57 @@
 \renewcommand{\arraystretch}{1.4}  % Makes table row heights higher
 \usepackage{multirow}  % for table column headings in discussion
 \usepackage[raggedrightboxes]{ragged2e}  % for table column headings in discussion
+\usepackage{hyperref}
 
  % \usepackage{easyReview}  % Only used for highlighting edits - REMOVE IN FINAL DRAFT
 
 % This package raises warnings 'overriding \printglossary'. 'overriding 'theglossary' environment
-\usepackage{glossaries}
+%\usepackage{glossaries}
+\usepackage[toc,acronym]{glossaries}
 % The command \makeglossaries must be written before the first glossary entry.
 \makeglossaries
 % The command \printglossaries is the one that will actually render the list of words and definitions
 % According to this, these warnings can be ignored:
 % https://tex.stackexchange.com/questions/163479/glossaries-conflict-with-memoir
 
+
+% Acronyms
+\newacronym{SAG}{SAG}{semi-autogenous grinding}
+\newacronym{AG}{AG}{autogenous grinding mill}
+\newacronym{MPC}{MPC}{model predictive control}
+\newacronym{PI}{PI}{proportional-integral (control)}
+\newacronym{PID}{PID}{proportional-integral-derivative}
+\newacronym{SISO}{SISO}{single-input, single-output}
+\newacronym{MIMO}{MIMO}{multiple-input, multiple-output}
+\newacronym{MJLS}{MJLS}{Markov jump linear system}
+\newacronym{EKF}{EKF}{extended Kalman filter}
+\newacronym{RODD}{RODD}{randomly-occurring deterministic disturbance}
+\newacronym{ARIMA}{ARIMA}{autoregressive integrated moving average}
+\newacronym{kWh}{kWh}{kilowatt-hours}
+\newacronym{MLE}{MLE}{maximum likelihood estimation}
+\newacronym{DOB}{DOB}{disturbance observer based}
+\newacronym{LQG}{LQG}{linear quadratic Gaussian}
+\newacronym{GMM}{GMM}{Gaussian mixture model}
+\newacronym{EM}{EM}{expectation maximisation}
+\newacronym{BRW}{BRW}{bounded random walk}
+\newacronym{HMM}{HMM}{hidden Markov model}
+\newacronym{RMSE}{RMSE}{root-mean-squared error}
+\newacronym{MKF}{MKF}{multiple-model Kalman filter}
+\newacronym{SKF}{SKF}{Kalman filter with pre-scheduled mode switching}
+\newacronym{GPB}{GPB}{generalised pseudo-Bayesian}
+\newacronym{GPB1}{GPB1}{first-order generalised pseudo-Bayesian estimator}
+\newacronym{GPB2}{GPB2}{second order generalised pseudo-Bayesian estimator}
+\newacronym{AFMM}{AFMM}{adaptive forgetting through multiple models}
+\newacronym{RMSD}{RMSD}{root-mean-squared differences}
+\newacronym{PSD}{PSD}{particle size distribution}
+\newacronym{P80}{P80}{80\% passing size, a measure of a particle size distribution}
+\newacronym{PRNG}{PRNG}{pseudo-random number generator}
+\newacronym{SMC}{SMC}{sequential Monte Carlo}
+\newacronym{PRBS}{PRBS}{pseudo-random binary sequence}
+\newacronym{SNR}{SNR}{signal-to-noise ratio}
+
 % NOTE: Don't add periods at end of description.  Don't use capitals at beginning of description.
 % General notation
-\newglossaryentry{qm1}{name=\ensuremath{q^{-1}}, description={backwards shift operator}}
 \newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, 
 	description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
 \newglossaryentry{Ndist}{name={$\mathcal{N}(0,\sigma_{w_p}^2)$}, 
@@ -71,39 +108,18 @@
 \newglossaryentry{B}{name=\ensuremath{\mathbf{B}}, description={input matrix of the system model}}
 \newglossaryentry{C}{name=\ensuremath{\mathbf{C}}, description={output matrix of the system model}}
 \newglossaryentry{yMk}{name=\ensuremath{\mathbf{y}_M(k)}, description={system output measurements at time $k$}}
-\newglossaryentry{pk}{name=\ensuremath{p(k)}, description={disturbance signal at time $k$}}
+%\newglossaryentry{pk}{name=\ensuremath{p(k)}, description={disturbance signal at time $k$}}
 \newglossaryentry{wpk}{name=\ensuremath{w_p(k)}, description={random shock signal at time $k$}}
 \newglossaryentry{rk}{name=\ensuremath{\mathbf{r}(k)}, description={mode indicator of a switching system at time $k$ (vector)}}
 \newglossaryentry{porek}{name=\ensuremath{p_\text{ore}(k)}, description={simulated ore disturbance signal at time $k$}}
 \newglossaryentry{np}{name=\ensuremath{n_p}, description={number of independent random shocks}}
 
-% Introduction and literature review
-\newglossaryentry{SAG}{name={SAG},description={semi-autogenous grinding mill}}
-\newglossaryentry{AG}{name={AG},description={autogenous grinding mill}}
-\newglossaryentry{MPC}{name={MPC},description={model predictive control}}
-\newglossaryentry{PI}{name={PI},description={proportional-integral (control)}}
-\newglossaryentry{PID}{name={PID},description={proportional-integral-derivative (control)}}
-\newglossaryentry{SISO}{name={SISO},description={single-input, single-output}}
-\newglossaryentry{MIMO}{name={MIMO},description={multiple-input, multiple-output}}
-\newglossaryentry{MJLS}{name={MJLS},description={Markov jump linear system}}
-\newglossaryentry{EKF}{name={EKF},description={extended Kalman filter}}
-\newglossaryentry{ARIMA}{name={ARIMA},description={autoregressive integrated moving average}}
-\newglossaryentry{kWh}{name={kWh},description={kilowatt-hours}}
-\newglossaryentry{MLE}{name={MLE},description={maximum likelihood estimation}}
-\newglossaryentry{DOB}{name={DOB},description={disturbance observer based (control)}}
-\newglossaryentry{LQG}{name={LQG},description={linear quadratic Gaussian (control)}}
-\newglossaryentry{GMM}{name={GMM},description={Gaussian mixture model}}
-\newglossaryentry{EM}{name={EM},description={expectation maximisation}}
-
 % Disturbance models
-\newglossaryentry{RODD}{name={RODD}, description={randomly-occurring deterministic disturbance}}
 \newglossaryentry{epsilon}{name=\ensuremath{\varepsilon}, description={probability of a random shock}}
 \newglossaryentry{sigmawp}{name=\ensuremath{\sigma_{w_p}}, description={standard deviation of the persistent noise component of the random shock variable}}
 \newglossaryentry{sigmawp2}{name=\ensuremath{\sigma_{w_p}^2}, description={variance of the persistent noise component of the random shock variable}}
 \newglossaryentry{b}{name=\ensuremath{b}, description={ratio of the variance of the shocks and the persistent noise components of the random shock process}}
-\newglossaryentry{HMM}{name={HMM}, description={hidden Markov model}}
 \newglossaryentry{Piwp}{name={$\Pi_{w_{p}}$}, description={transition probability matrix of the disturbance process $w_p$}}
-\newglossaryentry{BRW}{name={BRW}, description={bounded random walk}}
 \newglossaryentry{sigmaM}{name=\ensuremath{\sigma_M}, description={standard deviation of the measurement noise}}
 
 % State estimation
@@ -128,21 +144,10 @@
 \newglossaryentry{Aa}{name={$\mathbf{A}_a$}, description={transition matrix of the augmented system model}}
 \newglossaryentry{Ba}{name={$\mathbf{B}_a$}, description={input matrix of the augmented system model}}
 \newglossaryentry{Ca}{name={$\mathbf{C}_a$}, description={output matrix of the augmented system model}}
-\newglossaryentry{RMSE}{name=\ensuremath{\mathrm{RMSE}}, description={root-mean-squared error}}
 \newglossaryentry{RMSEY}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y)}, description={root-mean-squared error of the output estimates compared to the true system outputs}}
 \newglossaryentry{RMSEYM}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y_M)}, description={root-mean-squared error of the output estimates compared to the system output meaurements}}
-\newglossaryentry{RMSD}{name={RMSD}, description={root-mean-squared differences}}
-
-% Grinding simulator
-\newglossaryentry{PSD}{name={PSD}, description={particle size distribution}}
-\newglossaryentry{P80}{name={P80}, description={80\% passing size, a measure of a particle size distribution}}
 
 % Multiple model approaches
-\newglossaryentry{MKF}{name={MKF}, description={multiple-model Kalman filter}}
-\newglossaryentry{GPB}{name={GPB}, description={generalised pseudo-Bayesian estimator}}
-\newglossaryentry{GPB1}{name={GPB1}, description={first-order generalised pseudo-Bayesian estimator}}
-\newglossaryentry{GPB2}{name={GPB2}, description={second order generalised pseudo-Bayesian estimator}}
-\newglossaryentry{AFMM}{name={AFMM}, description={adaptive forgetting through multiple models (algorithm)}}
 \newglossaryentry{nj}{name=\ensuremath{n_j}, description={number and modes or models of a switching system}}
 \newglossaryentry{nh}{name=\ensuremath{n_h}, description={number of hypotheses}}
 \newglossaryentry{gamma_fk}{name=\ensuremath{\gamma_f(k)}, description={random shock indicator of hypothesis $f$ at time $k$}}
@@ -171,26 +176,24 @@
 \newglossaryentry{Pmk}{name={$\mathbf{P}_m(k \mid k)$}, description={merged state estimation error covariance at time $k$ for merged hypothesis $m$}}
 
 % Simulations
-\newglossaryentry{PRBS}{name={PRBS}, description={Pseudo-random binary sequence}}
-\newglossaryentry{SNR}{name=\ensuremath{\mathrm{SNR}}, description={Signal-to-noise ratio}}
 \newglossaryentry{tset95}{name=\ensuremath{t_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state}}
 \newglossaryentry{Nset95}{name=\ensuremath{N_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state, measured in number of sampling intervals}}
 \newglossaryentry{Tp1}{name=\ensuremath{T_{p,1}}, description={time constant of the process model used in sensitivity analysis}}
 \newglossaryentry{Kp}{name=\ensuremath{K_p}, description={gain of the process model used in sensitivity analysis}}
 \newglossaryentry{tstep}{name=\ensuremath{t_{step}}, description={time when a step change in the ore feed occurred in the grinding process simulations}}
-\newglossaryentry{PRNG}{name={PRNG}, description={pseudo-random number generator}}
 \newglossaryentry{Ys}{name=\ensuremath{Y(s)}, description={Laplace transform of the process output signal}}
 \newglossaryentry{Us}{name=\ensuremath{U(s)}, description={Laplace transform of the process input signal}}
 
-% Future work
-\newglossaryentry{SMC}{name={SMC}, description={sequential Monte Carlo}}
-
-
-% Control
+% Control - REMOVED from report
 %\newglossaryentry{Hp}{name={$H_p$}, description={MPC parameter : prediction horizon in number of sampling intervals}}
 %\newglossaryentry{Hc}{name={$H_c$}, description={MPC parameter : control horizon in number of sampling intervals}}
 %\newglossaryentry{Deltau}{name={$\Delta \mathbf{u}(k)$}, description={change in the manipulatable variable between time $k-1$ and $k$}}
 
+% Nomenclature - see this guide:
+% https://www.overleaf.com/learn/latex/Nomenclatures
+%\usepackage{nomencl}
+\usepackage[intoc, french, nocfg]{nomencl}
+\makenomenclature
 
   %% Utilisation d'une autre police de caractères pour le document.
   %% - Sous LaTeX
@@ -261,15 +264,19 @@
 %\dedicace{<Dédicace si désiré>}
 %\cleardoublepage
 
-\epigraphe{<Texte de l'épigraphe>}{<Source ou auteur>}
-\cleardoublepage
+%\epigraphe{<Texte de l'épigraphe>}{<Source ou auteur>}
+%\cleardoublepage
+
+%\printglossaries
+%\printglossary  % original code
+\printglossary[type=\acronymtype]
+\label{acronyms}
+
+% See this guide: https://www.overleaf.com/learn/latex/Nomenclatures
+\printnomenclature
 
 \include{remerciements}         % remerciements
 %\include{avantpropos}           % avant-propos
-
-\printglossaries
-%\printglossary  % original code
-%\printglossary[type=\acronymtype]
 
 \mainmatter                     % corps du document
 

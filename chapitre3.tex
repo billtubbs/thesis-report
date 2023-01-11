@@ -364,11 +364,11 @@ As above, the differences between the \gls{RMSE}s of the best 10 combinations ar
 
 \subsubsection{Scheduled Kalman filter} \label{sec:sim-obs-lin-1-SKF}
 
-To determine the best performance that could be achieved by an ideal multiple-model observer, a hypothetical observer that has access to the true shock indicator signal, \gls{gammak}, was simulated. This `scheduled' Kalman filter, labelled ‘SKF’, has only one shock sequence---the correct one---and therefore the process noise covariance is automatically switched to match the known shock signal. The SKF is hypothetical because it could not be implemented in a real application where the random shocks are not known.
+To determine the best performance that could be achieved by an ideal multiple-model observer, a hypothetical observer that has access to the true shock indicator signal, \gls{gammak}, was simulated. This `scheduled' Kalman filter, labelled ‘SKF’, has only one shock sequence---the correct one---and therefore the process noise covariance is automatically switched to match the known shock signal. The \gls{SKF} is hypothetical because it could not be implemented in a real application where the random shocks are not known.
 
 \subsubsection{Simulation results} \label{sec:sim-obs-lin-1-results}
 
-Figure \ref{fig:rod-obs-sim1-yest-1-SF} shows the estimates of the sequence fusion observers, MKF--SF95 and MKF--SF1, compared to the scheduled Kalman Filter, SKF, over the first 600 time steps of the simulation. From these results it is apparent that the estimates of the sequence fusion observers are generally very close to those of the SKF. The estimates respond quickly when the random shocks occur and their variance at other times is relatively small despite the measurement noise. A few spontaneous errors of short duration are also noticeable in both the SKF and MKF--SF1 estimates at certain times. However, when the variances are compared to those of the Kalman filters in Figure \ref{fig:sim-sys-siso-KF123-est}, it is clear that these multiple-model observers have an advantage.
+Figure \ref{fig:rod-obs-sim1-yest-1-SF} shows the estimates of the sequence fusion observers, MKF--SF95 and MKF--SF1, compared to the scheduled Kalman Filter, \gls{SKF}, over the first 600 time steps of the simulation. From these results it is apparent that the estimates of the sequence fusion observers are generally very close to those of the \gls{SKF}. The estimates respond quickly when the random shocks occur and their variance at other times is relatively small despite the measurement noise. A few spontaneous errors of short duration are also noticeable in both the \gls{SKF} and MKF--SF1 estimates at certain times. However, when the variances are compared to those of the Kalman filters in Figure \ref{fig:sim-sys-siso-KF123-est}, it is clear that these multiple-model observers have an advantage.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_y_est1_SF95_SF1.pdf}
@@ -384,7 +384,7 @@ Figure \ref{fig:rod-obs-sim1-yest-1-SP} shows the estimates of the sequence prun
 	\label{fig:rod-obs-sim1-yest-1-SP}
 \end{figure}
 
-The plots in Figure \ref{fig:rod-obs-sim1-cum-err-y1-all} show the squared output errors and the cumulative squared-errors of the five observers over the full duration of the simulation. The differences between the multiple-model observers are almost indistinguishable. By the end of the simulation, the cumulative errors are significantly lower than those of KF3 and slightly higher than the SKF.
+The plots in Figure \ref{fig:rod-obs-sim1-cum-err-y1-all} show the squared output errors and the cumulative squared-errors of the five observers over the full duration of the simulation. The differences between the multiple-model observers are almost indistinguishable. By the end of the simulation, the cumulative errors are significantly lower than those of KF3 and slightly higher than the \gls{SKF}.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_cum_err_y1.pdf}
@@ -551,7 +551,7 @@ Parameter values for the sub-optimal multiple-model observers were chosen by a s
 
 \subsubsection{Simulation results} \label{sec:sim-obs-lin-2-results}
 
-Figure \ref{fig:rod-obs-sim2-yest-1-SF} shows the estimates of both sequence fusion observers (MKF--SF95 and MKF--SF1) compared to the scheduled Kalman Filter (SKF) over the first 300 time steps of the simulation. The upper two plots show the estimates of outputs 1 and 2 compared to the true system outputs. The lower two plots show the estimates of states 3 and 4, which correspond to the input disturbances. The largest errors occur in the periods following the shocks. At these times, the estimates of MKF--SF95 and MKF--SF1 lag those of the SKF. At other times, the estimates of all three observers are quite similar. There is no noticeable difference between MKF--SF95 and MKF--SF1.
+Figure \ref{fig:rod-obs-sim2-yest-1-SF} shows the estimates of both sequence fusion observers (MKF--SF95 and MKF--SF1) compared to the scheduled Kalman Filter (\gls{SKF}) over the first 300 time steps of the simulation. The upper two plots show the estimates of outputs 1 and 2 compared to the true system outputs. The lower two plots show the estimates of states 3 and 4, which correspond to the input disturbances. The largest errors occur in the periods following the shocks. At these times, the estimates of MKF--SF95 and MKF--SF1 lag those of the \gls{SKF}. At other times, the estimates of all three observers are quite similar. There is no noticeable difference between MKF--SF95 and MKF--SF1.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_y_est1_SF95_SF1.pdf}
@@ -559,7 +559,7 @@ Figure \ref{fig:rod-obs-sim2-yest-1-SF} shows the estimates of both sequence fus
 	\label{fig:rod-obs-sim2-yest-1-SF}
 \end{figure}
 
-Figure \ref{fig:rod-obs-sim2-yest-1-SP} shows the estimates of the sequence pruning observer (MKF--SP) compared to the scheduled Kalman Filter on the same simulation data. The behaviour is similar to that of the sequence fusion observers, matching the SKF during periods between shocks and lagging it in the periods immediately after.
+Figure \ref{fig:rod-obs-sim2-yest-1-SP} shows the estimates of the sequence pruning observer (MKF--SP) compared to the scheduled Kalman Filter on the same simulation data. The behaviour is similar to that of the sequence fusion observers, matching the \gls{SKF} during periods between shocks and lagging it in the periods immediately after.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_y_est1_SP1.pdf}
@@ -573,7 +573,7 @@ Figure \ref{fig:rod-obs-sim2-yest-1-SP} shows the estimates of the sequence prun
 %	\caption{Comparison of multiple-model observer estimates –  $2\times2$ system}
 %	\label{fig:rod-obs-sim2-yest-2-MKF}
 %\end{figure}
-Figure \ref{fig:sim-sys-sim2-MKF-cumerr} shows the squared output estimation errors and the cumulative squared-errors of the five observers over the full simulation. This reveals that on average, the sequence fusion observers (MKF--SF95 and MKF--SF1) perform better than the sequence pruning observer. The cumulative errors of all the multiple-model observers are significantly lower than those of KF3 by the end of the simulation, but not as close to those of the SKF as they were in the SISO system simulation. This may be attributed to the delays in detecting the shocks in this simulation.
+Figure \ref{fig:sim-sys-sim2-MKF-cumerr} shows the squared output estimation errors and the cumulative squared-errors of the five observers over the full simulation. This reveals that on average, the sequence fusion observers (MKF--SF95 and MKF--SF1) perform better than the sequence pruning observer. The cumulative errors of all the multiple-model observers are significantly lower than those of KF3 by the end of the simulation, but not as close to those of the \gls{SKF} as they were in the SISO system simulation. This may be attributed to the delays in detecting the shocks in this simulation.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_cum_err_y2.pdf}
@@ -594,7 +594,7 @@ Figure \ref{fig:sim-sys-sim2-MKF-cumerr} shows the squared output estimation err
 %	\caption{Root-mean-squared errors of state estimates – $2\times2$ system}
 %	\label{fig:rod-obs-sim2-xest-RMSE-bar}
 %\end{figure}
-As in the SISO case, 10 simulations were carried out with different random initializations to check the sensitivity of the results. Figure \ref{fig:rod-obs-sim2-yest-all-seed-RMSE-box} shows the variation in the RMSEs. This confirms that the performance of the three multiple-model observers is quite similar but MKF--SF95 and MKF--SF1 achieve a slightly lower error on average.
+As in the \gls{SISO} case, 10 simulations were carried out with different random initializations to check the sensitivity of the results. Figure \ref{fig:rod-obs-sim2-yest-all-seed-RMSE-box} shows the variation in the \gls{RMSE}s. This confirms that the performance of the three multiple-model observers is quite similar but MKF--SF95 and MKF--SF1 achieve a slightly lower error on average.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim3_all_seed_y_err_box.pdf}
@@ -815,7 +815,7 @@ As in the previous experiments, longer simulations are needed to evaluate the ob
 		\caption{Observer performance evaluation metrics.} \label{tb:grind1-RMSE-results}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.29\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}>{\centering\arraybackslash}p{0.14\textwidth}>{\centering\arraybackslash}p{0.12\textwidth}>{\centering\arraybackslash}p{0.12\textwidth}>{\centering\arraybackslash}p{0.08\textwidth}}
-			Metric & KF3 & MKF--SF95 & MKF--SF1 & MKF-SP & SKF \\
+			Metric & KF3 & MKF--SF95 & MKF--SF1 & MKF-SP & \gls{SKF} \\
 			\hline
 			%			% 09-Dec-2022 11:35:30 results with system P2DcTd4, sigma_M = 5 - but horizon limit was 50
 			%			RMSE($\hat{\mathbf{Y}},\mathbf{Y}$) overall & 1.81 & 1.69 & 1.66 & 1.70 & 1.24 \\
@@ -848,7 +848,7 @@ As in the previous experiments, longer simulations are needed to evaluate the ob
 		\end{tabular}
 	\end{center}
 \end{table}
-Table \ref{tb:grind1-RMSE-results} shows the values of the five metrics for the five observers when evaluated on the data from the 10 longer simulations. In terms of the overall \gls{RMSE}s, the multiple-model observers offer only a marginal improvement compared to the Kalman filter (which was tuned to minimize overall \gls{RMSE}). MKF--SF1 has the lowest overall \gls{RMSE}, which is 8.3\% lower than that of KF3. However, it is 39\% higher than that of the scheduled Kalman filter (SKF). The greater difference between the performance of the SKF and the other observers in this experiment may be attributed to the discrete-time delays in the process model (\ref{eq:grind1-obs_ss_model}) (it is impossible for any observer to respond to an input disturbance before its effect has reached the measured outputs, leading to inevitable estimation errors).
+Table \ref{tb:grind1-RMSE-results} shows the values of the five metrics for the five observers when evaluated on the data from the 10 longer simulations. In terms of the overall \gls{RMSE}s, the multiple-model observers offer only a marginal improvement compared to the Kalman filter (which was tuned to minimize overall \gls{RMSE}). MKF--SF1 has the lowest overall \gls{RMSE}, which is 8.3\% lower than that of KF3. However, it is 39\% higher than that of the scheduled Kalman filter (\gls{SKF}). The greater difference between the performance of the \gls{SKF} and the other observers in this experiment may be attributed to the discrete-time delays in the process model (\ref{eq:grind1-obs_ss_model}) (it is impossible for any observer to respond to an input disturbance before its effect has reached the measured outputs, leading to inevitable estimation errors).
 
 The other metrics in Table \ref{tb:grind1-RMSE-results} allow the specific strengths and weaknesses of each observer to be compared. In terms of transient errors, the multiple-model observers are inferior to KF3, with 5.2 to 9.7\% higher \gls{RMSE}s. However, in steady-state periods, they perform significantly better, with 23.3 to 26.0\% lower \gls{RMSE}s. The \gls{RMSD}s of the multiple-model observers are 27.4 to 30.7\% lower, suggesting that insensitivity to measurement noise may be their main advantage. A reduced sensitivity to noise, combined with low transient errors, would be beneficial in feedback control applications where the closed-loop response time is limited by the speed of the observer and where sensitivity to noise causes problems---for example wear or damage to actuators.
 
@@ -910,14 +910,14 @@ From these results, it can be seen that the average magnitude of the estimation 
 
 By comparing these variations to those of KF3, it can be seen that the multiple-model observers are less sensitive to the model parameters. The few cases where the changes in the performance of the multiple-model observers are larger, are all cases where the estimation errors were lower than the KF3, therefore better performance. Based on this, there does not appear to be a significant downside to the multiple-model observers when it comes to the accuracy of the process model. In fact, it shows that better overall estimation performance may have been possible with different parameter values.
 
-In the second part of this analysis, the sensitivity of the observer performance to the \gls{RODD} model parameters, \gls{sigmawp} and \gls{epsilon}, was investigated. The two parameters were adjusted in the same way as in the previous analysis and the changes in the overall \gls{RMSE}s calculated. The results are shown in Figure \ref{fig:grind1-obs-sim-sens-rod-y-est}. Note that the Kalman filter does not include a \gls{RODD} model and was therefore excluded. Instead, the sensitivity of the scheduled Kalman filter, SKF, was included for comparison.
+In the second part of this analysis, the sensitivity of the observer performance to the \gls{RODD} model parameters, \gls{sigmawp} and \gls{epsilon}, was investigated. The two parameters were adjusted in the same way as in the previous analysis and the changes in the overall \gls{RMSE}s calculated. The results are shown in Figure \ref{fig:grind1-obs-sim-sens-rod-y-est}. Note that the Kalman filter does not include a \gls{RODD} model and was therefore excluded. Instead, the sensitivity of the scheduled Kalman filter, \gls{SKF}, was included for comparison.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=15cm]{images/rod_obs_sim_sens_rod_4obs_RMSE_y_est.pdf}
 	\caption{Percentage changes in RMSEs due to changes in \gls{RODD} parameters}
 	\label{fig:grind1-obs-sim-sens-rod-y-est}
 \end{figure}
-Note that the SKF has the true shock sequence and therefore does not depend on \gls{epsilon}. From these results it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -0.8 to +5.8\% over the range of parameter values simulated. The highest errors occurred when both \gls{sigmawp} and \gls{epsilon} were double their original values.
+Note that the \gls{SKF} has the true shock sequence and therefore does not depend on \gls{epsilon}. From these results it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -0.8 to +5.8\% over the range of parameter values simulated. The highest errors occurred when both \gls{sigmawp} and \gls{epsilon} were double their original values.
 %\section{Grinding circuit control simulation} \label{sec:sim-ore-mimo-ctrl} 
 %
 %Outline notes:
