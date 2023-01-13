@@ -36,6 +36,7 @@
 \usepackage{multirow}  % for table column headings in discussion
 \usepackage[raggedrightboxes]{ragged2e}  % for table column headings in discussion
 \usepackage{hyperref}
+\usepackage{mfirstuc}  % needed when you want to capitalize first letter in a glossary description
 
  % \usepackage{easyReview}  % Only used for highlighting edits - REMOVE IN FINAL DRAFT
 
@@ -48,13 +49,13 @@
 % According to this, these warnings can be ignored:
 % https://tex.stackexchange.com/questions/163479/glossaries-conflict-with-memoir
 
-
-% Acronyms
+% Define acronyms
 \newacronym{SAG}{SAG}{semi-autogenous grinding}
-\newacronym{AG}{AG}{autogenous grinding mill}
+\newacronym{AG}{AG}{autogenous grinding}
 \newacronym{MPC}{MPC}{model predictive control}
 \newacronym{PI}{PI}{proportional-integral (control)}
 \newacronym{PID}{PID}{proportional-integral-derivative}
+\newacronym{HNMPC}{HNMPC}{hybrid non-linear model predictive control}
 \newacronym{SISO}{SISO}{single-input, single-output}
 \newacronym{MIMO}{MIMO}{multiple-input, multiple-output}
 \newacronym{MJLS}{MJLS}{Markov jump linear system}
@@ -63,15 +64,15 @@
 \newacronym{ARIMA}{ARIMA}{autoregressive integrated moving average}
 \newacronym{kWh}{kWh}{kilowatt-hours}
 \newacronym{MLE}{MLE}{maximum likelihood estimation}
+\newacronym{EM}{EM}{expectation maximization}
 \newacronym{DOB}{DOB}{disturbance observer based}
 \newacronym{LQG}{LQG}{linear quadratic Gaussian}
 \newacronym{GMM}{GMM}{Gaussian mixture model}
-\newacronym{EM}{EM}{expectation maximisation}
 \newacronym{BRW}{BRW}{bounded random walk}
 \newacronym{HMM}{HMM}{hidden Markov model}
 \newacronym{RMSE}{RMSE}{root-mean-squared error}
 \newacronym{MKF}{MKF}{multiple-model Kalman filter}
-\newacronym{SKF}{SKF}{Kalman filter with pre-scheduled mode switching}
+\newacronym{SKF}{SKF}{scheduled Kalman filter (with pre-scheduled mode switching)}
 \newacronym{GPB}{GPB}{generalised pseudo-Bayesian}
 \newacronym{GPB1}{GPB1}{first-order generalised pseudo-Bayesian estimator}
 \newacronym{GPB2}{GPB2}{second order generalised pseudo-Bayesian estimator}
@@ -86,19 +87,18 @@
 
 % NOTE: Don't add periods at end of description.  Don't use capitals at beginning of description.
 % General notation
-\newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, 
-	description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
-\newglossaryentry{Ndist}{name={$\mathcal{N}(0,\sigma_{w_p}^2)$}, 
-	description={normal distribution with mean zero and variance $\sigma_{w_p}^2$}}
-\newglossaryentry{pagb}{name={$p(a \mid b)$}, description={probability density of $a$ given $b$}}
-\newglossaryentry{PrAgB}{name={$\Pr(A \mid B)$}, description={probability of $A$ given $B$}}
-\newglossaryentry{nabla}{name=\ensuremath{\nabla}, description={defined as $1-q^{-1}$}}
-\newglossaryentry{gammak}{name=\ensuremath{\gamma(k)}, description={random shock indicator at time $k$}}
-\newglossaryentry{identity}{name={$\mathbf{I}_n$}, description={the identity matrix ($n \times n$)}}
+%\newglossaryentry{Ndist2}{name={$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}, 
+%	description={multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}}
+%\newglossaryentry{Ndist}{name={$\mathcal{N}(0,\sigma_{w_p}^2)$}, 
+%	description={normal distribution with mean zero and variance $\sigma_{w_p}^2$}}
+%\newglossaryentry{pagb}{name={$p(a \mid b)$}, description={probability density of $a$ given $b$}}
+%\newglossaryentry{PrAgB}{name={$\Pr(A \mid B)$}, description={probability of $A$ given $B$}}
+%\newglossaryentry{nabla}{name=\ensuremath{\nabla}, description={defined as $1-q^{-1}$}}
+%\newglossaryentry{gammak}{name=\ensuremath{\gamma(k)}, description={random shock indicator at time $k$}}
 
 % Signals
-\newglossaryentry{Ts}{name=\ensuremath{T_s}, description={sampling interval in units of time}}
-\newglossaryentry{N}{name=\ensuremath{N}, description={length of simulation in number of sampling intervals}}
+%\newglossaryentry{Ts}{name=\ensuremath{T_s}, description={sampling interval in units of time}}
+%\newglossaryentry{N}{name=\ensuremath{N}, description={length of simulation in number of sampling intervals}}
 \newglossaryentry{uk}{name=\ensuremath{\mathbf{u}(k)}, description={system inputs at time $k$}}
 \newglossaryentry{xk}{name=\ensuremath{\mathbf{x}(k)}, description={system states at time $k$}}
 \newglossaryentry{yk}{name=\ensuremath{\mathbf{y}(k)}, description={system outputs at time $k$}}
@@ -109,17 +109,17 @@
 \newglossaryentry{C}{name=\ensuremath{\mathbf{C}}, description={output matrix of the system model}}
 \newglossaryentry{yMk}{name=\ensuremath{\mathbf{y}_M(k)}, description={system output measurements at time $k$}}
 %\newglossaryentry{pk}{name=\ensuremath{p(k)}, description={disturbance signal at time $k$}}
-\newglossaryentry{wpk}{name=\ensuremath{w_p(k)}, description={random shock signal at time $k$}}
-\newglossaryentry{rk}{name=\ensuremath{\mathbf{r}(k)}, description={mode indicator of a switching system at time $k$ (vector)}}
-\newglossaryentry{porek}{name=\ensuremath{p_\text{ore}(k)}, description={simulated ore disturbance signal at time $k$}}
-\newglossaryentry{np}{name=\ensuremath{n_p}, description={number of independent random shocks}}
+%\newglossaryentry{wpk}{name=\ensuremath{w_p(k)}, description={random shock signal at time $k$}}
+%\newglossaryentry{rk}{name=\ensuremath{\mathbf{r}(k)}, description={mode indicator of a switching system at time $k$ (vector)}}
+%\newglossaryentry{porek}{name=\ensuremath{p_\text{ore}(k)}, description={simulated ore disturbance signal at time $k$}}
+%\newglossaryentry{np}{name=\ensuremath{n_p}, description={number of independent random shocks}}
 
 % Disturbance models
-\newglossaryentry{epsilon}{name=\ensuremath{\varepsilon}, description={probability of a random shock}}
-\newglossaryentry{sigmawp}{name=\ensuremath{\sigma_{w_p}}, description={standard deviation of the persistent noise component of the random shock variable}}
-\newglossaryentry{sigmawp2}{name=\ensuremath{\sigma_{w_p}^2}, description={variance of the persistent noise component of the random shock variable}}
-\newglossaryentry{b}{name=\ensuremath{b}, description={ratio of the variance of the shocks and the persistent noise components of the random shock process}}
-\newglossaryentry{Piwp}{name={$\Pi_{w_{p}}$}, description={transition probability matrix of the disturbance process $w_p$}}
+%\newglossaryentry{epsilon}{name=\ensuremath{\varepsilon}, description={probability of a random shock}}
+%\newglossaryentry{sigmawp}{name=\ensuremath{\sigma_{w_p}}, description={standard deviation of the persistent noise component of the random shock variable}}
+%\newglossaryentry{sigmawp2}{name=\ensuremath{\sigma_{w_p}^2}, description={variance of the persistent noise component of the random shock variable}}
+%\newglossaryentry{b}{name=\ensuremath{b}, description={ratio of the variance of the shocks and the persistent noise components of the random shock process}}
+%\newglossaryentry{Piwp}{name={$\Pi_{w_{p}}$}, description={transition probability matrix of the disturbance process $w_p$}}
 \newglossaryentry{sigmaM}{name=\ensuremath{\sigma_M}, description={standard deviation of the measurement noise}}
 
 % State estimation
@@ -148,10 +148,10 @@
 \newglossaryentry{RMSEYM}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y_M)}, description={root-mean-squared error of the output estimates compared to the system output meaurements}}
 
 % Multiple model approaches
-\newglossaryentry{nj}{name=\ensuremath{n_j}, description={number and modes or models of a switching system}}
+\newglossaryentry{nj}{name=\ensuremath{n_j}, description={number of modes or models of a switching system}}
 \newglossaryentry{nh}{name=\ensuremath{n_h}, description={number of hypotheses}}
-\newglossaryentry{gamma_fk}{name=\ensuremath{\gamma_f(k)}, description={random shock indicator of hypothesis $f$ at time $k$}}
-\newglossaryentry{Gammafk}{name=\ensuremath{\Gamma_f(k)}, description={shock indicator hypotheses sequence $f$ from time $0$ to $k$}}
+%\newglossaryentry{gamma_fk}{name=\ensuremath{\gamma_f(k)}, description={random shock indicator of hypothesis $f$ at time $k$}}
+%\newglossaryentry{Gammafk}{name=\ensuremath{\Gamma_f(k)}, description={shock indicator hypotheses sequence $f$ from time $0$ to $k$}}
 \newglossaryentry{Gammafkmnk}{name=\ensuremath{\Gamma_m(k-N_f+1,k)}, description={shock indicator hypotheses sequence $f$ over the fusion horizon}}
 \newglossaryentry{nm}{name=\ensuremath{n_m}, description={number of merged hypotheses}}
 \newglossaryentry{Zmk}{name=\ensuremath{Z_m(k)}, description={normalization variable at time $k$ used in merged probability calculations}}
@@ -273,6 +273,10 @@
 \label{acronyms}
 
 % See this guide: https://www.overleaf.com/learn/latex/Nomenclatures
+% Note that you have to add an additional make command to your latex 
+% editor to build the list of symbols. In TexStudio this is a menu option
+% under Preferences -> Build -> User Commands.  Add this command:
+% makeindex -s nomencl.ist -t %.nlg -o %.nls %.nlo
 \printnomenclature
 
 \include{remerciements}         % remerciements
