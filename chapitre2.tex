@@ -264,9 +264,13 @@ The \gls{BRW} concept can be extended to \gls{RODD}s. A \gls{RODD} step disturba
 
 State estimation is the task of estimating the values of the state variables of a dynamic model of a system given a set of measurements from the system. In process control applications, estimates of the states at the current time (or a prediction of their values at the next time instant) are required online (i.e. in real time) in order to calculate an appropriate control action.
 
-Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, \gls{uk} $\in \mathbb{R}^{n_u}$ is a vector of known input variables at time instant $k$, \gls{wk} $\in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of output disturbances or measurement errors, and \gls{yk} $\in \mathbb{R}^{n_y}$ is the vector of output variables. The box represents a mathematical model that relates the inputs to the outputs and may be time-varying. 
+Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, $\mathbf{u}(k)$ $\in \mathbb{R}^{n_u}$ is a vector of known input variables at time instant $k$, $\mathbf{w}(k)$ $\in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of measurement errors, and $\mathbf{y}(k) \in \mathbb{R}^{n_y}$ is a vector of output variables. The box represents a mathematical model that relates the inputs to the outputs and may be time-varying. 
+\nomenclature{$\mathbf{u}(k)$}{system inputs at time $k$}%
+\nomenclature{$\mathbf{y}(k)$}{system outputs at time $k$}%
+\nomenclature{$\mathbf{w}(k)$}{process disturbances at time $k$}%
+\nomenclature{$\mathbf{v}(k)$}{measurement noises at time $k$}%
 \begin{figure}[ht]
-	\centering \glsadd{uk}\glsadd{yk}\glsadd{wk}\glsadd{vk}
+	\centering
 	\includegraphics[width=8cm]{images/model_diag_uwvy.pdf}
 	\caption{System model diagram}
 	\label{fig:model_diag_uwvy}
@@ -274,21 +278,26 @@ Consider the diagram of an input-output system model in Figure \ref{fig:model_di
 
 A convenient form in which to represent discrete-time, linear, possibly time-varying, dynamical system models for state estimation and control purposes, is the state-space representation
 \begin{equation} \label{eq:ss_rep_uwy}
-	\begin{aligned} \glsadd{xk} \glsadd{A} \glsadd{B} \glsadd{C}
+	\begin{aligned}
 		\mathbf{x}(k+1) &= \mathbf{A}(k) \mathbf{x}(k) + \mathbf{B}(k) \mathbf{u}(k) + \mathbf{w}(k), \\
 		\mathbf{y}(k) &= \mathbf{C}(k) \mathbf{x}(k) + \mathbf{v}(k).
 	\end{aligned}
 \end{equation}
-where \gls{xk} $\in \mathbb{R}^n$ is a vector of state variables, $\mathbf{A}(k) \in \mathbb{R}^{n \times n}$ is the state transition matrix at time $k$, $\mathbf{B}(k) \in \mathbb{R}^{n \times n_u}$ is the input matrix at time $k$, $\mathbf{C}(k) \in \mathbb{R}^{n_y \times n}$ is the output matrix at time $k$. In this work, the system matrices are not time-varying and are therefore denoted $\mathbf{A}$, $\mathbf{B}$, and $\mathbf{C}$ in the remainder of this chapter.
+\nomenclature{$\mathbf{x}(k)$}{system model states at time $k$}%
+\nomenclature{$\mathbf{A}$}{transition matrix of the system model}%
+\nomenclature{$\mathbf{B}$}{input matrix of the system model}%
+\nomenclature{$\mathbf{C}$}{output matrix of the system model}%
+where $\mathbf{x}(k)$ $\in \mathbb{R}^n$ is a vector of state variables, $\mathbf{A}(k) \in \mathbb{R}^{n \times n}$ is the state transition matrix at time $k$, $\mathbf{B}(k) \in \mathbb{R}^{n \times n_u}$ is the input matrix at time $k$, $\mathbf{C}(k) \in \mathbb{R}^{n_y \times n}$ is the output matrix at time $k$. In this work, the system matrices are not time-varying and are therefore denoted $\mathbf{A}$, $\mathbf{B}$, and $\mathbf{C}$ in the remainder of this chapter.
 
 The \textit{Kalman filter} \citep{kalman_new_1960} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables with mean values of zero. There are two commonly-used implementations of the Kalman filter, the \textit{prediction form} and the \textit{filtering form}. In the prediction form, the estimates of the states at the next time instant ($k+1$), given the information available at the current time ($k$) are calculated using
-\begin{equation} \glsadd{yMk}
+\begin{equation}
 \begin{aligned} \label{eq:xkp1_hat_p}
 	\glsadd{xkp1_pred}\mathbf{\hat{x}}(k+1 \mid k) &= \mathbf{\hat{x}}(k+1 \mid k-1) + \mathbf{K}_p(k) \big( \mathbf{y}_M(k) - \mathbf{\hat{y}}(k \mid k-1) \big) \\
 	&= \mathbf{A}\mathbf{\hat{x}}(k \mid k-1) + \mathbf{B}\mathbf{u}(k) + \mathbf{K}_p(k) \big( \mathbf{y}_M(k) - \mathbf{C} \mathbf{\hat{x}}(k \mid k-1) \big)
 \end{aligned}
 \end{equation}
-where \gls{xk_pred} is the prediction of the states at time $k$ that was made with the information available at the previous time ($k-1$), \gls{yMk} is the current measurement of the output, and \gls{Kpk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain.
+\nomenclature{$\mathbf{y}_M(k)$}{system output measurements at time $k$}%
+where \gls{xk_pred} is the prediction of the states at time $k$ that was made with the information available at the previous time ($k-1$), $\mathbf{y}_M(k)$ is the current measurement of the output, and \gls{Kpk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain.
 
 In the filtering form, which is used in this work, the estimated states and outputs at the current time are calculated given the information available at the current time using
 \begin{equation} \label{eq:xkyk_hat}
@@ -303,7 +312,7 @@ where \gls{Kk} $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) corr
 	\glsadd{xk_pred}\mathbf{\hat{x}}(k+1 \mid k) = \mathbf{A} \mathbf{\hat{x}}(k \mid k) + \mathbf{B} \mathbf{u}(k).
 \end{equation}
 
-An intuitive interpretation of the Kalman filter is that it takes the predictions of the states at time $k$ made in the previous time instant using the system model, and corrects them based on the difference between the current output measurement, \gls{yMk}, and the output predicted by the model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$. The correction step (\ref{eq:xkyk_hat}) and prediction step (\ref{eq:xkp1_hat}) are executed iteratively each time step, given a prior prediction of the states at time zero, $\mathbf{\hat{x}}(0 \mid -1)=\mathbf{\hat{x}}_0$.
+An intuitive interpretation of the Kalman filter is that it takes the predictions of the states at time $k$ made in the previous time instant using the system model, and corrects them based on the difference between the current output measurement, $\mathbf{y}_M(k)$, and the output predicted by the model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$. The correction step (\ref{eq:xkyk_hat}) and prediction step (\ref{eq:xkp1_hat}) are executed iteratively each time step, given a prior prediction of the states at time zero, $\mathbf{\hat{x}}(0 \mid -1)=\mathbf{\hat{x}}_0$.
 
 Although the predicted states, \gls{xk_pred}, are identical in both forms of the equations, the use of the updated (i.e. \textit{a posteriori}) estimates, \gls{xk_hat}, in the filtering form instead of the predicted states leads to an optimal estimate taking account of all the information available.
 
@@ -356,7 +365,7 @@ Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations at
 		\State calculate $\mathbf{P}(k+1 \mid k)$ (\ref{eq:Pkp1})
 	\end{algorithmic}
 \end{algorithm}
-This algorithm is for the case with only the covariance, \gls{Qk}, switching. It can easily be extended to simulate other switching model components, such as $\mathbf{R}(k)$, $\mathbf{A}(k)$, $\mathbf{B}(k)$, or $\mathbf{C}(k)$ defined in (\ref{eq:ss_rep_uwy}). Also note that in a control application, the manipulated input, \gls{uk}, is computed by the control algorithm. This may be done before the Kalman filter calculations in algorithm \ref{alg:kf} if the prior prediction of the states in the current time instant, \gls{xk_pred}, is used by the control algorithm. Alternatively, slightly better control performance might be achieved if the control algorithm uses the updated (a-posteriori) state estimates, \gls{xk_hat}, instead. In the latter case, the Kalman filter calculations must be interrupted to compute the control action after the state correction step (\ref{eq:xkyk_hat}) and prior to the prediction step (\ref{eq:xkp1_hat}), when \gls{uk} is needed.
+This algorithm is for the case with only the covariance, \gls{Qk}, switching. It can easily be extended to simulate other switching model components, such as $\mathbf{R}(k)$, $\mathbf{A}(k)$, $\mathbf{B}(k)$, or $\mathbf{C}(k)$ defined in (\ref{eq:ss_rep_uwy}). Also note that in a control application, the manipulated input, $\mathbf{u}(k)$, is computed by the control algorithm. This may be done before the Kalman filter calculations in algorithm \ref{alg:kf} if the prior prediction of the states in the current time instant, \gls{xk_pred}, is used by the control algorithm. Alternatively, slightly better control performance might be achieved if the control algorithm uses the updated (a-posteriori) state estimates, \gls{xk_hat}, instead. In the latter case, the Kalman filter calculations must be interrupted to compute the control action after the state correction step (\ref{eq:xkyk_hat}) and prior to the prediction step (\ref{eq:xkp1_hat}), when $\mathbf{u}(k)$ is needed.
 
 \begin{figure}[ht]
 	\centering
@@ -431,7 +440,7 @@ Assume that new measurements are made available at each time instant. The probab
 	\Pr(\gamma_f(k) \mid \gamma_f(k-1)) \Pr(\Gamma_f(k-1) \mid \mathbf{Y}_M(k-1)).
 \end{multline}
 
-The conditional probability densities of the measurements, \gls{yMk}, are approximated by Gaussian distributions centred on the output predictions and with the variance of the output prediction error, \gls{Sfk},
+The conditional probability densities of the measurements, $\mathbf{y}_M(k)$, are approximated by Gaussian distributions centred on the output predictions and with the variance of the output prediction error, \gls{Sfk},
 \begin{equation} \label{eq:p_yk_given_Gammak_Ykm1}
 	p(\mathbf{y}_M(k) \mid \Gamma_f(k), \mathbf{Y}_M(k-1)) \approx \mathcal{N}\left(\mathbf{y}_M(k), \mathbf{\hat{y}}_{f}(k \mid k-1),	\mathbf{S}_f(k) \right)
 \end{equation}
@@ -878,7 +887,7 @@ Note the two main differences when compared to Figure \ref{fig:mm-obs-seq-sf95}.
 
 \textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} \gls{AFMM}) algorithm by \cite{andersson_adaptive_1985} for \gls{RODD} estimation. The \gls{AFMM} uses sequence pruning to limit the number of hypotheses and filters. The current hypotheses at each time step are ranked according to their conditional probabilities (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of \gls{RODD} disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_h$.
 
-\nomenclature{$N_\text{min}$}{sequence pruning parameter: minimum life of a branched hypothesis}
+\nomenclature{$N_\text{min}$}{sequence pruning parameter: minimum life of a branched hypothesis}%
 The caveat mentioned above, is that no hypothesis may be eliminated less than $N_\text{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_h$ must be at least sufficient to accommodate the \textit{minimum life}, $N_\text{min}$, of all new hypotheses. Note that in the case of systems with more than one \gls{RODD} disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
 
 To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-SP}. This shows one possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely hypotheses at each time instant, identified by the circles with thicker outlines, branch into two at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next. Note that at time $k=6$, hypothesis 2 becomes the most likely based on the available measurements at that time. Also note that no new branches are terminated in less than two sample times.
@@ -902,7 +911,7 @@ The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation ste
 	\label{fig:mkf-infoflow}
 \end{figure}
 
-At time $k$, the algorithm requires a mode indicator vector, $\gamma_k=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, \gls{yMk}, and input, \gls{uk}, and produces estimates of the states, \gls{xk_hat}, and outputs, \gls{yk_hat}. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma_k$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
+At time $k$, the algorithm requires a mode indicator vector, $\gamma_k=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}_M(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, \gls{xk_hat}, and outputs, \gls{yk_hat}. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma_k$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
 
 \section{System identification} \label{sec:sys-id}
 
@@ -952,7 +961,7 @@ To construct a multiple-model observer for systems with \gls{RODD}s, the structu
 %\end{align}\textbf{[TODO: Consider including slack variables to ensure feasibility]}
 %where $\mathbf{r}(k+i)$ for $i=1,2,...,H_p$ is the reference output trajectory, and $\Delta \mathbf{u}(k)$ is the change in the manipulated variable at time $k$, defined as $\Delta \mathbf{u}(k) = \mathbf{u}(k) - \mathbf{u}(k-1)$. The tunable parameters are $H_p$, $H_c$, $\mathbf{\Phi}$, and $\mathbf{\Lambda}$, and the constraints are $\mathbf{u}_{min}$, $\mathbf{u}_{max}$, $\Delta \mathbf{u}_{min}$, $\Delta \mathbf{u}_{max}$, $\mathbf{y}_{min}$, and $\mathbf{y}_{max}$. Note that the last constraint (\ref{eq:mpc-cons-3}) only guarantees that the estimate of the system output will not violate the constraints. This does not imply that the true system output will respect them at all times.
 %
-%Once a solution to the optimization problem is found, only the control actions at the current time, \gls{uk}, are transmitted to the plant. The procedure is then repeated every future time instant to compute the subsequent control actions. This is referred to as \textit{receding horizon control}.
+%Once a solution to the optimization problem is found, only the control actions at the current time, $\mathbf{u}(k)$, are transmitted to the plant. The procedure is then repeated every future time instant to compute the subsequent control actions. This is referred to as \textit{receding horizon control}.
 
 
 \section{Grinding simulation model} \label{sec:grinding-simulator}
