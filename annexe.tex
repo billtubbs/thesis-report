@@ -52,7 +52,7 @@ As in the \gls{SISO} experiment, the resulting observers were simulated on a set
 		\caption{Multi-model observer parameter search results – MKF--SF95.} \label{tb:obs-sim2-popt-SF95}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
-			\gls{nf} & \gls{m} & $d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$  \\
+			$N_f$ & $n_\text{max}$ & $d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$  \\
 			\hline
 			% See script rod_obs_sim3_MKF_SF95_popt_table.m
 			% 05-Dec-2022 00:14:39 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
@@ -76,7 +76,7 @@ As in the \gls{SISO} experiment, the resulting observers were simulated on a set
 		\caption{Multi-model observer parameter search results – MKF--SF98.} \label{tb:obs-sim2-popt-SF98}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
-			\gls{nf} & \gls{m} & $d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$  \\
+			$N_f$ & $n_\text{max}$ & $d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$  \\
 			\hline
 %			% See script rod_obs_sim3_MKF_SF98_popt_table.m
 %			% 04-Dec-2022 22:57:10 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
@@ -106,7 +106,7 @@ As in the \gls{SISO} experiment, the resulting observers were simulated on a set
 		\end{tabular}
 	\end{center}
 \end{table}
-In the case of the 1995 version of the sequence fusion algorithm, the lowest RMSEs were achieved with a fusion horizon, \gls{nf}, in the range 9 to 25 and a detection interval, $d$, in the range 1 to 5. Recall that for the SISO system no detection interval was needed ($d=1$). Based on these results, a sequence fusion observer labelled `MKF--SF95' was simulated with the parameters  $\gls{nf}=15$, $\gls{m}=2$, and $d=3$. This requires 116 hypotheses and filters, although it should be noted that some other combinations with less hypotheses also performed well. For the 1998 version of the sequence fusion algorithm, the best fusion horizons range from 9 to 30, and the detection intervals range from 3 to 10. An observer labelled `MKF--SF1' was chosen with the parameters $\gls{nf}=15$, $\gls{m}=2$, and $d=5$, which requires 58 hypotheses and filters.
+In the case of the 1995 version of the sequence fusion algorithm, the lowest RMSEs were achieved with a fusion horizon, $N_f$, in the range 9 to 25 and a detection interval, $d$, in the range 1 to 5. Recall that for the SISO system no detection interval was needed ($d=1$). Based on these results, a sequence fusion observer labelled `MKF--SF95' was simulated with the parameters  $N_f=15$, $n_\text{max}=2$, and $d=3$. This requires 116 hypotheses and filters, although it should be noted that some other combinations with less hypotheses also performed well. For the 1998 version of the sequence fusion algorithm, the best fusion horizons range from 9 to 30, and the detection intervals range from 3 to 10. An observer labelled `MKF--SF1' was chosen with the parameters $N_f=15$, $n_\text{max}=2$, and $d=5$, which requires 58 hypotheses and filters.
 
 \begin{table}[hb]
 	\begin{center}
