@@ -6,7 +6,7 @@
 
 \subsection{Randomly-occurring deterministic disturbances} \label{sec:RODD}
 
-\Acrlong{RODD} (\acrshort{RODD}s) \citep{macgregor_duality_1984} are a family of stochastic process models suitable for simulating various types of infrequently-occurring disturbances in discrete-time.  The structure of the \gls{RODD} model is
+\Acrlong{RODD}s (\acrshort{RODD}s) \citep{macgregor_duality_1984} are a family of stochastic process models suitable for simulating various types of infrequently-occurring disturbances in discrete-time.  The structure of the \gls{RODD} model is
 \begin{equation} \label{eq:RODD}
 	p(k) = \frac{B(q^{-1})}{A(q^{-1})} w_p(k),
 \end{equation}
@@ -100,6 +100,7 @@ An equivalent state-space representation of (\ref{eq:RODD-exp}) is
 		\end{array}\right] \mathbf{x}_p(k),
 	\end{split}
 \end{equation}
+\nomenclature{$\mathbf{x}_p(k)$}{disturbance model states at time $k$}%
 where $\mathbf{x}_p(k) \in \mathbb{R}^2$ is the state vector.
 
 A disturbance with a combination of different \gls{RODD}s is also possible.  For example, a state-space representation of a \gls{RODD} consisting of step changes and ramps is
@@ -124,17 +125,12 @@ where $\mathbf{w}_p(k)$ is a vector of two independent random shock signals gene
 
 \textit{Hidden Markov models} (\gls{HMM}) can be used to simulate a more diverse set of switching behaviours than those of the \gls{RODD} model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A \gls{HMM} is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
-To illustrate the basic concept, we can define the state of the random shock process (\ref{eq:wpk2}) as a Markov model state, $\gamma_k$, with two possible values:
+To illustrate the basic concept, we can define the state of the random shock process (\ref{eq:wpk2}) as a Markov model with a state that has two possible values,
 \begin{equation} \label{eq:gamma-k}
-	\gamma(k) = 
-	\begin{cases*}
-		0: & no shock, \\
-		1: & shock.
-	\end{cases*}
+	\gamma(k) \in \{0,1\}.
 \end{equation}
 \nomenclature{$\gamma(k)$}{random shock indicator at time $k$}%
-
-$\gamma_k=0$ represents the system mode when no shock occurs and $\gamma_k=1$ represents the mode when a shock occurs. The switching of $\gamma_k$ can then be defined by a \textit{transition matrix}, $\Pi$, which describes the probabilities of transitioning from the mode at time $k$ to the mode at time $k+1$:
+$\gamma(k)=1$ represents a shock at time $k$, and $\gamma(k)=0$ means no shock occurs. The switching of $\gamma(k)$ can then be defined by a \textit{transition matrix}, $\Pi$, which describes the probabilities of transitioning from every mode at time $k$ to every mode at time $k+1$:
 \begin{equation} \label{eq:Pi}
 	\begin{aligned}
 	\Pi &= \left(\pi_{ij} \forall i,j\in \{1,2,...,n_j\}\right) \\
@@ -143,9 +139,9 @@ $\gamma_k=0$ represents the system mode when no shock occurs and $\gamma_k=1$ re
 \end{equation}
 \nomenclature{$\Pr(A \mid B)$}{probability of an event $A$ given an event $B$}%
 \nomenclature{$n_j$}{number of modes or models of a switching system}%
-where $n_j$ is the number of possible system modes and $\pi_{ij}$ is the probability that the shock mode at time $k$ is $j-1$ given that it was $i-1$ at time $k-1$.
+where $n_j$ is the number of possible system modes and $\pi_{ij}$ is the probability that the system mode at time $k$ is $j-1$ given that it was $i-1$ at time $k-1$.
 
-For example, in the case of the random shock used in the \gls{RODD} model (\ref{eq:wpk2}), $n_j$ is 2 and the equivalent Markov process has the transition probability matrix
+In the case of the random shock, $n_j=2$ and the equivalent Markov process has the transition probability matrix
 \nomenclature{$\Pi_{w_{p}}$}{transition probability matrix of the disturbance process $w_p$}%
 \begin{equation} \label{eq:Pi-RODD-step}
 	\Pi_{w_{p}} = \begin{bmatrix}
@@ -153,9 +149,10 @@ For example, in the case of the random shock used in the \gls{RODD} model (\ref{
 	1-\varepsilon & \varepsilon
 	\end{bmatrix}.
 \end{equation}
-In this case, since $w_{p}(k)$ is an independent random variable, it does not depend on the previous state. Therefore, the rows of $\Pi_{w_{p}}$ are identical.
+Since $w_{p}(k)$ is an independent random variable, it does not depend on the previous state, $\gamma(k-1)$. Therefore, the rows of $\Pi_{w_{p}}$ are identical.
 
-The use of the Markov model thus allows transition probabilities that depend on the current state. For example, consider a disturbance where the signal switches infrequently between samples from two or more distributions with different parameters. The probabilities of switching from one distribution to another may be different. Such a disturbance process could be simulated with a hidden Markov model by conditioning the distribution from which $w_p(k)$ is sampled on a Markov state, $r(k)$, with an arbitrary number of modes,
+The use of the Markov model thus allows transition probabilities that do depend on the previous state. For example, consider a disturbance where the signal switches infrequently between samples from two or more distributions with different parameters. The probabilities of switching from one distribution to another may be different. Such a disturbance process could be simulated with a hidden Markov model by conditioning the distribution from which $w_p(k)$ is sampled on a Markov state, $r(k)$, with an arbitrary number of modes,
+\nomenclature{$r(k)$}{mode indicator of a switching system at time $k$}%
 \begin{equation} \label{eq:mog-example}
 	\begin{split}
 		w_p(k) \sim 
@@ -168,7 +165,6 @@ The use of the Markov model thus allows transition probabilities that depend on 
 	\Pr(r(k)=j-1 \mid r(k-1)=i-1)=\pi_{ij} \forall i,j \in {1,2,...,n_j}
 	\end{split}
 \end{equation}
-\nomenclature{$r(k)$}{mode indicator of a switching system at time $k$}%
 
 To make the notation more concise, allow the value of any time-varying discrete variable such as $\sigma_{w_p} \in \left\{\sigma_{w_p,1}, \sigma_{w_p,2},..., \sigma_{w_p,n_j}\right\}$, to be determined by the value of the Markov state $r(k)$. Thus,
 \begin{equation} \label{eq:A-selection}
@@ -190,19 +186,19 @@ With this notation, (\ref{eq:mog-example}) can be written concisely as
 \end{equation}
 where $\mu_{w_p}\in\left\{\mu_{w_p,1},\mu_{w_p,2},...,\mu_{w_p,n_j}\right\}$. This model is known as a \textit{mixture of Gaussians} and can be considered a special-case of a HMM-based disturbance model \citep{wong_disturbance_2007}.
 
-The general \gls{HMM} disturbance process is described by the following \textit{Markov jump linear system} (\acrshort{MJLS}) \citep{costa_discrete-time_2005}. A state-space representation with time-varying system matrices $\mathbf{A}(\gamma(k))$, $\mathbf{B}(\gamma(k))$, and $\mathbf{C}(\gamma(k))$ can then be defined
+A \gls{HMM} disturbance process can be represented by a \textit{Markov jump linear system} (\acrshort{MJLS}) \citep{costa_discrete-time_2005}. The state-space representation with time-varying system matrices $\mathbf{A}(\gamma(k))$, $\mathbf{B}(\gamma(k))$, and $\mathbf{C}(\gamma(k))$, and a vector of independent time-varying random shock inputs, $\mathbf{w}_p(k)$ (\ref{eq:mog-example2}), is defined
 \begin{equation} \label{eq:MJLS}
 	\begin{aligned}
 	\mathbf{x}_p(k+1) &= \mathbf{A}(r(k)) \mathbf{x}_p(k) + \mathbf{B}(r(k))\mathbf{w}_p(k) \\
-	\mathbf{p}(k) &= \mathbf{C}(r(k)) \mathbf{x}_p(k) + \mathbf{e}_p(k)
+	\mathbf{p}(k) &= \mathbf{C}(r(k)) \mathbf{x}_p(k) + \mathbf{e}_p(k).
 	\end{aligned}
 \end{equation}
 
-As well as $\mathbf{w}_p(k)$, $\mathbf{e}_p(k)$ may also be a switching random variable. (\ref{eq:MJLS}) is a versatile model suitable for representing and simulating a diverse family of stochastic disturbances.
+Note that $\mathbf{e}_p(k)$ may also be a switching random variable if desired. (\ref{eq:MJLS}) is a versatile model suitable for representing and simulating a diverse family of stochastic disturbances.
 
 \subsection{Bounded disturbances} \label{sec:bounded}
 
-The \textit{bounded random walk} (\gls{BRW}) is a stochastic process proposed by \cite{nicolau_stationary_2002}. The discrete-time version has the difference equation
+The \textit{bounded random walk} (\gls{BRW}) is a stochastic process proposed by \cite{nicolau_stationary_2002}. The discrete-time version is defined by the difference equation
 \begin{equation} \label{eq:brw}
 		p(k+1) = p(k) + a(p(k)) + e(k),
 \end{equation}
@@ -219,8 +215,7 @@ where $\beta$, $\alpha_{1}$, and $\alpha_{2}$ are constants.  From (\ref{eq:brw}
 	\mathbb{E}\{p(k+1)|p(k)\} = p(k) + a(p(k)).
 \end{equation}
 
-Therefore, $a(p(k))$ has the effect of an additive bias or time-varying adjustment to $p(k+1)$ that depends on $p(k)$. The shape of $a(\cdot)$ is determined by the constants $\alpha_{1}$,  $\alpha_{2}$, $\beta$, and $\tau$. Figure \ref{fig:brw-a} shows $a(p(k))$ in the case where $\tau=100$, $\beta=-15$, and $\alpha_{1}=\alpha_{2}=3$.  From this, it is clear that in the vicinity of $p(k)=\tau$, $a(p(k))\approx0$. When $a(p(k))=0$, (\ref{eq:brw}) is the equation for a random walk. However, outside a neighbourhood of $p(k)=\tau$, $a(p(k))$ increases for low $p(k)$ or decreases for high $p(k)$. This has the effect of causing $p(k+1)$ to revert towards the mean ($\tau$) whenever $p(k)$ strays outside the neighbourhood. 
-
+Therefore, $a(p(k))$ has the effect of an additive bias or time-varying adjustment to $p(k+1)$ that depends on $p(k)$. The shape of $a(\cdot)$ is determined by the constants $\alpha_{1}$,  $\alpha_{2}$, $\beta$, and $\tau$. Figure \ref{fig:brw-a} shows $a(p(k))$ in the case where $\tau=100$, $\beta=-15$, and $\alpha_{1}=\alpha_{2}=3$.  From this, it is clear that in the vicinity of $p(k)=\tau$, $a(p(k))\approx0$. When $a(p(k))=0$, (\ref{eq:brw}) is the equation for a random walk. However, outside the neighbourhood, $p(k) \approx \tau$, $a(p(k))$ increases for low $p(k)$ or decreases for high $p(k)$. This has the effect of causing $p(k+1)$ to revert towards the mean ($\tau$) whenever $p(k)$ strays outside the neighbourhood. 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/brw_a.pdf}
@@ -228,8 +223,7 @@ Therefore, $a(p(k))$ has the effect of an additive bias or time-varying adjustme
 	\label{fig:brw-a}
 \end{figure}
 
-Figure \ref{fig:brw-sim} shows a simulation of a bounded random walk with the above parameter values, and for comparison, an unbounded random walk (labelled `RW') generated with the same noise input. The dashed lines at $p(k)=95$ and $p(k)=105$ roughly indicate the location of the lower and upper bounds which the BRW only marginally exceeds.
-
+Figure \ref{fig:brw-sim} shows a simulation of a \gls{BRW} with the above parameter values, and for comparison, an unbounded random walk (labelled `RW') generated with the same noise input. The dashed lines at $p(k)=95$ and $p(k)=105$ roughly indicate the location of the lower and upper bounds, which the \gls{BRW} only marginally exceeds.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/brw_sim.pdf}
@@ -237,7 +231,7 @@ Figure \ref{fig:brw-sim} shows a simulation of a bounded random walk with the ab
 	\label{fig:brw-sim}
 \end{figure}
 
-Unlike a simple random walk, the \gls{BRW} is stationary. \cite{nicolau_stationary_2002} derived a formula for the form of the unconditional (i.e. stationary) probability distribution of the continuous-time \gls{BRW}. Figure \ref{fig:brw-pdf} shows the normalized stationary probability density of the \gls{BRW} above. For comparison, the probability density of a random walk process after 20 sample periods is also shown. It can be seen that there is a significant probability that the random walk would exceed the bounds of this \gls{BRW} after 20 sample periods. It can also be seen that the central part of the probability distribution of the \gls{BRW} is flat, indicating that all values within the bounds are equally likely after a large number of samples, similar to a uniform probability distribution.
+Unlike a simple random walk, the \gls{BRW} is stationary. \cite{nicolau_stationary_2002} derived a formula for the form of the unconditional (i.e. stationary) probability distribution of the continuous-time \gls{BRW}. Figure \ref{fig:brw-pdf} shows the normalized stationary probability density of the \gls{BRW} defined above. For comparison, the probability density of a random walk process after 20 sample periods is also shown. It can be seen that there is a significant probability that the random walk would exceed the bounds of this \gls{BRW} after 20 sample periods. It can also be seen that the central part of the probability distribution of the \gls{BRW} is flat, indicating that all values within the bounds are equally likely after a large number of samples, similar to a uniform probability distribution.
 
 %\begin{equation}
 %	p_{BRW}(x) \propto \sigma^{-2} \exp \left\{-\frac{2 e^{k}}{\sigma^{2}}\left(\frac{e^{-\alpha_{1}(x-\tau)}}{\alpha_{1}}+\frac{e^{\alpha_{2}(x-\tau)}}{\alpha_{2}}\right)\right\}
@@ -250,7 +244,7 @@ Unlike a simple random walk, the \gls{BRW} is stationary. \cite{nicolau_stationa
 	\label{fig:brw-pdf}
 \end{figure}
 
-However, the \gls{BRW} as described by (\ref{eq:brw}) is not guaranteed to be stable. Extreme values of $p(k)$ may cause $|a(p(k))|$ to be greater than $2|p(k)|$, which results in rapid divergence. This would cause computational errors in a numerical simulation. To avoid this, \cite{nicolau_stationary_2002} recommends adding a conditional regularizing step that forces reversion towards the mean, $\tau$, when the correction bias is too large. Instead of (\ref{eq:brw}), a conditional difference equation,
+However, the \gls{BRW} as defined in (\ref{eq:brw}) is not guaranteed to be stable. Extreme values of $p(k)$ may cause $|a(p(k))|$ to be greater than $2|p(k)|$, which results in rapid divergence. This would cause computational errors in a numerical simulation. To avoid this, \cite{nicolau_stationary_2002} recommends adding a conditional regularizing step that forces reversion towards the mean, $\tau$, when the correction bias is too large. Instead of (\ref{eq:brw}), a conditional difference equation,
 \begin{equation} \label{eq:brw-reg}
 	p(k+1) = \begin{cases*}
 		p(k) + a(p(k)) + e(k) & if $\left|a(p(k)) \right| < 2\left| p(k) - \tau \right|$, \\
@@ -259,16 +253,16 @@ However, the \gls{BRW} as described by (\ref{eq:brw}) is not guaranteed to be st
 \end{equation}
 is used, where $\phi$ is a constant such that $0<\phi<1$. The size of $\phi$ determines how fast $p(k)$ reverts to $\tau$ when it is outside the stable region.
 
-Since the \gls{BRW} has a non-Gaussian probability distribution, analysis of the properties of any dynamical system with a \gls{BRW} is difficult. However, for simulation purposes, the \gls{BRW} is a simple and practical solution to the problem of bounding a random disturbance.
+Since the \gls{BRW} has a non-Gaussian probability distribution, analysis of the properties of any dynamical system with a \gls{BRW} input is difficult. However, for simulation purposes, the \gls{BRW} is a simple and practical solution to the problem of bounding a random disturbance.
 
-The \gls{BRW} concept can be extended to \gls{RODD}s. A \gls{RODD} step disturbance (\ref{eq:RODD-step}) is a random walk with a switching noise variance (\ref{eq:wpk2}). The concern when trying to bound such a disturbance is the large step changes that occur infrequently. Since the probability of the shock, as well as the sign and amplitude of the step, are independent random variables, a \gls{RODD} step disturbance that happens to be at one of the bounds is as likely to step outside the bound as it is to step back inside the bounded region. The conditional regularity used in the \gls{BRW} (\ref{eq:brw-reg}) would prevent any computational problems. 
+The \gls{BRW} concept could be extended to \gls{RODD}s. A \gls{RODD} step disturbance (\ref{eq:RODD-step}) is a random walk with a switching noise variance (\ref{eq:wpk2}). The concern when trying to bound such a disturbance is the large step changes that occur infrequently. Since the probability of the shock, as well as the sign and amplitude of the step, are independent random variables, a \gls{RODD} step disturbance that happens to be at one of the bounds is as likely to step outside the bound as it is to step back inside the bounded region. The conditional regularity used in the \gls{BRW} (\ref{eq:brw-reg}) would prevent any computational problems.
 
 
 \section{State estimation} \label{sec:estimation}
 
-State estimation is the task of estimating the values of the state variables of a dynamic model of a system given a set of measurements from the system. In process control applications, estimates of the states at the current time (or a prediction of their values at the next time instant) are required online (i.e. in real time) in order to calculate an appropriate control action.
+State estimation is the task of estimating the values of the state variables of a dynamic model of a system given a set of measurements from the system. In process control applications, estimates of the states at the current time, or a prediction of their values at the next time instant, are required in real time (i.e. online) in order to calculate an appropriate control action.
 
-Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, $\mathbf{u}(k)$ $\in \mathbb{R}^{n_u}$ is a vector of known input variables at time instant $k$, $\mathbf{w}(k)$ $\in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of measurement errors, and $\mathbf{y}(k) \in \mathbb{R}^{n_y}$ is a vector of output variables. The box represents a mathematical model that relates the inputs to the outputs and may be time-varying. 
+Consider the diagram of an input-output system model in Figure \ref{fig:model_diag_uwvy}. Here, $\mathbf{u}(k)$ $\in \mathbb{R}^{n_u}$ is a vector of known input variables at time instant $k$, $\mathbf{w}(k)$ $\in \mathbb{R}^n$ is a vector of unmeasured state disturbances, $\mathbf{v}(k) \in \mathbb{R}^{n_y}$ is a vector of measurement errors, and $\mathbf{y}_M(k) \in \mathbb{R}^{n_y}$ is a vector of output measurements. The box represents a mathematical model that relates the inputs to the outputs and may be time-varying.
 \nomenclature{$\mathbf{u}(k)$}{system inputs at time $k$}%
 \nomenclature{$\mathbf{y}(k)$}{system outputs at time $k$}%
 \nomenclature{$\mathbf{w}(k)$}{process disturbances at time $k$}%
@@ -284,14 +278,14 @@ A convenient form in which to represent discrete-time, linear, possibly time-var
 \begin{equation} \label{eq:ss_rep_uwy}
 	\begin{aligned}
 		\mathbf{x}(k+1) &= \mathbf{A}(k) \mathbf{x}(k) + \mathbf{B}(k) \mathbf{u}(k) + \mathbf{w}(k), \\
-		\mathbf{y}(k) &= \mathbf{C}(k) \mathbf{x}(k) + \mathbf{v}(k).
+		\mathbf{y}_M(k) &= \mathbf{C}(k) \mathbf{x}(k) + \mathbf{v}(k).
 	\end{aligned}
 \end{equation}
 \nomenclature{$\mathbf{x}(k)$}{system model states at time $k$}%
 \nomenclature{$\mathbf{A}$}{transition matrix of the system model}%
 \nomenclature{$\mathbf{B}$}{input matrix of the system model}%
 \nomenclature{$\mathbf{C}$}{output matrix of the system model}%
-where $\mathbf{x}(k)$ $\in \mathbb{R}^n$ is a vector of state variables, $\mathbf{A}(k) \in \mathbb{R}^{n \times n}$ is the state transition matrix at time $k$, $\mathbf{B}(k) \in \mathbb{R}^{n \times n_u}$ is the input matrix at time $k$, $\mathbf{C}(k) \in \mathbb{R}^{n_y \times n}$ is the output matrix at time $k$. In this work, the system matrices are not time-varying and are therefore denoted $\mathbf{A}$, $\mathbf{B}$, and $\mathbf{C}$ in the remainder of this chapter.
+where $\mathbf{x}(k)$ $\in \mathbb{R}^n$ is a vector of state variables, $\mathbf{A}(k) \in \mathbb{R}^{n \times n}$ is the state transition matrix at time $k$, $\mathbf{B}(k) \in \mathbb{R}^{n \times n_u}$ is the input matrix at time $k$, and $\mathbf{C}(k) \in \mathbb{R}^{n_y \times n}$ is the output matrix at time $k$. In this work, the system matrices are not time-varying and are therefore denoted $\mathbf{A}$, $\mathbf{B}$, and $\mathbf{C}$ in the remainder of this chapter.
 
 The \textit{Kalman filter} \citep{kalman_new_1960} is the optimal estimator for a linear system in which the unmeasured disturbances and measurement errors are Gaussian random variables with mean values of zero. There are two commonly-used implementations of the Kalman filter, the \textit{prediction form} and the \textit{filtering form}. In the prediction form, the estimates of the states at the next time instant ($k+1$), given the information available at the current time ($k$) are calculated using
 \begin{equation}
@@ -301,7 +295,7 @@ The \textit{Kalman filter} \citep{kalman_new_1960} is the optimal estimator for 
 \end{aligned}
 \end{equation}
 \nomenclature{$\mathbf{y}_M(k)$}{system output measurements at time $k$}%
-where $\hat{\mathbf{x}}(k \mid k-1)$ is the prediction of the states at time $k$ that was made with the information available at the previous time ($k-1$), $\mathbf{y}_M(k)$ is the current measurement of the output, and $\mathbf{K}_p(k) \in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain.
+where $\hat{\mathbf{x}}(k \mid k-1)$ is the prediction of the states at time $k$ that was made with the information available at the previous time instant, $k-1$, $\mathbf{y}_M(k)$ is the current measurement of the output, and $\mathbf{K}_p(k) \in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain.
 \nomenclature{$\mathbf{K}_p(k)$}{correction gain of the Kalman filter (prediction form)}%
 
 In the filtering form, which is used in this work, the estimated states and outputs at the current time are calculated given the information available at the current time using
@@ -314,7 +308,7 @@ In the filtering form, which is used in this work, the estimated states and outp
 \end{equation}
 \nomenclature{$\hat{\mathbf{x}}(k \mid k-1)$}{predictions of system model states at time $k$ made with information available at time $k-1$}%
 \nomenclature{$\mathbf{K}(k)$}{correction gain of the Kalman filter (filtering form)}%
-where $\mathbf{K}(k)$ $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain. The predictions of the states at the next time instant are calculated using
+where $\mathbf{K}(k)$ $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain. Instead of (\ref{eq:xkp1_hat_p}), the predictions of the states at the next time instant are calculated using
 \nomenclature{$\hat{\mathbf{x}}(k+1 \mid k)$}{predictions of system modelstates at time $k+1$ made with information available at time $k$}%
 \nomenclature{$\hat{\mathbf{x}}(k \mid k)$}{estimates of system model states at time $k$ made with information available at time $k$}%
 \nomenclature{$\hat{\mathbf{y}}(k \mid k)$}{estimates of system outputs at time $k$ made with information available at time $k$}%
@@ -323,20 +317,21 @@ where $\mathbf{K}(k)$ $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varyin
 \end{equation}
 
 An intuitive interpretation of the Kalman filter is that it takes the predictions of the states at time $k$ made in the previous time instant using the system model, and corrects them based on the difference between the current output measurement, $\mathbf{y}_M(k)$, and the output predicted by the model, $\mathbf{C} \mathbf{\hat{x}}(k \mid k-1)$. The correction step (\ref{eq:xkyk_hat}) and prediction step (\ref{eq:xkp1_hat}) are executed iteratively each time step, given a prior prediction of the states at time zero, $\mathbf{\hat{x}}(0 \mid -1)=\mathbf{\hat{x}}_0$.
+\nomenclature{$\mathbf{\hat{x}}_0$}{Initial values of the estimates of the system states at time 0}%
 
-Although the predicted states, $\hat{\mathbf{x}}(k \mid k-1)$, are identical in both forms of the equations, the use of the updated (i.e. \textit{a posteriori}) estimates, $\hat{\mathbf{x}}(k \mid k)$, in the filtering form instead of the predicted states leads to an optimal estimate taking account of all the information available.
+Although the predicted states, $\hat{\mathbf{x}}(k \mid k-1)$, are identical in both forms of the Kalman filter, the use of the updated (i.e. \textit{a posteriori}) estimates, $\hat{\mathbf{x}}(k \mid k)$, in the filtering form instead of the predicted states leads to an optimal estimate taking account of all the information available. However, it should be noted that in some control applications, the prediction form is beneficial because the state predictions, $\hat{\mathbf{x}}(k+1 \mid k)$, are available one time step ahead.
 
 To track a system with time-varying parameters, a dynamic estimator is needed with a time-varying correction gain. In the case of the filtering form of the Kalman filter, $\mathbf{K}(k)$ is calculated at each time instant using
 \begin{equation} \label{eq:Kk}
 	\mathbf{K}(k) = \mathbf{P}(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}^{-1}(k),
 \end{equation}
-where $\mathbf{S}(k)$ is the output prediction error covariance matrix and is given by
+where $\mathbf{S}(k)$ is the output prediction error covariance matrix, which is given by
 \nomenclature{$\mathbf{S}(k)$}{covariance of the output prediction errors at time $k$}%
 \begin{equation} \label{eq:Sk}
 	\mathbf{S}(k) = \mathbf{C}\mathbf{P}(k \mid k-1)\mathbf{C}^\intercal + \mathbf{R},
 \end{equation}
 \nomenclature{$\mathbf{P}(k \mid k-1)$}{predictions of the state estimation error covariance at time $k$ made with information available at time $k-1$}%
-and $\mathbf{P}(k \mid k-1)$ is the state estimation error covariance matrix calculated in the previous time instant. $\mathbf{R}$, which is also time invariant in this work, is the covariance matrix of the measurement noises,
+and $\mathbf{P}(k \mid k-1)$ is the state estimation error covariance matrix calculated in the previous time instant. $\mathbf{R}$, which is time invariant in this work, is the covariance matrix of the measurement noises,
 \nomenclature{$\mathbf{R}$}{covariance of the measurement noises in the observer model}%
 \begin{equation} \label{eq:R}
 	 \mathbf{R} = \mathbb{E}\{ \mathbf{v}(k) \mathbf{v}^\intercal(k) \},
@@ -349,14 +344,17 @@ The corrected error covariance may be calculated using
 \begin{equation} \label{eq:Pk}
 	\mathbf{P}(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right) \mathbf{P}(k \mid k-1),
 \end{equation}
-given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$. However, to reduce numerical errors due to rounding, the computation of $\mathbf{P}(k \mid k)$ is carried out in this work using the Joseph stabilized version of (\ref{eq:Pk})
+given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$.%
+\nomenclature{$\mathbf{P}_0$}{Initial value of the state estimation error covariance at time 0}
+
+However, to reduce numerical errors due to rounding, the computation of $\mathbf{P}(k \mid k)$ is carried out in this work using the Joseph stabilized version of (\ref{eq:Pk})
  \begin{equation} \label{eq:Pk-stab}
  	\mathbf{P}(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right ) \mathbf{P}(k \mid k-1) \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right )^\intercal + \mathbf{K}(k)  \mathbf{R} \mathbf{K}(k)^\intercal,
  \end{equation}
 \nomenclature{$\mathbf{I}_n$}{the identity matrix ($n \times n$)}%
 where $\mathbf{I}_n$ is the identity matrix (see \cite{lewis_optimal_2008}).
 
-The prediction of the error covariance in the next time step is made using
+The prediction of the error covariance at the next time instant is made using
 \nomenclature{$\mathbf{P}(k+1 \mid k)$}{predictions of the state estimation error covariance at time $k+1$ made with information available at time $k$}%
 \begin{equation} \label{eq:Pkp1}
 	\mathbf{P}(k+1 \mid k) = \mathbf{A} \mathbf{P}(k \mid k)  \mathbf{A}^\intercal  + \mathbf{Q}(k),
@@ -383,7 +381,7 @@ Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations at
 	\end{algorithmic}
 \end{algorithm}
 \nomenclature{$\mathcal{Q}$}{set of process noise covariance matrices of a switching system model}%
-This algorithm is for the case with only the covariance, $\mathbf{Q}(k)$, switching according to the shock indicator, $\gamma(k)$, (\ref{eq:init_Q}). It can easily be extended to simulate other switching model components, such as $\mathbf{R}(k)$, $\mathbf{A}(k)$, $\mathbf{B}(k)$, or $\mathbf{C}(k)$ defined in (\ref{eq:ss_rep_uwy}). Also note that in a control application, the manipulated input, $\mathbf{u}(k)$, is computed by the control algorithm. This may be done before the Kalman filter calculations in algorithm \ref{alg:kf} if the prior prediction of the states in the current time instant, $\hat{\mathbf{x}}(k \mid k-1)$, is used by the control algorithm. Alternatively, slightly better control performance might be achieved if the control algorithm uses the updated (a-posteriori) state estimates, $\hat{\mathbf{x}}(k \mid k)$, instead. In the latter case, the Kalman filter calculations must be interrupted to compute the control action after the state correction step (\ref{eq:xkyk_hat}) and prior to the prediction step (\ref{eq:xkp1_hat}), when $\mathbf{u}(k)$ is needed.
+This algorithm is for the case with only the covariance, $\mathbf{Q}(k)$, switching according to the shock indicator, $\gamma(k)$, (\ref{eq:init_Q}). It can easily be extended to simulate other switching model components, such as $\mathbf{R}(k)$, $\mathbf{A}(k)$, $\mathbf{B}(k)$, or $\mathbf{C}(k)$ as defined in (\ref{eq:ss_rep_uwy}). Also note that in a control application, the manipulated input, $\mathbf{u}(k)$, is computed by the control algorithm. This may be done before the Kalman filter calculations in algorithm \ref{alg:kf} if the prior prediction of the states in the current time instant, $\hat{\mathbf{x}}(k \mid k-1)$, is used. Alternatively, slightly better control performance might be achieved if the control algorithm uses the updated (a-posteriori) state estimates, $\hat{\mathbf{x}}(k \mid k)$. In the latter case, the Kalman filter calculations must be interrupted to compute the control action after the state correction step (\ref{eq:xkyk_hat}) and prior to the prediction step (\ref{eq:xkp1_hat}), when $\mathbf{u}(k)$ is needed.
 
 \begin{figure}[ht]
 	\centering
@@ -391,15 +389,15 @@ This algorithm is for the case with only the covariance, $\mathbf{Q}(k)$, switch
 	\caption{System model with disturbance inputs and manipulated inputs}
 	\label{fig:model_diag_upwvy}
 \end{figure}
-In the case where the system has additional disturbance inputs, $\mathbf{p}(k) \in \mathbb{R}^{n_p}$, as depicted in Figure \ref{fig:model_diag_upwvy}, the state-space equations (\ref{eq:ss_rep_uwy}) are modified to include these and the input matrix is split into two, $\mathbf{B}_u \in \mathbb{R}^{n \times n_u}$ and $\mathbf{B}_p \in \mathbb{R}^{n \times n_p}$,
+In the case where the system has unmeasured disturbance inputs, $\mathbf{p}(k) \in \mathbb{R}^{n_p}$, as depicted in Figure \ref{fig:model_diag_upwvy}, the state-space equations (\ref{eq:ss_rep_uwy}) are modified to include these by splitting the input matrix into two parts, $\mathbf{B}_u \in \mathbb{R}^{n \times n_u}$ and $\mathbf{B}_p \in \mathbb{R}^{n \times n_p}$,
 \begin{equation} \label{eq:ss_rep_upwy}
 	\begin{aligned}
 		\mathbf{x}(k+1) = \mathbf{A} \mathbf{x}(k) + \mathbf{B}_u \mathbf{u}(k) + \mathbf{B}_p \mathbf{p}(k) + \mathbf{w}(k), \\
-		\mathbf{y}(k) = \mathbf{C} \mathbf{x}(k) + \mathbf{v}(k).
+		\mathbf{y}_M(k) = \mathbf{C} \mathbf{x}(k) + \mathbf{v}(k).
 	\end{aligned}
 \end{equation}
 
-For state estimation in the presence of disturbances, which is always the case in practice, a suitable model of the disturbances is needed. This model is shown in Figure \ref{fig:model_diag_wpupwvy} with a vector of random shock variables, $\mathbf{w}_p(k)$, at its input.
+For state estimation in the presence of unmeasured disturbances, which is always the case in practice, a suitable model of the disturbances is needed. This model is shown in Figure \ref{fig:model_diag_wpupwvy} with a vector of random shock variables, $\mathbf{w}_p(k)$, at its input.
 \nomenclature{$\mathbf{w}_p(k)$}{random shock signals at time $k$}%
 \begin{figure}[ht]
 	\centering
@@ -408,7 +406,7 @@ For state estimation in the presence of disturbances, which is always the case i
 	\label{fig:model_diag_wpupwvy}
 \end{figure}
 
-A state-space representation of the combined system including the disturbance model can be constructed. This will be referred to as the \textit{augmented model},
+A state-space representation of the combined system including the disturbance model can be constructed. This is referred to as the \textit{augmented system model},
 \begin{equation} \label{eq:ss_rep_xa}
 	\begin{aligned}
 		\mathbf{x}_a(k+1) = \mathbf{A}_a \mathbf{x}_a(k) + \mathbf{B}_{a,u} \mathbf{u}(k) + \mathbf{B}_{a,w} \mathbf{w}_{a}(k), \\
@@ -416,7 +414,22 @@ A state-space representation of the combined system including the disturbance mo
 	\end{aligned}
 \end{equation}
 %\nomenclature{$\mathbf{x}_a(k)$}{augmented system states at time $k$}%
-where $\mathbf{x}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented state vector that includes the states of both the process model and the disturbance model, and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables combining $\mathbf{w}(k)$ and $\mathbf{w}_p(k)$. However, note that the notation with subscript `a' is only used in this section. In subsequent sections, the subscript is dropped for simplicity since all references to the model state vector and model state estimates relate to the augmented model used for state estimation.
+where $\mathbf{x}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented state vector that includes the states of both the process model and the disturbance model, 
+\begin{equation} \label{eq:xak}
+	\mathbf{x}_a(k) = \begin{bmatrix}
+		\mathbf{x}(k) \\
+		\mathbf{x}_p(k)
+	\end{bmatrix},
+\end{equation}
+and $\mathbf{w}_a(k) \in \mathbb{R}^{n+n_p}$ is an augmented vector of random variables, including the random shocks,
+\begin{equation} \label{eq:wak}
+	\mathbf{w}_a(k) = \begin{bmatrix}
+		\mathbf{w}(k) \\
+		\mathbf{w}_p(k)
+	\end{bmatrix}.
+\end{equation}
+
+However, note that this notation with subscript `a' is only used in this section. In subsequent sections, the subscript is dropped for simplicity since all references to the system model refer to the augmented model used for state estimation.
 
 Although the random shock in a \gls{RODD} is unmeasured, it may be observable from the measurements of the outputs of the system. As mentioned in Section \ref{detection_RODDs}, systems with \gls{RODD}s pose problems for state estimation using standard Kalman filters due to the switching of the noise model parameters, namely, the variance of $w_p(k)$ (\ref{eq:wpk2}). As explained by \cite{andersson_adaptive_1985}, a trade-off must be made during the filter design between its ability to respond to the infrequent disturbance when it occurs, and its sensitivity to noise at other times.
 
@@ -441,12 +454,15 @@ First, consider the case of estimating only one shock signal (\ref{eq:wpk2}). Th
 \end{equation}
 
 After $k$ time steps, the complete shock mode hypothesis sequence associated with filter $f$ is
+\nomenclature{$\Gamma_f(k)$}{shock indicator hypotheses sequence $f$ from time $0$ to $k$}%
 \begin{equation} \label{eq:Gammak}
 	\Gamma_f(k) = \left\{ \gamma_f(0), \gamma_f(1), ..., \gamma_f(k) \right\}.
 \end{equation}
-\nomenclature{$\Gamma_f(k)$}{shock indicator hypotheses sequence $f$ from time $0$ to $k$}%
 
 The known system inputs and output measurements up to time $k$ are
+\nomenclature{$\mathbf{U}(k)$}{known system inputs from time 0 to time $k$}%
+\nomenclature{$\mathbf{Y}(k)$}{system outputs from time 0 to time $k$}%
+\nomenclature{$\mathbf{Y}_M(k)$}{system output measurements from time 0 to time $k$}%
 \begin{equation} \label{eq:Uk_Yk}
 	\begin{aligned}
 		\mathbf{U}(k) = \left\{ \mathbf{u}(0), \mathbf{u}(1), ..., \mathbf{u}(k) \right\} \\
@@ -454,18 +470,18 @@ The known system inputs and output measurements up to time $k$ are
 	\end{aligned}
 \end{equation}
 
-Assume that new measurements are made available at each time instant. The probability of the shock hypothesis sequence associated with filter $f$ given the data up to time $k-1$ can be calculated recursively using
+Assume that new measurements are made available at each time $k$. The probability of the shock hypothesis sequences associated with each filter given the data up to time $k$ can be calculated recursively using the following equations. At time $k$, the probability of the shock hypothesis sequence associated with filter $f$ given the data up to time $k-1$ is
 \begin{multline} \label{eq:Pr_Gammak_given_Ykm1}
 	\Pr(\Gamma_f(k) \mid \mathbf{Y}_M(k-1)) = 
 	\Pr(\gamma_f(k) \mid \gamma_f(k-1)) \Pr(\Gamma_f(k-1) \mid \mathbf{Y}_M(k-1)).
 \end{multline}
 
-The conditional probability densities of the measurements, $\mathbf{y}_M(k)$, are approximated by Gaussian distributions centred on the output predictions and with the variance of the output prediction error, $\mathbf{S}_f(k)$,
+The conditional probability densities of the measurements, $\mathbf{y}_M(k)$, are approximated by Gaussian distributions centred on the output predictions, $\mathbf{\hat{y}}_{f}(k \mid k-1)$,  and with the variance of the output prediction error, $\mathbf{S}_f(k)$,
 \begin{equation} \label{eq:p_yk_given_Gammak_Ykm1}
 	p(\mathbf{y}_M(k) \mid \Gamma_f(k), \mathbf{Y}_M(k-1)) \approx \mathcal{N}\left(\mathbf{y}_M(k), \mathbf{\hat{y}}_{f}(k \mid k-1),	\mathbf{S}_f(k) \right)
 \end{equation}
 \nomenclature{$\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$}{multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and covariance $\Sigma$}%
-where $p(\cdot)$ here represents a probability density function and $\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$ is the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$. $\mathbf{\hat{y}}_{f}(k \mid k-1)$ and $\mathbf{S}_f(k)$ are calculated as $\mathbf{\hat{y}}(k \mid k-1)$ and $\mathbf{S}(k)$ were for a single Kalman filter using 
+where $p(\cdot)$ here represents a probability density function and $\mathcal{N}(\mathbf{y}, \mathbf{\mu}, \Sigma)$ denotes the multivariate normal probability density of $\mathbf{y}$ with mean $\mathbf{\mu}$ and variance $\Sigma$. $\mathbf{\hat{y}}_{f}(k \mid k-1)$ and $\mathbf{S}_f(k)$ are calculated as $\mathbf{\hat{y}}(k \mid k-1)$ and $\mathbf{S}(k)$ for a single Kalman filter, using 
 \begin{equation} \label{eq:yfk_pred}
 	\mathbf{\hat{y}}_{f}(k \mid k-1) = \mathbf{C}\mathbf{\hat{x}}_{f}(k \mid k-1)
 \end{equation}
@@ -476,7 +492,7 @@ and
 \end{equation}
 where $\mathbf{\hat{x}}_{f}(k \mid k-1)$ and $\mathbf{P}_f(k \mid k-1)$ are the state predictions and prediction error covariances of Kalman filter $f$ calculated in the previous time step.
 
-The estimate of the probability of the shock hypothesis sequence $\Gamma_f(k)$ given the data up to time $k$ is
+Finally, the estimate of the probability of shock hypothesis sequence $\Gamma_f(k)$ given the data up to time $k$ is
 \begin{equation} \label{eq:Pr_Gammak_given_Yk}
 	\Pr(\Gamma_f(k) \mid \mathbf{Y}_M(k)) = \frac{q_f(k)}{\sum_{f=1}^{n_h} q_f(k)},
 \end{equation}
@@ -485,16 +501,7 @@ where
 	q_f(k) = p(\mathbf{y}_M(k) \mid \Gamma_f(k), \mathbf{Y}_M(k-1)) \Pr(\Gamma_f(k) \mid \mathbf{Y}_M(k-1)).
 \end{equation}
 
-The Kalman filters for tracking each hypothesis use the state-space representation of the augmented system model (\ref{eq:ss_rep_xa}). 
-However, in the case of a system with a \gls{RODD}, the disturbance inputs include the non-Gaussian random variable, $\mathbf{w}_p(k)$, as well as the usual Gaussian disturbances on the rest of the states, $\mathbf{w}(k)$,
-\begin{equation} \label{eq:wak}
-	\mathbf{w}_a(k) = \begin{bmatrix}
-		\mathbf{w}(k) \\
-		\mathbf{w}_p(k)
-	\end{bmatrix}.
-\end{equation}
-
-The system is therefore a \textit{hybrid dynamical system} (refer to Section \ref{sec:lit-hybrid}) because it has a switching noise covariance matrix. Define the set of possible covariance matrices as
+The Kalman filters for tracking each hypothesis use the state-space representation of the augmented system model (\ref{eq:ss_rep_xa}). Since the system includes a \gls{RODD} with a switching noise variance, it is a \textit{hybrid dynamical system} (refer to Section \ref{sec:lit-hybrid}). Define the set of possible covariance matrices of this system as
 \begin{equation} \label{eq:init_Q_R}
 	\mathcal{Q} = \left\{\mathbf{Q}_0, \mathbf{Q}_1\right\},
 \end{equation}
@@ -507,7 +514,7 @@ and, for convenient notation, let $\mathcal{Q}$ be indexed by the shock indicato
 	\end{cases*}
 \end{equation}
 
-At the start of simulation, $f$ Kalman filters are initialized with initial state estimates, $\mathbf{\hat{x}}_f(0) = \mathbf{\hat{x}}_{f,0}$, and initial error covariance estimates $	\mathbf{P}_f(0) = \mathbf{P}_{f,0}$. At each time instant, starting at $k=0$, the correction gains are calculated as in the previous section (\ref{eq:Kk}),
+At the start of a simulation, $f$ Kalman filters are initialized with initial state estimates, $\mathbf{\hat{x}}_f(0) = \mathbf{\hat{x}}_{f,0}$, and initial error covariance estimates $	\mathbf{P}_f(0) = \mathbf{P}_{f,0}$. At each time instant, starting at $k=0$, the correction gains are calculated as in the previous section (\ref{eq:Kk}),
 \nomenclature{$\mathbf{K}_f(k)$}{correction gain (filtering form) of Kalman filter $f$}%
 \begin{equation} \label{eq:Kfk}
 	\mathbf{K}_f(k) = \mathbf{P}_f(k \mid k-1)\mathbf{C}^\intercal \mathbf{S}_f^{-1}(k).
@@ -637,11 +644,11 @@ Algorithm \ref{alg:afmm} shows the sequence of operations and flow control loops
 %\stepcounter{footnote}\footnotetext{At this point, the algorithm must extend the shock indicator sequences to the current time instant, while limiting the total number of hypotheses and filters according to a particular sub-optimal method such as the procedures described in section \ref{sec:pruning} and \ref{sec:fusion}.
 %\stepcounter{footnote}\footnotetext{The estimation error covariance is not required by the algorithm. It may be calculated if needed.}
 
-The multi-model observer concept can be used for state estimation of any MJLS (\ref{eq:MJLS}) with switching $\mathbf{A}$, $\mathbf{B}$, $\mathbf{C}$, $\mathbf{D}$, $\mathbf{w}_p(k)$, or $\mathbf{e}_p(k)$. However, the number of independently-switching components is severely limited in practice due to the number of hypotheses that would need to be simulated by the observer.
+The multiple-model observer concept can be used for state estimation of any MJLS (\ref{eq:MJLS}) with switching $\mathbf{A}$, $\mathbf{B}$, $\mathbf{C}$, $\mathbf{D}$, $\mathbf{w}_p(k)$, or $\mathbf{e}_p(k)$. However, the number of independently-switching components is severely limited in practice due to the number of hypotheses that would need to be simulated.
 
 \subsection{Sub-optimal algorithms} \label{sec:sub-opt}
 
-The problem that sub-optimal algorithms address is the inevitable growth in the number of hypotheses that would have to be modelled in an optimal multi-model observer. For a system with one \gls{RODD} disturbance, the number of possible hypotheses doubles each time step because each current hypothesis branches into two—one corresponding to the assumption of no shock in the next time period and the other to that of a shock. Figure \ref{fig:mm-obs-br} illustrates that after 3 time instants starting at $k=0$, eight hypotheses are needed to represent the possible shock sequences. For a system with two independent \gls{RODD} disturbances, the number would be 64.
+The problem that sub-optimal algorithms address is the inevitable growth in the number of hypotheses that would have to be modelled in an optimal multiple-model observer. For a system with one \gls{RODD} disturbance, the number of possible hypotheses doubles each time step because each current hypothesis branches into two—one corresponding to the assumption of no shock in the next time period and the other to that of a shock. Figure \ref{fig:mm-obs-br} illustrates that after 3 time instants starting at $k=0$, eight hypotheses are needed to represent the possible shock sequences. For a system with two independent \gls{RODD} disturbances, the number would be 64.
 
 \begin{figure}[ht]
 	\centering
@@ -654,8 +661,7 @@ The problem that sub-optimal algorithms address is the inevitable growth in the 
 
 One of the simplest sub-optimal multiple-model methods is the \textit{generalised pseudo-Bayesian algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, the method is described here because it is a starting point for understanding hypotheses branching and merging, which are techniques used in the sequence fusion algorithm described by \cite{robertson_detection_1995}.
 
-There are two basic versions of the algorithm, the \acrlong{GPB1} (\acrshort{GPB1}), and the \acrlong{GPB2} (\acrshort{GPB2}). Figure \ref{fig:mm-obs-gpb1} shows a simplified diagram of the \gls{GPB1} process in the case of a system with two modes ($n_j=2$). A single estimate of the system states and error covariance at time $k$ is branched into $n_j$ hypotheses representing the possible modes of the system at that time. In this context, \textit{branching} simply means duplicating or cloning the hypothesis state estimates and error covariance into $n_j$ copies. These are then used to initialise $n_j$ Kalman filters. Each Kalman filter then makes a prediction of the states in the next time instant using the system model associated with one of the possible modes. In the next time instant, the $n_j$ predictions are corrected using the measurements, and the updated estimates are merged into a single set of estimates. The final merged estimates at each time $k$ are calculated using the multi-model observer merging procedure described in the previous section (\ref{eq:xkyk_hat_MKF},\ref{eq:Pk_MKF}). These branching and merging steps are then repeated each subsequent time step.
-
+There are two basic versions of the algorithm, the \acrlong{GPB1} (\acrshort{GPB1}), and the \acrlong{GPB2} (\acrshort{GPB2}). Figure \ref{fig:mm-obs-gpb1} shows a simplified diagram of the \gls{GPB1} process in the case of a system with two modes ($n_j=2$). A single estimate of the system states and error covariance at time $k$ is branched into $n_j$ hypotheses representing the possible modes of the system at that time. In this context, \textit{branching} simply means duplicating or cloning the hypothesis state estimates and error covariance into $n_j$ copies. These are then used to initialise $n_j$ Kalman filters. Each Kalman filter then makes a prediction of the states in the next time instant using the system model associated with one of the possible modes. In the next time instant, the $n_j$ predictions are corrected using the measurements, and the updated estimates are merged into a single set of estimates using the multiple-model observer merging procedure defined by (\ref{eq:xkyk_hat_MKF}, \ref{eq:Pk_MKF}). These branching and merging steps are then repeated each subsequent time step.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/mm_obs_seq_gpb1.pdf}
@@ -745,7 +751,7 @@ Rather than allowing the number and length of the shock indicator hypothesis seq
 \begin{equation} \label{eq:Gamma_kmf_k}
 	\Gamma_m(k-N_f+1,k) = \{\gamma_m(k-N_f+1), ...,  \gamma_m(k-1), \gamma_m(k)\}, m=1,2,..., n_m.
 \end{equation}
-These fixed-length sequences are used to merge similar hypotheses so that the total number remains the same from one time step to the next.
+These fixed-length sequences are used to merge similar hypotheses so that the total number remains the same from one time instant to the next.
 
 Secondly, they assume that the exact timing of random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter increases due to the assumption of a shock occurrence ($\gamma_m(k)=1$), it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length $d$ samples is therefore higher than the probability, $\varepsilon$, of a single shock in one sample period, and is given by
 \nomenclature{$d$}{sequence fusion parameter: shock spacing or length of detection interval, in number of sampling intervals}
@@ -800,7 +806,7 @@ Consider again the sequences from the previous example in Figure \ref{fig:mm-obs
 	\label{fig:mm-obs-seq-sf95}
 \end{figure}
 
-Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_GPB2},\ref{eq:Hmerge_GPB2}), sequences of branching and merging indices are needed. In this example, they are
+Rather than constant branching and merging indices, as in GPB2 (\ref{eq:Hbranch_GPB2}, \ref{eq:Hmerge_GPB2}), sequences of branching and merging indices are needed. In this example, they are
 \begin{equation} \label{eq:Hbranch_SFex2}
 	\mathcal{H}_{\text{branch}} = \begin{Bmatrix}
 		\begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} &
@@ -890,17 +896,16 @@ As in the \gls{GPB2} algorithm, the overall estimates of the system states and o
 	\beta=\operatorname{Pr}\left(\sum_{i=1}^{n} \gamma(i d) \leq n_\text{max} \right) = \sum_{j=0}^{n_\text{max}} \binom{n}{j} \varepsilon_d^{n-j}(1-\varepsilon_d)^{j},
 \end{equation}
 \nomenclature{$\beta$}{sequence fusion paramter: total probability of the modelled hypotheses, or in the case of the \acrshort{BRW}, a parameter of the additive bias function $a(\cdot)$}%
-
 where $\binom{n}{j}$ represents the number of possible combinations of $j$ shocks in $n$ detection intervals. They recommended that the total probability should be at least 0.99 to ensure that only low-probability hypotheses are ignored.
 
 In a later journal paper, \cite{robertson_method_1998} described a variation to the sequence fusion algorithm described above.  Rather than assuming that the shock occurs in the first sample period of each detection interval, as shown in Figures \ref{fig:mm-obs-seq-SFex1} and \ref{fig:mm-obs-seq-SFex2}, they proposed to represent the possibility of a shock as a sequence of $d$ smaller shocks such that the total variance over the detection interval is the same as that of one shock. They claimed this improved the performance of the algorithm in their simulations.
 
 To implement this modification, define a new variable, $\delta(n)$, to represent whether or not at least one shock occurred during the $n$\textsuperscript{th} detection interval:
-
+\nomenclature{$\delta(n)$}{sequence fusion variable: indicator of whether one or more shocks occurred in detection interval $n$}
 \begin{equation} \label{eq:deltak}
 	\delta(n) = \begin{cases*}
-		0 & \text{if} $\sum_{k=(n-1) d}^{n d - 1}{\gamma_k} = 0$, \\
-		1 & \text{if} $\sum_{k=(n-1) d}^{n d - 1}{\gamma_k} \ge 1$.
+		0 & \text{if} $\sum_{k=(n-1) d}^{n d - 1}{\gamma(k)} = 0$, \\
+		1 & \text{if} $\sum_{k=(n-1) d}^{n d - 1}{\gamma(k)} \ge 1$.
 	\end{cases*}
 \end{equation}
 
@@ -926,7 +931,7 @@ Note the two main differences when compared to Figure \ref{fig:mm-obs-seq-sf95}.
 
 \subsubsection{Sequence pruning} \label{sec:pruning}
 
-\textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} \gls{AFMM}) algorithm by \cite{andersson_adaptive_1985} for \gls{RODD} estimation. The \gls{AFMM} uses sequence pruning to limit the number of hypotheses and filters. The current hypotheses at each time step are ranked according to their conditional probabilities (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of \gls{RODD} disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_h$.
+\textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} (\acrshort{AFMM}) algorithm by \cite{andersson_adaptive_1985} for \gls{RODD} estimation. The \gls{AFMM} uses sequence pruning to limit the number of hypotheses and filters. The current hypotheses at each time instant are ranked according to their conditional probabilities (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of \gls{RODD} disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_h$.
 
 The caveat mentioned above, is that no hypothesis may be eliminated less than $N_\text{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_h$ must be at least sufficient to accommodate the \textit{minimum life}, $N_\text{min}$, of all new hypotheses. Note that in the case of systems with more than one \gls{RODD} disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
 \nomenclature{$N_\text{min}$}{sequence pruning parameter: minimum life of a branched hypothesis in number of sampling intervals}%
@@ -943,7 +948,7 @@ The \gls{AFMM} algorithm includes a complementary procedure for online estimatio
 
 \subsubsection{Implementation details} \label{sec:implementation}
 
-The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flows of the sub-optimal multi-model observers, as implemented in this work. The solid black rectangles represent the computation steps and the white circles represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence pruning, merging and branching. During this step, the final estimates of the states and outputs are also calculated.
+The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flows of the sub-optimal multiple-model observers, as implemented in this work. The solid black rectangles represent the computation steps and the white circles represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence pruning, merging and branching. During this step, the final estimates of the states and outputs are also calculated.
 
 \begin{figure}[ht]
 	\centering
@@ -952,7 +957,7 @@ The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation ste
 	\label{fig:mkf-infoflow}
 \end{figure}
 
-At time $k$, the algorithm requires a mode indicator vector, $\gamma_k=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}_M(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma_k$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
+At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{bsmallmatrix} \gamma_1(k) & \cdots & \gamma_{n_h}(k) \end{bsmallmatrix}^\intercal$, the system output measurement, $\mathbf{y}_M(k)$, and input, $\mathbf{u}(k)$, and produces estimates of the states, $\hat{\mathbf{x}}(k \mid k)$, and outputs, $\hat{\mathbf{y}}(k \mid k)$. The mode indicator vector is either constant, as in the case of the \gls{GPB1} and \gls{GPB2} algorithms or is specified by the sub-optimal procedure at each time step. At the end of each time step, the mode indicator vector, conditional hypothesis probabilities, one-step-ahead state predictions, and the prediction error covariances for each hypothesis are stored for use in the next time step. The sub-optimal algorithm, which determines $\gamma(k)$ as well as the merging, pruning, and branching procedures in step 6, may have other variables that need to be stored. These are not shown on the diagram. The total number of hypotheses modelled, $n_h$, also depends on the algorithm, and may be time-varying.
 
 \section{System identification} \label{sec:sys-id}
 
@@ -1036,7 +1041,7 @@ For the purposes of this work, two ore feed streams with different \gls{PSD}s we
 	\label{fig:coarse_fine_psd_plot}
 \end{figure}
 
-The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The main process variable used in this work is the product P80 measurement, which is a simulated online analyser that estimates the 80\% passing size of the material leaving the circuit. In this work, the water addition rate to the mill inlet, the conveyor speed, the discharge pump speed, and the mill rotational speed are all fixed.
+The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The pump-box level has a \gls{PI} controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The main process variable used in this work is the product P80 measurement, which is a simulated online analyser that estimates the 80\% passing size of the material leaving the circuit. In this work, the water addition rate to the mill inlet, the conveyor speed, the discharge pump speed, and the mill rotational speed are all fixed.
 
 %The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The \acrshort{SAG} mill water addition set-point is set by ratio control to a fraction of the fresh ore feed rate, which is measured on the conveyor. This water addition ratio is also manipulated. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate set-point. The \acrshort{SAG} rotational speed set-point may also be manipulated.
 %
@@ -1127,12 +1132,10 @@ The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. 
 Various metrics are used in this work to evaluate the performance of the observers. Since a simulation model of the plant is used and the input disturbances are also simulated, the true values of the system inputs and outputs (i.e. without measurement errors) are available.
 
 The first metric is the \textit{\acrlong{RMSE}} (\acrshort{RMSE}) of the system output estimates, which is an indication of the magnitude of the differences between the estimates of an output signal, $\hat{Y}_i(N)=\left\{\hat{y}_i(1),\hat{y}_i(2), ..., \hat{y}_i(N)\right\}$, and its true values, $Y_i(N)=\left\{y_i(1),y_i(2), ..., y_i(N)\right\}$, (i.e. the output estimation errors),
-\nomenclature{$\hat{Y}_i(N)$}{estimates of system output $i$ from a simulation of length $N$ samples}%
-\nomenclature{$\hat{\mathbf{Y}}(N)$}{system output estimates from a simulation of length $N$ samples}%
-\nomenclature{$Y_{i}(N)$}{system output $i$ from a simulation of length $N$ samples}%
-\nomenclature{$\mathbf{Y}(N)$}{system outputs from a simulation of length $N$ samples}%
-\nomenclature{$Y_{M,i}(N)$}{measurements of system output $i$ from a simulation of length $N$ samples}%
-\nomenclature{$\mathbf{Y}_M(N)$}{system output measurements from a simulation of length $N$ samples}%
+\nomenclature{$\hat{Y}_i(k)$}{estimates of system output $i$ from time 0 to time $k$}%
+\nomenclature{$\hat{\mathbf{Y}}(k)$}{system output estimates from time 0 to time $k$}%
+\nomenclature{$Y_{i}(k)$}{system output $i$ from time 0 to time $k$}%
+\nomenclature{$Y_{M,i}(k)$}{measurements of system output $i$ from time 0 to time $k$}%
 \nomenclature{$\mathrm{RMSE}(\hat{Y},Y)$}{\acrlong{RMSE} of the output estimates, $\hat{Y}(N)$, from a simulation, compared to the true system outputs, $Y(N)$}%
 \nomenclature{$\mathrm{RMSE}(\hat{Y},Y_M)$}{\acrlong{RMSE} of the output estimates, $\hat{Y}(N)$, from a simulation, compared to the system output meaurements, $Y_M(N)$}%
 \begin{equation} \label{eq:rmse-calc-yest}

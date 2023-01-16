@@ -137,7 +137,7 @@ For the sequence pruning algorithm, the best combination of parameters, $n_h=46$
 
 \subsection{Pseudo-random numbers}
 
-Many of the simulation results are sensitive to the initialization of the \textit{pseudo-random number generator} (\gls{PRNG}) used to simulate random processes. For example, the \gls{RODD} step disturbance (\ref{eq:wpk2}) is simulated by generating three pseudo-random sequences---two random noise sequences and a random binary sequence. Since the random shocks are infrequent and tend to have a large magnitude, their effect on the simulation results can be significant.
+Many of the simulation results are sensitive to the initialization of the \gls{PRNG} used to simulate random processes. For example, the \gls{RODD} step disturbance (\ref{eq:wpk2}) is simulated by generating three pseudo-random sequences---two random noise sequences and a random binary sequence. Since the random shocks are infrequent and tend to have a large magnitude, their effect on the simulation results can be significant.
 
 To visualize this effect, consider the plot in Figure \ref{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}. This shows the \gls{RMSE} of the output estimates of the three Kalman filters described in Section \ref{sec:sim-obs-lin-1} for 10 simulations, each generated with a different \textit{seed}—the seed is a scalar argument used to initialize the \gls{PRNG} algorithm with a unique state. The \gls{RMSE} is calculated for every simulation duration, $N=0.5,1,1.5,...,2500$. The coloured areas represent the range between the lowest and the highest \gls{RMSE} obtained for the 10 different simulations of each duration. The dark lines represent the median values.
 

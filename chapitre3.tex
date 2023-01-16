@@ -57,7 +57,7 @@ The state-space model used to simulate the augmented system was
 		1 \\
 		0
 	\end{array}\right] u(k) + \mathbf{w}_{a}(k) \\
-	y(k) & =\left[\begin{array}{cc}
+	y_M(k) & =\left[\begin{array}{cc}
 	0.3 & 0
 \end{array}\right] \mathbf{x}_{a}(k) + v(k)
 \end{split}
@@ -150,6 +150,7 @@ To effectively evaluate and compare the performance of these observers, longer s
 \subsubsection{Tuning of Kalman filters} \label{sec:sim-obs-lin-1-KF-tuning}
 
 Standard Kalman filters were used to develop performance baselines with which to evaluate the sub-optimal multiple-model observers. The question of how to set the gain of a Kalman filter when there is a \gls{RODD} affecting the system is open to interpretation. One naive approach is to tune the Kalman filter using the variance of the persistent component of the disturbance, $\sigma_{w_p}^2$, if it is known. In this case, the Kalman filter, which is labelled `KF1', has a noise covariance matrix
+\nomenclature{$\mathbf{Q}_0$}{noise covariance matrix used in observer simulations}%
 \begin{equation} \label{eq:sim-sys-siso-KF1-Q}
 	\begin{aligned}
 		\mathbf{Q}_{\text{KF1}}=\mathbf{Q}_0=\begin{bmatrix}
@@ -161,9 +162,11 @@ Standard Kalman filters were used to develop performance baselines with which to
 	\end{bmatrix}
 	\end{aligned},
 \end{equation}
+\nomenclature{$\sigma_{x}^2$}{variance of the errors of the process model state(s)}
 where $\sigma_{x}^2$ is a parameter representing the variance of the errors of the process model state, $x(k)$. However, this leads to a filter with a slow response to shocks. The choice of $\sigma_{x}=0.1$ was somewhat arbitrary. In these simulations, the process is simulated by a model that is identical to the model used by the observers, so there is no model error in steady-state. However, in transient periods such as after a shock disturbance, and in real applications, errors between the observer model and the true states are expected.
 
 A second option is to tune a Kalman filter to the variance of the infrequent shocks, $b^2\sigma_{w_p}^2$.  In this case, the Kalman filter, labelled `KF2', has a state disturbance covariance
+\nomenclature{$\mathbf{Q}_1$}{noise covariance matrix used in observer simulations}%
 \begin{equation} \label{eq:sim-sys-siso-KF2-Q}
 	\begin{aligned}
 		\mathbf{Q}_{\text{KF2}}=\mathbf{Q}_1=\begin{bmatrix}
@@ -184,7 +187,8 @@ As explained by \cite{andersson_adaptive_1985} and \cite{robertson_detection_199
 	\caption{Tuning of Kalman filter KF3 – SISO system}
 	\label{fig:sim-sys-siso-KF3-tuning}
 \end{figure}
-Figure \ref{fig:sim-sys-siso-KF3-tuning} shows the results of these simulations, from which it can be seen that the lowest \gls{RMSE}s of the state estimates were achieved when the variance parameter $\sigma_{w_p}^2$ was close to $0.01$. Using this result, a third Kalman filter labelled `KF3' was designed with the state disturbance covariance matrix 
+Figure \ref{fig:sim-sys-siso-KF3-tuning} shows the results of these simulations, from which it can be seen that the lowest \gls{RMSE}s of the state estimates were achieved when the variance parameter $\sigma_{w_p}^2$ was close to $0.01$. Using this result, a third Kalman filter labelled `KF3' was designed with the state disturbance covariance matrix
+\nomenclature{$\mathbf{Q}_{\text{opt}}$}{noise covariance matrix used in the Kalman filter tuned to minimize overall \gls{RMSE} of the output estimates}%
 \begin{equation} \label{eq:sim-sys-siso-KF3-Q}
 	\begin{aligned}
 		\mathbf{Q}_{\text{KF3}}=\mathbf{Q}_{\text{opt}}=\begin{bmatrix}
@@ -476,10 +480,10 @@ where $s$ is the Laplace variable.  This model was chosen because the dynamics o
 			1 & 0.5 \\
 			0.5 & 1
 		\end{array}\right] \mathbf{u}(k) + \mathbf{w}_{a}(k) \\
-		y(k) & =\left[\begin{array}{cccc}
+		\mathbf{y}_M(k) & =\left[\begin{array}{cccc}
 			0.1110 & 0 & 0 & 0 \\
 			0 & 0.1110 & 0 & 0
-		\end{array}\right] \mathbf{x}_{a}(k) + v(k)
+		\end{array}\right] \mathbf{x}_{a}(k) + \mathbf{v}(k)
 	\end{split}
 \end{equation}
 where
@@ -688,7 +692,7 @@ The discrete-time state-space representation of the augmented model (including \
 		\mathbf{w}(k) \\
 		w_p(k) \\
 	\end{bmatrix}, \\
-	y(k) = 
+	y_M(k) = 
 	\begin{bmatrix}
 		-0.66214 & -0.96672 & 0 & 0 & 0 & 0 & 0 \\
 	\end{bmatrix} \mathbf{x}(k) + \mathbf{v}(k) \\
