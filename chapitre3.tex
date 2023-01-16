@@ -660,7 +660,10 @@ The Mathworks System Identification Toolbox™ was used to carry out the system 
 \begin{equation} \label{eq:grind1-id-model-ctf}
 	Y(s)= \frac{-32.4\exp(-0.2s)}{(1 + 0.106s)^2}U(s),
 \end{equation}
-where \gls{Ys} and \gls{Us} here, are the Laplace transforms of the continuous-time output and input signals.
+\nomenclature{$s$}{Laplace variable}%
+\nomenclature{$Y(s)$}{Laplace transform of the process output signal}%
+\nomenclature{$U(s)$}{Laplace transform of the process input signal}%
+where $Y(s)$ and $U(s)$ here, are the Laplace transforms of the continuous-time output and input signals.
 
 This model has a delay of 0.2 hours (i.e. 4 sample periods, or 12 minutes) and a settling time (to within $\pm5\%$ of steady-state) of approximately 42 minutes. The upper plot in Figure \ref{fig:grind1-sim_ioplots} also shows the predictions of this model, $y_{model}(k)$, compared to the true output, $y(k)$. Note that there is a visible mismatch between the predictions of the identified linear model and the outputs of the grinding process simulator.
 
@@ -811,8 +814,8 @@ Figure \ref{fig:grind1_rod_obs_est_MKF_SF1} shows the estimates of the sequence 
 \end{figure}
 Occasionally, rapid changes occur in the estimates of both observers even when there is no disturbance. This may be attributed to extreme values in the measurement noise which occurred at certain times.
 
-As in the previous experiments, longer simulations are needed to evaluate the observers. This was achieved using data from 10 simulations, similar to and including simulation number 6 but generated from unique pseudo-random initializations. These simulations were numbered 6 to 15 as shown in Table \ref{tb:grind1-sims}. In addition to the metrics defined in \ref{sec:evaluation}, two additional \gls{RMSE} metrics were devised for this experiment. Firstly, an \gls{RMSE} during \textit{transient periods} when the system was responding to a disturbance. Transient periods were defined as sample times occurring after a step change and before the end of the settling time of the process. The settling time of the process, \glsadd{tset95}\gls{tset95}, was defined as the longest time taken for the process to reach within $\pm5\%$ of a steady-state after a step change in the input. The longest settling time was found to be approximately 1.2 hours when the process was switching from ore mix \#2 to mix \#1. The second additional metric is the \gls{RMSE} during \textit{steady-state periods}, which were defined as sample times occurring more than 1.2 hours after one disturbance and before the next. 
-
+As in the previous experiments, longer simulations are needed to evaluate the observers. This was achieved using data from 10 simulations, similar to and including simulation number 6 but generated from unique pseudo-random initializations. These simulations were numbered 6 to 15 as shown in Table \ref{tb:grind1-sims}. In addition to the metrics defined in \ref{sec:evaluation}, two additional \gls{RMSE} metrics were devised for this experiment. Firstly, an \gls{RMSE} during \textit{transient periods} when the system was responding to a disturbance. Transient periods were defined as sample times occurring after a step change and before the end of the settling time of the process. The settling time of the process, $t_{\pm5\%}$, was defined as the longest time taken for the process to reach within $\pm5\%$ of a steady-state after a step change in the input. The longest settling time was found to be approximately 1.2 hours when the process was switching from ore mix \#2 to mix \#1. The second additional metric is the \gls{RMSE} during \textit{steady-state periods}, which were defined as sample times occurring more than 1.2 hours after one disturbance and before the next. 
+\nomenclature{$N_{\pm5\%}$}{settling time of the process to within $\pm5$ percent of steady-state in number of sampling intervals}%
 \begin{table}[ht]
 	\begin{center}
 		\caption{Observer performance evaluation metrics.} \label{tb:grind1-RMSE-results}
@@ -842,11 +845,11 @@ As in the previous experiments, longer simulations are needed to evaluate the ob
 			%			RMSD($\hat{\mathbf{Y}},\mathbf{Y}$) steady-state &0.62 & 0.43 & 0.45 & 0.43 & 0.17 \\
 			% See script rod_obs_calc_metrics.m
 			% 13-Dec-2022 09:56:07 results with system P2DcTd4, sigma_M = 5, tau_ss = 1.2
-			\gls{RMSEY} overall & 1.81 & 1.70 & 1.66 & 1.67 & 1.24 \\
-			\gls{RMSEY} transient & 2.69 & 2.95 & 2.83 & 2.93 & 2.04 \\
-			\gls{RMSEY} steady-state & 1.46 & 1.12 & 1.12 & 1.08 & 0.90 \\
-			Var($\hat{Y}$) steady-state & 1.61 & 0.66 & 0.70 & 0.58 & 0.25 \\
-			\gls{RMSD}($\hat{Y},Y$) steady-state &0.62 & 0.44 & 0.45 & 0.43 & 0.17 \\
+			$\mathrm{RMSE}(\hat{Y},Y)$ overall & 1.81 & 1.70 & 1.66 & 1.67 & 1.24 \\
+			$\mathrm{RMSE}(\hat{Y},Y)$ transient & 2.69 & 2.95 & 2.83 & 2.93 & 2.04 \\
+			$\mathrm{RMSE}(\hat{Y},Y)$ steady-state & 1.46 & 1.12 & 1.12 & 1.08 & 0.90 \\
+			$\mathrm{Var}(\hat{Y})$ steady-state & 1.61 & 0.66 & 0.70 & 0.58 & 0.25 \\
+			$\mathrm{RMSD}(\hat{Y})$ steady-state &0.62 & 0.44 & 0.45 & 0.43 & 0.17 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -862,11 +865,11 @@ Recall that the observers in this evaluation were selected using the overall \gl
 	\caption{RMSE trade-off comparison}
 	\label{fig:grind1-RMSE-scatter}
 \end{figure}
-The lines connecting the different Kalman filter tunings (`KF') give an indication of the \textit{Pareto front} of the performance of a Kalman filter. Any multiple-model result to the left or below the Pareto front of KF is an improvement since it has a lower \gls{RMSE} in transient or steady-state, or both. From this it can be seen that the best multiple-model observers are clearly a significant improvement over any KF tuning.
+The lines connecting the different \gls{KF} tunings give an indication of the \textit{Pareto front} of the performance of a Kalman filter. Any multiple-model result to the left or below the Pareto front of the \gls{KF} is an improvement since it has a lower \gls{RMSE} in transient or steady-state, or both. From this it can be seen that the best multiple-model observers are clearly a significant improvement over any \gls{KF} tuning.
 
-Figure \ref{fig:grind1-RMSE-scatter} also shows that the combined Pareto front of the performance of all observers switches from KF for low transient errors and high steady-state errors, to the multiple-model observers for low steady-state errors and higher transient errors. Thus, if low transient errors are more important than low steady-state errors, a Kalman filter is the best solution. However, at a certain point along the Pareto front, it becomes better to use a multiple-model observer and at this point, a significant drop in the steady-state error is achievable. Again, this suggests that multiple-model observers may be advantageous in applications where sensitivity to measurement noise is important and where the best transient performance is not essential. The plot also reveals that even lower steady-state errors can be achieved using sequence pruning observers with different parameter-settings. Some of these have steady-state \gls{RMSE}s up to 27\% lower than KF, although these settings result in high transient errors.
+Figure \ref{fig:grind1-RMSE-scatter} also shows that the combined Pareto front of the performance of all observers switches from \gls{KF} for low transient errors and high steady-state errors, to the multiple-model observers for low steady-state errors and higher transient errors. Thus, if low transient errors are more important than low steady-state errors, a Kalman filter is the best solution. However, at a certain point along the Pareto front, it becomes better to use a multiple-model observer and at this point, a significant drop in the steady-state error is achievable. Again, this suggests that multiple-model observers may be advantageous in applications where sensitivity to measurement noise is important and where the best transient performance is not essential. The plot also reveals that even lower steady-state errors can be achieved using sequence pruning observers with different parameter-settings. Some of these have steady-state \gls{RMSE}s up to 27\% lower than \gls{KF}, although these settings result in high transient errors.
 
-To provide further insight into the transient behaviour of one of the observers, 100 responses of the sequence fusion observer MKF-SF1 to step disturbances were selected from simulations 6 to 15. Step changes were selected only when the system was in steady-state with ore mix \#1 when a step change occurred to mix \#2 and the process subsequently reached steady-state. The response sequences were aligned by subtracting the step time, \glsadd{tstep}\gls{tstep}, from the times of each response. Then the mean, minimum, and maximum values of the observer output estimates were calculated at each sample time since the step change. The results are shown in Figure \ref{fig:sim_resp_plot_MKF_SF1} as a thick orange line representing the average of the 100 responses, and a pale orange area indicating the minima and maxima. Similar data for the Kalman filter, KF3, and the true system output are superimposed in the plot. This allows both the average (i.e. expected) observer response and the range of the variation that occurred, to be visualised and compared.
+To provide further insight into the transient behaviour of one of the observers, 100 responses of the sequence fusion observer MKF-SF1 to step disturbances were selected from simulations 6 to 15. Step changes were selected only when the system was in steady-state with ore mix \#1 when a step change occurred to mix \#2 and the process subsequently reached steady-state. The response sequences were aligned by subtracting the step time, $t_\text{step}$, from the times of each response.\nomenclature{$t_\text{step}$}{time when a step change in the ore feed occurred in the grinding process simulations} Then the mean, minimum, and maximum values of the observer output estimates were calculated at each sample time since the step change. The results are shown in Figure \ref{fig:sim_resp_plot_MKF_SF1} as a thick orange line representing the average of the 100 responses, and a pale orange area indicating the minima and maxima. Similar data for the Kalman filter, KF3, and the true system output are superimposed in the plot. This allows both the average (i.e. expected) observer response and the range of the variation that occurred, to be visualised and compared.
 %\begin{figure}[htp]
 %	\centering
 %	\includegraphics[width=12cm]{images/grind1_rod_obs_sim_resp_plot1_MKF_SF95.pdf}
@@ -896,7 +899,9 @@ Figure \ref{fig:sim_resp_plot2_MKF_SF1} is a similar plot produced in the same w
 Figures \ref{fig:sim_resp_plot_MKF_SF1} and \ref{fig:sim_resp_plot2_MKF_SF1} reveal a few interesting characteristics of the multiple-model observer. Firstly, the average response has a characteristic `S'-shape when compared to that of KF3. It is initially slightly slower to respond, then overtakes the response of KF3 and reaches the vicinity of the true system output significantly earlier. This can be explained by the bi-modal behaviour of the multiple-model observer, which is insensitive to noise most of the time but has a high correction gain once a shock is detected. However, the average response is not representative of individual responses. It can seen from the minimum and maximum values that during the transition period, the multiple-model observer exhibits high variation and often larger estimation errors than the Kalman filter. Around 1.5 hours after the shocks, the variation in the estimates of MKF--SF1 reduces to less than that of KF3.
 
 \subsection{Sensitivity analysis} \label{sec:grind1-sensitivity-analysis}
-Finally, an analysis was carried out to investigate the sensitivity of the observer performance to selected parameters. Firstly, the sensitivity of the overall \gls{RMSE}s to the process model parameters was analysed. The continuous-time linear process model identified from simulation data (\ref{eq:grind1-id-model-ctf}) was generalised by introducing two adjustable parameters, a static gain, \glsadd{Kp}\gls{Kp}, and a time constant, \glsadd{Tp1}\gls{Tp1},
+Finally, an analysis was carried out to investigate the sensitivity of the observer performance to selected parameters. Firstly, the sensitivity of the overall \gls{RMSE}s to the process model parameters was analysed. The continuous-time linear process model identified from simulation data (\ref{eq:grind1-id-model-ctf}) was generalised by introducing two adjustable parameters, a static gain, $K_p$, and a time constant, $T_{p,1}$,
+\nomenclature{$T_{p,1}$}{time constant of the process model used in sensitivity analysis}%
+\nomenclature{$K_p$}{gain of the process model used in sensitivity analysis}%
 \begin{equation} \label{eq:grind1-sens-model-ctf}
 	Y(s)= \frac{K_p \exp(-0.2s)}{(1 + T_{p,1})^2}U(s).
 \end{equation}
@@ -909,7 +914,7 @@ The process delay of 0.2 hours remained fixed. Each parameter was than adjusted 
 	\label{fig:grind1-obs-sim-sens-model-y-est}
 \end{figure}
 
-From these results, it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -5.2 to +11.3\% over the range of parameter values simulated. The highest errors occurred when the process gain, \gls{Kp} was doubled. The effect of changes in the time constant, \gls{Tp1}, was less significant.
+From these results, it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -5.2 to +11.3\% over the range of parameter values simulated. The highest errors occurred when the process gain, $K_p$ was doubled. The effect of changes in the time constant, $T_{p,1}$, was less significant.
 
 By comparing these variations to those of KF3, it can be seen that the multiple-model observers are less sensitive to the model parameters. The few cases where the changes in the performance of the multiple-model observers are larger, are all cases where the estimation errors were lower than the KF3, therefore better performance. Based on this, there does not appear to be a significant downside to the multiple-model observers when it comes to the accuracy of the process model. In fact, it shows that better overall estimation performance may have been possible with different parameter values.
 
@@ -951,7 +956,7 @@ In this section, the results presented in sections \ref{sec:sim-obs-lin} and \re
 
 \subsection{Observer parameters} \label{sec-disc-obs-params}
 
-By comparing the best observer parameter values selected for each of the three simulation experiments, it is possible to identify relations between certain parameters and relevant characteristics of the simulated systems. These correlations should align with intuitive expectations based on the design of the algorithms. Selected details of the three simulated systems are listed on the left of Table \ref{tb:param-summary-all-sims}, including the type of process model (linear or non-linear), the input-output dimensions of the process, the probability of the simulated shocks, $\varepsilon$, the \textit{signal-to-noise ratio} (SNR) (\ref{eq:SNR}) of the output measurements, and the settling time of the process in number of sampling intervals, $\gls{Nset95}=t_{\pm 5\%} / T_s$, where \gls{tset95} is the time taken for the process output, $y(k)$, to reach within $\pm5\%$ of the steady-state value. On the right of the table are the selected parameter values of the multiple-model observers.
+By comparing the best observer parameter values selected for each of the three simulation experiments, it is possible to identify relations between certain parameters and relevant characteristics of the simulated systems. These correlations should align with intuitive expectations based on the design of the algorithms. Selected details of the three simulated systems are listed on the left of Table \ref{tb:param-summary-all-sims}, including the type of process model (linear or non-linear), the input-output dimensions of the process, the probability of the simulated shocks, $\varepsilon$, the \textit{signal-to-noise ratio} (SNR) (\ref{eq:SNR}) of the output measurements, and the settling time of the process in number of sampling intervals, $N_{\pm5\%}=t_{\pm 5\%} / T_s$, where $t_{\pm5\%}$ is the time taken for the process output, $y(k)$, to reach within $\pm5\%$ of the steady-state value. On the right of the table are the selected parameter values of the multiple-model observers.
 \begin{table}[ht]
 	\begin{center}
 		\caption{Summary of experiments -- observer parameters} \label{tb:param-summary-all-sims}
@@ -971,7 +976,7 @@ By comparing the best observer parameter values selected for each of the three s
 			\multirow{2}{*}{Sec.}
 			& \multicolumn{5}{c|}{System}
 			& \multicolumn{3}{c}{Observer parameters} \\             
-			& Type & Dim. & $\varepsilon$ & \acrshort{SNR} & \gls{Nset95} & MKF--SF95 & MKF--SF1 & MKF-SP1 \\
+			& Type & Dim. & $\varepsilon$ & \acrshort{SNR} & $N_{\pm5\%}$ & MKF--SF95 & MKF--SF1 & MKF-SP1 \\
 			\hline
 			\ref{sec:sim-obs-lin-1} & linear & \gls{SISO} & 0.01 & 10 & 9 & 
 			$\begin{aligned} n_h & :8 \\ N_f & :5 \\ n_\text{max} & :1 \\ d & :1 \end{aligned}$  & 
@@ -1035,7 +1040,7 @@ The relative performance of the multiple-model observers compared to the best-tu
 			\multirow{2}{*}{Sec.}
 			& \multicolumn{5}{c|}{System}
 			& \multicolumn{3}{c}{\% difference in RMSEs vs. KF3} \\             
-			& Type & Dim. & $\varepsilon$ & \acrshort{SNR} & \gls{Nset95} & MKF--SF95 & MKF--SF1 & MKF-SP1 \\
+			& Type & Dim. & $\varepsilon$ & \acrshort{SNR} & $N_{\pm5\%}$ & MKF--SF95 & MKF--SF1 & MKF-SP1 \\
 			\hline
 			\ref{sec:sim-obs-lin-1} & linear & \gls{SISO}              & 0.01 & 10 & 9 & -35.7 & -35.5 & -36.1 \\
 			\ref{sec:sim-obs-lin-2} & linear & $2 \times 2$           & 0.01 & 5 & 26 & -21.2 & -21.2 & -18.4 \\ 

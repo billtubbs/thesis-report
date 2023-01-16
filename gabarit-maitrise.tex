@@ -71,6 +71,7 @@
 \newacronym{BRW}{BRW}{bounded random walk}
 \newacronym{HMM}{HMM}{hidden Markov model}
 \newacronym{RMSE}{RMSE}{root-mean-squared error}
+\newacronym{KF}{KF}{Kalman filter}
 \newacronym{MKF}{MKF}{multiple-model Kalman filter}
 \newacronym{SKF}{SKF}{scheduled Kalman filter (with pre-scheduled mode switching)}
 \newacronym{GPB}{GPB}{generalised pseudo-Bayesian}
@@ -152,14 +153,12 @@
 %	description={covariance of the measurement noises in the observer model}}
 %\newglossaryentry{E}{name={$\mathbb{E}\{\cdot\}$}, description={expectation operator}}
 %\newglossaryentry{wpkv}{name={$\mathbf{w}_p(k)$}, description={disturbance model noise inputs at time $k$}}
+
+% I don't think these need to be in glossary
 %\newglossaryentry{xak}{name={$\mathbf{x}_a(k)$}, description={augmented system states at time $k$}}
 %\newglossaryentry{Aa}{name={$\mathbf{A}_a$}, description={transition matrix of the augmented system model}}
 %\newglossaryentry{Ba}{name={$\mathbf{B}_a$}, description={input matrix of the augmented system model}}
 %\newglossaryentry{Ca}{name={$\mathbf{C}_a$}, description={output matrix of the augmented system model}}
-\newglossaryentry{RMSEY}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y)}, 
-	description={root-mean-squared error of the output estimates compared to the true system outputs}}
-\newglossaryentry{RMSEYM}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y_M)},
-	description={root-mean-squared error of the output estimates compared to the system output meaurements}}
 
 % Multiple model approaches
 %\newglossaryentry{nj}{name=\ensuremath{n_j}, description={number of modes or models of a switching system}}
@@ -171,18 +170,18 @@
 %\newglossaryentry{Gammafkmnk}{name=\ensuremath{\Gamma_m(k-N_f+1,k)}, 
 %	description={shock indicator hypotheses sequence $f$ over the fusion horizon}}
 %\newglossaryentry{nm}{name=\ensuremath{n_m}, description={number of merged hypotheses}}
-\newglossaryentry{Zmk}{name=\ensuremath{Z_m(k)}, 
-	description={normalization variable at time $k$ used in merged probability calculations}}
-\newglossaryentry{Hbranch}{name=\ensuremath{\mathcal{H}_{\text{branch}}}, 
-	description={hypothesis index used in branching operations}}
-\newglossaryentry{Hmerge}{name=\ensuremath{\mathcal{H}_{\text{merge}}}, 
-	description={hypothesis index used in merging operations}}
-\newglossaryentry{rmk}{name=\ensuremath{\mathbf{r}_m(k)}, 
-	description={indicator of the system modes of the merged hypotheses at time $k$ used in branching and merging operations}}
-\newglossaryentry{rb1k}{name=\ensuremath{\mathbf{r}_{b,1}(k)}, 
-	description={indicators of the system modes of the branched hypotheses at time $k$ before merging}}
-\newglossaryentry{rb2k}{name=\ensuremath{\mathbf{r}_{b,2}(k)}, 
-	description={indicators of the system modes of the branched hypotheses at time $k$ after branching}}
+%\newglossaryentry{Zmk}{name=\ensuremath{Z_m(k)}, 
+%	description={normalization variable at time $k$ used in merged probability calculations}}
+%\newglossaryentry{Hbranch}{name=\ensuremath{\mathcal{H}_{\text{branch}}}, 
+%	description={hypothesis index used in branching operations}}
+%\newglossaryentry{Hmerge}{name=\ensuremath{\mathcal{H}_{\text{merge}}}, 
+%	description={hypothesis index used in merging operations}}
+%\newglossaryentry{rmk}{name=\ensuremath{\mathbf{r}_m(k)}, 
+%	description={indicator of the system modes of the merged hypotheses at time $k$ used in branching and merging operations}}
+%\newglossaryentry{rb1k}{name=\ensuremath{\mathbf{r}_{b,1}(k)}, 
+%	description={indicators of the system modes of the branched hypotheses at time $k$ before merging}}
+%\newglossaryentry{rb2k}{name=\ensuremath{\mathbf{r}_{b,2}(k)}, 
+%	description={indicators of the system modes of the branched hypotheses at time $k$ after branching}}
 %\newglossaryentry{nf}{name=\ensuremath{N_f}, 
 %	description={sequence fusion parameter: length of fusion horizon in number of sampling intervals}}
 %\newglossaryentry{m}{name=\ensuremath{n_\text{max}}, 
@@ -199,29 +198,33 @@
 %	description={estimates of the system states at time $k$ for hypothesis $f$}}
 %\newglossaryentry{yfk_hat}{name={$\mathbf{\hat{y}}_f(k \mid k)$}, 
 %	description={estimates of the system outputs at time $k$ for hypothesis $f$}}
-\newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, 
-	description={state estimation error covariance at time $k$ for hypothesis $f$}}
-\newglossaryentry{Sfk}{name=\ensuremath{\mathbf{S}_f(k)}, 
-	description={covariance of the output prediction errors of Kalman filter $f$ at time $k$}}
-\newglossaryentry{Pfkp1_pred}{name={$\mathbf{P}_f(k+1 \mid k)$}, 
-	description={predictions of the state estimation error covariance of hypothesis $f$ at time $k+1$}}
-\newglossaryentry{Pfk_pred}{name={$\mathbf{P}_f(k \mid k-1)$}, 
-	description={predictions of the state estimation error covariance of filter $f$ at time $k$}}
-\newglossaryentry{xmk_hat}{name={$\mathbf{\hat{x}}_m(k \mid k)$}, 
-	description={merged estimates of the system states at time $k$ for merged hypothesis $m$}}
-\newglossaryentry{ymk_hat}{name={$\mathbf{\hat{y}}_m(k \mid k)$}, 
-	description={merged estimates of the system outputs at time $k$ for merged hypothesis $m$}}
-\newglossaryentry{Pmk}{name={$\mathbf{P}_m(k \mid k)$}, 
-	description={merged state estimation error covariance at time $k$ for merged hypothesis $m$}}
+%\newglossaryentry{Pfk}{name={$\mathbf{P}_f(k \mid k)$}, 
+%	description={state estimation error covariance at time $k$ for hypothesis $f$}}
+%\newglossaryentry{Sfk}{name=\ensuremath{\mathbf{S}_f(k)}, 
+%	description={covariance of the output prediction errors of Kalman filter $f$ at time $k$}}
+%\newglossaryentry{Pfkp1_pred}{name={$\mathbf{P}_f(k+1 \mid k)$}, 
+%	description={predictions of the state estimation error covariance of hypothesis $f$ at time $k+1$}}
+%\newglossaryentry{Pfk_pred}{name={$\mathbf{P}_f(k \mid k-1)$}, 
+%	description={predictions of the state estimation error covariance of filter $f$ at time $k$}}
+%\newglossaryentry{xmk_hat}{name={$\mathbf{\hat{x}}_m(k \mid k)$}, 
+%	description={merged estimates of the system states at time $k$ for merged hypothesis $m$}}
+%\newglossaryentry{ymk_hat}{name={$\mathbf{\hat{y}}_m(k \mid k)$}, 
+%	description={merged estimates of the system outputs at time $k$ for merged hypothesis $m$}}
+%\newglossaryentry{Pmk}{name={$\mathbf{P}_m(k \mid k)$}, 
+%	description={merged state estimation error covariance at time $k$ for merged hypothesis $m$}}
 
 % Simulations
-\newglossaryentry{tset95}{name=\ensuremath{t_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state}}
-\newglossaryentry{Nset95}{name=\ensuremath{N_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state, measured in number of sampling intervals}}
-\newglossaryentry{Tp1}{name=\ensuremath{T_{p,1}}, description={time constant of the process model used in sensitivity analysis}}
-\newglossaryentry{Kp}{name=\ensuremath{K_p}, description={gain of the process model used in sensitivity analysis}}
-\newglossaryentry{tstep}{name=\ensuremath{t_{step}}, description={time when a step change in the ore feed occurred in the grinding process simulations}}
-\newglossaryentry{Ys}{name=\ensuremath{Y(s)}, description={Laplace transform of the process output signal}}
-\newglossaryentry{Us}{name=\ensuremath{U(s)}, description={Laplace transform of the process input signal}}
+%\newglossaryentry{RMSEY}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y)}, 
+%	description={root-mean-squared error of the output estimates compared to the true system outputs}}
+%\newglossaryentry{RMSEYM}{name=\ensuremath{\mathrm{RMSE}(\hat{Y},Y_M)},
+%	description={root-mean-squared error of the output estimates compared to the system output meaurements}}
+%\newglossaryentry{tset95}{name=\ensuremath{t_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state}}
+%\newglossaryentry{Nset95}{name=\ensuremath{N_{\pm5\%}}, description={settling time of the process to within $\pm5\%$ of steady-state, measured in number of sampling intervals}}
+%\newglossaryentry{Tp1}{name=\ensuremath{T_{p,1}}, description={time constant of the process model used in sensitivity analysis}}
+%\newglossaryentry{Kp}{name=\ensuremath{K_p}, description={gain of the process model used in sensitivity analysis}}
+%\newglossaryentry{tstep}{name=\ensuremath{t_\text{step}}, description={time when a step change in the ore feed occurred in the grinding process simulations}}
+%\newglossaryentry{Ys}{name=\ensuremath{Y(s)}, description={Laplace transform of the process output signal}}
+%\newglossaryentry{Us}{name=\ensuremath{U(s)}, description={Laplace transform of the process input signal}}
 
 % Control - No longer used in this work
 %\newglossaryentry{Hp}{name={$H_p$}, description={MPC parameter : prediction horizon in number of sampling intervals}}
