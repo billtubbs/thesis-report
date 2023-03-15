@@ -918,9 +918,9 @@ The process delay of 0.2 hours remained fixed. Each parameter was than adjusted 
 	\label{fig:grind1-obs-sim-sens-model-y-est}
 \end{figure}
 
-From these results, it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -5.2 to +11.3\% over the range of parameter values simulated. The highest errors occurred when the process gain, $K_p$ was doubled. The effect of changes in the time constant, $T_{p,1}$, was less significant.
+From these results, it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by $-5.2$ to $+11.3$\% over the range of parameter values simulated. The highest errors occurred when the process gain, $K_p$ was doubled. The effect of changes in the time constant, $T_{p,1}$, was less significant.
 
-By comparing these variations to those of KF3, it can be seen that the multiple-model observers are less sensitive to the model parameters. The few cases where the changes in the performance of the multiple-model observers are larger, are all cases where the estimation errors were lower than the KF3, therefore better performance. Based on this, there does not appear to be a significant downside to the multiple-model observers when it comes to the accuracy of the process model. In fact, it shows that better overall estimation performance may have been possible with different parameter values.
+By comparing these variations to those of KF3, it can be seen that the multiple-model observers are less sensitive to \hl{errors in} the model parameters. The few cases where the changes in the performance of the multiple-model observers are larger, are all cases where the estimation errors were lower than the KF3, therefore better performance. Based on this, there does not appear to be a significant downside to the multiple-model observers when it comes to the accuracy of the process model. In fact, it shows that better overall estimation performance may have been possible with different parameter values.
 
 In the second part of this analysis, the sensitivity of the observer performance to the \gls{RODD} model parameters, $\sigma_{w_p}$ and $\varepsilon$, was investigated. The two parameters were adjusted in the same way as in the previous analysis and the changes in the overall \gls{RMSE}s calculated. The results are shown in Figure \ref{fig:grind1-obs-sim-sens-rod-y-est}. Note that the Kalman filter does not include a \gls{RODD} model and was therefore excluded. Instead, the sensitivity of the scheduled Kalman filter, \gls{SKF}, was included for comparison.
 \begin{figure}[htp]
@@ -929,7 +929,7 @@ In the second part of this analysis, the sensitivity of the observer performance
 	\caption{Percentage changes in RMSEs due to changes in \gls{RODD} parameters}
 	\label{fig:grind1-obs-sim-sens-rod-y-est}
 \end{figure}
-Note that the \gls{SKF} has the true shock sequence and therefore does not depend on $\varepsilon$. From these results it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by -0.8 to +5.8\% over the range of parameter values simulated. The highest errors occurred when both $\sigma_{w_p}$ and $\varepsilon$ were double their original values.
+Note that the \gls{SKF} has the true shock sequence and therefore does not depend on $\varepsilon$. From these results it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by $-0.8$ to $+5.8$\% over the range of parameter values simulated. The highest errors occurred when both $\sigma_{w_p}$ and $\varepsilon$ were double their original values.
 %\section{Grinding circuit control simulation} \label{sec:sim-ore-mimo-ctrl} 
 %
 %Outline notes:

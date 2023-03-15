@@ -43,7 +43,7 @@ w_p(k) \sim
 % Don't think this is necessary to define:
 %\nomenclature{$\sigma_{w_p}^2$}{variance of the persistent noise component of the random shock variable}%
 
-In this formulation, $\sigma_{w_p}$ represents the standard deviation of the noise in periods between random shocks and $b$ is typically large so that the magnitude of the shocks is many times greater than $\sigma_{w_p}$. One benefit of (\ref{eq:wpk2}) is that the distribution of $w_p(k)$ is conditionally Gaussian, whereas in (\ref{eq:wpk1}) it has a non-smooth (i.e. degenerate) probability density function.
+In this formulation, $\sigma_{w_p}$ represents the standard deviation of the \hl{persistent} noise in periods between random shocks and $b$ is typically large so that the magnitude of the shocks is many times greater than $\sigma_{w_p}$. One benefit of (\ref{eq:wpk2}) is that the distribution of $w_p(k)$ is conditionally Gaussian, whereas in (\ref{eq:wpk1}) it has a non-smooth (i.e. degenerate) probability density function.
 
 Figure \ref{fig:wpk-pdf} illustrates the probability density of $w_p(k)$ in the case of (\ref{eq:wpk2}) with $\sigma_{w_p}=0.01$, $b=100$, and $\varepsilon=0.01$. Although it is difficult to discern from the plot, this is a mixture distribution with two components. The component that generates the infrequent shocks is barely visible because of its low probability. In this example, 99 percent of the probability lies within a narrow range ($-0.036 < w_p(k) < 0.036$). However, the shocks, which occur with probability 0.01, have much higher amplitude ($b\sigma_{w_p}=1$).
 
@@ -125,7 +125,7 @@ where $\mathbf{w}_p(k)$ is a vector of two independent random shock signals gene
 
 \textit{Hidden Markov models} (\gls{HMM}) can be used to simulate a more diverse set of switching behaviours than those of the \gls{RODD} model described in the previous section \citep{wong_realistic_2009}. A Markov process or Markov chain is a stochastic model used to describe a sequence of discrete events for which the probability of future events depends only on the current state. A \gls{HMM} is a Markov model with states that are not fully observable (i.e. hidden or observed with a measurement error).
 
-To illustrate the basic concept, we can define the state of the random shock process (\ref{eq:wpk2}) as a Markov model with a state that has two possible values,
+To illustrate the basic concept, the state of the random shock process (\ref{eq:wpk2}) \hl{may be defined} as a Markov model with a state that has two possible values,
 \begin{equation} \label{eq:gamma-k}
 	\gamma(k) \in \{0,1\}.
 \end{equation}
@@ -347,12 +347,12 @@ The corrected error covariance may be calculated using
 given an initial covariance estimate at time zero, $\mathbf{P}(0 \mid -1)=\mathbf{P}_0$.%
 \nomenclature{$\mathbf{P}_0$}{Initial value of the state estimation error covariance at time 0}
 
-However, to reduce numerical errors due to rounding, the computation of $\mathbf{P}(k \mid k)$ is carried out in this work using the Joseph stabilized version of (\ref{eq:Pk})
+However, to reduce numerical errors due to rounding, the computation of $\mathbf{P}(k \mid k)$ is carried out in this work using the Joseph stabilized version of (\ref{eq:Pk}) {\citep{lewis_optimal_2008}
  \begin{equation} \label{eq:Pk-stab}
  	\mathbf{P}(k \mid k) = \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right ) \mathbf{P}(k \mid k-1) \left( \mathbf{I}_n - \mathbf{K}(k) \mathbf{C} \right )^\intercal + \mathbf{K}(k)  \mathbf{R} \mathbf{K}(k)^\intercal,
  \end{equation}
 \nomenclature{$\mathbf{I}_n$}{the identity matrix ($n \times n$)}%
-where $\mathbf{I}_n$ is the identity matrix (see \cite{lewis_optimal_2008}).
+where $\mathbf{I}_n$ is the identity matrix.
 
 The prediction of the error covariance at the next time instant is made using
 \nomenclature{$\mathbf{P}(k+1 \mid k)$}{predictions of the state estimation error covariance at time $k+1$ made with information available at time $k$}%
@@ -661,7 +661,7 @@ The problem that sub-optimal algorithms address is the inevitable growth in the 
 
 One of the simplest sub-optimal multiple-model methods is the \textit{generalised pseudo-Bayesian algorithm} \citep{buxbaum_recursive_1969, jaffer_estimation_1971, tugnait_detection_1982}. Although not used directly in this work, the method is described here because it is a starting point for understanding hypotheses branching and merging, which are techniques used in the sequence fusion algorithm described by \cite{robertson_detection_1995}.
 
-There are two basic versions of the algorithm, the \acrlong{GPB1} (\acrshort{GPB1}), and the \acrlong{GPB2} (\acrshort{GPB2}). Figure \ref{fig:mm-obs-gpb1} shows a simplified diagram of the \gls{GPB1} process in the case of a system with two modes ($n_j=2$). A single estimate of the system states and error covariance at time $k$ is branched into $n_j$ hypotheses representing the possible modes of the system at that time. In this context, \textit{branching} simply means duplicating or cloning the hypothesis state estimates and error covariance into $n_j$ copies. These are then used to initialise $n_j$ Kalman filters. Each Kalman filter then makes a prediction of the states in the next time instant using the system model associated with one of the possible modes. In the next time instant, the $n_j$ predictions are corrected using the measurements, and the updated estimates are merged into a single set of estimates using the multiple-model observer merging procedure defined by (\ref{eq:xkyk_hat_MKF}, \ref{eq:Pk_MKF}). These branching and merging steps are then repeated each subsequent time step.
+There are two basic versions of the algorithm, the \acrlong{GPB1} (\acrshort{GPB1}), and the \acrlong{GPB2} (\acrshort{GPB2}). Figure \ref{fig:mm-obs-gpb1} shows a simplified diagram of the \gls{GPB1} process in the case of a system with two modes ($n_j=2$). A single estimate of the system states and error covariance at time $k$ is branched into $n_j$ hypotheses representing the possible modes of the system at that time. In this context, \textit{branching} simply means duplicating or cloning the hypothesis state estimates and error covariance into $n_j$ copies. These are then used to initialise $n_j$ Kalman filters. Each Kalman filter then makes a prediction of the states in the next time instant using the system model associated with one of the possible modes. In the next time instant, the $n_j$ predictions are corrected using the measurements, and the updated estimates are merged into a single set of estimates using the multiple-model observer merging procedure defined by (\ref{eq:xkyk_hat_MKF}, \ref{eq:Pk_MKF}). These branching and merging steps are then repeated at each subsequent time step.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{images/mm_obs_seq_gpb1.pdf}
@@ -746,12 +746,12 @@ While the branching, modes, and merging steps of the \gls{GPB1} and \gls{GPB2} a
 \nomenclature{$N_f$}{sequence fusion parameter: length of fusion horizon in number of sampling intervals}%
 %The same techniques used in the generalized pseudo-Bayes algorithm are used to perform the sequence branching and merging at each time step. The differences are that more than $n_j^2$ hypotheses are maintained and these are based on longer, pre-specified sequences of possible shocks.
 
-Rather than allowing the number and length of the shock indicator hypothesis sequences, $\Gamma_f(k)$, to grow indefinitely, a fixed number of sequences of length $N_f$ sample periods are defined, consisting of only the current and the previous $N_f-1$ values of $\gamma(k)$
+Rather than allowing the number and length of the shock indicator hypothesis sequences, $\Gamma_f(k)$, to grow indefinitely, a fixed number of sequences of length $N_f$ sample periods are defined, each consisting of only the current and the previous $N_f-1$ values of \hl{$\gamma(k)$}
 \nomenclature{$\Gamma_m(k-N_f+1,k)$}{merged shock hypotheses $m$ at time $k$ for the fusion horizon $N_f$}%
 \begin{equation} \label{eq:Gamma_kmf_k}
 	\Gamma_m(k-N_f+1,k) = \{\gamma_m(k-N_f+1), ...,  \gamma_m(k-1), \gamma_m(k)\}, m=1,2,..., n_m.
 \end{equation}
-These fixed-length sequences are used to merge similar hypotheses so that the total number remains the same from one time instant to the next.
+These fixed-length sequences are used to merge similar hypotheses so that the total number, $n_m$, remains the same from one time instant to the next.
 
 Secondly, they assume that the exact timing of random shocks is not important and define \textit{detection intervals} of more than one sample period during which it is assumed that only one shock may occur. This is based on the observation that when the correction gain of a Kalman filter increases due to the assumption of a shock occurrence ($\gamma_m(k)=1$), it tends to remain large for several sample periods. The probability of at least one random shock during a detection interval of length $d$ samples is therefore higher than the probability, $\varepsilon$, of a single shock in one sample period, and is given by
 \nomenclature{$d$}{sequence fusion parameter: shock spacing or length of detection interval, in number of sampling intervals}
@@ -933,7 +933,7 @@ Note the two main differences when compared to Figure \ref{fig:mm-obs-seq-sf95}.
 
 \textit{Sequence pruning} is the selective deletion of shock hypotheses that have a low likelihood given the current measurements. \cite{eriksson_classification_1996} used the \textit{adaptive forgetting through multiple models} (\acrshort{AFMM}) algorithm by \cite{andersson_adaptive_1985} for \gls{RODD} estimation. The \gls{AFMM} uses sequence pruning to limit the number of hypotheses and filters. The current hypotheses at each time instant are ranked according to their conditional probabilities (\ref{eq:Pr_Gammak_given_Yk}). The hypothesis with the lowest probability is then pruned with the caveat explained below. The most probable hypothesis is allowed to branch but all other hypotheses are advanced assuming no shock occurs in the next time period (i.e. all but one of their branches are pruned). This makes sense in the case of \gls{RODD} disturbances because the probability of a shock is low. Thus, the total number of hypotheses and filters is capped at a fixed number, $n_h$.
 
-The caveat mentioned above, is that no hypothesis may be eliminated less than $N_\text{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_h$ must be at least sufficient to accommodate the \textit{minimum life}, $N_\text{min}$, of all new hypotheses. Note that in the case of systems with more than one \gls{RODD} disturbance, the number of branches of the most likely sequence is more than two, therefore a larger number of sequences will be pruned at each sample time.
+The caveat mentioned above, is that no hypothesis may be eliminated less than $N_\text{min}$ time steps after being created. This is to prevent good hypotheses from being eliminated before the conditional probabilities have been properly estimated, which can take more than one sample period. For this reason, $n_h$ must be at least sufficient to accommodate the \textit{minimum life}, $N_\text{min}$, of all new hypotheses. Note that in the case of systems with more than one \gls{RODD} disturbance, the number of branches of the most likely sequence is more than two, \hl{and the same number} of sequences will be pruned at each sample time.
 \nomenclature{$N_\text{min}$}{sequence pruning parameter: minimum life of a branched hypothesis in number of sampling intervals}%
 
 To illustrate the sequence pruning procedure, consider the diagram in Figure \ref{fig:mm-obs-seq-SP}. This shows one possible evolution of the hypothesis sequences in response to an actual shock sequence consisting of one shock at time $k=4$.  The most likely hypotheses at each time instant, identified by the circles with thicker outlines, branch into two at the next time instant. After the limit of five hypotheses is reached, one hypothesis is pruned at each sample time and replaced by a new branched hypothesis at the next. Note that at time $k=6$, hypothesis 2 becomes the most likely based on the available measurements at that time. Also note that no new branches are terminated in less than two sample times.
@@ -948,7 +948,7 @@ The \gls{AFMM} algorithm includes a complementary procedure for online estimatio
 
 \subsubsection{Implementation details} \label{sec:implementation}
 
-The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flows of the sub-optimal multiple-model observers, as implemented in this work. The solid black rectangles represent the computation steps and the white circles represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence pruning, merging and branching. During this step, the final estimates of the states and outputs are also calculated.
+The diagram in Figure \ref{fig:mkf-infoflow} depicts the general computation steps and information flows of the sub-optimal multiple-model observers, as implemented in this work. The solid black rectangles represent computation steps and the \hl{coloured lines} represent the main variables. Steps 1 and 2 are the prediction steps of the Kalman filters (\ref{eq:xfkp1_hat}, \ref{eq:yfk_pred}), step 3 is the calculation of the prior probabilities of the hypotheses (\ref{eq:Pr_Gammak_given_Ykm1}), step 4 is the hypotheses evaluation step (\ref{eq:Pr_Gammak_given_Yk}, \ref{eq:qfk}), and step 5 is the Kalman filter update step (\ref{eq:xfkyfk_hat}, \ref{eq:Pkf-stab}). Step 6 is a place-holder for the sub-optimal procedures which depend on the specific algorithm but in this work include some combination of sequence branching, pruning, and merging. During this step, the final estimates of the states and outputs are also calculated.
 
 \begin{figure}[ht]
 	\centering
@@ -962,7 +962,7 @@ At time $k$, the algorithm requires a mode indicator vector, $\gamma(k)=\begin{b
 \section{System identification} \label{sec:sys-id}
 
 % Some text not used in IFAC report
-Model-based observers such as the Kalman filter require a dynamic model of the process. In practice, models of the process dynamics are not available but they can be identified when input-output data sampled from the process is available. In this case, system identification methods are common practice and described by \cite{ljung_system_1999} among others.
+Model-based observers such as the Kalman filter require a dynamic model of the process. In practice, models of the process dynamics are not available but they can be identified when input-output data sampled from the process is available. In this case, system identification methods are common practice, as described by \cite{ljung_system_1999} among others.
 
 To construct a multiple-model observer for systems with \gls{RODD}s, the structure and parameters of the disturbance model as well as the process model are needed. \gls{RODD}s are discrete-time \acrlong{MJLS} (\acrshort{MJLS}) \citep{costa_discrete-time_2005}. Standard approaches to system identification such as least-squares regression are not applicable to hybrid dynamical systems with both discrete and continuous states. Identification of these types of systems is challenging and the subject of ongoing research. See for example, \cite{piga_estimation_2020}.
 
@@ -1026,7 +1026,7 @@ To construct a multiple-model observer for systems with \gls{RODD}s, the structu
 
 A dynamic simulation model of the primary grinding circuit of a gold mine in Quebec is used to simulate the effects of changes in ore feed properties on the grinding circuit over time. The model was developed by \cite{perez_garcia_dynamic_2020} following the methodology described by \cite{grimble_dynamic_2010} and was calibrated to match operating data collected from the plant \citep{perez-garcia_systematic_2020}. Grinding in the \acrshort{SAG} mill is simulated by a \textit{population balance model} with 24 discrete ore particle size intervals and constant specific-energy selection rates (i.e. breakage rates are proportional to total energy consumption) and a constant breakage matrix.
 
-Figure \ref{fig:sag-diag} is a simplified diagram of the simulated \acrshort{SAG} mill in a closed circuit consisting of a feed conveyor, pump box, pump, and a bank of hydro-cyclones.
+Figure \ref{fig:sag-diag} is a simplified diagram of the simulated \acrshort{SAG} mill, which is in a closed circuit consisting of a feed conveyor, pump box, pump, and a bank of hydro-cyclones.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=12.5cm]{images/sag-circuit-diag.pdf}
@@ -1041,7 +1041,7 @@ For the purposes of this work, two ore feed streams with different \gls{PSD}s we
 	\label{fig:coarse_fine_psd_plot}
 \end{figure}
 
-The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The pump-box level has a \gls{PI} controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The main process variable used in this work is the product P80 measurement, which is a simulated online analyser that estimates the 80\% passing size of the material leaving the circuit. In this work, the water addition rate to the mill inlet, the conveyor speed, the discharge pump speed, and the mill rotational speed are all fixed.
+The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. \hl{The setpoint of the water addition flowrate to the mill inlet (`water addition 1') is set to a fixed ratio of the ore feed rate.} The pump-box \hl{(`tank')} has a \gls{PI} controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point (`water addition 2'). The main process variable used in this work is the product P80 measurement, which is a simulated online analyser that estimates the 80\% passing size of the material \hl{in the slurry} leaving the circuit. In this work, the inlet water addition ratio, the conveyor speed, the discharge pump speed, and the mill rotational speed are all fixed.
 
 %The simulated instrumentation is also illustrated in Figure \ref{fig:sag-diag}. The \acrshort{SAG} mill water addition set-point is set by ratio control to a fraction of the fresh ore feed rate, which is measured on the conveyor. This water addition ratio is also manipulated. The pump-box level has a PI (proportional-integral) controller to control the level to a fixed set-point by manipulating the water addition flow rate set-point. The discharge pump speed is fixed. Conveyor speed is adjusted automatically in response to the fresh ore feed rate set-point. The \acrshort{SAG} rotational speed set-point may also be manipulated.
 %
@@ -1149,7 +1149,7 @@ Similarly, the \gls{RMSE} of the estimates of an unmeasured input disturbance si
 	\RMSE(\hat{P}_i(N),P_i(N)) = \sqrt{\frac{1}{N}\sum_{k=1}^{N}{(\hat{p}_i(k)-p_i(k))^2}}.
 \end{equation}
  
-As well as the overall \gls{RMSE}, two additional metrics are used to evaluate observer performance on systems with \gls{RODD}s. The \gls{RMSE} \textit{in transition}, which is the \gls{RMSE} during a period after a random shock, is used to evaluate the response of an observer to infrequent, abrupt disturbances. The transition period is defined as the samples occurring within $t_{\pm5\%}$ hours of the disturbance arriving at the input to the process, where $t_{\pm5\%}$ is the \textit{settling time}, defined as the time taken for the process outputs to converge to within $\pm5\%$ of the final steady-state values. The \gls{RMSE} \textit{in steady-state} is defined as the samples occurring more than $t_{\pm5\%}$ hours after a disturbance and before the next one occurs.
+As well as the overall \gls{RMSE}, two additional metrics are used to evaluate observer performance on systems with \gls{RODD}s. The \gls{RMSE} \textit{in transition}, which is the \gls{RMSE} during a period after a random shock, is used to evaluate the response of an observer to infrequent, abrupt disturbances. The transition period is defined as the samples occurring within $t_{\pm5\%}$ hours of the disturbance arriving at the input to the process, where $t_{\pm5\%}$ is the \textit{settling time} \hl{of the process}, defined as the time taken for the outputs to converge to within $\pm5\%$ of the final steady-state values. The \gls{RMSE} \textit{in steady-state} is defined as the samples occurring more than $t_{\pm5\%}$ hours after a disturbance and before the next one occurs.
 \nomenclature{$t_{\pm5\%}$}{settling time of the process to within $\pm5$ percent of steady-state}%
 
 The fourth metric is the \textit{\acrlong{RMSD}} (\acrshort{RMSD}) in the estimates,
@@ -1162,7 +1162,17 @@ The fourth metric is the \textit{\acrlong{RMSD}} (\acrshort{RMSD}) in the estima
 
 This is a measure of the magnitude of high frequency changes in the estimates, which is an indication of the sensitivity of an observer to measurement noise.
 
-To simplify notation in the rest of this report, the argument $N$, indicating the length of the time series, is not always shown. Thus, $\textrm{RMSE}(\hat{Y}_i(N),Y_i(N))$ may be denoted $\textrm{RMSE}(\hat{Y}_i,Y_i)$. The capitalization of $Y$ indicates that it is a time series. Also, for \gls{SISO} systems, the subscript $i$ is redundant and dropped. Thus, $\textrm{RMSE}(\hat{Y},Y)$ is the \gls{RMSE} of the output of a system with only one output variable. However, $\textrm{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$ is used for a system with more than one output. The assumption is that this is the \gls{RMSE} averaged over all output signals, $Y_i(N)$ for $i=1, ..., n_y$.
+\hl{A fifth metric is used in the case of the grinding simulator experiments, the variance of the estimates during steady-state periods. This is similar to the {\gls{RMSE}} in that it gives an indication of the sensitivity of the estimates to measurement noise.}
+% Variance calc - only used in grinding model simulations
+\begin{equation} \label{eq:var-calc}
+	\begin{aligned}
+		\newcommand{\Var}{\textrm{Var}} 
+		\Var(\hat{y}(k)) = \frac{1}{N}\sum_{k=1}^{N}{(\hat{y}(k)-\mu_y)^2} \\
+		\mu_y = \frac{1}{N}\sum_{k=1}^{N}{\hat{y}(k)}
+	\end{aligned}
+\end{equation}
+
+To simplify notation, the argument $N$, indicating the length of the time series, is not always shown. Thus, $\textrm{RMSE}(\hat{Y}_i(N),Y_i(N))$ may be denoted $\textrm{RMSE}(\hat{Y}_i,Y_i)$. The capitalization of $Y$ indicates that it is a time series. Also, for \gls{SISO} systems, the subscript $i$ is redundant and dropped. Thus, $\textrm{RMSE}(\hat{Y},Y)$ is the \gls{RMSE} of the output of a system with only one output variable. However, $\textrm{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$ is used for a system with more than one output. The assumption is that this is the \gls{RMSE} averaged over all output signals, $Y_i(N)$ for $i=1, ..., n_y$.
 % Removed since not doing control simulations.
 %To evaluate the potential benefits of the observers in process control applications, simulations were carried out with an observer, a simulated controller, and the simulated process in closed-loop. In these cases, the \gls{RMSE}s of the control variables, $y_i(k)$, compared to a set of reference values, $R_i(N)$, is calculated to evaluate the performance of the control system,
 %\begin{equation} \label{eq:rmse-calc-y}
@@ -1178,11 +1188,4 @@ To simplify notation in the rest of this report, the argument $N$, indicating th
 
 Because the processes simulated in this work are stochastic, it is important to evaluate state estimators over sufficiently long simulation time periods to ensure that the results are close to the true average performance and are independent of the specific pseudo-random inputs generated for each simulation. This is particularly important when evaluating systems with \gls{RODD}s because the shocks occur infrequently. As an added precaution, identical random inputs are used when comparing the performance of two or more observers on the same system.
 
-% Variance calc - not used
-%\begin{equation} \label{eq:var-calc}
-%\begin{aligned}
-%	\newcommand{\Var}{\textrm{Var}} 
-%	\Var(\hat{y}(k)) = \frac{1}{N}\sum_{k=1}^{N}{(\hat{y}(k)-\mu_y)^2} \\
-%	\mu_y = \frac{1}{N}\sum_{k=1}^{N}{\hat{y}(k)}
-%\end{aligned}
-%\end{equation}
+\hljb{In this chapter, the main methods and notation used in this work were introduced. The main disturbance model considered is the {\gls{RODD}} model ({\ref{eq:RODD}}), however, two additional disturbance models were presented, a more general switching model based on the HMM ({\ref{eq:MJLS}}) and the {\gls{BRW}} ({\ref{eq:brw}}). The standard Kalman filter (filtering form) was introduced, along with the multiple-model Kalman filter for estimation of switching systems. The two main sub-optimal algorithms used for {\gls{RODD}} estimation are a sequence fusion algorithm} {\citep{robertson_detection_1995, robertson_method_1998}} \hljb{(two versions of it), and a sequence pruning algorithm} {\citep{eriksson_classification_1996}}, \hljb{with implementation details. The grinding simulation model used to simulate a realistic grinding circuit was also introduced. Finally, the metrics used to evaluate the performance of observers were defined. The next chapter describes a series of simulations carried out to evaluate these observers.}

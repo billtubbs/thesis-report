@@ -38,7 +38,14 @@
 \usepackage{hyperref}
 \usepackage{mfirstuc}  % needed when you want to capitalize first letter in a glossary description
 
- % \usepackage{easyReview}  % Only used for highlighting edits - REMOVE IN FINAL DRAFT
+% Only used for highlighting edits - REMOVE IN FINAL
+\usepackage{soul}
+%usepackage{color}
+\DeclareRobustCommand{\hljb}[1]{{\sethlcolor{green}\hl{#1}}}
+\DeclareRobustCommand{\hlad}[1]{{\sethlcolor{cyan}\hl{#1}}}
+%\DeclareRobustCommand{\hlep}[1]{{\sethlcolor{orange}\hl{#1}}}
+%\DeclareRobustCommand{\hlmm}[1]{{\sethlcolor{magenta}\hl{#1}}}
+ % \usepackage{easyReview}   DRAFT
 
 % See glossaries.tex file
 \input{glossaries}
