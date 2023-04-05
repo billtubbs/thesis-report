@@ -308,7 +308,7 @@ In the filtering form, which is used in this work, the estimated states and outp
 \end{equation}
 \nomenclature{$\hat{\mathbf{x}}(k \mid k-1)$}{predictions of system model states at time $k$ made with information available at time $k-1$}%
 \nomenclature{$\mathbf{K}(k)$}{correction gain of the Kalman filter (filtering form)}%
-where $\mathbf{K}(k)$ $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain. Instead of (\ref{eq:xkp1_hat_p}), the predictions of the states at the next time instant are calculated using
+where $\mathbf{K}(k)$ $\in \mathbb{R}^{n \times n_y}$ is a (possibly time-varying) correction gain. Instead of \eqref{eq:xkp1_hat_p}, the predictions of the states at the next time instant are calculated using
 \nomenclature{$\hat{\mathbf{x}}(k+1 \mid k)$}{predictions of system modelstates at time $k+1$ made with information available at time $k$}%
 \nomenclature{$\hat{\mathbf{x}}(k \mid k)$}{estimates of system model states at time $k$ made with information available at time $k$}%
 \nomenclature{$\hat{\mathbf{y}}(k \mid k)$}{estimates of system outputs at time $k$ made with information available at time $k$}%
@@ -366,6 +366,8 @@ where $\mathbf{Q}(k)$ is the time-varying covariance of the process disturbances
 \end{equation}
 
 Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations at each time instant. 
+\nomenclature{$\mathcal{Q}$}{set of process noise covariance matrices of a switching system model}%
+This is for the case with only the covariance, $\mathbf{Q}(k)$, switching according to the shock indicator, $\gamma(k)$, (\ref{eq:init_Q}). It can easily be extended to simulate other switching model components, such as $\mathbf{R}(k)$, $\mathbf{A}(k)$, $\mathbf{B}(k)$, or $\mathbf{C}(k)$ as defined in (\ref{eq:ss_rep_uwy}). \hl{An alternative to the representation used in this work would be to implement the switching of the random shock {\eqref{eq:wpk2}} using a time-varying input matrix, $\mathbf{B}(k)$, instead of the time-varying prediction error covariance, $\mathbf{Q}(k)$ in {\eqref{eq:Pkp1}}. Both methods are valid and equivalent.}
 \begin{algorithm}
 	\caption{Kalman filter update}\label{alg:kf}
 	%\algorithmfootnote{$y_0$ denotes the initial value.}
@@ -380,8 +382,8 @@ Algorithm \ref{alg:kf} defines the sequence of the Kalman filter calculations at
 		\State calculate $\mathbf{P}(k+1 \mid k)$ (\ref{eq:Pkp1})
 	\end{algorithmic}
 \end{algorithm}
-\nomenclature{$\mathcal{Q}$}{set of process noise covariance matrices of a switching system model}%
-This algorithm is for the case with only the covariance, $\mathbf{Q}(k)$, switching according to the shock indicator, $\gamma(k)$, (\ref{eq:init_Q}). It can easily be extended to simulate other switching model components, such as $\mathbf{R}(k)$, $\mathbf{A}(k)$, $\mathbf{B}(k)$, or $\mathbf{C}(k)$ as defined in (\ref{eq:ss_rep_uwy}). Also note that in a control application, the manipulated input, $\mathbf{u}(k)$, is computed by the control algorithm. This may be done before the Kalman filter calculations in algorithm \ref{alg:kf} if the prior prediction of the states in the current time instant, $\hat{\mathbf{x}}(k \mid k-1)$, is used. Alternatively, slightly better control performance might be achieved if the control algorithm uses the updated (a-posteriori) state estimates, $\hat{\mathbf{x}}(k \mid k)$. In the latter case, the Kalman filter calculations must be interrupted to compute the control action after the state correction step (\ref{eq:xkyk_hat}) and prior to the prediction step (\ref{eq:xkp1_hat}), when $\mathbf{u}(k)$ is needed.
+
+Also note that in a control application, the manipulated input, $\mathbf{u}(k)$, is computed by the control algorithm. This may be done before the Kalman filter calculations in algorithm \ref{alg:kf} if the prior prediction of the states in the current time instant, $\hat{\mathbf{x}}(k \mid k-1)$, is used. Alternatively, slightly better control performance might be achieved if the control algorithm uses the updated (a-posteriori) state estimates, $\hat{\mathbf{x}}(k \mid k)$. In the latter case, the Kalman filter calculations must be interrupted to compute the control action after the state correction step (\ref{eq:xkyk_hat}) and prior to the prediction step (\ref{eq:xkp1_hat}), when $\mathbf{u}(k)$ is needed.
 
 \begin{figure}[ht]
 	\centering
