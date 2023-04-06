@@ -38,7 +38,7 @@ Therefore the process noise covariance matrix of KF3 was
 
 \section{Tuning of MKF observers for MIMO linear system} \label{sec:annex-sim-2-MKF-tuning}
 
- In the case of the sequence fusion algorithm, the candidate parameter values were chosen from the same sets as those used for the \gls{SISO} system (\ref{eq:sim-sys-siso-MKF-SF-param-values}). Again, only observers with 200 hypotheses or less and a total hypothesis probability, $\beta$, greater than 0.85 were tested. For the selection of the sequence pruning algorithm parameters, the possible number of hypotheses was increased to 200 since it was expected to require more hypothesis sequences in the \gls{MIMO} experiment. The candidate values for the sequence pruning parameters were
+ In the case of the sequence fusion algorithm, the candidate parameter values were chosen from the same sets as those used for the \gls{SISO} system \eqref{eq:sim-sys-siso-MKF-SF-param-values}. Again, only observers with 200 hypotheses or less and a total hypothesis probability, $\beta$, greater than 0.85 were tested. For the selection of the sequence pruning algorithm parameters, the possible number of hypotheses was increased to 200 since it was expected to require more hypothesis sequences in the \gls{MIMO} experiment. The candidate values for the sequence pruning parameters were
 \begin{equation} \label{eq:sim-sys-mimo-MKF-SP-param-values}
 	\begin{aligned}
 		n_h &\in \left\{ 24, 46, 68, 90, 112, 134, 156, 178, 200 \right\},  \\
@@ -46,7 +46,7 @@ Therefore the process noise covariance matrix of KF3 was
 	\end{aligned}
 \end{equation}
 
-As in the \gls{SISO} experiment, the resulting observers were simulated on a set of 5000 input-output samples from the simulated process (\ref{eq:sim-sys-mimo-ct}), and the \gls{RMSE}s calculated. Tables \ref{tb:obs-sim2-popt-SF95}, \ref{tb:obs-sim2-popt-SF98}, and \ref{tb:obs-sim2-popt-SP} show the results of the 10 best combinations of parameter values for the two sequence fusion algorithms (1995 and 1998 versions), and the sequence pruning algorithm.
+As in the \gls{SISO} experiment, the resulting observers were simulated on a set of 5000 input-output samples from the simulated process \eqref{eq:sim-sys-mimo-ct}, and the \gls{RMSE}s calculated. Tables \ref{tb:obs-sim2-popt-SF95}, \ref{tb:obs-sim2-popt-SF98}, and \ref{tb:obs-sim2-popt-SP} show the results of the 10 best combinations of parameter values for the two sequence fusion algorithms (1995 and 1998 versions), and the sequence pruning algorithm.
 \begin{table}[hb]
 	\begin{center}
 		\caption{Multi-model observer parameter search results – MKF--SF95.} \label{tb:obs-sim2-popt-SF95}
@@ -137,7 +137,7 @@ For the sequence pruning algorithm, the best combination of parameters, $n_h=46$
 
 \subsection{Pseudo-random numbers}
 
-Many of the simulation results are sensitive to the initialization of the \gls{PRNG} used to simulate random processes. For example, the \gls{RODD} step disturbance (\ref{eq:wpk2}) is simulated by generating three pseudo-random sequences---two random noise sequences and a random binary sequence. Since the random shocks are infrequent and tend to have a large magnitude, their effect on the simulation results can be significant.
+Many of the simulation results are sensitive to the initialization of the \gls{PRNG} used to simulate random processes. For example, the \gls{RODD} step disturbance \eqref{eq:wpk2} is simulated by generating three pseudo-random sequences---two random noise sequences and a random binary sequence. Since the random shocks are infrequent and tend to have a large magnitude, their effect on the simulation results can be significant.
 
 To visualize this effect, consider the plot in Figure \ref{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}. This shows the \gls{RMSE} of the output estimates of the three Kalman filters described in Section \ref{sec:sim-obs-lin-1} for 10 simulations, each generated with a different \textit{seed}—the seed is a scalar argument used to initialize the \gls{PRNG} algorithm with a unique state. The \gls{RMSE} is calculated for every simulation duration, $N=0.5,1,1.5,...,2500$. The coloured areas represent the range between the lowest and the highest \gls{RMSE} obtained for the 10 different simulations of each duration. The dark lines represent the median values.
 
