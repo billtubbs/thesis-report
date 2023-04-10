@@ -113,7 +113,13 @@ There is limited available data on actual ore variability in real operations, es
 
 Liu also estimated the optimal mill speeds to process each ore and found that these ranged from 57\% to 65\% of critical speed. At these speeds, mill power consumption ranged from 7306 to 9511 kW (a variation of -11\% to +15\% of the average). These results provide insight into the relationship between two important ore properties and grinding process conditions. However, it is unclear how generalisable these results are to other operations.
 
-\cite{steyn_investigating_2018} obtained data from online image-based particle size analysers on the conveyor belts feeding the primary grinding mills at two sites in South Africa. They present two time-series plots of these data, each of 24-hours duration. These provide an insight into the nature of the variations in particle size in these operations. The two samples exhibit different levels of high frequency variations (noise) as well as other characteristics such as ramps and abrupt step-changes. In one of the samples, the magnitude of the noise changes abruptly at one point.
+\cite{steyn_investigating_2018} obtained data from online image-based particle size analysers on the conveyor belts feeding the primary grinding mills at two sites in South Africa. They present two time-series plots of these data, each of 24-hours duration. \hlad{For convenience, these have been approximately reproduced in Figure {\ref{fig:ind-data-tsplots}}. These data provide an insight into the nature of the variations in particle size in these operations. The two samples exhibit abrupt step-changes, ramps and other switching behaviour such as changes in the level of high frequency variations (noise).}%
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=13cm]{images/tsdata-steyn-figs.pdf}
+	\caption{\hlad{Samples from online particle size analysers.}}
+	\label{fig:ind-data-tsplots}
+\end{figure}
 
 Recent innovations in ore hardness testing methods and equipment are starting to shed light on the nature of ore hardness variations in real operations, although current methods still involve manual sampling and testing activities, which limits the frequency of measurements and makes them cost-prohibitive for ongoing monitoring \citep{kojovic_value_2019}.
 
@@ -170,7 +176,7 @@ In both multiple-model observer approaches by \cite{eriksson_classification_1996
 
 Robertson and Lee published a second paper a few years later \citep{robertson_method_1998}. In this paper they reference \cite{andersson_adaptive_1985} on the topic of multiple-model algorithms.  However, the approach and sub-optimal method used is very similar to that in their 1995 paper, except that a modification was made to the random shock variance parameter, which is applied at every update during the detection interval rather than only once. They also used slightly different terminology, dropping the term randomly-occurring deterministic disturbances in favour of \textit{infrequently-occurring abrupt disturbances}.
 
-Simulation results using a different system were presented, a three-state non-linear model of a heptane to toluene aromatization process, along with sum-of-squared estimation errors, averaged over 50 different simulations, which makes it easier to compare the observer performance. The results show that their sub-optimal observer approach did 35\% better than either a single \gls{EKF} or the standard \gls{GPB} algorithm. This was attributed to the fact that their observer has a horizon of 90 minutes (using 22 filters), whereas the standard \gls{GPB} algorithm has a horizon of only 2 minutes (using 16 filters), which is not enough to detect the shock occurrences.
+Simulation results using a different system were presented, a three-state non-linear model of a heptane to toluene aromatization process, along with sum-of-squared estimation errors, averaged over 50 different simulations, which makes it easier to compare the observer performance. \hlad{The process was subjected to two independent RODD step disturbances of two process parameters (the reaction rate coefficient and a heat transfer coefficient). The results show that the sum of the squared errors of the parameter estimates was 35\% lower with the sub-optimal observer than with either} a single \gls{EKF} or the standard \gls{GPB} algorithm. This was attributed to the fact that their observer has a horizon of 90 minutes (using 22 filters), whereas the standard \gls{GPB} algorithm has a horizon of only 2 minutes (using 16 filters), which is not enough to detect the shock occurrences.
 
 \subsection{Disturbance modelling using hidden Markov models} \label{sec:lit-hmm}
 \label{hidden_markov_models}
