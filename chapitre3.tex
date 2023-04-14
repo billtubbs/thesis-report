@@ -960,7 +960,11 @@ In this section, the results presented in sections \ref{sec:sim-obs-lin} and \re
 
 \subsection{Observer parameters} \label{sec-disc-obs-params}
 
-By comparing the best observer parameter values selected for each of the three simulation experiments, it is possible to identify relations between certain parameters and relevant characteristics of the simulated systems. These correlations should align with intuitive expectations based on the design of the algorithms. Selected details of the three simulated systems are listed on the left of Table \ref{tb:param-summary-all-sims}, including the type of process model (linear or non-linear), the input-output dimensions of the process, the probability of the simulated shocks, $\varepsilon$, the \textit{signal-to-noise ratio} (SNR) \eqref{eq:SNR} of the output measurements, and the settling time of the process in number of sampling intervals, $N_{\pm5\%}=t_{\pm 5\%} / T_s$, where $t_{\pm5\%}$ is the time taken for the process output, $y(k)$, to reach within $\pm5\%$ of the steady-state value. On the right of the table are the selected parameter values of the multiple-model observers.
+By comparing the best observer parameter values selected for each of the three simulation experiments, it is possible to identify relations between certain parameters and relevant characteristics of the simulated systems. These correlations should align with intuitive expectations based on the design of the algorithms. Selected details of the three simulated systems are listed on the left of Table \ref{tb:param-summary-all-sims}, including the type of process model (linear or non-linear), the input-output dimensions of the process, the probability of the simulated shocks, $\varepsilon$, the \textit{signal-to-noise ratio} \hlep{(SNR) of} the output measurements, and the settling time of the process in number of sampling intervals, $N_{\pm5\%}=t_{\pm 5\%} / T_s$, where $t_{\pm5\%}$ is the time taken for the process output, $y(k)$, to reach within $\pm5\%$ of the steady-state value. \hlep{The signal-to-noise ratio is defined} 
+\begin{equation} \label{eq:SNR}
+	\text{SNR}_i=\frac{\max{Y_i(N)}-\min{Y_i(N)}}{\sigma_M}.
+\end{equation}%
+Selected parameter values of the multiple-model observers \hl{are included on the right} of the table.
 \begin{table}[ht]
 	\begin{center}
 		\caption{Summary of experiments -- observer parameters} \label{tb:param-summary-all-sims}
@@ -1000,11 +1004,6 @@ By comparing the best observer parameter values selected for each of the three s
 		\end{tabular}
 	\end{center}
 \end{table}
-
-The signal-to-noise ratio is defined
-\begin{equation} \label{eq:SNR}
-	\text{SNR}_i=\frac{\max{Y_i(N)}-\min{Y_i(N)}}{\sigma_M}.
-\end{equation}
 
 By comparing the number of hypotheses required by each observer, $n_h$, it is clear that the $2 \times 2$ (\gls{MIMO}) system simulations in Section \ref{sec:sim-obs-lin-2} required a significantly higher number than the \gls{SISO} system simulations. This makes sense since the number of possible shock combinations is an order of magnitude higher with two independent \gls{RODD}s than it is with one.
 
