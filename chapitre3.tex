@@ -1,5 +1,5 @@
 % !TEX encoding = UTF-8 Unicode
-\chapter{Simulation results}  \label{chap-simulation}
+\chapter{Simulation results} \label{chap-simulation}
 %
 This chapter describes numerical simulations carried out to demonstrate and evaluate the disturbance models and observer designs described in Chapter \ref{chap-methods}. Section \ref{sec:sim-RODDs} presents a few simulated examples of different \gls{RODD}s. Section \ref{sec:sim-obs-lin} describes experiments to evaluate the multiple-model observers in estimating the states of two simulated systems, a \acrlong{SISO} (\acrshort{SISO}) linear system with one \gls{RODD} step disturbance, and a 2-input, 2-output linear system with two \gls{RODD} step disturbances. Section \ref{sec:sim-ore-SISO} describes an experiment to evaluate the observer performance on the simulated grinding circuit model with one output variable and a step disturbance in the ore feed mix. %\textcolor{red}{Section \ref{sec:sim-ore-mimo-ctrl} describes an experiment to evaluate the observers in a multi-variable feedback control scenario with the simulated grinding circuit model.}
 
@@ -508,12 +508,12 @@ The two random shocks were simulated with the same parameters as those in the \g
 Figure \ref{fig:rod-obs-sim-2-ioplot} shows the first 300 input-output samples from a simulation of the system with a total duration of 5000. The lower of the two plots shows the input signals, $u_1(k)$, $u_2(k)$, $p_1(k)$, and $p_2(k)$. In this simulation, there were no changes to the known input variables. The upper plot shows the simulated output measurements, $y_1(k)$ and $y_2(k)$. No input disturbances other than $w_{p,1}(k)$ and $w_{p,2}(k)$ were simulated (i.e. $w_1(k)=w_2(k)=0$).
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_ioplot.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_ioplot.pdf}
 	\caption{Simulation of linear MIMO system with two \gls{RODD}s}
 	\label{fig:rod-obs-sim-2-ioplot}
 \end{figure}
 
-As in the previous experiment, a standard Kalman filter was tuned experimentally to achieve a low \gls{RMSE} of the output estimates. The details of this tuning process are included in Annex \ref{sec:annex-sim-2-KF-tuning} including the resulting value of $\mathbf{Q}_{\text{KF3}}$ \eqref{eq:sim-sys-sim3-KF3-Q}.
+As in the previous experiment, a standard Kalman filter was tuned experimentally to achieve a low \gls{RMSE} of the output estimates. The details of this tuning process are included in Annex \ref{sec:annex-sim-2-KF-tuning} including the resulting value of $\mathbf{Q}_{\text{KF3}}$ \eqref{eq:sim-sys-sim2-KF3-Q}.
 
 
 \subsubsection{Selection of multiple-model observer parameters} \label{sec:sim-obs-lin-2-MKF-tuning}
@@ -536,11 +536,11 @@ Parameter values for the sub-optimal multiple-model observers were chosen by a s
 			& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$
 			& $\left[\begin{smallmatrix}0.2^2 & 0 \\ 0 & 0.2^2\end{smallmatrix}\right]$ \\
 			$\mathbf{P}(0)$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ & $\mathbf{P}_0$ \\
-			$n_h$ & 1 & 116 & 58 & 46 \\
+			$n_h$ & 1 & 116 & 58 & \hl{61} \\
 			$N_f$ & - & 15 & 15 & - \\
 			$n_\text{max}$ & - & 2 & 2 & - \\
 			$d$ & - & 3 & 5 & - \\
-			$N_\text{min}$ & - & - & - & 21 \\
+			$N_\text{min}$ & - & - & - & \hl{29} \\
 			$\varepsilon$ & - & $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$
 			& $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$ 
 			& $\begin{bsmallmatrix}0.01 & 0.01\end{bsmallmatrix}^\intercal$ \\
@@ -560,7 +560,7 @@ Parameter values for the sub-optimal multiple-model observers were chosen by a s
 Figure \ref{fig:rod-obs-sim2-yest-1-SF} shows the estimates of both sequence fusion observers (MKF--SF95 and MKF--SF1) compared to the scheduled Kalman Filter (\acrshort{SKF}) over the first 300 time steps of the simulation. The upper two plots show the estimates of outputs 1 and 2 compared to the true system outputs. The lower two plots show the estimates of states 3 and 4, which correspond to the input disturbances. The largest errors occur in the periods following the shocks. At these times, the estimates of MKF--SF95 and MKF--SF1 lag those of the \gls{SKF}. At other times, the estimates of all three observers are quite similar. There is no noticeable difference between MKF--SF95 and MKF--SF1.
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_y_est1_SF95_SF1.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est1_SF95_SF1.pdf}
 	\caption{Estimates by sequence fusion observer –  $2\times2$ system}
 	\label{fig:rod-obs-sim2-yest-1-SF}
 \end{figure}
@@ -568,7 +568,7 @@ Figure \ref{fig:rod-obs-sim2-yest-1-SF} shows the estimates of both sequence fus
 Figure \ref{fig:rod-obs-sim2-yest-1-SP} shows the estimates of the sequence pruning observer (MKF--SP) compared to the scheduled Kalman Filter on the same simulation data. The behaviour is similar to that of the sequence fusion observers, matching the \gls{SKF} during periods between shocks and lagging it in the periods immediately after.
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_y_est1_SP1.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_y_est1_SP1.pdf}
 	\caption{Estimates by sequence pruning observer –  $2\times2$ system}
 	\label{fig:rod-obs-sim2-yest-1-SP}
 \end{figure}
@@ -582,12 +582,12 @@ Figure \ref{fig:rod-obs-sim2-yest-1-SP} shows the estimates of the sequence prun
 Figure \ref{fig:sim-sys-sim2-MKF-cumerr} shows the squared output estimation errors and the cumulative squared-errors of the five observers over the full simulation. This reveals that on average, the sequence fusion observers (MKF--SF95 and MKF--SF1) perform better than the sequence pruning observer. The cumulative errors of all the multiple-model observers are significantly lower than those of KF3 by the end of the simulation, but not as close to those of the \gls{SKF} as they were in the SISO system simulation. This may be attributed to the delays in detecting the shocks in this simulation.
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=13cm]{images/rod_obs_sim3_all_seed_cum_err_y2.pdf}
+	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_cum_err_y2.pdf}
 	\caption{Cumulative sum of squared errors of output estimates –  $2\times2$ system}
 	\label{fig:sim-sys-sim2-MKF-cumerr}
 \end{figure}
 
-% Replaced with above single plot to save space
+% Replaced below plots with above single plot to save space
 %\begin{figure}[htp]
 %	\centering
 %	\includegraphics[width=13cm]{images/rod_obs_sim2_cum_err2.pdf}
@@ -603,7 +603,7 @@ Figure \ref{fig:sim-sys-sim2-MKF-cumerr} shows the squared output estimation err
 As in the \gls{SISO} case, 10 simulations were carried out with different random initializations to check the sensitivity of the results. Figure \ref{fig:rod-obs-sim2-yest-all-seed-RMSE-box} shows the variation in the \gls{RMSE}s. This confirms that the performance of the three multiple-model observers is quite similar but MKF--SF95 and MKF--SF1 achieve a slightly lower error on average.
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=12cm]{images/rod_obs_sim3_all_seed_y_err_box.pdf}
+	\includegraphics[width=12cm]{images/rod_obs_sim2_all_seed_y_err_box.pdf}
 	\caption{Root-mean-squared errors of output estimates – $2\times2$ system}
 	\label{fig:rod-obs-sim2-yest-all-seed-RMSE-box}
 \end{figure}
@@ -994,7 +994,7 @@ Selected parameter values of the multiple-model observers \hl{are included on th
 			\ref{sec:sim-obs-lin-2}  &  linear & $2 \times 2$ & 0.01 & 5  & 26  &
 			$\begin{aligned} n_h & :116 \\ N_f & :15 \\ n_\text{max} & :2 \\ d & :3 \end{aligned}$  & 
 			$\begin{aligned} n_h & :58 \\ N_f & :18 \\ n_\text{max} & :2 \\ d & :5 \end{aligned}$  & 
-			$\begin{aligned} n_h & :46 \\ N_\text{min} & :21 \end{aligned}$ \\
+			\hl{$\begin{aligned} n_h & :61 \\ N_\text{min} & :{29} \end{aligned}$} \\
 			\hline
 			\ref{sec:sim-ore-SISO}  &  non-linear  &  \gls{SISO}  &  0.01  &  1.9  &  24 &
 			$\begin{aligned} n_h & :34 \\ N_f & :60 \\ n_\text{max} & :2 \\ d & :10 \end{aligned}$ & 
