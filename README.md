@@ -1,3 +1,8 @@
+Latex code and images for masters thesis report:
+ - Tubbs, W. J., Multiple-Model Observers for Detecting Ore Feed Disturbances in Grinding Operations, Mémoire, final draft, May, 2023.
+
+This was constructed using the ulthese latex package described below.
+
 # Package ulthese
 
 The package provides a class based on memoir and compatible with LaTeX
