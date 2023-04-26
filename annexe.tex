@@ -50,13 +50,13 @@ Therefore the process noise covariance matrix of KF3 was
 As in the \gls{SISO} experiment, the resulting observers were simulated on a set of 5000 input-output samples from the simulated process \eqref{eq:sim-sys-mimo-ct}, and the \gls{RMSE}s calculated. Tables \ref{tb:obs-sim2-popt-SF95}, \ref{tb:obs-sim2-popt-SF98}, and \ref{tb:obs-sim2-popt-SP} show the results of the 10 best combinations of parameter values for the two sequence fusion algorithms (1995 and 1998 versions), and the sequence pruning algorithm.
 \begin{table}[hb]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF--SF95.} \label{tb:obs-sim2-popt-SF95}
+		\caption{Observer parameter search results, $2\times2$ linear system, MKF--SF95.} \label{tb:obs-sim2-popt-SF95}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
 			$N_f$ & $n_\text{max}$ & $d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$  \\
 			\hline
-			% See script rod_obs_sim3_MKF_SF95_popt_table.m
-			% 05-Dec-2022 00:14:39 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
+			% See script rod_obs_sim2_MKF_SF95_popt_table.m
+			% 25-Apr-2023 17:50:36 results with seed = 0, sigma_M = [0.2 0.2], d_min = 1
 			15 &   2 &   3 & 116 & 0.9973 & 0.0736 \\
 			10 &   2 &   2 & 116 & 0.9991 & 0.0740 \\
 			10 &   1 &   1 &  27 & 0.9841 & 0.0744 \\
@@ -74,7 +74,7 @@ As in the \gls{SISO} experiment, the resulting observers were simulated on a set
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF--SF98.} \label{tb:obs-sim2-popt-SF98}
+		\caption{Observer parameter search results, $2\times2$ linear system, MKF--SF98.} \label{tb:obs-sim2-popt-SF98}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
 			$N_f$ & $n_\text{max}$ & $d$ & $n_h$ & $\beta$ & $\operatorname{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$  \\
@@ -95,11 +95,11 @@ As in the \gls{SISO} experiment, the resulting observers were simulated on a set
 		\end{tabular}
 	\end{center}
 \end{table}
-In the case of the 1995 version of the sequence fusion algorithm, the lowest RMSEs were achieved with a fusion horizon, $N_f$, in the range 9 to 25 and a detection interval, $d$, in the range 1 to 5. Recall that for the SISO system no detection interval was needed ($d=1$). Based on these results, a sequence fusion observer labelled `MKF--SF95' was simulated with the parameters  $N_f=15$, $n_\text{max}=2$, and $d=3$. This requires 116 hypotheses and filters, although it should be noted that some other combinations with less hypotheses also performed well. For the 1998 version of the sequence fusion algorithm, the best fusion horizons range from 9 to 30, and the detection intervals range from 3 to 10. An observer labelled `MKF--SF1' was chosen with the parameters $N_f=15$, $n_\text{max}=2$, and $d=5$, which requires 58 hypotheses and filters.
+In the case of the 1995 version of the sequence fusion algorithm, the lowest \gls{RMSE}s were achieved with a fusion horizon, $N_f$, in the range 9 to 25 and a detection interval, $d$, in the range 1 to 5. Recall that for the \gls{SISO} system no detection interval was needed ($d=1$). Based on these results, a sequence fusion observer labelled `MKF--SF95' was simulated with the parameters  $N_f=15$, $n_\text{max}=2$, and $d=3$. This requires 116 hypotheses and filters, although it should be noted that some other combinations with less hypotheses also performed well. For the 1998 version of the sequence fusion algorithm, the best fusion horizons range from 9 to 30, and the detection intervals range from 3 to 10. An observer labelled `MKF--SF1' was chosen with the parameters $N_f=15$, $n_\text{max}=2$, and $d=5$, which requires 58 hypotheses and filters.
 
 \begin{table}[hb]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF--SP.} \label{tb:obs-sim2-popt-SP}
+		\caption{Observer parameter search results, $2\times2$ linear system, MKF--SP.} \label{tb:obs-sim2-popt-SP}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
 			$n_h$ & $N_\text{min}$ & $\operatorname{RMSE}(\hat{\mathbf{Y}},\mathbf{Y})$  \\
@@ -120,10 +120,10 @@ In the case of the 1995 version of the sequence fusion algorithm, the lowest RMS
 		\end{tabular}
 	\end{center}
 \end{table}
-\hl{For the sequence pruning algorithm, the best combination of parameters, $n_h=61$ and $N_\text{min}=29$, was chosen}. A summary of all the parameter values used in the MIMO simulations is included in Table \ref{tb:obs-params-sim2} in the main body of the report.
+\hl{For the sequence pruning algorithm, the best combination of parameters, $n_h=61$ and $N_\text{min}=29$, was chosen}. A summary of all the parameter values used in the \gls{MIMO} simulations is included in Table \ref{tb:obs-params-sim2} in the main body of the report.
 
 
-\section{Sensitivity to Random initialization} \label{sec:random-init}
+\section{Sensitivity to random initialization} \label{sec:random-init}
 
 \subsection{Pseudo-random numbers}
 
@@ -134,7 +134,7 @@ To visualize this effect, consider the plot in Figure \ref{fig:rod-obs-sim-1-3KF
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_obs_sim1_3KF_seed_crmse_statsplot.png}  % use png here
-	\caption{Effect of random variables on the \gls{RMSE} results.}
+	\caption{Effect of random variables on the \acrshort{RMSE} results.}
 	\label{fig:rod-obs-sim-1-3KF-seed-crmse-statsplot}
 \end{figure}  %TODO: This needs updating because simulations are old.  Also figures in text.
 
@@ -145,7 +145,7 @@ A similar sensitivity analysis was carried out on the results of the Kalman filt
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=14cm]{images/rod_obs_sim1_3KF_Q_statplot.pdf}
-	\caption{Sensitivity of Kalman filter tuning – SISO system}
+	\caption{Sensitivity of Kalman filter tuning – \acrshort{SISO} system}
 	\label{fig:sim-sys-siso-KF3-sensitivity}
 \end{figure}
 

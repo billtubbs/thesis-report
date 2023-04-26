@@ -12,7 +12,7 @@
 %%    MServSoc, MPsEd]
 %% et les langues les plus courantes. Le français sera la langue par
 %% défaut du document.
-\documentclass[MSc,english,french]{ulthese}
+\documentclass[MSc,french,english]{ulthese}
 
 %% Encodage utilisé pour les caractères accentués dans les fichiers
 %% source du document. Les gabarits sont encodés en UTF-8. Inutile
@@ -39,13 +39,18 @@
 \usepackage{mfirstuc}  % needed when you want to capitalize first letter in a glossary description
 
 % Only used for highlighting edits - REMOVE IN FINAL
-\usepackage{soul}
+\usepackage{soulpos}
 %usepackage{color}
 \DeclareRobustCommand{\hljb}[1]{{\sethlcolor{green}\hl{#1}}}
 \DeclareRobustCommand{\hlad}[1]{{\sethlcolor{cyan}\hl{#1}}}
-\DeclareRobustCommand{\hlep}[1]{{\sethlcolor{orange}\hl{#1}}}
+%\DeclareRobustCommand{\hlep}[1]{{\sethlcolor{orange}\hl{#1}}}
 \DeclareRobustCommand{\hlmm}[1]{{\sethlcolor{magenta}\hl{#1}}}
  % \usepackage{easyReview}   DRAFT
+
+\ulposdef{\hlep}{%
+	\mbox{%
+		\color{orange}%
+		\rule[-.5ex]{\ulwidth}{11pt}}}
 
 % See glossaries.tex file
 \input{glossaries}
@@ -55,6 +60,8 @@
 %\usepackage{nomencl}
 \usepackage[intoc, french, nocfg]{nomencl}
 \makenomenclature
+% NOTE: To update the nomenclature need to run a custom user command. 
+% In TexStudio I set this up as Tools -> User -> 1. Make Nomenclature.
 
   %% Utilisation d'une autre police de caractères pour le document.
   %% - Sous LaTeX

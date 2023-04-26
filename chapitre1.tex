@@ -108,7 +108,7 @@ Liu also estimated the optimal mill speeds to process each ore and found that th
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/tsdata-steyn-figs.pdf}
-	\caption{\hlad{Samples from online particle size analysers.}}
+	\caption{\hlad{Samples from online particle size analysers}}
 	\label{fig:ind-data-tsplots}
 \end{figure}
 
@@ -190,7 +190,7 @@ The second example demonstrates the closed-loop performance of the \gls{HMM} con
 
 In the third example, the \gls{HMM} framework was used to mitigate the impact of large variations in the concentration of the feed stream entering a non-linear ethanol fermentation process simulation model. The concentrations of the feed were modelled as switching infrequently among several mean levels (low, mid, and high) with the transitions governed by a Markov chain. In this example, a \textit{sequentially-linearized} \gls{MPC} \citep{lee_extended_1994} was used and the effects of different types of feedback were compared---full state feedback including the Markov decision variable, Markov decision variable and output feedback only, and output feedback only.
 
-Due to the difficulties of \gls{MJLS} model identification mentioned above, they bypassed the issue in this paper by assuming that the system, noise, and Markov parameters were known. Nevertheless, the authors concluded that the benefits of an \gls{HMM}-based disturbance framework are ``most immediately'' gained by incorporating them within an existing control methodology such as \gls{MPC}.
+Due to the difficulties of \gls{MJLS} model identification mentioned above, they bypassed the issue in this paper by assuming that the system, noise, and Markov parameters were known. Nevertheless, the authors concluded that the benefits of an \gls{HMM}-based disturbance framework are ``most immediately'' gained by incorporating them within an existing control methodology such as \gls{MPC}. \hlep{No further work on realistic industrial disturbances since }\cite{wong_realistic_2009}\hlep{ could be found.}
 
 \subsection{Hybrid dynamical systems} \label{sec:lit-hybrid}
 

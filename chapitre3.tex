@@ -30,7 +30,7 @@ To demonstrate state estimation in the presence of \gls{RODD}s, a single \gls{RO
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=11.5cm]{images/sim-sys-diag-siso.pdf}
-	\caption{Functional diagram of the simulated \gls{SISO} system with observer}
+	\caption{Functional diagram of the simulated \acrshort{SISO} system with observer}
 	\label{fig:sim-sys-diag-siso}
 \end{figure}
 
@@ -84,7 +84,7 @@ To understand and investigate the behaviour of the observers, the system \eqref{
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_MKF_SF_test_sim_MKF_SF95_ioplot.pdf}
-	\caption{Simulation of a SISO linear system with a \gls{RODD} input disturbance}
+	\caption{Simulation of a \acrshort{SISO} linear system with a \acrshort{RODD} input disturbance}
 	\label{fig:rod-obs-sim-test-ioplot-SF95}
 \end{figure}
 
@@ -143,7 +143,7 @@ To effectively evaluate and compare the performance of these observers, longer s
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_ioplot.pdf}
-	\caption{Simulation of linear system with a \gls{RODD} input disturbance}
+	\caption{Simulation of linear system with a \acrshort{RODD} input disturbance}
 	\label{fig:rod-obs-sim1-ioplot}
 \end{figure}
 
@@ -184,7 +184,7 @@ As explained by \cite{andersson_adaptive_1985} and \cite{robertson_detection_199
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_3KF_Q_seed_6.pdf}
-	\caption{Tuning of Kalman filter KF3 – SISO system}
+	\caption{Tuning of Kalman filter KF3 – \acrshort{SISO} system}
 	\label{fig:sim-sys-siso-KF3-tuning}
 \end{figure}
 Figure \ref{fig:sim-sys-siso-KF3-tuning} shows the results of these simulations, from which it can be seen that the lowest \gls{RMSE}s of the state estimates were achieved when the variance parameter $\sigma_{w_p}^2$ was close to $0.01$. Using this result, a third Kalman filter labelled `KF3' was designed with the state disturbance covariance matrix
@@ -221,7 +221,7 @@ The RMSEs of the state estimates in these simulations are shown in Figure \ref{f
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_x_err_bar_KF123.pdf}
-	\caption{Root-mean-squared errors of state estimates – SISO system}
+	\caption{Root-mean-squared errors of state estimates – \acrshort{SISO} system}
 	\label{fig:rod-obs-sim1-KF123-xest-RMSE-bar}
 \end{figure}
 
@@ -242,48 +242,36 @@ Parameter values for the sub-optimal multiple-model observer algorithms describe
 Note that $\frac{N_f}{d}$ represents the number of detection intervals within the fusion horizon and is always a whole number. For example, when $d=3$, the lengths of the fusion were 9, 15, 30, 45, and 60. However, not all combinations were simulated. Any combination with more than 200 hypotheses ($n_h>200$) or with a total probability modelled, $\beta$ \eqref{eq:p_gamma}, less than 0.85 was rejected. The remaining 58 combinations were then evaluated by simulating the observer and calculating the \gls{RMSE} of the output estimates on the 5000 data samples from the simulated system. Tables \ref{tb:obs-sim1-popt-SF95} and \ref{tb:obs-sim1-popt-SF98} show the resulting \gls{RMSE} results for the 10 best combinations of parameter values (those with the lowest output \gls{RMSE}) for the 1995 and 1998 variants of this algorithm.
 \begin{table}[ht]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF--SF95.} \label{tb:obs-sim1-popt-SF95}
+		\caption{Observer parameter search results, \acrshort{SISO} linear system, MKF--SF95.} \label{tb:obs-sim1-popt-SF95}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
 			$N_f$ & $n_\text{max}$ & $d$ & $n_h$ & $\beta$ & $\text{\gls{RMSE}}(\hat{Y},Y)$  \\
 			\hline
 			% See script rod_obs_sim1_MKF_SF95_popt_table.m
-			% 29-Nov-2022 18:35:37 results with seed = 6, sigma_M = 0.1, d_min = 1
+			% 26-Apr-2023 13:31:25 results with seed = 6, sigma_M = 0.1, d_min = 1
 			15 &   2 &   1 & 151 & 0.9996 & 0.0411 \\
-			20 &   2 &   1 & 251 & 0.9990 & 0.0411 \\
 			10 &   2 &   1 &  76 & 0.9999 & 0.0411 \\
-			10 &   3 &   1 & 268 & 1.0000 & 0.0411 \\
 			5 &   1 &   1 &   8 & 0.9990 & 0.0415 \\
 			5 &   2 &   1 &  26 & 1.0000 & 0.0415 \\
 			5 &   3 &   1 &  48 & 1.0000 & 0.0415 \\
 			15 &   1 &   1 &  18 & 0.9904 & 0.0418 \\
 			10 &   1 &   1 &  13 & 0.9957 & 0.0419 \\
-			10 &   2 &   2 &  16 & 0.9043 & 0.0426 \\
+			\hl{20} &   \hl{2} &   \hl{2} &  \hl{56} & \hl{0.9991} & \hl{0.0425} \\
+			10 &   2 &   2 &  16 & 0.9999 & 0.0426 \\
+			\hl{10} &   \hl{3} &   \hl{2} &  \hl{26} & \hl{1.0000} & \hl{0.0426} \\
 			\hline
 		\end{tabular}
 	\end{center}
 \end{table}
 \begin{table}[ht]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF--SF98.} \label{tb:obs-sim1-popt-SF98}
+		\caption{Observer parameter search results, \acrshort{SISO} linear system, MKF--SF98.} \label{tb:obs-sim1-popt-SF98}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
 			$N_f$ & $n_\text{max}$ & $d$ & $n_h$ & $\beta$ & $\text{\gls{RMSE}}(\hat{Y},Y)$  \\
 			\hline
-			% See script rod_obs_sim1_MKF_SF98_popt_table
-			% 29-Nov-2022 18:38:45 results with seed = 6, sigma_M = 0.1, d_min = 1
-%			15 &   2 &   1 & 151 & 0.9996 & 0.0411 \\
-%			20 &   2 &   1 & 251 & 0.9990 & 0.0411 \\
-%			10 &   2 &   1 &  76 & 0.9999 & 0.0411 \\
-%			10 &   3 &   1 & 268 & 1.0000 & 0.0411 \\
-%			5 &   1 &   1 &   8 & 0.9990 & 0.0415 \\
-%			5 &   2 &   1 &  26 & 1.0000 & 0.0415 \\
-%			5 &   3 &   1 &  48 & 1.0000 & 0.0415 \\
-%			15 &   1 &   1 &  18 & 0.9904 & 0.0418 \\
-%			10 &   1 &   1 &  13 & 0.9957 & 0.0419 \\
-%			20 &   1 &   1 &  23 & 0.9831 & 0.0429 \\
 			% See script rod_obs_sim1_MKF_SF98_popt_table.m
-			% 07-Dec-2022 23:56:27 results with seed = 6, sigma_M = 0.1, d_min = 1
+			% 26-Apr-2023 12:30:13 results with seed = 6, sigma_M = 0.1, d_min = 1
 			30 &   2 &   2 & 151 & 0.9970 & 0.0414 \\
 			20 &   2 &   2 &  76 & 0.9991 & 0.0414 \\
 			10 &   2 &   2 &  26 & 0.9999 & 0.0414 \\
@@ -318,7 +306,7 @@ Combinations where rejected when $n_h - N_\text{min} < 1$, or in other words, wh
 
 \begin{table}[ht]
 	\begin{center}
-		\caption{Multi-model observer parameter search results – MKF--SP.} \label{tb:obs-sim1-popt-SP}
+		\caption{Observer parameter search results, \acrshort{SISO} linear system, MKF--SP.} \label{tb:obs-sim1-popt-SP}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.05\textwidth}>{\centering\arraybackslash}p{0.07\textwidth}>{\centering\arraybackslash}p{0.15\textwidth}}
 			$n_h$ & $N_\text{min}$ & $\text{\gls{RMSE}}(\hat{Y},Y)$  \\
@@ -343,7 +331,7 @@ Combinations where rejected when $n_h - N_\text{min} < 1$, or in other words, wh
 As above, the differences between the \gls{RMSE}s of the best 10 combinations are small, indicating that the choice of parameters from these combinations is not critical. The first combination ($n_h=10,N_\text{min}=7$) was chosen and the observer was labelled `MKF--SP1' in the simulations below. Table \ref{tb:obs-params-sim1} is a summary of the parameters of the observers simulated.
 \begin{table}[ht]
 	\begin{center}
-		\caption{Observer parameters for \gls{SISO} linear system.} \label{tb:obs-params-sim1}
+		\caption{Observer parameters for \acrshort{SISO} linear system.} \label{tb:obs-params-sim1}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.12\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
 			& KF3 & MKF--SF95 & MKF--SF1 & MKF--SP \\
@@ -378,7 +366,7 @@ Figure \ref{fig:rod-obs-sim1-yest-1-SF} shows the estimates of the sequence fusi
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_y_est1_SF95_SF1.pdf}
-	\caption{Estimates by sequence fusion observers – \gls{SISO} system}
+	\caption{Estimates by sequence fusion observers – \acrshort{SISO} system}
 	\label{fig:rod-obs-sim1-yest-1-SF}
 \end{figure}
 
@@ -386,7 +374,7 @@ Figure \ref{fig:rod-obs-sim1-yest-1-SP} shows the estimates of the sequence prun
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_y_est1_SP1.pdf}
-	\caption{Estimates by sequence pruning observer – \gls{SISO} system}
+	\caption{Estimates by sequence pruning observer – \acrshort{SISO} system}
 	\label{fig:rod-obs-sim1-yest-1-SP}
 \end{figure}
 
@@ -394,7 +382,7 @@ The plots in Figure \ref{fig:rod-obs-sim1-cum-err-y1-all} show the squared outpu
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim1_all_seed_cum_err_y1.pdf}
-	\caption{Cumulative errors of observer estimates – SISO system}
+	\caption{Cumulative errors of observer estimates – \acrshort{SISO} system}
 	\label{fig:rod-obs-sim1-cum-err-y1-all}
 \end{figure}
 
@@ -402,7 +390,7 @@ Figure \ref{fig:rod-obs-sim1-xest-RMSE-bar} compares the \gls{RMSE}s of the stat
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_x_err_bar.pdf}
-	\caption{Root-mean-squared errors of state estimates – \gls{SISO} system}
+	\caption{Root-mean-squared errors of state estimates – \acrshort{SISO} system}
 	\label{fig:rod-obs-sim1-xest-RMSE-bar}
 \end{figure}
 
@@ -410,7 +398,7 @@ Because these processes are stochastic, it is important to run simulations of su
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=12cm]{images/rod_obs_sim1_all_seed_y_err_box.pdf}
-	\caption{Sensitivity of output estimation errors to random initialization – SISO system}
+	\caption{Sensitivity of output estimation errors to random initialization – \acrshort{SISO} system}
 	\label{fig:rod-obs-sim1-yest-all-seed-RMSE-box}
 \end{figure}
 Figure \ref{fig:rod-obs-sim1-yest-all-seed-RMSE-box} confirms that the multiple-model observers are a significant improvement on the best single Kalman filter. However, there is no significant difference between the \gls{MKF}s in this case.
@@ -443,7 +431,7 @@ Figure \ref{fig:rod-obs-sim1-yest-all-seed-RMSE-box} confirms that the multiple-
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=11.5cm]{images/sim-sys-diag-2x2.pdf}
-	\caption{Functional diagram of the simulated MIMO system}
+	\caption{Functional diagram of the simulated \acrshort{MIMO} system}
 	\label{fig:sim-sys-diag-2x2}
 \end{figure}
 
@@ -509,7 +497,7 @@ Figure \ref{fig:rod-obs-sim-2-ioplot} shows the first 300 input-output samples f
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/rod_obs_sim2_all_seed_ioplot.pdf}
-	\caption{Simulation of linear MIMO system with two \gls{RODD}s}
+	\caption{Simulation of linear \acrshort{MIMO} system with two \acrshort{RODD}s}
 	\label{fig:rod-obs-sim-2-ioplot}
 \end{figure}
 
@@ -521,7 +509,7 @@ As in the previous experiment, a standard Kalman filter was tuned experimentally
 Parameter values for the sub-optimal multiple-model observers were chosen by a similar method to that used in the SISO experiment. The details of the parameter search and selection process are in Annex \ref{sec:annex-sim-2-MKF-tuning}. Table \ref{tb:obs-params-sim2} summarises the observer parameters used in the simulations.
 \begin{table}[ht]
 	\begin{center}
-		\caption{Observer parameters for MIMO linear system.} \label{tb:obs-params-sim2}
+		\caption{Observer parameters for $2\times2$ linear system.} \label{tb:obs-params-sim2}
 		% See: https://texblog.org/2019/06/03/control-the-width-of-table-columns-tabular-in-latex/
 		\begin{tabular}{p{0.16\textwidth}>{\centering\arraybackslash}p{0.12\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}>{\centering\arraybackslash}p{0.16\textwidth}}
 			& KF3 & MKF--SF95 & MKF--SF1 & MKF--SP1 \\
@@ -610,11 +598,11 @@ As in the \gls{SISO} case, 10 simulations were carried out with different random
 
 \section{Grinding process simulations} \label{sec:sim-ore-SISO}
 
-In this section, results of an experiment to test the observers with data from the grinding process simulator are presented. Unlike the simulations presented in section \ref{sec:sim-obs-lin}, the grinding simulator (described in Section \ref{sec:grinding-simulator}) is a non-linear model with a high number of state variables and complex dynamics based on a real grinding process.
+In this section, results of an experiment to test the observers with data from the grinding process simulator are presented. This work is an extension of previously published work \citep{tubbs_observer_2022}. In the previous work, the same data from grinding simulator was used to test a multiple-model observer with sequence pruning and similar results were presented. However, the work here has some differences. Here, both types of observer with sequence fusion and sequence pruning were evaluated and compared. Also, note that in the previous work, the prediction form of the Kalman filter \eqref{eq:xkp1_hat_p} was used and the mean-squared errors (MSEs) of the estimates were compared, not the \gls{RMSE}s \eqref{eq:rmse-calc-yest}.
 
-This work is an extension of previously published work \citep{tubbs_observer_2022}. In the previous work, the same data from grinding simulator was used to test a multiple-model observer with sequence pruning and similar results were presented. However, the work here has some differences. Here, both types of observer with sequence fusion and sequence pruning were evaluated and compared. Also, note that in the previous work, the prediction form of the Kalman filter \eqref{eq:xkp1_hat_p} was used and the mean-squared errors (MSEs) of the estimates were compared, not the \gls{RMSE}s \eqref{eq:rmse-calc-yest}.
+Unlike the simulations presented in section \ref{sec:sim-obs-lin}, the grinding simulator is a non-linear model with a high number of state variables and complex dynamics. \hlad{As described in Section {\ref{sec:grinding-simulator}}, it is a phenomenological model of the grinding process with ore streams modelled as populations of ore particles in discrete size intervals, a recycle stream with a transport delay, and simulated {\gls{PI}} controllers to regulate key process variables. When the {\gls{PSD}} of the ore feed switches from one mixture to the other, the process responds dynamically and will eventually reach a new steady-state, if the ore does not change again. However, when successive ore changes occur within short periods, the internal state of the simulated process at the time of the change has an influence on the subsequent response. Thus, the dynamic response of the measured output variable is non-linear and difficult to predict accurately.}
 
-As in the previous work, the size of the ground product leaving the cyclone overflow was sampled at 3 minute intervals ($T_s=0.05$ hours) and a zero-mean Gaussian measurement noise with a standard deviation of 5 $\mu\text{m}$ was added directly to the simulator output. No other inputs were available to the observers. In total, data from 13 different runs of the simulation model were used. Table \ref{tb:grind1-sims} summarises the type of input signal used in each simulation, the duration, number of samples, and the simulation outputs that were used. The use of this data is described in the subsequent sections.
+As in the previous work, the particle size (\acrshort{P80}) of the ground product leaving the cyclone overflow was sampled at 3 minute intervals ($T_s=0.05$ hours) and a zero-mean Gaussian measurement noise with a standard deviation of 5 $\mu\text{m}$ was added directly to the simulator output. \hlad{No disturbances, other than the switching ore feed were simulated and all manipulatable inputs other than those manipulated by the {\gls{PI}}s, such as ore feed rate, rotation speed, ... etc., were held constant during the simulations}. In total, data from 13 different runs of the simulation model were used. Table \ref{tb:grind1-sims} summarises the type of input signal used in each simulation, the duration, number of samples, and the simulation outputs that were used. The use of this data is described in the subsequent sections.
 \begin{table}[ht]
 	\begin{center}
 		\caption{Grinding process simulations} \label{tb:grind1-sims}
@@ -866,7 +854,7 @@ Recall that the observers in this evaluation were selected using the overall \gl
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=13cm]{images/grind1_rod_obs_sim_popt_RMSE_scatter.pdf}
-	\caption{RMSE trade-off comparison}
+	\caption{\acrshort{RMSE} trade-off comparison}
 	\label{fig:grind1-RMSE-scatter}
 \end{figure}
 The lines connecting the different \gls{KF} tunings give an indication of the \textit{Pareto front} of the performance of a Kalman filter. Any multiple-model result to the left or below the Pareto front of the \gls{KF} is an improvement since it has a lower \gls{RMSE} in transient or steady-state, or both. From this it can be seen that the best multiple-model observers are clearly a significant improvement over any \gls{KF} tuning.
@@ -914,7 +902,7 @@ The process delay of 0.2 hours remained fixed. Each parameter was than adjusted 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=15cm]{images/rod_obs_sim_sens_sys_4obs_RMSE_y_est.pdf}
-	\caption{Percentage changes in \gls{RMSE}s due to changes in process model parameters}
+	\caption{Percentage changes in \acrshort{RMSE}s due to changes in process model parameters}
 	\label{fig:grind1-obs-sim-sens-model-y-est}
 \end{figure}
 
@@ -926,7 +914,7 @@ In the second part of this analysis, the sensitivity of the observer performance
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=15cm]{images/rod_obs_sim_sens_rod_4obs_RMSE_y_est.pdf}
-	\caption{Percentage changes in RMSEs due to changes in \gls{RODD} parameters}
+	\caption{Percentage changes in \acrshort{RMSE}s due to changes in \acrshort{RODD} parameters}
 	\label{fig:grind1-obs-sim-sens-rod-y-est}
 \end{figure}
 Note that the \gls{SKF} has the true shock sequence and therefore does not depend on $\varepsilon$. From these results it can be seen that the average magnitude of the estimation errors of the multiple-model observers varied by $-0.8$ to $+5.8$\% over the range of parameter values simulated. The highest errors occurred when both $\sigma_{w_p}$ and $\varepsilon$ were double their original values.
@@ -1055,6 +1043,6 @@ The relative performance of the multiple-model observers compared to the best-tu
 
 The differences in overall performance between the multiple-model observers (\acrshort{MKF}s) in each simulation experiment are quite small. The sequence pruning observer was slightly better in the first simulation. In the other two, the sequence fusion observers were better. However, the difference between the \gls{MKF}s and the Kalman filters (KF3) depends on the simulation. In the first simulation, the \gls{MKF}s have approximately 36\% lower overall \gls{RMSE}s, whereas in the third experiment, they achieve only a 6 to 8\% reduction. This can be partly explained by the delay in the response of the process in this experiment. When the system has a delay between the unmeasured disturbance and the output, estimation errors are unavoidable. The greater the total error, the less the relative reduction due to any improvement in state estimation is. Another factor is the longer estimation horizon needed by the multiple model observers in the third experiment, as explained in Section \ref{sec-disc-obs-params}. Estimation errors are higher when the response of the observers is slower. Although KF3 is not ideal, it has a faster response than a Kalman filter tuned to the persistent disturbance (KF1 in sections \ref{sec:sim-obs-lin-1} and \ref{sec:sim-obs-lin-2}). The longer the detection interval, the less advantage the MKFs have over the response of KF3. As discussed in Section \ref{sec:grind1-sim-results}, the main advantages of the \gls{MKF}s were found to be in steady-state, when the \gls{RMSE}s were up to 30\% less than KF3.
 
-While the multi-model observers have a number of clear advantages over a single Kalman filter, their disadvantages are important to recognize. The complexity of these algorithms is a significant impediment from the perspective of practical implementation. The computer code to implement each of them is extensive compared to that of a single Kalman filter with a time-varying gain. To justify the higher implementation costs, the benefit of any improvement in state estimation would need to be quantified, and this would depend on the intended application.
+While the multi-model observers have a number of clear advantages over a single Kalman filter, their disadvantages are important to recognize. The complexity of these algorithms is a significant impediment from the perspective of practical implementation. The computer code to implement each of them is extensive compared to that of a single Kalman filter with a time-varying gain. To justify the higher implementation costs, the benefit of any improvement in state estimation would need to be quantified, and this would depend on the intended application. Finally, the MKFs evaluated here are of course limited to the infrequently-occurring disturbances that can be represented by the \gls{RODD} model. However, this is a versatile model capable of representing a wide range of possible disturbances.
 
-Finally, the MKFs evaluated here are of course limited to the infrequently-occurring disturbances that can be represented by the \gls{RODD} model. However, this is a versatile model capable of representing a wide range of possible disturbances.
+\hljb{In this chapter, the results of numerical simulations to evaluate the disturbance models and observer designs were presented and discussed. The main conclusions drawn, the limitations of the work, and recommendations for future research are described in the next section.}
