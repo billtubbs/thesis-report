@@ -38,14 +38,14 @@ Therefore the process noise covariance matrix of KF3 was
 
 \section{Tuning of MKF observers for MIMO linear system} \label{sec:annex-sim-2-MKF-tuning}
 
- In the case of the sequence fusion algorithm, the candidate parameter values were chosen from the same sets as those used for the \gls{SISO} system \eqref{eq:sim-sys-siso-MKF-SF-param-values}. Again, only observers with 200 hypotheses or less and a total hypothesis probability, $\beta$, greater than 0.85 were tested. For the selection of the sequence pruning algorithm parameters, the possible number of hypotheses was increased to 200 since it was expected to require more hypothesis sequences in the \gls{MIMO} experiment. \hl{Candidate values for the sequence pruning parameters in the case of the $2\times2$ system where generating using the following conditions}
+ In the case of the sequence fusion algorithm, the candidate parameter values were chosen from the same sets as those used for the \gls{SISO} system \eqref{eq:sim-sys-siso-MKF-SF-param-values}. Again, only observers with 200 hypotheses or less and a total hypothesis probability, $\beta$, greater than 0.85 were tested. For the selection of the sequence pruning algorithm parameters, the possible number of hypotheses was increased to 200 since it was expected to require more hypothesis sequences in the \gls{MIMO} experiment. Candidate values for the sequence pruning parameters in the case of the $2\times2$ system where generating using the following conditions
 \begin{equation} \label{eq:sim-sys-mimo-MKF-SP-param-values}
 	\begin{aligned}
 		N_\text{min} &\in \left\{ 15, 17, 19, 21, 23, 26, 29, 33, 37, 42, 47, 52 \right\},  \\
 		n_h - 2N_\text{min} &\in \left\{ 2, 3, 4, 6, 8, 11, 14 \right\}.  
 	\end{aligned}
 \end{equation}
-\hl{First, a value of $N_\text{min}$ was chosen from the first set, then the total number of hypotheses was calculated by taking a value from the second set and adding $2N_\text{min}$. This ensures that the resulting parameter combinations satisfy $n_h \ge n_p(N_\text{min}+1)$, which is a requirement of the algorithm.}
+First, a value of $N_\text{min}$ was chosen from the first set. Then, the total number of hypotheses was calculated by taking a value from the second set and adding $2N_\text{min}$. This ensures that the resulting parameter combinations satisfy $n_h \ge n_p(N_\text{min}+1)$, which is a requirement of the algorithm.
 
 As in the \gls{SISO} experiment, the resulting observers were simulated on a set of 5000 input-output samples from the simulated process \eqref{eq:sim-sys-mimo-ct}, and the \gls{RMSE}s calculated. Tables \ref{tb:obs-sim2-popt-SF95}, \ref{tb:obs-sim2-popt-SF98}, and \ref{tb:obs-sim2-popt-SP} show the results of the 10 best combinations of parameter values for the two sequence fusion algorithms (1995 and 1998 versions), and the sequence pruning algorithm.
 \begin{table}[hb]
@@ -120,7 +120,7 @@ In the case of the 1995 version of the sequence fusion algorithm, the lowest \gl
 		\end{tabular}
 	\end{center}
 \end{table}
-\hl{For the sequence pruning algorithm, the best combination of parameters, $n_h=61$ and $N_\text{min}=29$, was chosen}. A summary of all the parameter values used in the \gls{MIMO} simulations is included in Table \ref{tb:obs-params-sim2} in the main body of the report.
+For the sequence pruning algorithm, the best combination of parameters, $n_h=61$ and $N_\text{min}=29$, was chosen. A summary of all the parameter values used in the \gls{MIMO} simulations is included in Table \ref{tb:obs-params-sim2} in the main body of the report.
 
 
 \section{Sensitivity to random initialization} \label{sec:random-init}
